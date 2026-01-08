@@ -762,13 +762,10 @@ document.getElementById('contactForm').addEventListener('submit', async function
   try {
     const response = await fetch('https://hooks.zapier.com/hooks/catch/25974741/uw77c8k/', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
       body: JSON.stringify(data)
     });
     
-    if (response.ok) {
+    if (response.ok || response.status === 200) {
       const successMsg = document.getElementById('formSuccess');
       successMsg.classList.add('active');
       document.getElementById('contactForm').reset();
