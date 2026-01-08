@@ -1,340 +1,530 @@
-# 🚀 GO-TO-MARKET PLAN - PRISMATIC LABS 2026
+# 🚀 GO-TO-MARKET PLAN - PRISMATIC LABS
+
+## OVERVIEW
+
+Este documento detalha a estratégia de entrada no mercado da PRISMATIC LABS, focando em **como alcançar, convencer e converter** nosso público-alvo.
 
 ---
 
-## 1️⃣ TARGET MARKET OVERVIEW
+## 🎯 SEGMENTAÇÃO DE PÚBLICO
 
-### Primary ICP (Ideal Client Profile)
+### Ideal Customer Profile (ICP)
 
-**Infoprodutores em Crescimento**
+#### PRIMARY: Infoprodutores em Crescimento
+**Perfil:**
+- Faturamento: R$ 5.000 - R$ 30.000/mês
+- Idade: 28-45 anos
+- Localização: Brasil (SP, RJ, MG, Sul)
+- Fase: Já validou produto, quer escalar
+- Dor principal: Conversão baixa, design amador
+- Budget: R$ 2.000 - R$ 5.000 por projeto
+
+**Onde encontrar:**
+- Grupos do Facebook (Infoprodutores BR)
+- Hotmart Creators
+- Comunidades de Monetizze
+- LinkedIn (#infoprodutos)
+- Instagram (#produtor digital)
+
+**Objeções comuns:**
+- "Posso fazer no Elementor sozinho"
+- "Já tentei landing page e não funcionou"
+- "Não tenho tráfego suficiente ainda"
+
+**Como vencer objeções:**
+- Mostrar diferença entre template e custom
+- Cases com métricas de conversão
+- Explicar que LP melhora ROI do tráfego existente
+
+---
+
+#### SECONDARY: E-commerce em Expansão
+**Perfil:**
+- Faturamento: R$ 30.000 - R$ 150.000/mês
+- Produtos: Moda, tech, beleza, fitness
+- Fase: Já tem estrutura, quer profissionalizar
+- Dor principal: Taxa de conversão baixa, site desatualizado
+- Budget: R$ 3.500 - R$ 8.000 por projeto
+
+**Onde encontrar:**
+- LinkedIn (donos de e-commerce)
+- Eventos de e-commerce (online)
+- Marketplaces (sellers)
+- Comunidades Shopify/Nuvemshop
+
+**Objeções comuns:**
+- "Já tenho tema pago do Shopify"
+- "Preciso de funcionalidades complexas"
+- "Não sei se vale o investimento"
+
+**Como vencer objeções:**
+- Mostrar limitações de temas prontos
+- Demonstrar ROI (1% conversão = X vendas)
+- Foco em landing pages específicas (Black Friday, lançamentos)
+
+---
+
+#### TERTIARY: Agências Revendedoras
+**Perfil:**
+- Porte: 2-10 pessoas
+- Clientes: 10-50 clientes ativos
+- Dor: Não têm designer especializado em alta conversão
+- Modelo: White-label ou parceria
+- Volume: 2-5 projetos/mês
+
+**Onde encontrar:**
+- LinkedIn (agências digitais)
+- Diretórios de agências
+- Eventos de marketing digital
+- Networking direto
+
+**Proposta de valor:**
+- Comissão atrativa (25-30%)
+- Entrega rápida e previsível
+- Suporte técnico incluso
+- SLA garantido
+
+---
+
+## 📣 ESTRATÉGIA DE MESSAGING
+
+### Proposta de Valor Principal
+**"Landing pages que convertem 30-50% mais. Design premium dark mode + neon que seus concorrentes não têm."**
+
+### Headlines de Impacto
+1. "Sua landing page está perdendo 60% das vendas. Veja como corrigir isso."
+2. "Design premium que converte (e impressiona). Entregue em 7-14 dias."
+3. "Landing pages dark mode + neon: O visual que seu público nunca viu."
+4. "De template genérico para máquina de conversão. Cases reais dentro."
+5. "Investiu em tráfego mas conversão é baixa? O problema está no design."
+
+### Framework de Comunicação (SPIN)
+
+#### Situation (Situação)
+"Você investe em tráfego pago, tem um produto validado, mas a taxa de conversão da sua landing page está abaixo de 3%..."
+
+#### Problem (Problema)
+"O design genérico do seu Elementor/template não transmite autoridade. Visitantes não confiam. Mobile está quebrado. E você perde vendas todo dia."
+
+#### Implication (Implicação)
+"A cada 1.000 visitas com conversão de 2%, você perde R$ 15.000+ em vendas. Em um ano, isso é R$ 180.000 deixados na mesa."
+
+#### Need-Payoff (Solução)
+"Uma landing page profissional aumenta conversão para 4-6%. Mesmo investimento em tráfego, o dobro de vendas. ROI em 30-60 dias."
+
+---
+
+## 🛤️ JORNADA DO CLIENTE
+
+### Etapa 1: AWARENESS (Consciência)
+**"Ainda não sabe que precisa de uma LP profissional"**
+
+**Canais:**
+- Posts educativos no LinkedIn
+- Reels Instagram (antes/depois)
+- Blog posts (SEO)
+
+**Conteúdo:**
+- "5 sinais de que sua landing page está matando suas vendas"
+- "Por que 90% das LPs falham (checklist)"
+- "Template vs. Custom: A diferença de R$ 50k/ano"
+
+**CTA:**
+- Baixar checklist gratuito
+- Seguir no Instagram
+- Inscrever na newsletter
+
+---
+
+### Etapa 2: CONSIDERATION (Consideração)
+**"Sabe que precisa, está pesquisando opções"**
+
+**Canais:**
+- Email nurturing
+- LinkedIn DM (não spam)
+- Retargeting ads
+
+**Conteúdo:**
+- Case studies detalhados
+- Depoimentos em vídeo
+- Comparativo (template vs. PRISMATIC)
+- Preços transparentes
+
+**CTA:**
+- Agendar diagnóstico gratuito (30 min)
+- Ver portfolio completo
+- Assistir demo de caso
+
+---
+
+### Etapa 3: DECISION (Decisão)
+**"Pronto para comprar, escolhendo fornecedor"**
+
+**Canais:**
+- Reunião de discovery (Zoom)
+- Proposta personalizada
+- Follow-up estratégico
+
+**Conteúdo:**
+- Proposta customizada com timeline
+- Mockup inicial (se aplicável)
+- Garantias e suporte
+- Testemunhos de clientes similares
+
+**CTA:**
+- Fechar contrato
+- Pagar entrada (50%)
+- Iniciar kickoff
+
+---
+
+### Etapa 4: RETENTION (Retenção)
+**"Cliente ativo, buscar upsell e indicação"**
+
+**Canais:**
+- Email pós-entrega
+- Check-ins mensais
+- Newsletter exclusiva para clientes
+
+**Conteúdo:**
+- Relatório de métricas (30, 60, 90 dias)
+- Dicas de otimização
+- Ofertas de upsell (manutenção, testes A/B)
+- Programa de indicação
+
+**CTA:**
+- Contratar manutenção recorrente
+- Indicar 3 amigos (ganhar R$ 300)
+- Deixar depoimento/case
+
+---
+
+## 🎬 PLANO DE CONTEÚDO (3 Meses)
+
+### LinkedIn (3-4 posts/semana)
+
+**Semana 1:**
+- Post 1: "Por que 90% das landing pages falham" (educativo)
+- Post 2: Bastidores - "Como criamos o visual neon" (storytelling)
+- Post 3: Case study - antes/depois com métricas (social proof)
+
+**Semana 2:**
+- Post 1: "5 elementos que aumentam conversão em 40%" (lista)
+- Post 2: Poll - "Qual maior desafio em LP?" (engajamento)
+- Post 3: Dica rápida - "Mobile-first: por que importa" (valor)
+
+**Semana 3:**
+- Post 1: Depoimento de cliente em vídeo (social proof)
+- Post 2: "Dark mode design: trend ou necessidade?" (debate)
+- Post 3: Anúncio - "Estamos abrindo 3 vagas para projetos beta" (oferta)
+
+**Semana 4:**
+- Post 1: Carrossel - "Anatomia de uma LP que converte" (educativo)
+- Post 2: Behind-the-scenes do processo de design (transparência)
+- Post 3: "Mitos sobre landing pages" (quebrar objeções)
+
+---
+
+### Instagram (5-7 posts/semana + Stories diários)
+
+**Feed:**
+- 2x Reels (antes/depois, tips rápidos)
+- 2x Carrosséis educativos
+- 1x Post de case study
+- 1x Bastidores/humanização
+- 1x Conteúdo de autoridade
+
+**Stories:**
+- Bastidores do dia
+- Enquetes e interações
+- Reshare de posts
+- Dicas rápidas
+- Q&A semanal
+
+---
+
+### Blog/SEO (2 posts/mês)
+
+**Mês 1:**
+- "Quanto custa uma landing page profissional em 2026" (transacional)
+- "Landing page vs. Website: quando usar cada um" (educativo)
+
+**Mês 2:**
+- "10 exemplos de landing pages de alta conversão (análise)" (inspiracional)
+- "Como aumentar conversão em 50%: Guia completo CRO" (aprofundado)
+
+**Mês 3:**
+- "Dark mode design: Por que está dominando 2026" (trend)
+- "Checklist: 27 pontos para revisar antes de publicar sua LP" (prático)
+
+---
+
+## 📧 EMAIL SEQUENCES
+
+### Sequence 1: Lead Magnet (Checklist)
+**Objetivo:** Nutrir lead frio, construir autoridade
+
+**Email 1 (Imediato):** Entrega do checklist + boas-vindas
+**Email 2 (Dia 2):** "Como usar o checklist" + case study
+**Email 3 (Dia 4):** "3 erros fatais em LPs" + link para blog
+**Email 4 (Dia 7):** Depoimento cliente + oferta de diagnóstico
+**Email 5 (Dia 10):** "Última chance: diagnóstico gratuito" (urgência)
+
+---
+
+### Sequence 2: Pós-Reunião (Não fechou)
+**Objetivo:** Reativar lead quente
+
+**Email 1 (2h depois):** Recap da reunião + proposta anexa
+**Email 2 (Dia 2):** Case similar ao dele + social proof
+**Email 3 (Dia 5):** Oferta de bônus (urgência 48h)
+**Email 4 (Dia 7):** Check-in pessoal + perguntas abertas
+
+---
+
+### Sequence 3: Pós-Entrega
+**Objetivo:** Retenção + upsell + indicação
+
+**Email 1 (Dia 0):** "Projeto entregue! Próximos passos"
+**Email 2 (Dia 7):** "Como estão as métricas?" + check-in
+**Email 3 (Dia 30):** Relatório de performance + otimizações sugeridas
+**Email 4 (Dia 45):** Oferta de manutenção recorrente
+**Email 5 (Dia 60):** Programa de indicação + incentivo
+
+---
+
+## 💸 ESTRATÉGIA DE PAID ADS
+
+### Instagram Ads (Fase 1: Jan-Mar)
+**Budget:** R$ 500/semana = R$ 2.000/mês
+
+**Campanha 1: Awareness**
+- Objetivo: Alcance + Engajamento
+- Público: Infoprodutores, 25-45 anos, Brasil
+- Interesses: marketing digital, vendas online, empreendedorismo
+- Criativo: Vídeo antes/depois de LP
+- CTA: "Salvar este post"
+
+**Campanha 2: Conversão**
+- Objetivo: Conversões (agendar reunião)
+- Público: Visitantes do site + engajamento Instagram
+- Criativo: Carrossel de cases com métricas
+- CTA: "Agendar diagnóstico gratuito"
+
+**Campanha 3: Retargeting**
+- Objetivo: Reengajar
+- Público: Visitou site mas não agendou
+- Criativo: Depoimento em vídeo + oferta limitada
+- CTA: "Ver preços"
+
+**Métricas de Sucesso:**
+- CPM: < R$ 20
+- CPC: < R$ 2
+- CPL (Cost per Lead): < R$ 50
+- Taxa de Conversão Landing → Agendamento: ≥ 10%
+
+---
+
+### LinkedIn Ads (Fase 2: Abr-Jun)
+**Budget:** R$ 1.000/mês
+
+**Campanha 1: Sponsored Content**
+- Público: Donos de e-commerce, gestores de marketing
+- Conteúdo: Case study aprofundado
+- CTA: "Baixar case completo" (lead gen form)
+
+**Campanha 2: InMail Patrocinado**
+- Público: Donos de agências digitais (parceria)
+- Mensagem: Proposta white-label personalizada
+- CTA: "Agendar conversa"
+
+---
+
+## 🤝 ESTRATÉGIA DE PARCERIAS
+
+### Programa White-Label para Agências
+
+**Proposta de Valor:**
+- Comissão: 25% do valor do projeto
+- SLA garantido: 10-14 dias
+- Suporte técnico incluso
+- Marca da agência no entregável
+- Treinamento inicial
+
+**Processo:**
+1. Agência fecha cliente
+2. Passa briefing para PRISMATIC
+3. PRISMATIC executa (marca da agência)
+4. Agência entrega ao cliente final
+5. PRISMATIC recebe 75%, agência 25%
+
+**Aquisição de Parceiros:**
+- LinkedIn outreach (50 agências/mês)
+- Networking em eventos online
+- Indicação de clientes atuais
+- Diretórios de agências
+
+**Meta:** 5 agências parceiras ativas até Junho 2026
+
+---
+
+### Programa de Indicação (Clientes)
+
+**Mecânica:**
+- Cliente indica amigo
+- Amigo fecha projeto
+- Cliente ganha R$ 300 de desconto no próximo projeto
+- Amigo ganha 15% de desconto
+
+**Como Promover:**
+- Email 60 dias pós-entrega
+- Seção no site "Indique e Ganhe"
+- Menção em todas as reuniões
+- Lembrete em invoices
+
+**Meta:** 30% dos novos clientes via indicação até Dezembro 2026
+
+---
+
+## 📞 SCRIPT DE OUTREACH
+
+### LinkedIn DM (Cold)
 ```
-Características:
-- Faturamento: R$5k-30k/mês
-- Idade: 25-55 anos
-- Educação: Ensino médio ou superior
-- Locação: Principalmente online
-- Plataformas: Instagram, YouTube, LinkedIn
-- Estágio: Crescimento (já validaram product)
+Olá [Nome],
 
-Dor:
-- Landing pages que não convertem (<20% taxa)
-- Design desatualizado ou genérico
-- Falta de dados sobre performance
-- Não sabem por onde começar com design
+Vi que você trabalha com [infoprodutos/e-commerce] e tem
+conteúdo incrível no seu Instagram/LinkedIn.
 
-Ganho:
-- Aumentar conversão em 30-50%
-- Design profissional sem quebrar oramento
-- Mais vendas de seus infoprodutos
-- Credibilidade aumentada
-- Entrega rápida (já querem lançar)
+Notei que sua landing page atual está [insight específico:
+mobile com problemas, CTA pouco visível, etc.].
+
+Criei um mockup rápido do que poderia ser - te mando?
+Sem compromisso, só quero ajudar.
+
+Abs,
+[Seu Nome] - PRISMATIC LABS
 ```
 
 ---
 
-## 2️⃣ POSITIONING STATEMENT
-
-**Para** infoprodutores em crescimento  
-**Que** precisam de landing pages que realmente vendem,  
-**PRISMATIC LABS** é a agência de design  
-**Que** oferece landing pages premium (dark mode + neon) com foco em conversão  
-**Diferente de** agências genéricas ou freelancers,  
-**Nós** entregamos resultados mensuráveis em 2-3 semanas com suporte dedicado.
-
----
-
-## 3️⃣ MESSAGING FRAMEWORK
-
-### Core Promise
-**"Landing pages que vendem. Design que encanta."**
-
-### Key Messages
-
-**M1: Results-Focused**
+### Email (Warm Lead - baixou checklist)
 ```
-"Aumentamos sua conversão em 30-50% com design premium.
-Não é só beleza - é conversão com estilo."
-```
+Assunto: [Nome], usou o checklist na sua LP?
 
-**M2: Speed & Simplicity**
-```
-"Pronta em 2-3 semanas, não em 2-3 meses.
-Você queria lançar ontem? A gente entrega amanhã."
-```
+Oi [Nome],
 
-**M3: Premium Aesthetic**
-```
-"Dark mode + neon colors. Design que chama atenção.
-Seu infoproduto merece aparecer assim."
-```
+Viu o checklist que baixou semana passada?
 
-**M4: Support & Partnership**
-```
-"30 dias de suporte incluído. Não somos só agência - somos parceiros.
-Você quer melhorar? A gente ajuda a testar, medir e melhorar."
+Tenho curiosidade: quantos dos 27 pontos sua landing
+page atual atende?
+
+Se quiser, posso fazer uma análise rápida (15 min) e te
+mostrar exatamente onde estão as maiores oportunidades
+de aumentar conversão.
+
+Sem custo, sem compromisso. Só quero que você venda mais.
+
+Topa? Responde aqui e eu mando link do calendário.
+
+Abraço,
+[Seu Nome]
+
+P.S.: Tenho 3 vagas para diagnóstico esta semana.
 ```
 
 ---
 
-## 4️⃣ LAUNCH PHASES
-
-### PHASE 1: STEALTH (Jan 8 - Jan 31)
-**Objetivo**: Capturar primeiros clientes, validar modelo
-
-**Táticas**:
-- [ ] Website portfolio 100% online
-- [ ] Outreach direto (20-30 contatos/dia)
-- [ ] Conversar com 10+ prospects
-- [ ] Fechar 1-2 primeiros clientes
-- [ ] Registrar feedback
-
-**Metrics**:
-- 500+ contatos feitos
-- 50+ conversations
-- 2-3 clientes assinados
-- Conversion rate: 4-6%
-
----
-
-### PHASE 2: CONTROLLED (Fev 1 - Mar 31)
-**Objetivo**: Validar e ajustar, criar social proof
-
-**Táticas**:
-- [ ] Publicar 2 case studies completos
-- [ ] Começar programa de referrals
-- [ ] Capturar testimonials em video
-- [ ] Aumentar outreach (agora com social proof)
-- [ ] Testar ads Meta/LinkedIn
-- [ ] Criar conteúdo (3-5 posts LinkedIn/sem)
-
-**Metrics**:
-- 5-8 clientes na carteira
-- 2 case studies publicados
-- 10+ testimonials coletados
-- 3-4 referrals gerados
-- 1.000+ site visitors/mês
-
----
-
-### PHASE 3: SCALING (Abr 1 - Ago 31)
-**Objetivo**: Atingir 50+ clientes, processos sistematizados
-
-**Táticas**:
-- [ ] Aumentar marketing budget 2x
-- [ ] Formalizar referral program (10% comissão)
-- [ ] Publicar 1 video por sem (YouTube)
-- [ ] Blog posts semanais
-- [ ] Webinar mensal (lead magnet)
-- [ ] Outreach para agências (B2B)
-- [ ] Possível hire de suporte
-
-**Metrics**:
-- 30+ clientes na carteira
-- 8 case studies
-- 50%+ novos clientes via referências
-- CAC <R$600
-- LTV >R$15k
-
----
-
-### PHASE 4: EXPANSION (Set 1 - Dez 31)
-**Objetivo**: Maximizar faturamento, preparar 2027
-
-**Táticas**:
-- [ ] Formalizar 5+ parcerias de agências
-- [ ] Lançar TIER 4 (manutenção mensal)
-- [ ] 2+ webinars/mês
-- [ ] Content library com 50+ assets
-- [ ] Possvel segunda hire
-- [ ] Planejamento 2027
-
-**Metrics**:
-- 100+ clientes
-- 60%+ receita de referrals
-- Churn <5%
-- Faturamento R$350k+
-- Pronto para escalar 2027
-
----
-
-## 5️⃣ SALES PROCESS
-
-### Lead Capture
-1. **Awareness**: LinkedIn, blog, referrals
-2. **Interest**: Site visit (portfolio + case studies)
-3. **Consideration**: Email conversation (5-email sequence)
-4. **Decision**: Call/meet + proposal
-5. **Closed**: Contrato + início
-
-### Sales Conversation Flow
+### WhatsApp (Indicação de cliente)
 ```
-[Initial Contact]
-  ⬇️
-[Qualification Call - 15min]
-  "Qual seu principal problema com landing page?"
-  "Qual sua meta de conversão?"
-  "Quando quer lançar?"
-  ⬇️
-[Proposal + Demo]
-  "Aqui está nossa proposta customizada"
-  "Vamos fazer um draft p/ você ver o estilo"
-  ⬇️
-[Close]
-  "Podemos começar segunda-feira?"
-  Contrato 1-página
-  Primeiro pagamento (50%)
+Oi [Nome]! Tudo bem?
+
+O [Cliente Atual] me passou seu contato. Disse que você
+está [situação específica: lançando produto, escalando, etc.].
+
+A gente criou a landing page dele que aumentou conversão
+em 45% (de 2,1% pra 3,8%).
+
+Se fizer sentido, adoraria te mostrar o processo. Te mando
+link do calendário?
+
+Qualquer coisa, pode me chamar aqui!
+
+Abs,
+[Seu Nome] - PRISMATIC LABS
 ```
 
-### Pitch Template
-**"Olá [Name],**
+---
 
-**Vi seu [infoproduto/ecommerce] e achei legal. Não é sobre vender, é sincero haha**
+## 🎯 OKRs TRIMESTRAIS
 
-**Trabalho com infoprodutores e ecommerce que querem aumentar conversão com design que chama atenção (dark mode + neon). Em 2-3 semanas, pronto.**
+### Q1 2026 (Jan-Mar)
+**Objective:** Validar oferta e conquistar primeiros clientes
 
-**Se rolar uma rápida conversa, posso mostrar alguns case studies."
+**Key Results:**
+- KR1: Fechar 3 clientes beta (desconto 40%)
+- KR2: 3 cases documentados com métricas
+- KR3: 500 seguidores Instagram + 300 LinkedIn
+- KR4: R$ 5.000 em receita
 
 ---
 
-## 6️⃣ CONTENT MARKETING STRATEGY
+### Q2 2026 (Abr-Jun)
+**Objective:** Escalar aquisição e refinar processos
 
-### Blog (2 posts/sem)
-**Topics**:
-- "5 Landing Pages que Convertem 50%"
-- "Dark Mode: Por que seu infoproduto merece"
-- "A/B Testing: Aumentar conversão sem expertise"
-- "Design that Sells: Case studies reais"
-- "Como estruturar uma landing que vende" (guide)
-
-**Distribution**: Website + LinkedIn + Email
-
-### LinkedIn (Diariamente)
-**Técnicas**:
-- Case studies (before/after)
-- Industry insights
-- Behind-the-scenes
-- Thinking leadership
-- Engage community
-
-**Goal**: 1.000+ followers by Q4
-
-### YouTube (2 videos/sem a partir Q2)
-**Content**:
-- Case study breakdowns (10min)
-- Design trends 2026
-- Conversion optimization tips
-- Client interviews
-
-### Email (Weekly)
-**Newsletter content**:
-- 1 case study
-- 1 design tip
-- 1 industry news
-- 1 CTA (webinar/book)
+**Key Results:**
+- KR1: 8 clientes ativos
+- KR2: R$ 12.000 MRR
+- KR3: 50 leads qualificados/mês (pipeline)
+- KR4: 2 parcerias white-label ativas
 
 ---
 
-## 7️⃣ PARTNERSHIP STRATEGY
+### Q3 2026 (Jul-Set)
+**Objective:** Consolidar autoridade e crescer receita recorrente
 
-### Agency Partners
-**Tática**: Oferecer white-label ou rev-share
-
-**Offer**:
-- R$1.500-2.500 por projeto (TIER 2)
-- Agência marca como suo
-- PRISMATIC faz tudo
-- 60% para agência, 40% PRISMATIC
-
-**Targets**:
-- Agências pequenas (1-5 pessoas)
-- Que têm base de clientes
-- Não têm serviço de design robusto
-
-**Growth**: 5-10 agências por Q3
-
-### Referral Program
-**Structure**:
-- 10% do valor do projeto
-- Máximo R$500/referral
-- Sem limite de referências
-- Pagamento 30 dias após projeto finalizado
-
-**Targets**: 
-- Clientes antigos
-- Parceiros
-- Influenciadores do mercado
+**Key Results:**
+- KR1: 12 clientes ativos
+- KR2: R$ 20.000 MRR (30% recorrente)
+- KR3: 1.000 inscritos na newsletter
+- KR4: Contratar primeiro freelancer/júnior
 
 ---
 
-## 8️⃣ COMPETITIVE DIFFERENTIATION
+### Q4 2026 (Out-Dez)
+**Objective:** Estabelecer marca e preparar 2027
 
-| Aspecto | Concorrentes | PRISMATIC |
-|---------|-------------|----------|
-| Design | Templating | Único + neon |
-| Speed | 4-6 sem | 2-3 sem |
-| Price | Cobram por hora | Preo fixo |
-| Focus | "Bonito" | Conversão + bonito |
-| Support | Email lento | 30d dedicado |
-| Data | Sem analytics | Dashboard included |
-| Reputão | Genérica | Infoprodutores/ecommerce |
+**Key Results:**
+- KR1: 15 clientes ativos
+- KR2: R$ 28.000 MRR
+- KR3: Mini-curso lançado com 500+ inscritos
+- KR4: NPS ≥ 75
 
 ---
 
-## 9️⃣ PRICING & PACKAGING
+## 📊 DASHBOARD DE ACOMPANHAMENTO
 
-### TIER 1: Essential
-- 1 página, design base
-- R$2.000
-- 1 revision, 30d suport basic
+### Métricas Semanais
+- Leads gerados (por canal)
+- Reuniões agendadas
+- Propostas enviadas
+- Contratos fechados
+- MRR atual
 
-### TIER 2: Premium (Recomendado)
-- 1-3 páginas, design premium, animations
-- R$3.500
-- 3 revisions, 30d suport full, analytics
+### Métricas Mensais
+- Novos clientes
+- Churn rate
+- NPS
+- CAC (Customer Acquisition Cost)
+- LTV (Lifetime Value)
 
-### TIER 3: Website
-- 5+ páginas, design full, SEO, blog
-- R$7.000-10.000
-- 5 revisions, 60d suport, maintenance 3m
-
-### TIER 4: Optimization (Recorrente)
-- A/B testing, analytics, monthly tweaks
-- R$500-1.000/mês
-- 3-5 changes, monthly reports
-
----
-
-## 10️⃣ SUCCESS METRICS
-
-**By Q1 End (Mar 31)**:
-- 5-8 clientes
-- R$20-30k faturado
-- 2 case studies
-- 1.000+ site visitors
-- 20%+ conversion rate
-
-**By Q2 End (Jun 30)**:
-- 15-20 clientes
-- R$60k+ faturado
-- 5 case studies
-- 3.000+ site visitors
-- 25%+ conversion rate
-
-**By Q3 End (Sep 30)**:
-- 45-50 clientes
-- R$150k+ faturado
-- 8 case studies
-- 8.000+ site visitors
-- 30%+ conversion rate
-
-**By Q4 End (Dec 31)**:
-- 100+ clientes
-- R$350k+ faturado
-- 15 case studies
-- 20.000+ site visitors
-- 35%+ conversion rate
+### Revisão Estratégica (Mensal)
+- O que funcionou?
+- O que não funcionou?
+- Ajustes necessários
+- Prioridades do próximo mês
 
 ---
 
-**GTM Owner**: You  
-**Last Updated**: Jan 8, 2026
+💜 **PRISMATIC LABS - Landing pages que vendem, não só bonitas**
+
+**Última Atualização:** 08/01/2026
