@@ -1,0 +1,1 @@
+# Sensitive files\n.env\n.env.local\n.DS_Store\n*.log\nnode_modules/\ndist/\n*.psd\n.idea/\n.vscode/\n\n# Client data\n*/client-*\n*/confidential\n*/internal\n\n# Private info\n**/passwords.txt\n**/api-keys.txt\n**/credentials.json\n\n# Build\n*.zip\n*.rar\n
