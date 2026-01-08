@@ -10,37 +10,59 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&family=Space+Grotesk:wght@700&display=swap" rel="stylesheet">
 <style>
-/* Estilos para cards expandíveis */
+/* Animação do card expandido - ESTILO ORIGINAL MANTIDO */
 .portfolio-card {
   position: relative;
-  transition: all 0.3s ease;
 }
 
 .portfolio-card.expanded {
-  grid-column: 1 / -1;
-  z-index: 100;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 90vw;
+  max-width: 800px;
+  max-height: 85vh;
+  z-index: 1000;
+  animation: expandCard 0.4s ease-out;
 }
 
-.card-front, .card-back {
-  transition: opacity 0.3s ease;
+@keyframes expandCard {
+  from {
+    transform: translate(-50%, -50%) scale(0.8);
+    opacity: 0;
+  }
+  to {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+  }
 }
 
-.card-front.hidden, .card-back.hidden {
-  display: none;
+.portfolio-card.expanded::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  z-index: -1;
+  animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 0.7;
+  }
 }
 
 .card-back {
-  background: linear-gradient(135deg, rgba(20, 30, 48, 0.95), rgba(20, 20, 30, 0.95));
-  border: 2px solid #00ffff;
-  border-radius: 16px;
-  padding: 40px;
-  backdrop-filter: blur(10px);
-  max-height: 80vh;
+  max-height: 85vh;
   overflow-y: auto;
-}
-
-.card-content-expanded {
-  position: relative;
+  padding: 40px;
 }
 
 .close-button {
@@ -60,6 +82,7 @@
   color: #000;
   font-weight: bold;
   transition: all 0.3s ease;
+  z-index: 10;
 }
 
 .close-button:hover {
@@ -117,7 +140,7 @@
   margin-right: 8px;
 }
 
-/* Scroll personalizado */
+/* Scroll customizado */
 .card-back::-webkit-scrollbar {
   width: 8px;
 }
@@ -134,6 +157,15 @@
 
 .card-back::-webkit-scrollbar-thumb:hover {
   background: #00ff88;
+}
+
+/* Manter estrutura original dos cards visíveis */
+.card-front, .card-back {
+  display: block;
+}
+
+.card-front.hidden, .card-back.hidden {
+  display: none;
 }
 </style>
 </head>
@@ -216,13 +248,13 @@ Design dark mode + neon colors para infoprodutores e e-commerce que querem <stro
 <span class="metric-label">Faturamento</span>
 </div>
 </div>
-<button class="card-link" onclick="expandCard(1)" style="background: none; border: none; color: #00ffff; cursor: pointer; font-weight: 600; font-size: 14px; padding: 0; text-decoration: underline;">Ver case completo →</button>
+<a href="#case-1" class="card-link" onclick="expandCard(event, 1)">Ver case completo →</a>
 </div>
 </div>
 
 <div class="card-back hidden">
 <div class="card-content-expanded">
-<button class="close-button" onclick="collapseCard(1)">✕</button>
+<button class="close-button" onclick="collapseCard(event, 1)">✕</button>
 <h3 class="expanded-title">Método Transformação Digital</h3>
 <div class="case-details">
 <div class="detail-section">
@@ -288,13 +320,13 @@ Design dark mode + neon colors para infoprodutores e e-commerce que querem <stro
 <span class="metric-label">AOV (ticket médio)</span>
 </div>
 </div>
-<button class="card-link" onclick="expandCard(2)" style="background: none; border: none; color: #00ffff; cursor: pointer; font-weight: 600; font-size: 14px; padding: 0; text-decoration: underline;">Ver case completo →</button>
+<a href="#case-2" class="card-link" onclick="expandCard(event, 2)">Ver case completo →</a>
 </div>
 </div>
 
 <div class="card-back hidden">
 <div class="card-content-expanded">
-<button class="close-button" onclick="collapseCard(2)">✕</button>
+<button class="close-button" onclick="collapseCard(event, 2)">✕</button>
 <h3 class="expanded-title">NEON Streetwear</h3>
 <div class="case-details">
 <div class="detail-section">
@@ -360,13 +392,13 @@ Design dark mode + neon colors para infoprodutores e e-commerce que querem <stro
 <span class="metric-label">NPS</span>
 </div>
 </div>
-<button class="card-link" onclick="expandCard(3)" style="background: none; border: none; color: #00ffff; cursor: pointer; font-weight: 600; font-size: 14px; padding: 0; text-decoration: underline;">Ver case completo →</button>
+<a href="#case-3" class="card-link" onclick="expandCard(event, 3)">Ver case completo →</a>
 </div>
 </div>
 
 <div class="card-back hidden">
 <div class="card-content-expanded">
-<button class="close-button" onclick="collapseCard(3)">✕</button>
+<button class="close-button" onclick="collapseCard(event, 3)">✕</button>
 <h3 class="expanded-title">Growth Agency</h3>
 <div class="case-details">
 <div class="detail-section">
@@ -592,8 +624,9 @@ Design dark mode + neon colors para infoprodutores e e-commerce que querem <stro
 </footer>
 
 <script>
-// Funções para expandir e colapsar cards
-function expandCard(caseNumber) {
+// Funções para expandir e colapsar cards com animação suave
+function expandCard(event, caseNumber) {
+  event.preventDefault();
   const card = document.querySelector(`[data-case="${caseNumber}"]`);
   const cardFront = card.querySelector('.card-front');
   const cardBack = card.querySelector('.card-back');
@@ -601,14 +634,10 @@ function expandCard(caseNumber) {
   cardFront.classList.add('hidden');
   cardBack.classList.remove('hidden');
   card.classList.add('expanded');
-  
-  // Scroll para o card
-  setTimeout(() => {
-    card.scrollIntoView({ behavior: 'smooth', block: 'center' });
-  }, 100);
 }
 
-function collapseCard(caseNumber) {
+function collapseCard(event, caseNumber) {
+  event.preventDefault();
   const card = document.querySelector(`[data-case="${caseNumber}"]`);
   const cardFront = card.querySelector('.card-front');
   const cardBack = card.querySelector('.card-back');
@@ -617,6 +646,19 @@ function collapseCard(caseNumber) {
   cardBack.classList.add('hidden');
   card.classList.remove('expanded');
 }
+
+// Fechar case ao clicar no fundo escuro
+document.addEventListener('click', function(event) {
+  const expandedCard = document.querySelector('.portfolio-card.expanded');
+  if (!expandedCard) return;
+  
+  // Se clicou no card ou dentro dele, não fecha
+  if (expandedCard.contains(event.target)) return;
+  
+  // Se clicou no fundo (antes do card), fecha
+  const caseNum = expandedCard.getAttribute('data-case');
+  collapseCard(event, caseNum);
+});
 
 // Form submission
 document.getElementById('contactForm').addEventListener('submit', function(e) {
