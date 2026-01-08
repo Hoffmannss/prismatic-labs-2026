@@ -10,66 +10,58 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&family=Space+Grotesk:wght@700&display=swap" rel="stylesheet">
 <style>
-/* Animação do card expandido - ESTILO ORIGINAL MANTIDO */
-.portfolio-card {
-  position: relative;
-}
-
-.portfolio-card.expanded {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 90vw;
-  max-width: 800px;
-  max-height: 85vh;
-  z-index: 1000;
-  animation: expandCard 0.4s ease-out;
-}
-
-@keyframes expandCard {
-  from {
-    transform: translate(-50%, -50%) scale(0.8);
-    opacity: 0;
-  }
-  to {
-    transform: translate(-50%, -50%) scale(1);
-    opacity: 1;
-  }
-}
-
-.portfolio-card.expanded::before {
-  content: '';
+/* MODAL DE CASE EXPANDIDO */
+.modal-overlay {
+  display: none;
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.7);
-  z-index: -1;
+  background: rgba(0, 0, 0, 0.85);
+  z-index: 999;
   animation: fadeIn 0.3s ease-out;
 }
 
+.modal-overlay.active {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 @keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.case-modal {
+  background: var(--medium-gray);
+  border-radius: 16px;
+  border: 1px solid rgba(168, 85, 247, 0.2);
+  width: 90vw;
+  max-width: 800px;
+  max-height: 85vh;
+  overflow-y: auto;
+  position: relative;
+  animation: slideUp 0.4s ease-out;
+}
+
+@keyframes slideUp {
   from {
+    transform: translateY(50px);
     opacity: 0;
   }
   to {
-    opacity: 0.7;
+    transform: translateY(0);
+    opacity: 1;
   }
-}
-
-.card-back {
-  max-height: 85vh;
-  overflow-y: auto;
-  padding: 40px;
 }
 
 .close-button {
   position: absolute;
   top: 20px;
   right: 20px;
-  background: #00ffff;
+  background: var(--neon-teal);
   border: none;
   width: 40px;
   height: 40px;
@@ -79,22 +71,27 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #000;
+  color: var(--pure-black);
   font-weight: bold;
   transition: all 0.3s ease;
   z-index: 10;
 }
 
 .close-button:hover {
-  background: #00ff88;
+  background: var(--neon-purple);
   transform: scale(1.1);
 }
 
+.modal-content {
+  padding: 40px;
+  padding-top: 60px;
+}
+
 .expanded-title {
-  color: #00ffff;
   font-size: 28px;
+  font-weight: 700;
+  color: var(--neon-teal);
   margin-bottom: 30px;
-  margin-top: 10px;
 }
 
 .case-details {
@@ -103,22 +100,24 @@
 }
 
 .detail-section {
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(168, 85, 247, 0.1);
   padding: 20px;
   border-radius: 12px;
-  border-left: 4px solid #00ff88;
+  border-left: 4px solid var(--neon-teal);
 }
 
 .detail-section h4 {
-  color: #00ffff;
+  color: var(--neon-teal);
   margin: 0 0 12px 0;
   font-size: 16px;
+  font-weight: 600;
 }
 
 .detail-section p {
-  color: #ccc;
+  color: rgba(245, 245, 245, 0.8);
   margin: 0 0 10px 0;
   line-height: 1.6;
+  font-size: 14px;
 }
 
 .detail-section ul {
@@ -128,44 +127,43 @@
 }
 
 .detail-section ul li {
-  color: #ccc;
+  color: rgba(245, 245, 245, 0.8);
   padding: 8px 0;
   line-height: 1.6;
+  font-size: 14px;
 }
 
 .detail-section ul li:before {
   content: "→ ";
-  color: #00ff88;
+  color: var(--neon-purple);
   font-weight: bold;
   margin-right: 8px;
 }
 
 /* Scroll customizado */
-.card-back::-webkit-scrollbar {
+.case-modal::-webkit-scrollbar {
   width: 8px;
 }
 
-.card-back::-webkit-scrollbar-track {
-  background: rgba(0, 255, 136, 0.1);
+.case-modal::-webkit-scrollbar-track {
+  background: rgba(168, 85, 247, 0.1);
   border-radius: 10px;
 }
 
-.card-back::-webkit-scrollbar-thumb {
-  background: #00ffff;
+.case-modal::-webkit-scrollbar-thumb {
+  background: var(--neon-teal);
   border-radius: 10px;
 }
 
-.card-back::-webkit-scrollbar-thumb:hover {
-  background: #00ff88;
+.case-modal::-webkit-scrollbar-thumb:hover {
+  background: var(--neon-purple);
 }
 
-/* Manter estrutura original dos cards visíveis */
-.card-front, .card-back {
-  display: block;
-}
-
-.card-front.hidden, .card-back.hidden {
-  display: none;
+.card-link {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
 }
 </style>
 </head>
@@ -228,8 +226,7 @@ Design dark mode + neon colors para infoprodutores e e-commerce que querem <stro
 <div class="portfolio-grid">
 
 <!-- CASE 1 -->
-<div class="portfolio-card" data-case="1">
-<div class="card-front">
+<div class="portfolio-card">
 <div class="card-image">
 <div class="placeholder-image case-1">
 <span class="image-label">INFOPRODUTO</span>
@@ -248,60 +245,12 @@ Design dark mode + neon colors para infoprodutores e e-commerce que querem <stro
 <span class="metric-label">Faturamento</span>
 </div>
 </div>
-<a href="#case-1" class="card-link" onclick="expandCard(event, 1)">Ver case completo →</a>
-</div>
-</div>
-
-<div class="card-back hidden">
-<div class="card-content-expanded">
-<button class="close-button" onclick="collapseCard(event, 1)">✕</button>
-<h3 class="expanded-title">Método Transformação Digital</h3>
-<div class="case-details">
-<div class="detail-section">
-<h4>📋 Desafio</h4>
-<p>Cliente lançaria um novo curso sobre transformação digital com objetivo de captar 150 alunos na primeira semana. Precisava de uma landing page que convertesse visitantes em leads qualificados.</p>
-</div>
-<div class="detail-section">
-<h4>🎯 Objetivos</h4>
-<ul>
-<li>Atingir 52% de taxa de conversão</li>
-<li>Gerar R$180k em vendas (150 alunos x R$1.200)</li>
-<li>Entregar em 7 dias</li>
-<li>Integrar com WhatsApp para acompanhamento</li>
-</ul>
-</div>
-<div class="detail-section">
-<h4>🛠️ Solução Implementada</h4>
-<ul>
-<li>Design dark mode com neon colors (cyan e purple)</li>
-<li>Seção de testimoniais com vídeos de alunos anteriores</li>
-<li>Contador regressivo para criar urgência</li>
-<li>Formulário de captura com validação JavaScript</li>
-<li>Integração Zapier → WhatsApp → CRM</li>
-<li>Otimização de velocidade (PageSpeed 95+)</li>
-</ul>
-</div>
-<div class="detail-section">
-<h4>📊 Resultados Alcançados</h4>
-<ul>
-<li><strong>52% taxa de conversão</strong> (meta: 40%)</li>
-<li><strong>R$216k faturados</strong> em 7 dias (20% acima da meta)</li>
-<li><strong>180 alunos</strong> no primeiro lote</li>
-<li><strong>4.8/5 stars</strong> de satisfação do cliente</li>
-<li><strong>15% de reembolso</strong> (garantia de 30 dias)</li>
-</ul>
-</div>
-<div class="detail-section">
-<h4>💡 Aprendizados</h4>
-<p>O uso de social proof (testimoniais em vídeo) foi crucial. Aumentou conversão em 18% quando implementado. A urgência (contador regressivo) também funcionou bem.</p>
-</div>
-</div>
+<button class="card-link" onclick="openCaseModal(1)">Ver case completo →</button>
 </div>
 </div>
 
 <!-- CASE 2 -->
-<div class="portfolio-card" data-case="2">
-<div class="card-front">
+<div class="portfolio-card">
 <div class="card-image">
 <div class="placeholder-image case-2">
 <span class="image-label">E-COMMERCE</span>
@@ -320,60 +269,12 @@ Design dark mode + neon colors para infoprodutores e e-commerce que querem <stro
 <span class="metric-label">AOV (ticket médio)</span>
 </div>
 </div>
-<a href="#case-2" class="card-link" onclick="expandCard(event, 2)">Ver case completo →</a>
-</div>
-</div>
-
-<div class="card-back hidden">
-<div class="card-content-expanded">
-<button class="close-button" onclick="collapseCard(event, 2)">✕</button>
-<h3 class="expanded-title">NEON Streetwear</h3>
-<div class="case-details">
-<div class="detail-section">
-<h4>📋 Desafio</h4>
-<p>E-commerce de streetwear com ticket médio baixo e alta taxa de abandono de carrinho (62%). Cliente buscava diferenciação visual no mercado saturado.</p>
-</div>
-<div class="detail-section">
-<h4>🎯 Objetivos</h4>
-<ul>
-<li>Aumentar AOV (ticket médio) em 50%</li>
-<li>Reduzir abandono de carrinho para 35%</li>
-<li>Criar identidade visual única</li>
-<li>Implementar recomendação de produtos</li>
-</ul>
-</div>
-<div class="detail-section">
-<h4>🛠️ Solução Implementada</h4>
-<ul>
-<li>Redesign completo com neon aesthetic</li>
-<li>Sistema de recomendação "Quem comprou, também comprou"</li>
-<li>Checkout em 1 página (antes eram 4)</li>
-<li>Busca com filtros dinâmicos</li>
-<li>Reviews com sistema de estrelas e fotos</li>
-<li>Programa de fidelidade integrado</li>
-</ul>
-</div>
-<div class="detail-section">
-<h4>📊 Resultados Alcançados</h4>
-<ul>
-<li><strong>AOV de R$185 para R$592</strong> (3.2x de crescimento)</li>
-<li><strong>67% aumento</strong> em vendas totais</li>
-<li><strong>Abandono reduzido</strong> de 62% para 38%</li>
-<li><strong>Tempo médio no site</strong> aumentou de 2.3m para 6.8m</li>
-<li><strong>15% de conversão</strong> (antes era 3.2%)</li>
-</ul>
-</div>
-<div class="detail-section">
-<h4>💡 Aprendizados</h4>
-<p>A simplificação do checkout foi decisiva. Cada campo removido aumentou conversão em 3-5%. O sistema de recomendação contribuiu com 23% das vendas.</p>
-</div>
-</div>
+<button class="card-link" onclick="openCaseModal(2)">Ver case completo →</button>
 </div>
 </div>
 
 <!-- CASE 3 -->
-<div class="portfolio-card" data-case="3">
-<div class="card-front">
+<div class="portfolio-card">
 <div class="card-image">
 <div class="placeholder-image case-3">
 <span class="image-label">AGÊNCIA</span>
@@ -392,60 +293,21 @@ Design dark mode + neon colors para infoprodutores e e-commerce que querem <stro
 <span class="metric-label">NPS</span>
 </div>
 </div>
-<a href="#case-3" class="card-link" onclick="expandCard(event, 3)">Ver case completo →</a>
-</div>
-</div>
-
-<div class="card-back hidden">
-<div class="card-content-expanded">
-<button class="close-button" onclick="collapseCard(event, 3)">✕</button>
-<h3 class="expanded-title">Growth Agency</h3>
-<div class="case-details">
-<div class="detail-section">
-<h4>📋 Desafio</h4>
-<p>Agência de growth marketing precisava de website institucional que gerasse leads qualificados e demonstrasse expertise. Site anterior era genérico e não convertia.</p>
-</div>
-<div class="detail-section">
-<h4>🎯 Objetivos</h4>
-<ul>
-<li>Gerar 30+ leads por mês</li>
-<li>Aumentar qualidade dos leads (43% qualificação)</li>
-<li>Integrar sistema de agendamento</li>
-<li>Mostrar case studies e social proof</li>
-</ul>
-</div>
-<div class="detail-section">
-<h4>🛠️ Solução Implementada</h4>
-<ul>
-<li>Website com 6 páginas (Home, Serviços, Cases, Blog, Sobre, Contato)</li>
-<li>Sistema de agendamento (Calendly integrado)</li>
-<li>4 case studies detalhados</li>
-<li>Blog com 20+ artigos de SEO</li>
-<li>Chatbot para qualificação de leads</li>
-<li>CRM integrado para acompanhamento</li>
-</ul>
-</div>
-<div class="detail-section">
-<h4>📊 Resultados Alcançados</h4>
-<ul>
-<li><strong>45 leads/mês</strong> (meta: 30+)</li>
-<li><strong>43% de leads qualificados</strong> (taxa muito alta)</li>
-<li><strong>NPS de 8.5/10</strong> entre clientes</li>
-<li><strong>8 novos clientes/mês</strong> em média</li>
-<li><strong>#1 no Google</strong> para "growth marketing Tijucas"</li>
-</ul>
-</div>
-<div class="detail-section">
-<h4>💡 Aprendizados</h4>
-<p>A combinação de case studies reais + agendamento direto foi extremamente efetiva. 67% dos leads que veem cases e clicam em agendamento se convertem em clientes.</p>
-</div>
-</div>
+<button class="card-link" onclick="openCaseModal(3)">Ver case completo →</button>
 </div>
 </div>
 
 </div>
 </div>
 </section>
+
+<!-- MODAL DE CASE -->
+<div id="caseModal" class="modal-overlay" onclick="closeCaseModal(event)">
+<div class="case-modal" onclick="event.stopPropagation()">
+<button class="close-button" onclick="closeCaseModal()">✕</button>
+<div class="modal-content" id="modalContent"></div>
+</div>
+</div>
 
 <!-- PROCESSO SECTION -->
 <section id="processo" class="processo">
@@ -624,41 +486,195 @@ Design dark mode + neon colors para infoprodutores e e-commerce que querem <stro
 </footer>
 
 <script>
-// Funções para expandir e colapsar cards com animação suave
-function expandCard(event, caseNumber) {
-  event.preventDefault();
-  const card = document.querySelector(`[data-case="${caseNumber}"]`);
-  const cardFront = card.querySelector('.card-front');
-  const cardBack = card.querySelector('.card-back');
+const casesData = {
+  1: {
+    title: 'Método Transformação Digital',
+    sections: [
+      {
+        icon: '📋',
+        title: 'Desafio',
+        content: 'Cliente lançaria um novo curso sobre transformação digital com objetivo de captar 150 alunos na primeira semana. Precisava de uma landing page que convertesse visitantes em leads qualificados.'
+      },
+      {
+        icon: '🎯',
+        title: 'Objetivos',
+        items: [
+          'Atingir 52% de taxa de conversão',
+          'Gerar R$180k em vendas (150 alunos x R$1.200)',
+          'Entregar em 7 dias',
+          'Integrar com WhatsApp para acompanhamento'
+        ]
+      },
+      {
+        icon: '🛠️',
+        title: 'Solução Implementada',
+        items: [
+          'Design dark mode com neon colors (cyan e purple)',
+          'Seção de testimoniais com vídeos de alunos anteriores',
+          'Contador regressivo para criar urgência',
+          'Formulário de captura com validação JavaScript',
+          'Integração Zapier → WhatsApp → CRM',
+          'Otimização de velocidade (PageSpeed 95+)'
+        ]
+      },
+      {
+        icon: '📊',
+        title: 'Resultados Alcançados',
+        items: [
+          '<strong>52% taxa de conversão</strong> (meta: 40%)',
+          '<strong>R$216k faturados</strong> em 7 dias (20% acima da meta)',
+          '<strong>180 alunos</strong> no primeiro lote',
+          '<strong>4.8/5 stars</strong> de satisfação do cliente',
+          '<strong>15% de reembolso</strong> (garantia de 30 dias)'
+        ]
+      },
+      {
+        icon: '💡',
+        title: 'Aprendizados',
+        content: 'O uso de social proof (testimoniais em vídeo) foi crucial. Aumentou conversão em 18% quando implementado. A urgência (contador regressivo) também funcionou bem.'
+      }
+    ]
+  },
+  2: {
+    title: 'NEON Streetwear',
+    sections: [
+      {
+        icon: '📋',
+        title: 'Desafio',
+        content: 'E-commerce de streetwear com ticket médio baixo e alta taxa de abandono de carrinho (62%). Cliente buscava diferenciação visual no mercado saturado.'
+      },
+      {
+        icon: '🎯',
+        title: 'Objetivos',
+        items: [
+          'Aumentar AOV (ticket médio) em 50%',
+          'Reduzir abandono de carrinho para 35%',
+          'Criar identidade visual única',
+          'Implementar recomendação de produtos'
+        ]
+      },
+      {
+        icon: '🛠️',
+        title: 'Solução Implementada',
+        items: [
+          'Redesign completo com neon aesthetic',
+          'Sistema de recomendação "Quem comprou, também comprou"',
+          'Checkout em 1 página (antes eram 4)',
+          'Busca com filtros dinâmicos',
+          'Reviews com sistema de estrelas e fotos',
+          'Programa de fidelidade integrado'
+        ]
+      },
+      {
+        icon: '📊',
+        title: 'Resultados Alcançados',
+        items: [
+          '<strong>AOV de R$185 para R$592</strong> (3.2x de crescimento)',
+          '<strong>67% aumento</strong> em vendas totais',
+          '<strong>Abandono reduzido</strong> de 62% para 38%',
+          '<strong>Tempo médio no site</strong> aumentou de 2.3m para 6.8m',
+          '<strong>15% de conversão</strong> (antes era 3.2%)'
+        ]
+      },
+      {
+        icon: '💡',
+        title: 'Aprendizados',
+        content: 'A simplificação do checkout foi decisiva. Cada campo removido aumentou conversão em 3-5%. O sistema de recomendação contribuiu com 23% das vendas.'
+      }
+    ]
+  },
+  3: {
+    title: 'Growth Agency',
+    sections: [
+      {
+        icon: '📋',
+        title: 'Desafio',
+        content: 'Agência de growth marketing precisava de website institucional que gerasse leads qualificados e demonstrasse expertise. Site anterior era genérico e não convertia.'
+      },
+      {
+        icon: '🎯',
+        title: 'Objetivos',
+        items: [
+          'Gerar 30+ leads por mês',
+          'Aumentar qualidade dos leads (43% qualificação)',
+          'Integrar sistema de agendamento',
+          'Mostrar case studies e social proof'
+        ]
+      },
+      {
+        icon: '🛠️',
+        title: 'Solução Implementada',
+        items: [
+          'Website com 6 páginas (Home, Serviços, Cases, Blog, Sobre, Contato)',
+          'Sistema de agendamento (Calendly integrado)',
+          '4 case studies detalhados',
+          'Blog com 20+ artigos de SEO',
+          'Chatbot para qualificação de leads',
+          'CRM integrado para acompanhamento'
+        ]
+      },
+      {
+        icon: '📊',
+        title: 'Resultados Alcançados',
+        items: [
+          '<strong>45 leads/mês</strong> (meta: 30+)',
+          '<strong>43% de leads qualificados</strong> (taxa muito alta)',
+          '<strong>NPS de 8.5/10</strong> entre clientes',
+          '<strong>8 novos clientes/mês</strong> em média',
+          '<strong>#1 no Google</strong> para "growth marketing Tijucas"'
+        ]
+      },
+      {
+        icon: '💡',
+        title: 'Aprendizados',
+        content: 'A combinação de case studies reais + agendamento direto foi extremamente efetiva. 67% dos leads que veem cases e clicam em agendamento se convertem em clientes.'
+      }
+    ]
+  }
+};
+
+function openCaseModal(caseNumber) {
+  const modal = document.getElementById('caseModal');
+  const modalContent = document.getElementById('modalContent');
+  const caseData = casesData[caseNumber];
   
-  cardFront.classList.add('hidden');
-  cardBack.classList.remove('hidden');
-  card.classList.add('expanded');
+  let html = `<h2 class="expanded-title">${caseData.title}</h2><div class="case-details">`;
+  
+  caseData.sections.forEach(section => {
+    html += `<div class="detail-section">`;
+    html += `<h4>${section.icon} ${section.title}</h4>`;
+    
+    if (section.content) {
+      html += `<p>${section.content}</p>`;
+    }
+    
+    if (section.items) {
+      html += `<ul>`;
+      section.items.forEach(item => {
+        html += `<li>${item}</li>`;
+      });
+      html += `</ul>`;
+    }
+    
+    html += `</div>`;
+  });
+  
+  html += `</div>`;
+  
+  modalContent.innerHTML = html;
+  modal.classList.add('active');
+  document.body.style.overflow = 'hidden';
 }
 
-function collapseCard(event, caseNumber) {
-  event.preventDefault();
-  const card = document.querySelector(`[data-case="${caseNumber}"]`);
-  const cardFront = card.querySelector('.card-front');
-  const cardBack = card.querySelector('.card-back');
+function closeCaseModal(event) {
+  if (event && event.target !== document.getElementById('caseModal') && !event.target.classList.contains('close-button')) {
+    return;
+  }
   
-  cardFront.classList.remove('hidden');
-  cardBack.classList.add('hidden');
-  card.classList.remove('expanded');
+  const modal = document.getElementById('caseModal');
+  modal.classList.remove('active');
+  document.body.style.overflow = 'auto';
 }
-
-// Fechar case ao clicar no fundo escuro
-document.addEventListener('click', function(event) {
-  const expandedCard = document.querySelector('.portfolio-card.expanded');
-  if (!expandedCard) return;
-  
-  // Se clicou no card ou dentro dele, não fecha
-  if (expandedCard.contains(event.target)) return;
-  
-  // Se clicou no fundo (antes do card), fecha
-  const caseNum = expandedCard.getAttribute('data-case');
-  collapseCard(event, caseNum);
-});
 
 // Form submission
 document.getElementById('contactForm').addEventListener('submit', function(e) {
