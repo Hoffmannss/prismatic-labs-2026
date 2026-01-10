@@ -1,0 +1,61 @@
+# PRISMATIC LABS - Configuração do Netlify
+# Este arquivo configura o deploy automático para a pasta 08-WEBSITE/
+
+[build]
+  # Diretório de publicação
+  publish = "08-WEBSITE"
+  
+  # Comando de build (não necessário para site estático simples)
+  command = "echo 'Deploy estático - sem build necessário'"
+
+# Configurações de redirecionamento e headers
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+  force = false
+  conditions = {Role = ["admin"]}
+
+# Headers de segurança e performance
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    X-XSS-Protection = "1; mode=block"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "geolocation=(), microphone=(), camera=()"
+
+# Cache para arquivos estáticos
+[[headers]]
+  for = "/css/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/js/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# Configurações de contexto
+[context.production]
+  publish = "08-WEBSITE"
+  
+[context.deploy-preview]
+  publish = "08-WEBSITE"
+
+[context.branch-deploy]
+  publish = "08-WEBSITE"
+
+# Plugin de otimização de imagens (opcional)
+# [[plugins]]
+#   package = "@netlify/plugin-lighthouse"
+
+# Notificações de deploy
+[build.environment]
+  NODE_VERSION = "18"
