@@ -4,249 +4,157 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Solicitar Proposta | Prismatic Labs</title>
-    <meta name="description" content="Solicite uma proposta personalizada para sua landing page. Resposta em até 24 horas.">
+    <meta name="description" content="Solicite uma proposta personalizada. Responda 3 perguntas e receba um orçamento sob medida.">
     <link rel="stylesheet" href="css/style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@700&display=swap" rel="stylesheet">
-    <style>
-        .proposal-form { max-width: 700px; margin: 0 auto; padding: 60px 20px; }
-        .form-steps { display: flex; justify-content: space-between; margin-bottom: 40px; gap: 10px; }
-        .form-step { flex: 1; text-align: center; padding: 15px; background: rgba(255,255,255,0.05); border-radius: 10px; transition: all 0.3s; }
-        .form-step.active { background: linear-gradient(135deg, #a855f7 0%, #14b8a6 100%); }
-        .form-step-number { font-size: 24px; font-weight: 700; color: #a855f7; }
-        .form-step.active .form-step-number { color: white; }
-        .form-step-title { font-size: 14px; margin-top: 5px; color: rgba(255,255,255,0.7); }
-        .form-step.active .form-step-title { color: white; }
-        .form-group { margin-bottom: 25px; }
-        .form-label { display: block; margin-bottom: 8px; color: #fff; font-weight: 500; font-size: 14px; }
-        .form-input, .form-select, .form-textarea { width: 100%; padding: 15px; background: rgba(255,255,255,0.05); border: 1px solid rgba(168,85,247,0.3); border-radius: 8px; color: #fff; font-size: 15px; transition: all 0.3s; }
-        .form-input:focus, .form-select:focus, .form-textarea:focus { outline: none; border-color: #a855f7; background: rgba(255,255,255,0.08); }
-        .form-textarea { min-height: 120px; resize: vertical; font-family: inherit; }
-        .form-buttons { display: flex; gap: 15px; margin-top: 30px; }
-        .form-buttons .btn { flex: 1; }
-        .step-content { display: none; }
-        .step-content.active { display: block; animation: fadeIn 0.3s; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        .success-message { text-align: center; padding: 40px; background: rgba(20,184,166,0.1); border: 2px solid #14b8a6; border-radius: 15px; display: none; }
-        .success-message.show { display: block; animation: fadeIn 0.5s; }
-        .success-icon { font-size: 60px; margin-bottom: 20px; }
-    </style>
 </head>
 <body>
     <!-- HEADER -->
     <header class="header">
         <nav class="nav container">
-            <div class="nav-logo">
-                <a href="index.html" style="text-decoration: none; color: inherit;">
-                    <span class="logo-text">PRISMATIC</span>
-                    <span class="logo-sub">LABS</span>
-                </a>
-            </div>
+            <div class="nav-logo"><a href="index.html" style="text-decoration: none; color: inherit;"><span class="logo-text">PRISMATIC</span><span class="logo-sub">LABS</span></a></div>
             <ul class="nav-menu" id="navMenu">
                 <li><a href="index.html" class="nav-link">Home</a></li>
                 <li><a href="servicos.html" class="nav-link">Serviços</a></li>
                 <li><a href="processo.html" class="nav-link">Processo</a></li>
                 <li><a href="documentos.html" class="nav-link">Documentos</a></li>
                 <li><a href="contato.html" class="nav-link">Contato</a></li>
-                <li><a href="proposta.html" class="btn btn-primary">Solicitar Proposta</a></li>
+                <li><a href="proposta.html" class="btn btn-primary active">Solicitar Proposta</a></li>
             </ul>
-            <div class="nav-toggle" id="navToggle">
-                <span></span>
-                <span></span>
-                <span></span>
-            </div>
+            <div class="nav-toggle" id="navToggle"><span></span><span></span><span></span></div>
         </nav>
     </header>
 
-    <!-- FORMULÁRIO -->
-    <section class="section proposal-form">
-        <div class="section-header" style="text-align: center; margin-bottom: 40px;">
-            <span class="section-badge">Solicitar Proposta</span>
-            <h1 class="section-title">Receba uma <span class="gradient-text">Proposta Personalizada</span></h1>
-            <p style="color: rgba(255,255,255,0.7); margin-top: 15px;">⚡ Resposta em até 24 horas | 💜 Sem compromisso</p>
-        </div>
-
-        <!-- STEPS -->
-        <div class="form-steps">
-            <div class="form-step active" data-step="1">
-                <div class="form-step-number">1</div>
-                <div class="form-step-title">Contato</div>
-            </div>
-            <div class="form-step" data-step="2">
-                <div class="form-step-number">2</div>
-                <div class="form-step-title">Projeto</div>
-            </div>
-            <div class="form-step" data-step="3">
-                <div class="form-step-number">3</div>
-                <div class="form-step-title">Detalhes</div>
-            </div>
-        </div>
-
-        <!-- FORM -->
-        <form id="proposalForm">
-            <!-- STEP 1: CONTATO -->
-            <div class="step-content active" data-step="1">
-                <div class="form-group">
-                    <label class="form-label">Nome Completo *</label>
-                    <input type="text" name="nome" class="form-input" required placeholder="Seu nome">
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Email *</label>
-                    <input type="email" name="email" class="form-input" required placeholder="seu@email.com">
-                </div>
-                <div class="form-group">
-                    <label class="form-label">WhatsApp *</label>
-                    <input type="tel" name="whatsapp" class="form-input" required placeholder="(00) 00000-0000">
-                </div>
-                <div class="form-buttons">
-                    <button type="button" class="btn btn-gradient" onclick="nextStep()">Próximo →</button>
-                </div>
+    <section class="section">
+        <div class="container">
+            <div class="section-header" style="text-align: center; margin-bottom: 60px;">
+                <span class="section-badge">Proposta Personalizada</span>
+                <h1 class="section-title">Receba um Orçamento <span class="gradient-text">Sob Medida</span></h1>
+                <p style="color: rgba(255,255,255,0.7); margin-top: 20px; max-width: 700px; margin-left: auto; margin-right: auto;">Responda 3 perguntas rápidas e receba uma proposta detalhada em até 24 horas. Sem compromisso.</p>
             </div>
 
-            <!-- STEP 2: PROJETO -->
-            <div class="step-content" data-step="2">
-                <div class="form-group">
-                    <label class="form-label">Tipo de Projeto *</label>
-                    <select name="tipo" class="form-select" required>
-                        <option value="">Selecione...</option>
-                        <option value="Infoproduto">Infoproduto / Curso Online</option>
-                        <option value="E-commerce">E-commerce / Loja Virtual</option>
-                        <option value="Landing Page">Landing Page / Captura de Leads</option>
-                        <option value="Website">Website Institucional</option>
-                        <option value="Agência">Agência / Consultoria</option>
-                        <option value="Outro">Outro</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Pacote Desejado *</label>
-                    <select name="pacote" class="form-select" required>
-                        <option value="">Selecione...</option>
-                        <option value="Básico">Básico - R$ 2.500</option>
-                        <option value="Pro">Pro - R$ 3.500</option>
-                        <option value="Premium">Premium - R$ 4.500</option>
-                        <option value="Personalizado">Personalizado</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Prazo Desejado *</label>
-                    <select name="prazo" class="form-select" required>
-                        <option value="">Selecione...</option>
-                        <option value="Urgente">Urgente (7 dias)</option>
-                        <option value="Normal">Normal (10-15 dias)</option>
-                        <option value="Flexível">Flexível (20+ dias)</option>
-                    </select>
-                </div>
-                <div class="form-buttons">
-                    <button type="button" class="btn btn-outline" onclick="prevStep()">← Voltar</button>
-                    <button type="button" class="btn btn-gradient" onclick="nextStep()">Próximo →</button>
+            <!-- FORMULÁRIO -->
+            <div style="max-width: 700px; margin: 0 auto; background: rgba(255,255,255,0.03); padding: 40px; border-radius: 20px; border: 1px solid rgba(168,85,247,0.3);">
+                <form id="propostaForm" style="display: flex; flex-direction: column; gap: 30px;">
+                    <!-- PERGUNTA 1 -->
+                    <div>
+                        <label style="display: block; margin-bottom: 15px; color: #fff; font-weight: 600; font-size: 18px;">1️⃣ Qual é o objetivo do seu projeto?</label>
+                        <select name="objetivo" required style="width: 100%; padding: 15px; background: rgba(255,255,255,0.05); border: 1px solid rgba(168,85,247,0.3); border-radius: 10px; color: #fff; font-size: 16px;">
+                            <option value="" disabled selected>Selecione uma opção</option>
+                            <option value="lançamento_infoproduto">Lançamento de Infoproduto</option>
+                            <option value="ecommerce">E-commerce / Loja Online</option>
+                            <option value="captacao_leads">Captação de Leads</option>
+                            <option value="institucional">Site Institucional</option>
+                            <option value="outro">Outro</option>
+                        </select>
+                    </div>
+
+                    <!-- PERGUNTA 2 -->
+                    <div>
+                        <label style="display: block; margin-bottom: 15px; color: #fff; font-weight: 600; font-size: 18px;">2️⃣ Qual pacote te interessa?</label>
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px;">
+                            <label style="padding: 20px; background: rgba(255,255,255,0.05); border: 2px solid rgba(168,85,247,0.3); border-radius: 10px; cursor: pointer; transition: all 0.3s; text-align: center;">
+                                <input type="radio" name="pacote" value="basico" required style="display: none;">
+                                <div style="color: #14b8a6; font-weight: 700; font-size: 20px; margin-bottom: 5px;">Básico</div>
+                                <div style="color: rgba(255,255,255,0.7); font-size: 14px;">R$ 2.500</div>
+                            </label>
+                            <label style="padding: 20px; background: rgba(168,85,247,0.1); border: 2px solid rgba(168,85,247,0.5); border-radius: 10px; cursor: pointer; transition: all 0.3s; text-align: center;">
+                                <input type="radio" name="pacote" value="pro" required style="display: none;">
+                                <div style="color: #a855f7; font-weight: 700; font-size: 20px; margin-bottom: 5px;">Pro 👑</div>
+                                <div style="color: rgba(255,255,255,0.7); font-size: 14px;">R$ 3.500</div>
+                            </label>
+                            <label style="padding: 20px; background: rgba(255,255,255,0.05); border: 2px solid rgba(236,72,153,0.3); border-radius: 10px; cursor: pointer; transition: all 0.3s; text-align: center;">
+                                <input type="radio" name="pacote" value="premium" required style="display: none;">
+                                <div style="color: #ec4899; font-weight: 700; font-size: 20px; margin-bottom: 5px;">Premium</div>
+                                <div style="color: rgba(255,255,255,0.7); font-size: 14px;">R$ 4.500</div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- PERGUNTA 3 -->
+                    <div>
+                        <label style="display: block; margin-bottom: 15px; color: #fff; font-weight: 600; font-size: 18px;">3️⃣ Descreva brevemente seu projeto</label>
+                        <textarea name="descricao" required rows="5" placeholder="Ex: Preciso de uma landing page para lançar meu curso online de marketing digital..." style="width: 100%; padding: 15px; background: rgba(255,255,255,0.05); border: 1px solid rgba(168,85,247,0.3); border-radius: 10px; color: #fff; font-family: inherit; resize: vertical; font-size: 16px;"></textarea>
+                    </div>
+
+                    <!-- CONTATO -->
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                        <div>
+                            <label style="display: block; margin-bottom: 8px; color: rgba(255,255,255,0.9); font-weight: 500;">Nome *</label>
+                            <input type="text" name="nome" required style="width: 100%; padding: 15px; background: rgba(255,255,255,0.05); border: 1px solid rgba(168,85,247,0.3); border-radius: 8px; color: #fff;">
+                        </div>
+                        <div>
+                            <label style="display: block; margin-bottom: 8px; color: rgba(255,255,255,0.9); font-weight: 500;">WhatsApp *</label>
+                            <input type="tel" name="whatsapp" required placeholder="(48) 98458-0234" style="width: 100%; padding: 15px; background: rgba(255,255,255,0.05); border: 1px solid rgba(168,85,247,0.3); border-radius: 8px; color: #fff;">
+                        </div>
+                    </div>
+                    <div>
+                        <label style="display: block; margin-bottom: 8px; color: rgba(255,255,255,0.9); font-weight: 500;">Email *</label>
+                        <input type="email" name="email" required style="width: 100%; padding: 15px; background: rgba(255,255,255,0.05); border: 1px solid rgba(168,85,247,0.3); border-radius: 8px; color: #fff;">
+                    </div>
+
+                    <button type="submit" class="btn btn-large btn-gradient" style="width: 100%; margin-top: 20px;">Enviar Solicitação →</button>
+                </form>
+
+                <!-- MENSAGEM DE SUCESSO -->
+                <div id="propostaSuccess" style="display: none; margin-top: 30px; padding: 30px; background: rgba(20,184,166,0.1); border: 2px solid #14b8a6; border-radius: 15px; text-align: center;">
+                    <div style="font-size: 48px; margin-bottom: 15px;">✅</div>
+                    <h3 style="color: #14b8a6; margin-bottom: 10px; font-size: 24px;">Proposta Enviada!</h3>
+                    <p style="color: rgba(255,255,255,0.8); line-height: 1.6;">Recebemos sua solicitação. Entraremos em contato em até 24 horas com uma proposta detalhada.</p>
                 </div>
             </div>
 
-            <!-- STEP 3: DETALHES -->
-            <div class="step-content" data-step="3">
-                <div class="form-group">
-                    <label class="form-label">Descreva seu Projeto *</label>
-                    <textarea name="descricao" class="form-textarea" required placeholder="Conte-nos sobre seu produto, público-alvo, objetivos e qualquer referência que tenha..."></textarea>
+            <!-- BENEFÍCIOS -->
+            <div style="max-width: 900px; margin: 60px auto 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px;">
+                <div style="text-align: center; padding: 25px;">
+                    <div style="font-size: 40px; margin-bottom: 10px;">⚡</div>
+                    <h4 style="color: #a855f7; margin-bottom: 8px; font-size: 18px;">Resposta Rápida</h4>
+                    <p style="color: rgba(255,255,255,0.7); font-size: 14px;">Retorno em até 24 horas</p>
                 </div>
-                <div class="form-group">
-                    <label class="form-label">Já tem domínio/hospedagem?</label>
-                    <select name="dominio" class="form-select">
-                        <option value="Sim">Sim, já tenho</option>
-                        <option value="Não">Não, preciso de ajuda</option>
-                        <option value="Não sei">Não sei</option>
-                    </select>
+                <div style="text-align: center; padding: 25px;">
+                    <div style="font-size: 40px; margin-bottom: 10px;">💎</div>
+                    <h4 style="color: #14b8a6; margin-bottom: 8px; font-size: 18px;">Sem Compromisso</h4>
+                    <p style="color: rgba(255,255,255,0.7); font-size: 14px;">Receba o orçamento sem custo</p>
                 </div>
-                <div class="form-buttons">
-                    <button type="button" class="btn btn-outline" onclick="prevStep()">← Voltar</button>
-                    <button type="submit" class="btn btn-gradient">Enviar Proposta ✓</button>
+                <div style="text-align: center; padding: 25px;">
+                    <div style="font-size: 40px; margin-bottom: 10px;">🎯</div>
+                    <h4 style="color: #ec4899; margin-bottom: 8px; font-size: 18px;">Proposta Personalizada</h4>
+                    <p style="color: rgba(255,255,255,0.7); font-size: 14px;">Feita sob medida para você</p>
                 </div>
             </div>
-        </form>
-
-        <!-- SUCCESS MESSAGE -->
-        <div class="success-message" id="successMessage">
-            <div class="success-icon">✅</div>
-            <h2 style="color: #14b8a6; margin-bottom: 15px;">Proposta Enviada com Sucesso!</h2>
-            <p style="color: rgba(255,255,255,0.8); margin-bottom: 20px;">Recebemos sua solicitação e entraremos em contato em até 24 horas via WhatsApp ou Email.</p>
-            <a href="index.html" class="btn btn-gradient">Voltar para Home</a>
         </div>
     </section>
 
     <!-- FOOTER -->
     <footer class="footer">
         <div class="container">
-            <div class="footer-content">
-                <div class="footer-brand">
-                    <div class="footer-logo">
-                        <span class="logo-text">PRISMATIC</span>
-                        <span class="logo-sub">LABS</span>
-                    </div>
-                    <p class="footer-tagline">Landing Pages de Alta Conversão</p>
-                </div>
-                <div class="footer-links">
-                    <div class="footer-col">
-                        <h4 class="footer-title">Contato</h4>
-                        <ul class="footer-contact">
-                            <li>📧 <a href="mailto:labs.prismatic@gmail.com">labs.prismatic@gmail.com</a></li>
-                            <li>📱 <a href="https://wa.me/5548984580234" target="_blank">+55 48 98458-0234</a></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <div class="footer-bottom">
-                <p class="footer-copyright">© 2026 Prismatic Labs. Todos os direitos reservados.</p>
-            </div>
+            <div class="footer-content"><div class="footer-brand"><div class="footer-logo"><span class="logo-text">PRISMATIC</span><span class="logo-sub">LABS</span></div></div></div>
+            <div class="footer-bottom"><p class="footer-copyright">© 2026 Prismatic Labs. Todos os direitos reservados.</p></div>
         </div>
     </footer>
 
     <script src="js/main.js"></script>
     <script src="js/copyright.js"></script>
     <script>
-        let currentStep = 1;
-
-        function nextStep() {
-            const currentInputs = document.querySelectorAll(`.step-content[data-step="${currentStep}"] input, .step-content[data-step="${currentStep}"] select, .step-content[data-step="${currentStep}"] textarea`);
-            let valid = true;
-            currentInputs.forEach(input => {
-                if (input.hasAttribute('required') && !input.value) {
-                    valid = false;
-                    input.style.borderColor = '#ec4899';
-                } else {
-                    input.style.borderColor = 'rgba(168,85,247,0.3)';
-                }
+        // Animação de seleção de pacote
+        document.querySelectorAll('input[name="pacote"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                document.querySelectorAll('input[name="pacote"]').forEach(r => {
+                    r.closest('label').style.background = 'rgba(255,255,255,0.05)';
+                    r.closest('label').style.borderColor = 'rgba(168,85,247,0.3)';
+                });
+                this.closest('label').style.background = 'rgba(168,85,247,0.2)';
+                this.closest('label').style.borderColor = '#a855f7';
             });
-            if (!valid) {
-                alert('⚠️ Por favor, preencha todos os campos obrigatórios.');
-                return;
-            }
-            if (currentStep < 3) {
-                document.querySelector(`.step-content[data-step="${currentStep}"]`).classList.remove('active');
-                document.querySelector(`.form-step[data-step="${currentStep}"]`).classList.remove('active');
-                currentStep++;
-                document.querySelector(`.step-content[data-step="${currentStep}"]`).classList.add('active');
-                document.querySelector(`.form-step[data-step="${currentStep}"]`).classList.add('active');
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            }
-        }
+        });
 
-        function prevStep() {
-            if (currentStep > 1) {
-                document.querySelector(`.step-content[data-step="${currentStep}"]`).classList.remove('active');
-                document.querySelector(`.form-step[data-step="${currentStep}"]`).classList.remove('active');
-                currentStep--;
-                document.querySelector(`.step-content[data-step="${currentStep}"]`).classList.add('active');
-                document.querySelector(`.form-step[data-step="${currentStep}"]`).classList.add('active');
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            }
-        }
-
-        document.getElementById('proposalForm').addEventListener('submit', async function(e) {
+        // Envio do formulário
+        document.getElementById('propostaForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             const formData = new FormData(this);
             const data = Object.fromEntries(formData);
-            
-            // Enviar para Zapier com Content-Type correto
             try {
                 await fetch('https://hooks.zapier.com/hooks/catch/25974741/uw77c8k/', {
                     method: 'POST',
@@ -255,17 +163,10 @@
                     },
                     body: JSON.stringify(data)
                 });
-                
-                document.getElementById('proposalForm').style.display = 'none';
-                document.querySelector('.form-steps').style.display = 'none';
-                document.getElementById('successMessage').classList.add('show');
-                
-                // Analytics
-                if (typeof gtag !== 'undefined') {
-                    gtag('event', 'form_submit', { event_category: 'Proposal', event_label: data.pacote });
-                }
+                this.style.display = 'none';
+                document.getElementById('propostaSuccess').style.display = 'block';
             } catch (error) {
-                alert('⚠️ Erro ao enviar. Tente novamente ou entre em contato via WhatsApp.');
+                alert('⚠️ Erro ao enviar. Entre em contato via WhatsApp: +55 48 98458-0234');
             }
         });
     </script>
