@@ -1,17 +1,8 @@
-# PRISMATIC LABS - Configuração do Netlify
-# Este arquivo SOBRESCREVE as configurações do Dashboard
+# PRISMATIC LABS - Netlify Configuration
 
 [build]
-  # IMPORTANTE: Limpar base directory e definir apenas o publish
-  base = ""
   publish = "08-WEBSITE"
-  command = "echo 'Static site - no build needed'"
-
-# Redirecionamento SPA
-[[redirects]]
-  from = "/*"
-  to = "/index.html"
-  status = 200
+  command = "echo 'Static site deployment'"
 
 # Headers de segurança
 [[headers]]
@@ -22,7 +13,7 @@
     X-XSS-Protection = "1; mode=block"
     Referrer-Policy = "strict-origin-when-cross-origin"
 
-# Cache para CSS/JS
+# Cache otimizado
 [[headers]]
   for = "/css/*"
   [headers.values]
