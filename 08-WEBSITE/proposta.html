@@ -201,6 +201,7 @@
     </footer>
 
     <script src="js/main.js"></script>
+    <script src="js/copyright.js"></script>
     <script>
         let currentStep = 1;
 
@@ -245,10 +246,13 @@
             const formData = new FormData(this);
             const data = Object.fromEntries(formData);
             
-            // Enviar para Zapier
+            // Enviar para Zapier com Content-Type correto
             try {
                 await fetch('https://hooks.zapier.com/hooks/catch/25974741/uw77c8k/', {
                     method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
                     body: JSON.stringify(data)
                 });
                 
