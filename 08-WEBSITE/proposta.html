@@ -9,6 +9,44 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@700&display=swap" rel="stylesheet">
+    
+    <!-- FIX: CSS para select dropdown visível -->
+    <style>
+        /* Garantir que as opções do select sejam visíveis */
+        select {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            background-image: url('data:image/svg+xml;utf8,<svg fill="%23a855f7" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
+            background-repeat: no-repeat;
+            background-position: right 15px center;
+            background-size: 20px;
+            padding-right: 45px !important;
+        }
+        
+        select option {
+            background-color: #1a1a1a !important;
+            color: #ffffff !important;
+            padding: 12px !important;
+        }
+        
+        select option:checked {
+            background: linear-gradient(135deg, #a855f7, #14b8a6) !important;
+            color: #fff !important;
+            font-weight: 600;
+        }
+        
+        select option[disabled] {
+            color: rgba(255,255,255,0.4) !important;
+        }
+        
+        /* Firefox específico */
+        @-moz-document url-prefix() {
+            select option {
+                background-color: #2a2a2a !important;
+            }
+        }
+    </style>
 </head>
 <body>
     <!-- HEADER -->
@@ -41,7 +79,7 @@
                     <!-- PERGUNTA 1 -->
                     <div>
                         <label style="display: block; margin-bottom: 15px; color: #fff; font-weight: 600; font-size: 18px;">1️⃣ Qual é o objetivo do seu projeto?</label>
-                        <select name="objetivo" required style="width: 100%; padding: 15px; background: rgba(255,255,255,0.05); border: 1px solid rgba(168,85,247,0.3); border-radius: 10px; color: #fff; font-size: 16px;">
+                        <select name="objetivo" required style="width: 100%; padding: 15px; background: rgba(255,255,255,0.05); border: 1px solid rgba(168,85,247,0.3); border-radius: 10px; color: #fff; font-size: 16px; cursor: pointer;">
                             <option value="" disabled selected>Selecione uma opção</option>
                             <option value="lançamento_infoproduto">Lançamento de Infoproduto</option>
                             <option value="ecommerce">E-commerce / Loja Online</option>
@@ -153,20 +191,39 @@
         // Envio do formulário
         document.getElementById('propostaForm').addEventListener('submit', async function(e) {
             e.preventDefault();
+            
             const formData = new FormData(this);
             const data = Object.fromEntries(formData);
+            
+            // Mostrar loading
+            const submitBtn = this.querySelector('button[type="submit"]');
+            const originalText = submitBtn.textContent;
+            submitBtn.textContent = 'Enviando...';
+            submitBtn.disabled = true;
+            
             try {
-                await fetch('https://hooks.zapier.com/hooks/catch/25974741/uw77c8k/', {
+                const response = await fetch('https://hooks.zapier.com/hooks/catch/25974741/uw77c8k/', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify(data)
                 });
-                this.style.display = 'none';
-                document.getElementById('propostaSuccess').style.display = 'block';
+                
+                if (response.ok) {
+                    this.style.display = 'none';
+                    document.getElementById('propostaSuccess').style.display = 'block';
+                    
+                    // Scroll suave para mensagem de sucesso
+                    document.getElementById('propostaSuccess').scrollIntoView({ behavior: 'smooth', block: 'center' });
+                } else {
+                    throw new Error('Erro na resposta do servidor');
+                }
             } catch (error) {
+                console.error('Erro ao enviar:', error);
                 alert('⚠️ Erro ao enviar. Entre em contato via WhatsApp: +55 48 98458-0234');
+                submitBtn.textContent = originalText;
+                submitBtn.disabled = false;
             }
         });
     </script>
