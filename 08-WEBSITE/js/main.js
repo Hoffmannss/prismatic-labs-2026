@@ -176,7 +176,7 @@ if (contactForm) {
         
         try {
             // ENVIAR PARA ZAPIER
-            const response = await fetch('https://hooks.zapier.com/hooks/catch/25974741/uw77c8k/', {
+            const response = await fetch('https://hooks.zapier.com/hooks/catch/25974741/ug2pu8l/', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
