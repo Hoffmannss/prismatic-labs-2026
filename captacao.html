@@ -7,30 +7,502 @@
     <!-- SEO Otimizado para Conversão -->
     <title>Crie Seu Site Profissional em 10 Dias | Prismatic Labs</title>
     <meta name="description" content="Transforme sua presença digital em máquina de vendas. Sites dark mode + neon que convertem 40%+ dos visitantes. Entrega em 10-15 dias. Orçamento grátis.">
-    <meta name="keywords" content="criar site profissional, landing page conversão, desenvolvimento web rápido, site que vende">
-    <meta name="robots" content="index, follow">
-    <link rel="canonical" href="https://hoffmannss.github.io/prismatic-labs-2026/captacao.html">
-    
-    <!-- Open Graph -->
-    <meta property="og:type" content="website">
-    <meta property="og:title" content="Sites que Convertem 40%+ em 10 Dias | Prismatic Labs">
-    <meta property="og:description" content="Design dark mode + neon exclusivo. Aumente suas vendas online com uma presença digital profissional.">
-    <meta property="og:url" content="https://hoffmannss.github.io/prismatic-labs-2026/captacao.html">
-    
-    <!-- Favicon -->
-    <link rel="icon" type="image/png" sizes="32x32" href="./08-WEBSITE/assets/favicon-32x32.png">
-    
-    <!-- Stylesheet - CAMINHO CORRIGIDO -->
-    <link rel="stylesheet" href="./css/captacao.css">
     
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@700&display=swap" rel="stylesheet">
-</head>
-<body class="landing-page">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@700;800&display=swap" rel="stylesheet">
     
-    <!-- HEADER MINIMALISTA (sem distrações) -->
+    <style>
+        /* RESET */
+        *{margin:0;padding:0;box-sizing:border-box}
+        
+        /* VARIÁVEIS */
+        :root{
+            --primary-neon:#00FFFF;
+            --secondary-neon:#FF00FF;
+            --dark-bg:#0a0a0f;
+            --dark-surface:#12121a;
+            --text-primary:#ffffff;
+            --text-secondary:#b4b4c5;
+            --text-muted:#6e6e80;
+            --gradient:linear-gradient(135deg,#00FFFF 0%,#FF00FF 100%);
+            --success:#00FF88;
+            --warning:#FFB800
+        }
+        
+        /* BASE */
+        body{
+            font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
+            background:var(--dark-bg);
+            color:var(--text-primary);
+            line-height:1.6;
+            overflow-x:hidden
+        }
+        html{scroll-behavior:smooth}
+        
+        /* CONTAINER */
+        .container{max-width:1200px;margin:0 auto;padding:0 2rem}
+        @media(max-width:768px){.container{padding:0 1rem}}
+        
+        /* SECTION */
+        .section{padding:6rem 0}
+        @media(max-width:768px){.section{padding:4rem 0}}
+        
+        /* HEADER */
+        .lp-header{
+            position:fixed;top:0;left:0;right:0;
+            background:rgba(10,10,15,0.95);
+            backdrop-filter:blur(20px);
+            z-index:1000;
+            border-bottom:1px solid rgba(0,255,255,0.1);
+            padding:1rem 0
+        }
+        .lp-nav{display:flex;justify-content:space-between;align-items:center}
+        .nav-logo{display:flex;align-items:baseline;gap:0.5rem}
+        .logo-text{
+            font-family:'Space Grotesk',sans-serif;
+            font-size:1.5rem;
+            font-weight:700;
+            background:var(--gradient);
+            -webkit-background-clip:text;
+            -webkit-text-fill-color:transparent;
+            background-clip:text
+        }
+        .logo-sub{font-size:0.875rem;color:var(--text-secondary);font-weight:600}
+        
+        /* HERO */
+        .lp-hero{
+            position:relative;
+            min-height:100vh;
+            display:flex;
+            align-items:center;
+            padding-top:80px;
+            overflow:hidden
+        }
+        .hero-background{
+            position:absolute;
+            inset:0;
+            z-index:0
+        }
+        .grid-animation{
+            position:absolute;
+            inset:0;
+            background-image:linear-gradient(rgba(0,255,255,0.05) 1px,transparent 1px),linear-gradient(90deg,rgba(0,255,255,0.05) 1px,transparent 1px);
+            background-size:50px 50px;
+            animation:gridMove 20s linear infinite
+        }
+        @keyframes gridMove{0%{transform:translate(0,0)}100%{transform:translate(50px,50px)}}
+        .gradient-orb{
+            position:absolute;
+            border-radius:50%;
+            filter:blur(100px);
+            opacity:0.3;
+            animation:float 8s ease-in-out infinite
+        }
+        .gradient-orb-1{
+            width:600px;height:600px;
+            background:radial-gradient(circle,var(--primary-neon) 0%,transparent 70%);
+            top:-200px;left:-200px
+        }
+        .gradient-orb-2{
+            width:500px;height:500px;
+            background:radial-gradient(circle,var(--secondary-neon) 0%,transparent 70%);
+            bottom:-150px;right:-150px;
+            animation-delay:2s
+        }
+        @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-30px)}}
+        .hero-content-lp{
+            position:relative;
+            z-index:1;
+            text-align:center;
+            max-width:900px;
+            margin:0 auto
+        }
+        .hero-badge-lp{
+            display:inline-flex;
+            align-items:center;
+            gap:0.5rem;
+            background:rgba(0,255,255,0.1);
+            border:1px solid rgba(0,255,255,0.3);
+            padding:0.5rem 1.5rem;
+            border-radius:50px;
+            font-size:0.875rem;
+            font-weight:600;
+            color:var(--primary-neon);
+            margin-bottom:2rem;
+            animation:fadeInUp 0.6s ease
+        }
+        .hero-title-lp{
+            font-family:'Space Grotesk',sans-serif;
+            font-size:clamp(2.5rem,6vw,4rem);
+            font-weight:800;
+            line-height:1.1;
+            margin-bottom:2rem;
+            animation:fadeInUp 0.8s ease 0.2s both
+        }
+        .gradient-text{
+            background:var(--gradient);
+            -webkit-background-clip:text;
+            -webkit-text-fill-color:transparent;
+            background-clip:text
+        }
+        .hero-subtitle-lp{
+            font-size:clamp(1.125rem,2vw,1.5rem);
+            color:var(--text-secondary);
+            line-height:1.7;
+            margin-bottom:4rem;
+            animation:fadeInUp 1s ease 0.4s both
+        }
+        .hero-subtitle-lp strong{color:var(--text-primary);font-weight:700}
+        .hero-cta-lp{
+            display:flex;
+            flex-direction:column;
+            align-items:center;
+            gap:1rem;
+            margin-bottom:4rem;
+            animation:fadeInUp 1.2s ease 0.6s both
+        }
+        .cta-subtext-lp{font-size:0.875rem;color:var(--text-muted)}
+        .hero-trust-lp{
+            display:flex;
+            justify-content:center;
+            gap:2rem;
+            flex-wrap:wrap;
+            animation:fadeInUp 1.4s ease 0.8s both
+        }
+        .trust-item{
+            display:flex;
+            align-items:center;
+            gap:0.5rem;
+            padding:0.75rem 1.5rem;
+            background:rgba(255,255,255,0.03);
+            border:1px solid rgba(255,255,255,0.1);
+            border-radius:8px;
+            font-size:0.875rem;
+            font-weight:600
+        }
+        @keyframes fadeInUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+        
+        /* BUTTONS */
+        .btn{
+            display:inline-flex;
+            align-items:center;
+            justify-content:center;
+            gap:0.5rem;
+            padding:1rem 2.5rem;
+            border:none;
+            border-radius:8px;
+            font-family:'Inter',sans-serif;
+            font-size:1rem;
+            font-weight:700;
+            text-decoration:none;
+            cursor:pointer;
+            transition:all 0.3s ease;
+            white-space:nowrap
+        }
+        .btn-large{padding:1.5rem 3rem;font-size:1.125rem}
+        .btn-sm{padding:0.625rem 1.5rem;font-size:0.875rem}
+        .btn-gradient{
+            background:var(--gradient);
+            color:var(--dark-bg);
+            box-shadow:0 0 20px rgba(0,255,255,0.5),0 0 40px rgba(255,0,255,0.3)
+        }
+        .btn-gradient:hover{
+            transform:translateY(-2px);
+            box-shadow:0 0 30px rgba(0,255,255,0.6),0 0 60px rgba(255,0,255,0.4)
+        }
+        .btn-outline{
+            background:transparent;
+            color:var(--primary-neon);
+            border:2px solid var(--primary-neon)
+        }
+        .btn-outline:hover{
+            background:var(--primary-neon);
+            color:var(--dark-bg)
+        }
+        .pulse{animation:pulse 2s ease-in-out infinite}
+        @keyframes pulse{0%,100%{box-shadow:0 0 20px rgba(0,255,255,0.5),0 0 40px rgba(255,0,255,0.3)}50%{box-shadow:0 0 40px rgba(0,255,255,0.7),0 0 80px rgba(255,0,255,0.5)}}
+        
+        /* SECTIONS */
+        .section-badge{
+            display:inline-block;
+            padding:0.5rem 1.5rem;
+            background:rgba(0,255,255,0.1);
+            border:1px solid rgba(0,255,255,0.3);
+            border-radius:50px;
+            color:var(--primary-neon);
+            font-size:0.875rem;
+            font-weight:700;
+            text-transform:uppercase;
+            letter-spacing:1px;
+            margin-bottom:1rem
+        }
+        .section-title{
+            font-family:'Space Grotesk',sans-serif;
+            font-size:clamp(2rem,5vw,3rem);
+            font-weight:800;
+            line-height:1.2;
+            text-align:center;
+            margin-bottom:2rem
+        }
+        .lp-problem,.lp-guarantee,.lp-faq{background:var(--dark-surface)}
+        .problem-intro{font-size:1.125rem;color:var(--text-secondary);text-align:center;margin-bottom:2rem}
+        .problem-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:2rem;margin-bottom:4rem}
+        .problem-item{
+            display:flex;
+            align-items:flex-start;
+            gap:1rem;
+            padding:1.5rem;
+            background:rgba(255,68,102,0.05);
+            border:1px solid rgba(255,68,102,0.2);
+            border-radius:16px
+        }
+        .problem-icon{font-size:1.5rem;flex-shrink:0}
+        .problem-item p{color:var(--text-secondary);line-height:1.6}
+        .problem-item strong{color:var(--text-primary);font-weight:700}
+        .problem-highlight{
+            padding:2rem;
+            background:rgba(0,255,255,0.05);
+            border-left:4px solid var(--primary-neon);
+            border-radius:8px
+        }
+        .highlight-text{font-size:1.125rem;color:var(--text-primary);line-height:1.7}
+        .solution-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:2rem}
+        .solution-card{
+            padding:2rem;
+            background:rgba(255,255,255,0.02);
+            border:1px solid rgba(255,255,255,0.1);
+            border-radius:16px;
+            transition:all 0.3s ease
+        }
+        .solution-card:hover{
+            background:rgba(0,255,255,0.05);
+            border-color:var(--primary-neon);
+            transform:translateY(-5px)
+        }
+        .solution-number{
+            display:inline-flex;
+            align-items:center;
+            justify-content:center;
+            width:48px;height:48px;
+            background:var(--gradient);
+            color:var(--dark-bg);
+            font-weight:800;
+            font-size:1.25rem;
+            border-radius:50%;
+            margin-bottom:1rem
+        }
+        .solution-title{font-size:1.5rem;font-weight:700;margin-bottom:1rem}
+        .solution-text{color:var(--text-secondary);line-height:1.7}
+        .solution-text strong{color:var(--primary-neon);font-weight:700}
+        .testimonials-slider{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:2rem;margin-bottom:4rem}
+        .testimonial-card-lp{
+            padding:2rem;
+            background:rgba(255,255,255,0.03);
+            border:1px solid rgba(255,255,255,0.1);
+            border-radius:16px;
+            transition:all 0.3s ease
+        }
+        .testimonial-card-lp:hover{border-color:var(--primary-neon);transform:translateY(-5px)}
+        .stars{font-size:1.25rem;margin-bottom:1rem}
+        .testimonial-text-lp{color:var(--text-secondary);line-height:1.8;margin-bottom:2rem;font-style:italic}
+        .testimonial-text-lp strong{color:var(--primary-neon);font-weight:700;font-style:normal}
+        .testimonial-author-lp{display:flex;align-items:center;gap:1rem;margin-bottom:1rem}
+        .author-avatar{
+            width:48px;height:48px;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            background:var(--gradient);
+            color:var(--dark-bg);
+            font-weight:800;
+            font-size:1.25rem;
+            border-radius:50%
+        }
+        .author-name{font-weight:700;margin-bottom:0.25rem}
+        .author-role{font-size:0.875rem;color:var(--text-muted)}
+        .result-badge{
+            display:inline-block;
+            padding:0.5rem 1rem;
+            background:rgba(0,255,136,0.1);
+            border:1px solid var(--success);
+            border-radius:50px;
+            color:var(--success);
+            font-size:0.875rem;
+            font-weight:700
+        }
+        .social-proof-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:2rem;text-align:center}
+        .proof-stat{
+            display:flex;
+            flex-direction:column;
+            align-items:center;
+            padding:2rem;
+            background:rgba(0,255,255,0.05);
+            border:1px solid rgba(0,255,255,0.2);
+            border-radius:16px
+        }
+        .stat-number-lp{
+            font-family:'Space Grotesk',sans-serif;
+            font-size:3rem;
+            font-weight:800;
+            background:var(--gradient);
+            -webkit-background-clip:text;
+            -webkit-text-fill-color:transparent;
+            margin-bottom:0.5rem
+        }
+        .stat-label-lp{color:var(--text-secondary);font-size:0.875rem;font-weight:600}
+        .urgency-box,.guarantee-box{
+            display:flex;
+            align-items:center;
+            gap:2rem;
+            padding:2.5rem;
+            border-radius:24px;
+            max-width:900px;
+            margin:0 auto
+        }
+        .urgency-box{
+            background:rgba(255,184,0,0.1);
+            border:2px solid var(--warning)
+        }
+        .guarantee-box{
+            background:rgba(0,255,136,0.05);
+            border:2px solid var(--success)
+        }
+        .urgency-icon,.guarantee-icon{font-size:4rem;flex-shrink:0}
+        .urgency-title,.guarantee-title{
+            font-family:'Space Grotesk',sans-serif;
+            font-size:1.75rem;
+            font-weight:800;
+            margin-bottom:1rem
+        }
+        .urgency-title{color:var(--warning)}
+        .guarantee-title{color:var(--success)}
+        .urgency-text,.guarantee-text{color:var(--text-secondary);line-height:1.7;margin-bottom:1rem}
+        .urgency-text strong,.guarantee-text strong{color:var(--text-primary);font-weight:700}
+        .urgency-highlight{color:var(--warning);font-weight:700;font-size:1.125rem}
+        .guarantee-list{list-style:none;display:flex;flex-direction:column;gap:0.75rem}
+        .guarantee-list li{color:var(--text-secondary);line-height:1.6}
+        .guarantee-list strong{color:var(--success);font-weight:700}
+        .faq-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:2rem}
+        .faq-item{
+            padding:2rem;
+            background:rgba(255,255,255,0.03);
+            border:1px solid rgba(255,255,255,0.1);
+            border-radius:16px;
+            transition:all 0.3s ease
+        }
+        .faq-item:hover{border-color:var(--primary-neon)}
+        .faq-question{font-size:1.125rem;font-weight:700;margin-bottom:1rem}
+        .faq-answer{color:var(--text-secondary);line-height:1.7}
+        .faq-answer strong{color:var(--primary-neon);font-weight:700}
+        
+        /* FORMULÁRIO */
+        .lp-form-section{background:var(--dark-surface)}
+        .form-wrapper{max-width:800px;margin:0 auto}
+        .form-intro{font-size:1.125rem;color:var(--text-secondary);line-height:1.7;text-align:center;margin-bottom:3rem}
+        .form-intro strong{color:var(--text-primary);font-weight:700}
+        .form-container{
+            padding:2rem;
+            background:rgba(255,255,255,0.03);
+            border:1px solid rgba(0,255,255,0.2);
+            border-radius:24px;
+            margin-bottom:2rem
+        }
+        .trust-badges{display:flex;justify-content:center;gap:2rem;flex-wrap:wrap}
+        .trust-badge-item{
+            display:flex;
+            align-items:center;
+            gap:0.5rem;
+            padding:0.75rem 1.5rem;
+            background:rgba(0,255,136,0.1);
+            border:1px solid var(--success);
+            border-radius:8px;
+            color:var(--success);
+            font-size:0.875rem;
+            font-weight:600
+        }
+        
+        /* CTA FINAL */
+        .final-cta-box{
+            text-align:center;
+            padding:6rem 2rem;
+            background:rgba(0,255,255,0.05);
+            border:2px solid var(--primary-neon);
+            border-radius:32px;
+            max-width:900px;
+            margin:0 auto
+        }
+        .final-cta-title{
+            font-family:'Space Grotesk',sans-serif;
+            font-size:clamp(2rem,5vw,3.5rem);
+            font-weight:800;
+            line-height:1.2;
+            margin-bottom:2rem
+        }
+        .final-cta-text{
+            font-size:1.25rem;
+            color:var(--text-secondary);
+            line-height:1.7;
+            margin-bottom:4rem;
+            max-width:700px;
+            margin-left:auto;
+            margin-right:auto
+        }
+        .final-cta-subtext{font-size:0.875rem;color:var(--text-muted);margin-top:1rem}
+        .final-cta-trust{
+            display:flex;
+            justify-content:center;
+            gap:2rem;
+            flex-wrap:wrap;
+            margin-top:2rem;
+            padding-top:2rem;
+            border-top:1px solid rgba(255,255,255,0.1)
+        }
+        .final-cta-trust span{font-size:0.875rem;color:var(--text-secondary);font-weight:600}
+        
+        /* FOOTER */
+        .lp-footer{
+            background:var(--dark-surface);
+            padding:4rem 0 2rem;
+            border-top:1px solid rgba(255,255,255,0.1)
+        }
+        .footer-content-lp{
+            display:flex;
+            justify-content:space-between;
+            align-items:flex-start;
+            gap:4rem;
+            margin-bottom:2rem;
+            padding-bottom:2rem;
+            border-bottom:1px solid rgba(255,255,255,0.1)
+        }
+        .footer-tagline{font-size:0.875rem;color:var(--text-muted)}
+        .footer-contact-lp{display:flex;flex-direction:column;gap:0.5rem}
+        .footer-contact-lp p{font-size:0.875rem;color:var(--text-secondary)}
+        .footer-contact-lp a{color:var(--primary-neon);text-decoration:none;transition:color 0.2s}
+        .footer-contact-lp a:hover{color:var(--secondary-neon)}
+        .footer-bottom-lp{text-align:center}
+        .footer-bottom-lp p{font-size:0.875rem;color:var(--text-muted)}
+        
+        /* RESPONSIVO */
+        @media(max-width:768px){
+            .problem-grid,.solution-grid,.testimonials-slider,.faq-grid{grid-template-columns:1fr}
+            .hero-trust-lp{gap:1rem}
+            .trust-item{padding:0.5rem 1rem;font-size:0.75rem}
+            .btn-large{padding:1.25rem 2rem;font-size:1rem}
+            .urgency-box,.guarantee-box{flex-direction:column;text-align:center;padding:2rem}
+            .form-container{padding:1rem}
+            .trust-badges{gap:1rem}
+            .trust-badge-item{padding:0.5rem 1rem;font-size:0.75rem}
+            .final-cta-box{padding:4rem 1rem}
+            .final-cta-trust{flex-direction:column;gap:1rem}
+            .footer-content-lp{flex-direction:column;text-align:center}
+        }
+    </style>
+</head>
+<body>
+    
+    <!-- HEADER -->
     <header class="lp-header">
         <div class="container">
             <div class="lp-nav">
@@ -45,7 +517,7 @@
         </div>
     </header>
 
-    <!-- HERO - ACIMA DA DOBRA (Above the Fold) -->
+    <!-- HERO -->
     <section class="lp-hero">
         <div class="hero-background">
             <div class="grid-animation"></div>
@@ -54,23 +526,19 @@
         </div>
         <div class="container">
             <div class="hero-content-lp">
-                <!-- Badge de Prova Social -->
                 <div class="hero-badge-lp">
-                    <span class="badge-icon">🔥</span>
+                    <span>🔥</span>
                     <span>Mais de 50 projetos entregues com 98% de satisfação</span>
                 </div>
                 
-                <!-- Headline Poderosa (Benefício Claro) -->
                 <h1 class="hero-title-lp">
                     Aumente suas <span class="gradient-text">Vendas Online</span> com um Site Profissional em Apenas 10 Dias
                 </h1>
                 
-                <!-- Subheadline (Reforça Valor) -->
                 <p class="hero-subtitle-lp">
                     Design <strong>dark mode + neon exclusivo</strong> que converte <strong>40%+ dos visitantes</strong> em clientes reais. Ideal para infoprodutores, e-commerce e agências que querem <strong>resultados mensuráveis</strong>.
                 </p>
                 
-                <!-- CTA Principal (Contraste Alto) -->
                 <div class="hero-cta-lp">
                     <a href="#formulario" class="btn btn-large btn-gradient pulse">
                         <span>🚀 Quero Meu Orçamento Gratuito Agora</span>
@@ -78,62 +546,59 @@
                     <p class="cta-subtext-lp">✅ Sem compromisso | 💜 Resposta em 24h</p>
                 </div>
                 
-                <!-- Prova Social Imediata -->
                 <div class="hero-trust-lp">
                     <div class="trust-item">
-                        <span class="trust-icon">⭐⭐⭐⭐⭐</span>
-                        <span class="trust-text">4.9/5.0 Avaliação</span>
+                        <span>⭐⭐⭐⭐⭐</span>
+                        <span>4.9/5.0 Avaliação</span>
                     </div>
                     <div class="trust-item">
-                        <span class="trust-icon">⚡</span>
-                        <span class="trust-text">10-15 Dias Entrega</span>
+                        <span>⚡</span>
+                        <span>10-15 Dias Entrega</span>
                     </div>
                     <div class="trust-item">
-                        <span class="trust-icon">💰</span>
-                        <span class="trust-text">ROI Garantido</span>
+                        <span>💰</span>
+                        <span>ROI Garantido</span>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- PROBLEMA (Dor do Cliente) -->
+    <!-- PROBLEMA -->
     <section class="lp-problem section">
         <div class="container">
-            <div class="problem-content">
-                <h2 class="section-title-lp">Você Está Perdendo <span class="gradient-text">Milhares de Reais</span> Todos os Meses...</h2>
-                <p class="problem-intro">Se você ainda não tem um site profissional ou seu site atual não converte, você está:</p>
-                
-                <div class="problem-grid">
-                    <div class="problem-item">
-                        <span class="problem-icon">❌</span>
-                        <p><strong>Perdendo clientes</strong> para concorrentes com presença digital forte</p>
-                    </div>
-                    <div class="problem-item">
-                        <span class="problem-icon">❌</span>
-                        <p><strong>Desperdiçando tráfego</strong> e investimento em anúncios sem conversão</p>
-                    </div>
-                    <div class="problem-item">
-                        <span class="problem-icon">❌</span>
-                        <p><strong>Passando imagem amadora</strong> que afasta clientes de alto valor</p>
-                    </div>
-                    <div class="problem-item">
-                        <span class="problem-icon">❌</span>
-                        <p><strong>Deixando dinheiro na mesa</strong> por não vender 24/7 no automático</p>
-                    </div>
+            <h2 class="section-title">Você Está Perdendo <span class="gradient-text">Milhares de Reais</span> Todos os Meses...</h2>
+            <p class="problem-intro">Se você ainda não tem um site profissional ou seu site atual não converte, você está:</p>
+            
+            <div class="problem-grid">
+                <div class="problem-item">
+                    <span class="problem-icon">❌</span>
+                    <p><strong>Perdendo clientes</strong> para concorrentes com presença digital forte</p>
                 </div>
-                
-                <div class="problem-highlight">
-                    <p class="highlight-text">💡 <strong>Estudos mostram:</strong> Empresas com sites otimizados convertem até <strong>300% mais</strong> que sites genéricos. A pergunta é: quanto dinheiro você está deixando de ganhar?</p>
+                <div class="problem-item">
+                    <span class="problem-icon">❌</span>
+                    <p><strong>Desperdiçando tráfego</strong> e investimento em anúncios sem conversão</p>
                 </div>
+                <div class="problem-item">
+                    <span class="problem-icon">❌</span>
+                    <p><strong>Passando imagem amadora</strong> que afasta clientes de alto valor</p>
+                </div>
+                <div class="problem-item">
+                    <span class="problem-icon">❌</span>
+                    <p><strong>Deixando dinheiro na mesa</strong> por não vender 24/7 no automático</p>
+                </div>
+            </div>
+            
+            <div class="problem-highlight">
+                <p class="highlight-text">💡 <strong>Estudos mostram:</strong> Empresas com sites otimizados convertem até <strong>300% mais</strong> que sites genéricos. A pergunta é: quanto dinheiro você está deixando de ganhar?</p>
             </div>
         </div>
     </section>
 
-    <!-- SOLUÇÃO (Como Resolvemos) -->
+    <!-- SOLUÇÃO -->
     <section class="lp-solution section">
         <div class="container">
-            <div class="section-header">
+            <div style="text-align:center;margin-bottom:4rem">
                 <span class="section-badge">Nossa Solução</span>
                 <h2 class="section-title">Transformamos Visitantes em <span class="gradient-text">Clientes Pagantes</span></h2>
             </div>
@@ -178,10 +643,10 @@
         </div>
     </section>
 
-    <!-- PROVA SOCIAL (Depoimentos Reais) -->
+    <!-- PROVA SOCIAL -->
     <section class="lp-social-proof section">
         <div class="container">
-            <div class="section-header">
+            <div style="text-align:center;margin-bottom:4rem">
                 <span class="section-badge">Resultados Reais</span>
                 <h2 class="section-title">Veja o que Nossos <span class="gradient-text">Clientes Dizem</span></h2>
             </div>
@@ -189,7 +654,7 @@
             <div class="testimonials-slider">
                 <div class="testimonial-card-lp">
                     <div class="stars">⭐⭐⭐⭐⭐</div>
-                    <p class="testimonial-text-lp">"<em>Em 7 dias estava no ar e minha landing page começou a converter imediatamente. Faturei <strong>R$ 180 mil no primeiro mês</strong> de lançamento. O design neon é realmente diferenciado!</em>"</p>
+                    <p class="testimonial-text-lp">“Em 7 dias estava no ar e minha landing page começou a converter imediatamente. Faturei <strong>R$ 180 mil no primeiro mês</strong> de lançamento. O design neon é realmente diferenciado!”</p>
                     <div class="testimonial-author-lp">
                         <div class="author-avatar">M</div>
                         <div>
@@ -197,14 +662,12 @@
                             <p class="author-role">Infoprodutora | Curso Online</p>
                         </div>
                     </div>
-                    <div class="testimonial-result">
-                        <span class="result-badge">💰 R$ 180k em vendas</span>
-                    </div>
+                    <div class="result-badge">💰 R$ 180k em vendas</div>
                 </div>
                 
                 <div class="testimonial-card-lp">
                     <div class="stars">⭐⭐⭐⭐⭐</div>
-                    <p class="testimonial-text-lp">"<em>Meu e-commerce estava parado. Depois do redesign da Prismatic Labs, <strong>vendas aumentaram 67%</strong> e meu ticket médio triplicou. Investimento que se pagou em 15 dias!</em>"</p>
+                    <p class="testimonial-text-lp">“Meu e-commerce estava parado. Depois do redesign da Prismatic Labs, <strong>vendas aumentaram 67%</strong> e meu ticket médio triplicou. Investimento que se pagou em 15 dias!”</p>
                     <div class="testimonial-author-lp">
                         <div class="author-avatar">R</div>
                         <div>
@@ -212,14 +675,12 @@
                             <p class="author-role">Dono | NEON Streetwear</p>
                         </div>
                     </div>
-                    <div class="testimonial-result">
-                        <span class="result-badge">📈 +67% em vendas</span>
-                    </div>
+                    <div class="result-badge">📈 +67% em vendas</div>
                 </div>
                 
                 <div class="testimonial-card-lp">
                     <div class="stars">⭐⭐⭐⭐⭐</div>
-                    <p class="testimonial-text-lp">"<em>Profissionalismo do início ao fim. Entregaram em 9 dias e minha taxa de conversão subiu de 2% para <strong>8.5%</strong>. Agora sim tenho uma máquina de capturar leads!</em>"</p>
+                    <p class="testimonial-text-lp">“Profissionalismo do início ao fim. Entregaram em 9 dias e minha taxa de conversão subiu de 2% para <strong>8.5%</strong>. Agora sim tenho uma máquina de capturar leads!”</p>
                     <div class="testimonial-author-lp">
                         <div class="author-avatar">J</div>
                         <div>
@@ -227,9 +688,7 @@
                             <p class="author-role">Gerente | Growth Agency</p>
                         </div>
                     </div>
-                    <div class="testimonial-result">
-                        <span class="result-badge">🚀 8.5% conversão</span>
-                    </div>
+                    <div class="result-badge">🚀 8.5% conversão</div>
                 </div>
             </div>
             
@@ -254,12 +713,12 @@
         </div>
     </section>
 
-    <!-- URGÊNCIA/ESCASSEZ -->
+    <!-- URGÊNCIA -->
     <section class="lp-urgency section">
         <div class="container">
             <div class="urgency-box">
                 <div class="urgency-icon">⏰</div>
-                <div class="urgency-content">
+                <div>
                     <h3 class="urgency-title">Atenção: Vagas Limitadas!</h3>
                     <p class="urgency-text">Para garantir <strong>qualidade máxima</strong>, aceitamos apenas <strong>5 novos projetos por mês</strong>. Neste momento temos <strong>2 vagas disponíveis</strong> para Janeiro/2026.</p>
                     <p class="urgency-highlight">🔥 <strong>Últimas 2 vagas!</strong> Preencha o formulário agora para garantir sua vaga antes que esgotem.</p>
@@ -268,17 +727,17 @@
         </div>
     </section>
 
-    <!-- FORMULÁRIO DE CAPTURA (Seção Principal) -->
+    <!-- FORMULÁRIO -->
     <section id="formulario" class="lp-form-section section">
         <div class="container">
             <div class="form-wrapper">
-                <div class="form-header">
+                <div style="text-align:center;margin-bottom:4rem">
                     <span class="section-badge">Orçamento Gratuito</span>
                     <h2 class="section-title">Solicite Sua <span class="gradient-text">Proposta Personalizada</span></h2>
                     <p class="form-intro">Preencha o formulário abaixo e receba uma <strong>proposta detalhada em até 24 horas</strong>. Sem compromisso, sem pegadinhas.</p>
                 </div>
                 
-                <!-- FORMULÁRIO EMBUTIDO (Tally.so) -->
+                <!-- FORMULÁRIO TALLY SIMPLIFICADO -->
                 <div class="form-container">
                     <iframe 
                         data-tally-src="https://tally.so/embed/wAjRvb?alignLeft=1&hideTitle=1&transparentBackground=1&dynamicHeight=1" 
@@ -288,42 +747,39 @@
                         frameborder="0" 
                         marginheight="0" 
                         marginwidth="0" 
-                        title="Formulário de Orçamento - Prismatic Labs"
-                        style="border: none;">
+                        title="Formulário de Orçamento"
+                        style="border:none">
                     </iframe>
-                    <script>var d=document,w="https://tally.so/widgets/embed.js",v=function(){"undefined"!=typeof Tally?Tally.loadEmbeds():d.querySelectorAll("iframe[data-tally-src]:not([src])").forEach((function(e){e.src=e.dataset.tallySrc}))};if("undefined"!=typeof Tally)v();else if(d.querySelector('script[src="'+w+'"]')==null){var s=d.createElement("script");s.src=w,s.onload=v,s.onerror=v,d.body.appendChild(s);}</script>
                 </div>
                 
-                <div class="form-footer">
-                    <div class="trust-badges">
-                        <div class="trust-badge-item">
-                            <span class="badge-icon-lp">✅</span>
-                            <span>Sem compromisso</span>
-                        </div>
-                        <div class="trust-badge-item">
-                            <span class="badge-icon-lp">⏱️</span>
-                            <span>Resposta em 24h</span>
-                        </div>
-                        <div class="trust-badge-item">
-                            <span class="badge-icon-lp">🔒</span>
-                            <span>Dados 100% seguros</span>
-                        </div>
-                        <div class="trust-badge-item">
-                            <span class="badge-icon-lp">💜</span>
-                            <span>Orçamento gratuito</span>
-                        </div>
+                <div class="trust-badges">
+                    <div class="trust-badge-item">
+                        <span>✅</span>
+                        <span>Sem compromisso</span>
+                    </div>
+                    <div class="trust-badge-item">
+                        <span>⏱️</span>
+                        <span>Resposta em 24h</span>
+                    </div>
+                    <div class="trust-badge-item">
+                        <span>🔒</span>
+                        <span>Dados 100% seguros</span>
+                    </div>
+                    <div class="trust-badge-item">
+                        <span>💜</span>
+                        <span>Orçamento gratuito</span>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- GARANTIA/SEGURANÇA -->
+    <!-- GARANTIA -->
     <section class="lp-guarantee section">
         <div class="container">
             <div class="guarantee-box">
                 <div class="guarantee-icon">🛡️</div>
-                <div class="guarantee-content">
+                <div>
                     <h3 class="guarantee-title">Nossa Garantia de Satisfação 100%</h3>
                     <p class="guarantee-text">Se você não ficar <strong>completamente satisfeito</strong> com o seu site, fazemos <strong>revisões ilimitadas</strong> até você aprovar. Seu investimento está 100% protegido.</p>
                     <ul class="guarantee-list">
@@ -337,12 +793,10 @@
         </div>
     </section>
 
-    <!-- FAQ COMPACTO (Objeções) -->
+    <!-- FAQ -->
     <section class="lp-faq section">
         <div class="container">
-            <div class="section-header">
-                <h2 class="section-title">Perguntas <span class="gradient-text">Frequentes</span></h2>
-            </div>
+            <h2 class="section-title">Perguntas <span class="gradient-text">Frequentes</span></h2>
             
             <div class="faq-grid">
                 <div class="faq-item">
@@ -378,7 +832,7 @@
         </div>
     </section>
 
-    <!-- CTA FINAL (Última Chance) -->
+    <!-- CTA FINAL -->
     <section class="lp-final-cta section">
         <div class="container">
             <div class="final-cta-box">
@@ -400,12 +854,12 @@
         </div>
     </section>
 
-    <!-- FOOTER MINIMALISTA -->
+    <!-- FOOTER -->
     <footer class="lp-footer">
         <div class="container">
             <div class="footer-content-lp">
-                <div class="footer-brand">
-                    <div class="footer-logo">
+                <div>
+                    <div class="nav-logo" style="margin-bottom:0.5rem">
                         <span class="logo-text">PRISMATIC</span>
                         <span class="logo-sub">LABS</span>
                     </div>
@@ -423,19 +877,13 @@
         </div>
     </footer>
 
-    <!-- Script de Log para Debug -->
+    <!-- Tally Script -->
     <script>
-        console.log('✅ Prismatic Labs - Landing Page Carregada');
-        console.log('📍 Verificando carregamento de recursos...');
+        var d=document,w="https://tally.so/widgets/embed.js",v=function(){"undefined"!=typeof Tally?Tally.loadEmbeds():d.querySelectorAll("iframe[data-tally-src]:not([src])").forEach((function(e){e.src=e.dataset.tallySrc}))};if("undefined"!=typeof Tally)v();else if(d.querySelector('script[src="'+w+'"]')==null){var s=d.createElement("script");s.src=w,s.onload=v,s.onerror=v,d.body.appendChild(s);}
         
-        // Verificar se CSS foi carregado
-        window.addEventListener('load', function() {
-            const styles = window.getComputedStyle(document.body);
-            if (styles.backgroundColor) {
-                console.log('✅ CSS Carregado com sucesso');
-            } else {
-                console.error('❌ CSS não carregou corretamente');
-            }
+        console.log('✅ Prismatic Labs Landing Page Loaded');
+        window.addEventListener('load',function(){
+            console.log('✅ Page fully loaded');
         });
     </script>
 </body>
