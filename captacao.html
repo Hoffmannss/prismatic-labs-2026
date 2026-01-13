@@ -3,1018 +3,441 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crie Seu Site Profissional em 10 Dias | Prismatic Labs</title>
-    <meta name="description" content="Landing pages de alta conversão com design dark mode + neon. Aumente suas vendas online em até 40%+ com sites profissionais entregues em 10-15 dias.">
     
-    <!-- Fonts -->
+    <!-- SEO Otimizado para Conversão -->
+    <title>Crie Seu Site Profissional em 10 Dias | Prismatic Labs</title>
+    <meta name="description" content="Transforme sua presença digital em máquina de vendas. Sites dark mode + neon que convertem 40%+ dos visitantes. Entrega em 10-15 dias. Orçamento grátis.">
+    <meta name="keywords" content="criar site profissional, landing page conversão, desenvolvimento web rápido, site que vende">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://hoffmannss.github.io/prismatic-labs-2026/captacao.html">
+    
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Sites que Convertem 40%+ em 10 Dias | Prismatic Labs">
+    <meta property="og:description" content="Design dark mode + neon exclusivo. Aumente suas vendas online com uma presença digital profissional.">
+    <meta property="og:url" content="https://hoffmannss.github.io/prismatic-labs-2026/captacao.html">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32x32.png">
+    
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/captacao.css">
+    
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@700&display=swap" rel="stylesheet">
     
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        :root {
-            --bg-dark: #0a0a0f;
-            --bg-card: #12121a;
-            --text-primary: #ffffff;
-            --text-secondary: #a1a1aa;
-            --accent-purple: #a855f7;
-            --accent-pink: #ec4899;
-            --accent-cyan: #06b6d4;
-            --border-color: rgba(168, 85, 247, 0.2);
-        }
-        
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--bg-dark);
-            color: var(--text-primary);
-            line-height: 1.6;
-        }
-        
-        /* Header */
-        .header {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            z-index: 1000;
-            padding: 1rem 2rem;
-            background: rgba(10, 10, 15, 0.9);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid var(--border-color);
-        }
-        
-        .header-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .logo {
-            font-size: 1.5rem;
-            font-weight: 800;
-            background: linear-gradient(135deg, var(--accent-purple), var(--accent-pink));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        
-        .logo span {
-            font-weight: 400;
-            opacity: 0.7;
-        }
-        
-        .whatsapp-btn {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.75rem 1.5rem;
-            background: #25D366;
-            color: white;
-            text-decoration: none;
-            border-radius: 50px;
-            font-weight: 600;
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-        
-        .whatsapp-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(37, 211, 102, 0.3);
-        }
-        
-        /* Hero Section */
-        .hero {
-            padding: 8rem 2rem 4rem;
-            text-align: center;
-            max-width: 900px;
-            margin: 0 auto;
-        }
-        
-        .badge {
-            display: inline-block;
-            padding: 0.5rem 1rem;
-            background: rgba(168, 85, 247, 0.1);
-            border: 1px solid var(--border-color);
-            border-radius: 50px;
-            font-size: 0.875rem;
-            color: var(--accent-purple);
-            margin-bottom: 1.5rem;
-        }
-        
-        .hero h1 {
-            font-size: clamp(2rem, 5vw, 3.5rem);
-            font-weight: 800;
-            line-height: 1.2;
-            margin-bottom: 1.5rem;
-        }
-        
-        .hero h1 .gradient {
-            background: linear-gradient(135deg, var(--accent-purple), var(--accent-pink));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        
-        .hero p {
-            font-size: 1.125rem;
-            color: var(--text-secondary);
-            max-width: 600px;
-            margin: 0 auto 2rem;
-        }
-        
-        .hero p strong {
-            color: var(--text-primary);
-        }
-        
-        /* Trust badges */
-        .trust-badges {
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 1rem;
-            margin-top: 2rem;
-        }
-        
-        .trust-badge {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.5rem 1rem;
-            background: var(--bg-card);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            font-size: 0.875rem;
-        }
-        
-        .trust-badge svg {
-            color: var(--accent-purple);
-        }
-
-        /* Services Section - NOVA */
-        .services-section {
-            padding: 4rem 2rem;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .services-section h2 {
-            text-align: center;
-            font-size: clamp(1.5rem, 4vw, 2.5rem);
-            margin-bottom: 3rem;
-        }
-
-        .services-section h2 .gradient {
-            background: linear-gradient(135deg, var(--accent-purple), var(--accent-pink));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .services-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-        }
-
-        .service-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border-color);
-            border-radius: 16px;
-            padding: 2rem;
-            text-align: center;
-            transition: transform 0.3s, box-shadow 0.3s;
-        }
-
-        .service-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 40px rgba(168, 85, 247, 0.15);
-        }
-
-        .service-card img {
-            width: 100%;
-            height: 180px;
-            object-fit: cover;
-            border-radius: 12px;
-            margin-bottom: 1.5rem;
-        }
-
-        .service-card h3 {
-            font-size: 1.25rem;
-            margin-bottom: 0.75rem;
-            color: var(--accent-cyan);
-        }
-
-        .service-card p {
-            color: var(--text-secondary);
-            font-size: 0.95rem;
-        }
-
-        /* Problem Section - MELHORADA */
-        .problem-section {
-            padding: 4rem 2rem;
-            max-width: 1000px;
-            margin: 0 auto;
-            background: linear-gradient(180deg, transparent, rgba(239, 68, 68, 0.05), transparent);
-        }
-        
-        .problem-section h2 {
-            text-align: center;
-            font-size: clamp(1.5rem, 4vw, 2.5rem);
-            margin-bottom: 1rem;
-        }
-
-        .problem-section > p.subtitle {
-            text-align: center;
-            color: var(--text-secondary);
-            margin-bottom: 2.5rem;
-        }
-        
-        .problem-section h2 .red {
-            color: #ef4444;
-        }
-        
-        .problems-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 1.5rem;
-        }
-        
-        .problem-card {
-            padding: 1.5rem;
-            background: var(--bg-card);
-            border: 1px solid rgba(239, 68, 68, 0.2);
-            border-radius: 12px;
-            display: flex;
-            align-items: flex-start;
-            gap: 1rem;
-        }
-        
-        .problem-card .icon {
-            font-size: 1.5rem;
-            flex-shrink: 0;
-        }
-        
-        .problem-card p {
-            color: var(--text-secondary);
-        }
-        
-        .problem-card strong {
-            color: var(--text-primary);
-        }
-
-        .info-box {
-            margin-top: 2.5rem;
-            padding: 1.5rem;
-            background: linear-gradient(135deg, rgba(6, 182, 212, 0.1), rgba(168, 85, 247, 0.1));
-            border: 1px solid var(--accent-cyan);
-            border-radius: 12px;
-        }
-
-        .info-box p {
-            color: var(--text-secondary);
-        }
-
-        .info-box strong {
-            color: var(--text-primary);
-        }
-
-        /* Testimonials Section - NOVA */
-        .testimonials-section {
-            padding: 4rem 2rem;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .testimonials-section h2 {
-            text-align: center;
-            font-size: clamp(1.5rem, 4vw, 2.5rem);
-            margin-bottom: 3rem;
-        }
-
-        .testimonials-section h2 .gradient {
-            background: linear-gradient(135deg, var(--accent-purple), var(--accent-pink));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .testimonials-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            margin-bottom: 3rem;
-        }
-
-        .testimonial-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border-color);
-            border-radius: 16px;
-            padding: 2rem;
-        }
-
-        .testimonial-header {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            margin-bottom: 1rem;
-        }
-
-        .testimonial-header img {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 2px solid var(--accent-purple);
-        }
-
-        .testimonial-header .info h4 {
-            font-size: 1rem;
-            margin-bottom: 0.25rem;
-        }
-
-        .testimonial-header .info span {
-            font-size: 0.85rem;
-            color: var(--accent-cyan);
-        }
-
-        .testimonial-card .stars {
-            color: #fbbf24;
-            margin-bottom: 1rem;
-        }
-
-        .testimonial-card blockquote {
-            color: var(--text-secondary);
-            font-style: italic;
-            line-height: 1.7;
-        }
-
-        /* Stats Grid */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 1.5rem;
-        }
-
-        .stat-card {
-            background: linear-gradient(135deg, rgba(6, 182, 212, 0.1), rgba(168, 85, 247, 0.05));
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 1.5rem;
-            text-align: center;
-        }
-
-        .stat-card .number {
-            font-size: 2.5rem;
-            font-weight: 800;
-            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .stat-card .label {
-            color: var(--text-secondary);
-            font-size: 0.9rem;
-            margin-top: 0.5rem;
-        }
-
-        /* Form Section */
-        .form-section {
-            padding: 4rem 2rem;
-            max-width: 800px;
-            margin: 0 auto;
-        }
-        
-        .form-section h2 {
-            text-align: center;
-            font-size: clamp(1.5rem, 4vw, 2.5rem);
-            margin-bottom: 0.5rem;
-        }
-        
-        .form-section h2 .gradient {
-            background: linear-gradient(135deg, var(--accent-purple), var(--accent-pink));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        
-        .form-section > p {
-            text-align: center;
-            color: var(--text-secondary);
-            margin-bottom: 2rem;
-        }
-        
-        .form-container {
-            background: var(--bg-card);
-            border: 1px solid var(--border-color);
-            border-radius: 16px;
-            padding: 2rem;
-            min-height: 500px;
-        }
-        
-        /* Tally Form Embed */
-        .tally-embed {
-            width: 100%;
-            min-height: 500px;
-            border: none;
-            background: transparent;
-        }
-        
-        /* Fallback form when Tally doesn't load */
-        .fallback-form {
-            display: none;
-        }
-        
-        .fallback-form.active {
-            display: block;
-        }
-        
-        .fallback-form input,
-        .fallback-form textarea,
-        .fallback-form select {
-            width: 100%;
-            padding: 1rem;
-            margin-bottom: 1rem;
-            background: var(--bg-dark);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            color: var(--text-primary);
-            font-size: 1rem;
-        }
-        
-        .fallback-form input:focus,
-        .fallback-form textarea:focus,
-        .fallback-form select:focus {
-            outline: none;
-            border-color: var(--accent-purple);
-        }
-        
-        .fallback-form label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 500;
-        }
-        
-        .submit-btn {
-            width: 100%;
-            padding: 1rem 2rem;
-            background: linear-gradient(135deg, var(--accent-purple), var(--accent-pink));
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-        
-        .submit-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(168, 85, 247, 0.3);
-        }
-        
-        /* Features badges below form */
-        .form-features {
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 1rem;
-            margin-top: 2rem;
-        }
-        
-        .form-feature {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.75rem 1.25rem;
-            background: rgba(168, 85, 247, 0.1);
-            border: 1px solid var(--border-color);
-            border-radius: 50px;
-            font-size: 0.875rem;
-        }
-        
-        /* Guarantee Section */
-        .guarantee-section {
-            padding: 4rem 2rem;
-            max-width: 800px;
-            margin: 0 auto;
-        }
-        
-        .guarantee-card {
-            padding: 2rem;
-            background: var(--bg-card);
-            border: 1px solid var(--border-color);
-            border-radius: 16px;
-            text-align: center;
-        }
-        
-        .guarantee-card h3 {
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-        }
-        
-        .guarantee-list {
-            list-style: none;
-            text-align: left;
-            max-width: 400px;
-            margin: 1.5rem auto 0;
-        }
-        
-        .guarantee-list li {
-            padding: 0.5rem 0;
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            color: var(--text-secondary);
-        }
-        
-        .guarantee-list li svg {
-            color: #22c55e;
-            flex-shrink: 0;
-        }
-
-        /* Urgency Banner */
-        .urgency-banner {
-            padding: 1.5rem 2rem;
-            background: linear-gradient(135deg, rgba(234, 179, 8, 0.2), rgba(239, 68, 68, 0.2));
-            border: 1px solid rgba(234, 179, 8, 0.4);
-            border-radius: 12px;
-            text-align: center;
-            max-width: 800px;
-            margin: 0 auto 2rem;
-        }
-
-        .urgency-banner h3 {
-            color: #fbbf24;
-            margin-bottom: 0.5rem;
-        }
-
-        .urgency-banner p {
-            color: var(--text-secondary);
-        }
-        
-        /* Footer */
-        .footer {
-            padding: 2rem;
-            text-align: center;
-            border-top: 1px solid var(--border-color);
-            color: var(--text-secondary);
-            font-size: 0.875rem;
-        }
-        
-        /* Error message for form */
-        .form-error {
-            background: rgba(239, 68, 68, 0.1);
-            border: 1px solid rgba(239, 68, 68, 0.3);
-            border-radius: 8px;
-            padding: 1rem;
-            margin-bottom: 1rem;
-            color: #fca5a5;
-            text-align: center;
-            display: none;
-        }
-        
-        .form-error.active {
-            display: block;
-        }
-        
-        /* Loading state */
-        .form-loading {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 400px;
-            gap: 1rem;
-        }
-        
-        .spinner {
-            width: 40px;
-            height: 40px;
-            border: 3px solid var(--border-color);
-            border-top-color: var(--accent-purple);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-        
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        @media (max-width: 768px) {
-            .header {
-                padding: 1rem;
-            }
-            
-            .services-grid,
-            .testimonials-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .stats-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-    </style>
+    <!-- Tally Forms (Formulário) -->
+    <script>
+      var TallyConfig = {
+        "formId": "xXDJ0d",
+        "popup": {
+          "emoji": {
+            "text": "🚀",
+            "animation": "wave"
+          }
+        }
+      };
+    </script>
 </head>
-<body>
-    <!-- Header -->
-    <header class="header">
-        <div class="header-content">
-            <div class="logo">PRISMATIC<span>LABS</span></div>
-            <a href="https://wa.me/5511999999999" class="whatsapp-btn" target="_blank">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
-                </svg>
-                WhatsApp
-            </a>
+<body class="landing-page">
+    
+    <!-- HEADER MINIMALISTA (sem distrações) -->
+    <header class="lp-header">
+        <div class="container">
+            <div class="lp-nav">
+                <div class="nav-logo">
+                    <span class="logo-text">PRISMATIC</span>
+                    <span class="logo-sub">LABS</span>
+                </div>
+                <a href="https://wa.me/5548984580234?text=Quero%20saber%20mais%20sobre%20cria%C3%A7%C3%A3o%20de%20sites" target="_blank" class="btn btn-sm btn-outline">
+                    <span>💬 WhatsApp</span>
+                </a>
+            </div>
         </div>
     </header>
 
-    <!-- Hero Section -->
-    <section class="hero">
-        <span class="badge">ORÇAMENTO GRATUITO</span>
-        <h1>Solicite Sua <span class="gradient">Proposta Personalizada</span></h1>
-        <p>Preencha o formulário abaixo e receba uma <strong>proposta detalhada em até 24 horas</strong>. Sem compromisso, sem pegadinhas.</p>
-        
-        <div class="trust-badges">
-            <div class="trust-badge">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
-                    <polyline points="22 4 12 14.01 9 11.01"/>
-                </svg>
-                Sem compromisso
-            </div>
-            <div class="trust-badge">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <circle cx="12" cy="12" r="10"/>
-                    <polyline points="12 6 12 12 16 14"/>
-                </svg>
-                Resposta em 24h
-            </div>
-            <div class="trust-badge">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
-                    <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
-                </svg>
-                Dados 100% seguros
-            </div>
+    <!-- HERO - ACIMA DA DOBRA (Above the Fold) -->
+    <section class="lp-hero">
+        <div class="hero-background">
+            <div class="grid-animation"></div>
+            <div class="gradient-orb gradient-orb-1"></div>
+            <div class="gradient-orb gradient-orb-2"></div>
         </div>
-    </section>
-
-    <!-- Services Section - NOVA SEÇÃO -->
-    <section class="services-section">
-        <span class="badge">NOSSA SOLUÇÃO</span>
-        <h2>Transformamos Visitantes em <span class="gradient">Clientes Pagantes</span></h2>
-        
-        <div class="services-grid">
-            <div class="service-card">
-                <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=400&h=300&fit=crop" alt="Landing Pages">
-                <h3>Landing Pages de Alta Conversão</h3>
-                <p>Páginas otimizadas com design moderno que capturam leads e convertem visitantes em clientes.</p>
-            </div>
-            <div class="service-card">
-                <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=400&h=300&fit=crop" alt="Sites Institucionais">
-                <h3>Sites Institucionais Profissionais</h3>
-                <p>Presença online impactante que transmite credibilidade e fortalece sua marca no mercado.</p>
-            </div>
-            <div class="service-card">
-                <img src="https://images.unsplash.com/photo-1563986768609-322da13575f3?w=400&h=300&fit=crop" alt="E-commerce">
-                <h3>Lojas Virtuais Completas</h3>
-                <p>E-commerces prontos para vender, com checkout otimizado e integração com meios de pagamento.</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- Problem Section - SEÇÃO MELHORADA -->
-    <section class="problem-section">
-        <h2>Você Está Perdendo <span class="red">Milhares de Reais</span> Todos os Meses...</h2>
-        <p class="subtitle">Se você ainda não tem um site profissional ou seu site atual não converte, você está:</p>
-        
-        <div class="problems-grid">
-            <div class="problem-card">
-                <span class="icon">💸</span>
-                <div>
-                    <p><strong>Perdendo clientes</strong> para concorrentes que têm presença online profissional</p>
+        <div class="container">
+            <div class="hero-content-lp">
+                <!-- Badge de Prova Social -->
+                <div class="hero-badge-lp">
+                    <span class="badge-icon">🔥</span>
+                    <span>Mais de 50 projetos entregues com 98% de satisfação</span>
                 </div>
-            </div>
-            <div class="problem-card">
-                <span class="icon">👻</span>
-                <div>
-                    <p><strong>Invisível no Google</strong> - clientes não encontram seu negócio nas buscas</p>
+                
+                <!-- Headline Poderosa (Benefício Claro) -->
+                <h1 class="hero-title-lp">
+                    Aumente suas <span class="gradient-text">Vendas Online</span> com um Site Profissional em Apenas 10 Dias
+                </h1>
+                
+                <!-- Subheadline (Reforça Valor) -->
+                <p class="hero-subtitle-lp">
+                    Design <strong>dark mode + neon exclusivo</strong> que converte <strong>40%+ dos visitantes</strong> em clientes reais. Ideal para infoprodutores, e-commerce e agências que querem <strong>resultados mensuráveis</strong>.
+                </p>
+                
+                <!-- CTA Principal (Contraste Alto) -->
+                <div class="hero-cta-lp">
+                    <a href="#formulario" class="btn btn-large btn-gradient pulse">
+                        <span>🚀 Quero Meu Orçamento Gratuito Agora</span>
+                    </a>
+                    <p class="cta-subtext-lp">✅ Sem compromisso | 💜 Resposta em 24h</p>
                 </div>
-            </div>
-            <div class="problem-card">
-                <span class="icon">📉</span>
-                <div>
-                    <p><strong>Desperdiçando tráfego</strong> - visitantes chegam mas não viram clientes</p>
-                </div>
-            </div>
-            <div class="problem-card">
-                <span class="icon">🤔</span>
-                <div>
-                    <p><strong>Sem credibilidade</strong> - potenciais clientes desconfiam de negócios sem site</p>
-                </div>
-            </div>
-        </div>
-
-        <div class="info-box">
-            <p>💡 <strong>Estudos mostram:</strong> Empresas com sites otimizados convertem até <strong>300% mais</strong> que sites genéricos. A pergunta é: quanto dinheiro você está deixando de ganhar?</p>
-        </div>
-    </section>
-
-    <!-- Testimonials Section - NOVA SEÇÃO -->
-    <section class="testimonials-section">
-        <span class="badge">RESULTADOS REAIS</span>
-        <h2>Veja o que Nossos <span class="gradient">Clientes Dizem</span></h2>
-        
-        <div class="testimonials-grid">
-            <div class="testimonial-card">
-                <div class="testimonial-header">
-                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face" alt="Carlos Silva">
-                    <div class="info">
-                        <h4>Carlos Silva</h4>
-                        <span>CEO - TechStart</span>
+                
+                <!-- Prova Social Imediata -->
+                <div class="hero-trust-lp">
+                    <div class="trust-item">
+                        <span class="trust-icon">⭐⭐⭐⭐⭐</span>
+                        <span class="trust-text">4.9/5.0 Avaliação</span>
+                    </div>
+                    <div class="trust-item">
+                        <span class="trust-icon">⚡</span>
+                        <span class="trust-text">10-15 Dias Entrega</span>
+                    </div>
+                    <div class="trust-item">
+                        <span class="trust-icon">💰</span>
+                        <span class="trust-text">ROI Garantido</span>
                     </div>
                 </div>
-                <div class="stars">★★★★★</div>
-                <blockquote>"Nossa taxa de conversão aumentou 47% após o novo site. O investimento se pagou em menos de 2 meses!"</blockquote>
             </div>
-            <div class="testimonial-card">
-                <div class="testimonial-header">
-                    <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop&crop=face" alt="Ana Beatriz">
-                    <div class="info">
-                        <h4>Ana Beatriz</h4>
-                        <span>Fundadora - Estúdio AB</span>
+        </div>
+    </section>
+
+    <!-- PROBLEMA (Dor do Cliente) -->
+    <section class="lp-problem section">
+        <div class="container">
+            <div class="problem-content">
+                <h2 class="section-title-lp">Você Está Perdendo <span class="gradient-text">Milhares de Reais</span> Todos os Meses...</h2>
+                <p class="problem-intro">Se você ainda não tem um site profissional ou seu site atual não converte, você está:</p>
+                
+                <div class="problem-grid">
+                    <div class="problem-item">
+                        <span class="problem-icon">❌</span>
+                        <p><strong>Perdendo clientes</strong> para concorrentes com presença digital forte</p>
+                    </div>
+                    <div class="problem-item">
+                        <span class="problem-icon">❌</span>
+                        <p><strong>Desperdiçando tráfego</strong> e investimento em anúncios sem conversão</p>
+                    </div>
+                    <div class="problem-item">
+                        <span class="problem-icon">❌</span>
+                        <p><strong>Passando imagem amadora</strong> que afasta clientes de alto valor</p>
+                    </div>
+                    <div class="problem-item">
+                        <span class="problem-icon">❌</span>
+                        <p><strong>Deixando dinheiro na mesa</strong> por não vender 24/7 no automático</p>
                     </div>
                 </div>
-                <div class="stars">★★★★★</div>
-                <blockquote>"Profissionalismo impecável. Entregaram antes do prazo e o resultado superou todas as expectativas."</blockquote>
+                
+                <div class="problem-highlight">
+                    <p class="highlight-text">💡 <strong>Estudos mostram:</strong> Empresas com sites otimizados convertem até <strong>300% mais</strong> que sites genéricos. A pergunta é: quanto dinheiro você está deixando de ganhar?</p>
+                </div>
             </div>
-            <div class="testimonial-card">
-                <div class="testimonial-header">
-                    <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&crop=face" alt="Roberto Mendes">
-                    <div class="info">
-                        <h4>Roberto Mendes</h4>
-                        <span>Diretor - Mendes & Associados</span>
+        </div>
+    </section>
+
+    <!-- SOLUÇÃO (Como Resolvemos) -->
+    <section class="lp-solution section">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-badge">Nossa Solução</span>
+                <h2 class="section-title">Transformamos Visitantes em <span class="gradient-text">Clientes Pagantes</span></h2>
+            </div>
+            
+            <div class="solution-grid">
+                <div class="solution-card">
+                    <div class="solution-number">01</div>
+                    <h3 class="solution-title">Design que Prende Atenção</h3>
+                    <p class="solution-text">Nosso estilo <strong>dark mode + neon</strong> é comprovadamente mais eficaz em manter visitantes engajados. Tempo médio na página <strong>+65%</strong> vs. designs tradicionais.</p>
+                </div>
+                
+                <div class="solution-card">
+                    <div class="solution-number">02</div>
+                    <h3 class="solution-title">Otimizado para Conversão</h3>
+                    <p class="solution-text">Cada elemento é estrategicamente posicionado para guiar o visitante até a ação desejada. CTAs claros, copywriting persuasivo, fluxo psicológico.</p>
+                </div>
+                
+                <div class="solution-card">
+                    <div class="solution-number">03</div>
+                    <h3 class="solution-title">Performance Ultra-Rápida</h3>
+                    <p class="solution-text">Google PageSpeed <strong>90+</strong>. Sites lentos perdem 53% dos visitantes. O seu carrega em menos de 2 segundos, garantindo zero desperdício de tráfego.</p>
+                </div>
+                
+                <div class="solution-card">
+                    <div class="solution-number">04</div>
+                    <h3 class="solution-title">Mobile-First (70% do Tráfego)</h3>
+                    <p class="solution-text">Responsivo perfeito em todos os dispositivos. A maioria dos seus clientes acessa pelo celular - seu site precisa funcionar impecavelmente lá.</p>
+                </div>
+                
+                <div class="solution-card">
+                    <div class="solution-number">05</div>
+                    <h3 class="solution-title">Integrações Automáticas</h3>
+                    <p class="solution-text">CRM, Email Marketing, WhatsApp, Analytics. Tudo conectado para você capturar, nutrir e converter leads no automático.</p>
+                </div>
+                
+                <div class="solution-card">
+                    <div class="solution-number">06</div>
+                    <h3 class="solution-title">Entrega Relâmpago</h3>
+                    <p class="solution-text">Enquanto concorrentes levam 30-60 dias, entregamos em <strong>10-15 dias úteis</strong>. Seu negócio vendendo online mais rápido.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PROVA SOCIAL (Depoimentos Reais) -->
+    <section class="lp-social-proof section">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-badge">Resultados Reais</span>
+                <h2 class="section-title">Veja o que Nossos <span class="gradient-text">Clientes Dizem</span></h2>
+            </div>
+            
+            <div class="testimonials-slider">
+                <div class="testimonial-card-lp">
+                    <div class="stars">⭐⭐⭐⭐⭐</div>
+                    <p class="testimonial-text-lp">"<em>Em 7 dias estava no ar e minha landing page começou a converter imediatamente. Faturei <strong>R$ 180 mil no primeiro mês</strong> de lançamento. O design neon é realmente diferenciado!</em>"</p>
+                    <div class="testimonial-author-lp">
+                        <div class="author-avatar">M</div>
+                        <div>
+                            <p class="author-name">Mariana Silva</p>
+                            <p class="author-role">Infoprodutora | Curso Online</p>
+                        </div>
+                    </div>
+                    <div class="testimonial-result">
+                        <span class="result-badge">💰 R$ 180k em vendas</span>
                     </div>
                 </div>
-                <div class="stars">★★★★★</div>
-                <blockquote>"O suporte pós-lançamento é excepcional. Sempre prontos para ajudar com qualquer ajuste necessário."</blockquote>
+                
+                <div class="testimonial-card-lp">
+                    <div class="stars">⭐⭐⭐⭐⭐</div>
+                    <p class="testimonial-text-lp">"<em>Meu e-commerce estava parado. Depois do redesign da Prismatic Labs, <strong>vendas aumentaram 67%</strong> e meu ticket médio triplicou. Investimento que se pagou em 15 dias!</em>"</p>
+                    <div class="testimonial-author-lp">
+                        <div class="author-avatar">R</div>
+                        <div>
+                            <p class="author-name">Ricardo Costa</p>
+                            <p class="author-role">Dono | NEON Streetwear</p>
+                        </div>
+                    </div>
+                    <div class="testimonial-result">
+                        <span class="result-badge">📈 +67% em vendas</span>
+                    </div>
+                </div>
+                
+                <div class="testimonial-card-lp">
+                    <div class="stars">⭐⭐⭐⭐⭐</div>
+                    <p class="testimonial-text-lp">"<em>Profissionalismo do início ao fim. Entregaram em 9 dias e minha taxa de conversão subiu de 2% para <strong>8.5%</strong>. Agora sim tenho uma máquina de capturar leads!</em>"</p>
+                    <div class="testimonial-author-lp">
+                        <div class="author-avatar">J</div>
+                        <div>
+                            <p class="author-name">Juliana Fernandes</p>
+                            <p class="author-role">Gerente | Growth Agency</p>
+                        </div>
+                    </div>
+                    <div class="testimonial-result">
+                        <span class="result-badge">🚀 8.5% conversão</span>
+                    </div>
+                </div>
             </div>
-        </div>
-
-        <div class="stats-grid">
-            <div class="stat-card">
-                <div class="number">50+</div>
-                <div class="label">Projetos Entregues</div>
-            </div>
-            <div class="stat-card">
-                <div class="number">98%</div>
-                <div class="label">Clientes Satisfeitos</div>
-            </div>
-            <div class="stat-card">
-                <div class="number">10-15</div>
-                <div class="label">Dias Entrega</div>
-            </div>
-            <div class="stat-card">
-                <div class="number">40%+</div>
-                <div class="label">Taxa Conversão</div>
+            
+            <div class="social-proof-stats">
+                <div class="proof-stat">
+                    <span class="stat-number-lp">50+</span>
+                    <span class="stat-label-lp">Projetos Entregues</span>
+                </div>
+                <div class="proof-stat">
+                    <span class="stat-number-lp">98%</span>
+                    <span class="stat-label-lp">Clientes Satisfeitos</span>
+                </div>
+                <div class="proof-stat">
+                    <span class="stat-number-lp">10-15</span>
+                    <span class="stat-label-lp">Dias Entrega</span>
+                </div>
+                <div class="proof-stat">
+                    <span class="stat-number-lp">40%+</span>
+                    <span class="stat-label-lp">Taxa Conversão</span>
+                </div>
             </div>
         </div>
     </section>
 
-    <!-- Urgency Banner -->
-    <div class="urgency-banner">
-        <h3>⚠️ Atenção: Vagas Limitadas!</h3>
-        <p>Trabalhamos com número limitado de projetos por mês para garantir qualidade. Solicite sua proposta agora.</p>
-    </div>
-
-    <!-- Form Section -->
-    <section class="form-section" id="formulario">
-        <div class="form-container">
-            <!-- Error message -->
-            <div class="form-error" id="formError">
-                Houve um problema ao carregar o formulário. Por favor, use o formulário alternativo abaixo ou entre em contato pelo WhatsApp.
-            </div>
-            
-            <!-- Loading state -->
-            <div class="form-loading" id="formLoading">
-                <div class="spinner"></div>
-                <p>Carregando formulário...</p>
-            </div>
-            
-            <!-- Corrigido ID do Tally de "SEU_ID_AQUI" para "xXDJ0d" -->
-            <iframe 
-                id="tallyForm"
-                data-tally-src="https://tally.so/embed/xXDJ0d?alignLeft=1&hideTitle=1&transparentBackground=1&dynamicHeight=1"
-                class="tally-embed"
-                loading="lazy"
-                width="100%"
-                height="500"
-                frameborder="0"
-                marginheight="0"
-                marginwidth="0"
-                title="Formulário de Orçamento"
-                style="display: none;"
-            ></iframe>
-            
-            <!-- Fallback Form (aparece se o Tally não carregar) -->
-            <form class="fallback-form" id="fallbackForm" action="https://formsubmit.co/contato@prismaticlabs.com.br" method="POST">
-                <input type="hidden" name="_subject" value="Nova Solicitação de Orçamento - Prismatic Labs">
-                <input type="hidden" name="_captcha" value="false">
-                <input type="hidden" name="_next" value="https://hoffmannss.github.io/prismatic-labs-2026/obrigado.html">
-                
-                <div>
-                    <label for="name">Nome completo *</label>
-                    <input type="text" id="name" name="name" required placeholder="Seu nome">
+    <!-- URGÊNCIA/ESCASSEZ -->
+    <section class="lp-urgency section">
+        <div class="container">
+            <div class="urgency-box">
+                <div class="urgency-icon">⏰</div>
+                <div class="urgency-content">
+                    <h3 class="urgency-title">Atenção: Vagas Limitadas!</h3>
+                    <p class="urgency-text">Para garantir <strong>qualidade máxima</strong>, aceitamos apenas <strong>5 novos projetos por mês</strong>. Neste momento temos <strong>2 vagas disponíveis</strong> para Janeiro/2026.</p>
+                    <p class="urgency-highlight">🔥 <strong>Últimas 2 vagas!</strong> Preencha o formulário agora para garantir sua vaga antes que esgotem.</p>
                 </div>
-                
-                <div>
-                    <label for="email">E-mail *</label>
-                    <input type="email" id="email" name="email" required placeholder="seu@email.com">
-                </div>
-                
-                <div>
-                    <label for="whatsapp">WhatsApp *</label>
-                    <input type="tel" id="whatsapp" name="whatsapp" required placeholder="(11) 99999-9999">
-                </div>
-                
-                <div>
-                    <label for="business">Tipo de negócio *</label>
-                    <select id="business" name="business" required>
-                        <option value="">Selecione...</option>
-                        <option value="infoproduto">Infoproduto / Curso Online</option>
-                        <option value="ecommerce">E-commerce / Loja Virtual</option>
-                        <option value="servicos">Prestação de Serviços</option>
-                        <option value="agencia">Agência / Consultoria</option>
-                        <option value="startup">Startup / SaaS</option>
-                        <option value="outro">Outro</option>
-                    </select>
-                </div>
-                
-                <div>
-                    <label for="budget">Orçamento estimado</label>
-                    <select id="budget" name="budget">
-                        <option value="">Selecione...</option>
-                        <option value="2500-3500">R$ 2.500 - R$ 3.500</option>
-                        <option value="3500-4500">R$ 3.500 - R$ 4.500</option>
-                        <option value="4500+">R$ 4.500+</option>
-                        <option value="nao-sei">Não sei ainda</option>
-                    </select>
-                </div>
-                
-                <div>
-                    <label for="message">Conte sobre seu projeto</label>
-                    <textarea id="message" name="message" rows="4" placeholder="Descreva brevemente o que você precisa..."></textarea>
-                </div>
-                
-                <button type="submit" class="submit-btn">Solicitar Proposta Gratuita</button>
-            </form>
-        </div>
-        
-        <div class="form-features">
-            <div class="form-feature">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#a855f7" stroke-width="2">
-                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
-                    <polyline points="22 4 12 14.01 9 11.01"/>
-                </svg>
-                Sem compromisso
-            </div>
-            <div class="form-feature">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#a855f7" stroke-width="2">
-                    <circle cx="12" cy="12" r="10"/>
-                    <polyline points="12 6 12 12 16 14"/>
-                </svg>
-                Resposta em 24h
-            </div>
-            <div class="form-feature">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#a855f7" stroke-width="2">
-                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
-                    <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
-                </svg>
-                Dados 100% seguros
-            </div>
-            <div class="form-feature">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#a855f7" stroke-width="2">
-                    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
-                </svg>
-                Orçamento gratuito
             </div>
         </div>
     </section>
 
-    <!-- Guarantee Section -->
-    <section class="guarantee-section">
-        <div class="guarantee-card">
-            <h3>🛡️ Nossa Garantia de Satisfação 100%</h3>
-            <p style="color: var(--text-secondary);">
-                Se você não ficar <strong style="color: var(--text-primary);">completamente satisfeito</strong> com o seu site, 
-                fazemos <strong style="color: var(--text-primary);">revisões ilimitadas</strong> até você aprovar.
-            </p>
-            <ul class="guarantee-list">
-                <li>
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
-                        <polyline points="22 4 12 14.01 9 11.01"/>
-                    </svg>
-                    30-60 dias de suporte pós-lançamento
-                </li>
-                <li>
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
-                        <polyline points="22 4 12 14.01 9 11.01"/>
-                    </svg>
-                    Revisões ilimitadas durante o projeto
-                </li>
-                <li>
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
-                        <polyline points="22 4 12 14.01 9 11.01"/>
-                    </svg>
-                    Código-fonte é 100% seu
-                </li>
-                <li>
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
-                        <polyline points="22 4 12 14.01 9 11.01"/>
-                    </svg>
-                    Treinamento completo incluído
-                </li>
-            </ul>
+    <!-- FORMULÁRIO DE CAPTURA (Seção Principal) -->
+    <section id="formulario" class="lp-form-section section">
+        <div class="container">
+            <div class="form-wrapper">
+                <div class="form-header">
+                    <span class="section-badge">Orçamento Gratuito</span>
+                    <h2 class="section-title">Solicite Sua <span class="gradient-text">Proposta Personalizada</span></h2>
+                    <p class="form-intro">Preencha o formulário abaixo e receba uma <strong>proposta detalhada em até 24 horas</strong>. Sem compromisso, sem pegadinhas.</p>
+                </div>
+                
+                <!-- FORMULÁRIO EMBUTIDO (Tally.so) - ID CORRIGIDO -->
+                <div class="form-container">
+                    <iframe 
+                        data-tally-src="https://tally.so/embed/xXDJ0d?alignLeft=1&hideTitle=1&transparentBackground=1&dynamicHeight=1" 
+                        loading="lazy" 
+                        width="100%" 
+                        height="600" 
+                        frameborder="0" 
+                        marginheight="0" 
+                        marginwidth="0" 
+                        title="Formulário de Orçamento - Prismatic Labs"
+                        style="border: none;">
+                    </iframe>
+                    <script>var d=document,w="https://tally.so/widgets/embed.js",v=function(){"undefined"!=typeof Tally?Tally.loadEmbeds():d.querySelectorAll("iframe[data-tally-src]:not([src])").forEach((function(e){e.src=e.dataset.tallySrc}))};if("undefined"!=typeof Tally)v();else if(d.querySelector('script[src="'+w+'"]')==null){var s=d.createElement("script");s.src=w,s.onload=v,s.onerror=v,d.body.appendChild(s);}</script>
+                </div>
+                
+                <div class="form-footer">
+                    <div class="trust-badges">
+                        <div class="trust-badge-item">
+                            <span class="badge-icon-lp">✅</span>
+                            <span>Sem compromisso</span>
+                        </div>
+                        <div class="trust-badge-item">
+                            <span class="badge-icon-lp">⏱️</span>
+                            <span>Resposta em 24h</span>
+                        </div>
+                        <div class="trust-badge-item">
+                            <span class="badge-icon-lp">🔒</span>
+                            <span>Dados 100% seguros</span>
+                        </div>
+                        <div class="trust-badge-item">
+                            <span class="badge-icon-lp">💜</span>
+                            <span>Orçamento gratuito</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 
-    <!-- Footer -->
-    <footer class="footer">
-        <p>💜 Prismatic Labs © 2026 - Todos os direitos reservados</p>
+    <!-- GARANTIA/SEGURANÇA -->
+    <section class="lp-guarantee section">
+        <div class="container">
+            <div class="guarantee-box">
+                <div class="guarantee-icon">🛡️</div>
+                <div class="guarantee-content">
+                    <h3 class="guarantee-title">Nossa Garantia de Satisfação 100%</h3>
+                    <p class="guarantee-text">Se você não ficar <strong>completamente satisfeito</strong> com o seu site, fazemos <strong>revisões ilimitadas</strong> até você aprovar. Seu investimento está 100% protegido.</p>
+                    <ul class="guarantee-list">
+                        <li>✅ <strong>30-60 dias de suporte</strong> pós-lançamento inclusos</li>
+                        <li>✅ <strong>Revisões ilimitadas</strong> durante o projeto</li>
+                        <li>✅ <strong>Código-fonte</strong> é 100% seu (propriedade total)</li>
+                        <li>✅ <strong>Treinamento completo</strong> para você gerenciar o site</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ COMPACTO (Objeções) -->
+    <section class="lp-faq section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Perguntas <span class="gradient-text">Frequentes</span></h2>
+            </div>
+            
+            <div class="faq-grid">
+                <div class="faq-item">
+                    <h3 class="faq-question">⚡ Quanto tempo leva para ficar pronto?</h3>
+                    <p class="faq-answer"><strong>10-15 dias úteis.</strong> Começamos imediatamente após o briefing e você acompanha todo o progresso.</p>
+                </div>
+                
+                <div class="faq-item">
+                    <h3 class="faq-question">💰 Qual o investimento?</h3>
+                    <p class="faq-answer">Pacotes a partir de <strong>R$ 2.500</strong>. Cada projeto é único, por isso criamos uma proposta personalizada após entender suas necessidades.</p>
+                </div>
+                
+                <div class="faq-item">
+                    <h3 class="faq-question">🔧 Preciso saber programar?</h3>
+                    <p class="faq-answer"><strong>Não!</strong> Entregamos tudo pronto e funcionando. Você só precisa aprovar o design e o conteúdo.</p>
+                </div>
+                
+                <div class="faq-item">
+                    <h3 class="faq-question">📱 Funciona em celular?</h3>
+                    <p class="faq-answer"><strong>Perfeitamente!</strong> Design mobile-first garante experiência impecável em todos os dispositivos (70%+ do tráfego vem de mobile).</p>
+                </div>
+                
+                <div class="faq-item">
+                    <h3 class="faq-question">🔗 Vocês integram com minhas ferramentas?</h3>
+                    <p class="faq-answer"><strong>Sim!</strong> Integramos com CRM, Email Marketing, WhatsApp, Analytics e qualquer ferramenta que você use.</p>
+                </div>
+                
+                <div class="faq-item">
+                    <h3 class="faq-question">🚀 E depois do lançamento?</h3>
+                    <p class="faq-answer">Incluímos <strong>30-60 dias de suporte</strong> gratuito para ajustes, dúvidas e otimizações pós-lançamento.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA FINAL (Última Chance) -->
+    <section class="lp-final-cta section">
+        <div class="container">
+            <div class="final-cta-box">
+                <h2 class="final-cta-title">Pare de Perder Vendas. <br><span class="gradient-text">Comece a Faturar Hoje.</span></h2>
+                <p class="final-cta-text">Cada dia sem um site profissional é dinheiro deixado na mesa. Preencha o formulário agora e receba sua proposta em 24 horas.</p>
+                
+                <a href="#formulario" class="btn btn-large btn-gradient pulse">
+                    <span>🚀 Sim, Quero Meu Site Agora!</span>
+                </a>
+                
+                <p class="final-cta-subtext">⏰ Últimas 2 vagas para Janeiro/2026 | ✅ Sem compromisso</p>
+                
+                <div class="final-cta-trust">
+                    <span>💜 Mais de 50 clientes satisfeitos</span>
+                    <span>⭐ 4.9/5.0 avaliação média</span>
+                    <span>⚡ Resposta em 24h garantida</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER MINIMALISTA -->
+    <footer class="lp-footer">
+        <div class="container">
+            <div class="footer-content-lp">
+                <div class="footer-brand">
+                    <div class="footer-logo">
+                        <span class="logo-text">PRISMATIC</span>
+                        <span class="logo-sub">LABS</span>
+                    </div>
+                    <p class="footer-tagline">Sites que Convertem</p>
+                </div>
+                <div class="footer-contact-lp">
+                    <p>📧 <a href="mailto:labs.prismatic@gmail.com">labs.prismatic@gmail.com</a></p>
+                    <p>📱 <a href="https://wa.me/5548984580234" target="_blank">+55 48 98458-0234</a></p>
+                    <p>📍 Florianópolis, Santa Catarina, Brasil</p>
+                </div>
+            </div>
+            <div class="footer-bottom-lp">
+                <p>© 2026 Prismatic Labs. Todos os direitos reservados.</p>
+            </div>
+        </div>
     </footer>
 
-    <!-- Tally Embed Script -->
-    <script>
-        // Configuração do Tally
-        var d = document;
-        var w = "https://tally.so/widgets/embed.js";
-        var tallyLoaded = false;
-        var loadTimeout;
-        
-        function showFallbackForm() {
-            if (!tallyLoaded) {
-                document.getElementById('formLoading').style.display = 'none';
-                document.getElementById('formError').classList.add('active');
-                document.getElementById('fallbackForm').classList.add('active');
-            }
-        }
-        
-        function onTallyLoad() {
-            tallyLoaded = true;
-            clearTimeout(loadTimeout);
-            
-            var iframe = document.getElementById('tallyForm');
-            document.getElementById('formLoading').style.display = 'none';
-            iframe.style.display = 'block';
-            
-            if (typeof Tally !== 'undefined') {
-                Tally.loadEmbeds();
-            } else {
-                // Fallback: set src directly
-                var src = iframe.getAttribute('data-tally-src');
-                if (src && !iframe.src) {
-                    iframe.src = src;
-                }
-            }
-        }
-        
-        // Timeout de 8 segundos para carregar o Tally
-        loadTimeout = setTimeout(showFallbackForm, 8000);
-        
-        // Carregar o script do Tally
-        if (typeof Tally !== 'undefined') {
-            onTallyLoad();
-        } else if (d.querySelector('script[src="' + w + '"]') == null) {
-            var s = d.createElement("script");
-            s.src = w;
-            s.onload = onTallyLoad;
-            s.onerror = showFallbackForm;
-            d.body.appendChild(s);
-        }
-        
-        // Listener para verificar se o iframe carregou
-        document.getElementById('tallyForm').addEventListener('load', function() {});
-        document.getElementById('tallyForm').addEventListener('error', function() {
-            showFallbackForm();
-        });
-    </script>
+    <!-- JavaScript -->
+    <script src="js/captacao.js"></script>
 </body>
 </html>
