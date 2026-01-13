@@ -214,6 +214,72 @@
             font-weight: 900; 
             margin-bottom: 1rem;
         }
+        .section-description {
+            font-size: 1.1rem;
+            max-width: 800px;
+            margin: 0 auto;
+            opacity: 0.9;
+            line-height: 1.8;
+        }
+        
+        /* About Section */
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+        .about-text {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+        .about-text p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            opacity: 0.9;
+        }
+        .about-highlight {
+            background: rgba(255,0,255,0.1);
+            padding: 2rem;
+            border-radius: 15px;
+            border: 1px solid rgba(255,0,255,0.3);
+        }
+        .about-highlight h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--color-primary);
+        }
+        .about-values {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+        .value-card {
+            background: rgba(255,255,255,0.05);
+            padding: 2rem;
+            border-radius: 15px;
+            border: 1px solid rgba(255,255,255,0.1);
+            transition: all 0.3s;
+        }
+        .value-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(255,0,255,0.3);
+            box-shadow: 0 10px 30px rgba(255,0,255,0.2);
+        }
+        .value-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        .value-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 0.8rem;
+        }
+        .value-text {
+            opacity: 0.8;
+            line-height: 1.7;
+        }
         
         /* Benefits Grid */
         .benefits-grid { 
@@ -430,6 +496,7 @@
             .nav-toggle { display: block; }
             .hero { padding: 80px 0 60px; }
             .hero-cta { flex-direction: column; }
+            .about-content { grid-template-columns: 1fr; }
             .benefits-grid, .testimonials-grid, .packages-grid { 
                 grid-template-columns: 1fr; 
             }
@@ -452,6 +519,7 @@
             </div>
             <ul class="nav-menu" id="navMenu">
                 <li><a href="index.html" class="nav-link active">Home</a></li>
+                <li><a href="#sobre" class="nav-link">Sobre</a></li>
                 <li><a href="#servicos" class="nav-link">Serviços</a></li>
                 <li><a href="#processo" class="nav-link">Processo</a></li>
                 <li><a href="#contato" class="nav-link">Contato</a></li>
@@ -503,6 +571,71 @@
                         <span class="stat-number">10-15</span>
                         <span class="stat-label">Dias</span>
                     </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SOBRE A EMPRESA -->
+    <section id="sobre" class="section">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-badge">Sobre Nós</span>
+                <h2 class="section-title">Quem é a <span class="gradient-text">Prismatic Labs</span></h2>
+                <p class="section-description">
+                    Somos uma agência especializada em landing pages de alta conversão com design dark mode + neon. Fundada em 2026 em Florianópolis, transformamos negócios digitais através de design estratégico e código otimizado.
+                </p>
+            </div>
+
+            <div class="about-content">
+                <div class="about-text">
+                    <p>
+                        <strong>Nossa missão</strong> é criar landing pages que não apenas impressionam visualmente, mas que geram resultados mensuráveis para nossos clientes. Combinamos design moderno com estratégias de conversão comprovadas.
+                    </p>
+                    <p>
+                        Diferente de agências tradicionais, focamos 100% em landing pages dark mode + neon - um nicho onde nos tornamos especialistas. Isso nos permite entregar projetos em <strong>10-15 dias</strong> enquanto o mercado leva 30+.
+                    </p>
+                    <p>
+                        Cada projeto passa por um processo rigoroso de otimização: performance, SEO, responsividade e testes de conversão. Nossos clientes alcançam <strong>taxas de conversão 40%+ superiores</strong> às médias do mercado.
+                    </p>
+                </div>
+                
+                <div class="about-highlight">
+                    <h3>📍 Baseados em Florianópolis, SC</h3>
+                    <p style="margin-bottom: 1.5rem;">Atuamos nacionalmente com clientes em todo Brasil</p>
+                    
+                    <h3>👨‍💻 Equipe Especializada</h3>
+                    <p style="margin-bottom: 1.5rem;">Liderados por Daniel Hoffmann, desenvolvedor fullstack com experiência em projetos de alta conversão</p>
+                    
+                    <h3>🎯 Focados em Resultados</h3>
+                    <p>Mais de 50 projetos entregues com 98% de satisfação dos clientes</p>
+                </div>
+            </div>
+
+            <!-- VALORES -->
+            <div class="about-values">
+                <div class="value-card">
+                    <div class="value-icon">⚡</div>
+                    <h3 class="value-title">Velocidade</h3>
+                    <p class="value-text">Entrega em 10-15 dias. Seu projeto no ar antes da concorrência se mexer.</p>
+                </div>
+                
+                <div class="value-card">
+                    <div class="value-icon">🎯</div>
+                    <h3 class="value-title">Foco em Conversão</h3>
+                    <p class="value-text">Cada elemento é otimizado para converter visitantes em clientes pagantes.</p>
+                </div>
+                
+                <div class="value-card">
+                    <div class="value-icon">💎</div>
+                    <h3 class="value-title">Qualidade Premium</h3>
+                    <p class="value-text">Design exclusivo + código limpo. PageSpeed 90+ garantido em todos os projetos.</p>
+                </div>
+                
+                <div class="value-card">
+                    <div class="value-icon">🤝</div>
+                    <h3 class="value-title">Transparência</h3>
+                    <p class="value-text">Processo claro, comunicação direta, sem pegadinhas. Você sabe exatamente o que está pagando.</p>
                 </div>
             </div>
         </div>
@@ -759,6 +892,7 @@
                     <div class="footer-col">
                         <h4 class="footer-title">Navegação</h4>
                         <ul class="footer-menu">
+                            <li><a href="#sobre">Sobre</a></li>
                             <li><a href="#servicos">Serviços</a></li>
                             <li><a href="#processo">Processo</a></li>
                             <li><a href="#contato">Contato</a></li>
@@ -823,10 +957,10 @@
         });
         
         // Log
-        console.log('🏢 PRISMATIC LABS - Site Institucional');
+        console.log('🏢 PRISMATIC LABS - Site Institucional v2.0');
         console.log('📅', new Date().toISOString());
-        console.log('✅ Cabeçalho ORIGINAL restaurado');
-        console.log('✅ Landing pages SEPARADAS');
+        console.log('✅ Seção SOBRE adicionada');
+        console.log('✅ Navegação atualizada');
     </script>
 </body>
 </html>
