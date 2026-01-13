@@ -404,33 +404,42 @@
             gap: 10px;
         }
         
+        /* === GRID SIMÉTRICO: 3 COLUNAS === */
         .meta-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 1rem;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
         }
         
         .meta-metric {
             background: rgba(255,255,255,0.05);
-            padding: 15px;
+            padding: 20px;
             border-radius: 12px;
             border: 1px solid rgba(255,255,255,0.1);
             text-align: center;
+            transition: all 0.3s;
+        }
+        
+        .meta-metric:hover {
+            transform: translateY(-5px);
+            border-color: #ff00ff;
+            box-shadow: 0 10px 30px rgba(255,0,255,0.3);
         }
         
         .metric-value {
-            font-size: 2rem;
+            font-size: 2.5rem;
             font-weight: 900;
             background: linear-gradient(45deg, #ff00ff, #00ffff);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             display: block;
+            margin-bottom: 0.5rem;
         }
         
         .metric-label {
-            font-size: 0.9rem;
+            font-size: 0.95rem;
             opacity: 0.8;
-            margin-top: 0.5rem;
+            line-height: 1.4;
         }
         
         .meta-list {
@@ -482,7 +491,12 @@
             .meta-badge { bottom: 20px; right: 20px; padding: 10px 16px; font-size: 0.85rem; }
             .meta-popup { padding: 30px 20px; max-height: 85vh; }
             .meta-title { font-size: 1.5rem; }
-            .meta-grid { grid-template-columns: 1fr 1fr; }
+            
+            /* MOBILE: 1 COLUNA */
+            .meta-grid { 
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
         }
     </style>
 </head>
@@ -492,7 +506,7 @@
         <div class="container">
             <div class="header-content">
                 <div class="logo">PRISMATIC <span style="font-size:0.7em; opacity:0.8;">LABS</span></div>
-                <a href="https://wa.me/5548984580234?text=Vi%20seu%20site%20e%20quero%20meu%20orçamento%20grátis%20agora!" target="_blank" class="whatsapp-btn pulse">💬 WhatsApp Agora</a>
+                <a href="https://wa.me/5548984580234?text=Vi%20seu%20site%20e%20quero%20meu%20or%C3%A7amento%20gr%C3%A1tis%20agora!" target="_blank" class="whatsapp-btn pulse">💬 WhatsApp Agora</a>
             </div>
         </div>
     </header>
@@ -618,7 +632,7 @@
             </div>
             
             <div class="meta-section">
-                <h3>🛠️ A Solução</h3>
+                <h3>🐍 A Solução</h3>
                 <ul class="meta-list">
                     <li>✅ Design dark mode + neon (nosso diferencial)</li>
                     <li>✅ Sistema de popups estratégicos (este!)</li>
@@ -629,7 +643,7 @@
             </div>
             
             <div class="meta-section">
-                <h3>📊 Resultados REAIS (desta página)</h3>
+                <h3>📈 Resultados REAIS (desta página)</h3>
                 <div class="meta-grid">
                     <div class="meta-metric">
                         <span class="metric-value">92</span>
@@ -637,15 +651,11 @@
                     </div>
                     <div class="meta-metric">
                         <span class="metric-value">1.2s</span>
-                        <span class="metric-label">Tempo Carregamento</span>
+                        <span class="metric-label">Tempo de Carregamento</span>
                     </div>
                     <div class="meta-metric">
                         <span class="metric-value">100%</span>
                         <span class="metric-label">Mobile Responsive</span>
-                    </div>
-                    <div class="meta-metric">
-                        <span class="metric-value">12d</span>
-                        <span class="metric-label">Tempo Desenvolvimento</span>
                     </div>
                 </div>
             </div>
@@ -654,7 +664,7 @@
                 <h3>💡 Tecnologias Utilizadas</h3>
                 <ul class="meta-list">
                     <li>📦 HTML5 + CSS3 (vanilla, sem frameworks pesados)</li>
-                    <li>⚡ JavaScript ES6+ (validacões avançadas)</li>
+                    <li>⚡ JavaScript ES6+ (validações avançadas)</li>
                     <li>🔗 Integração Zapier (automação total)</li>
                     <li>🎨 Design System Neon (marca registrada)</li>
                     <li>📱 Mobile-First Approach</li>
