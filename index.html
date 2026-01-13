@@ -12,21 +12,11 @@
     <meta name="robots" content="index, follow">
     <link rel="canonical" href="https://hoffmannss.github.io/prismatic-labs-2026/">
     
-    <!-- Open Graph (Facebook, LinkedIn) -->
+    <!-- Open Graph -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://hoffmannss.github.io/prismatic-labs-2026/">
     <meta property="og:title" content="Prismatic Labs - Landing Pages que Convertem 40%+">
     <meta property="og:description" content="Design dark mode + neon para infoprodutores e e-commerce que querem resultados mensuráveis.">
-    <meta property="og:image" content="https://hoffmannss.github.io/prismatic-labs-2026/assets/og-image.jpg">
-    <meta property="og:locale" content="pt_BR">
-    <meta property="og:site_name" content="Prismatic Labs">
-    
-    <!-- Twitter Card -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:url" content="https://hoffmannss.github.io/prismatic-labs-2026/">
-    <meta name="twitter:title" content="Prismatic Labs - Landing Pages que Convertem 40%+">
-    <meta name="twitter:description" content="Design dark mode + neon para infoprodutores e e-commerce que querem resultados mensuráveis.">
-    <meta name="twitter:image" content="https://hoffmannss.github.io/prismatic-labs-2026/assets/og-image.jpg">
     
     <!-- Favicon -->
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22 fill=%22%23ff00ff%22>💜</text></svg>">
@@ -86,7 +76,7 @@
             -webkit-background-clip: text; 
             -webkit-text-fill-color: transparent;
         }
-        .nav-menu { display: flex; gap: 2rem; list-style: none; align-items: center; }
+        .nav-menu { display: flex; gap: 2rem; list-style: none; align-items: center; flex-wrap: wrap; }
         .nav-link { 
             color: var(--color-text); 
             text-decoration: none; 
@@ -94,7 +84,16 @@
             transition: all 0.3s;
         }
         .nav-link:hover, .nav-link.active { color: var(--color-primary); }
-        .nav-toggle { display: none; }
+        .nav-toggle { display: none; cursor: pointer; }
+        .nav-toggle span { 
+            display: block;
+            width: 25px; 
+            height: 3px; 
+            background: white; 
+            margin: 5px 0;
+            border-radius: 3px;
+            transition: 0.3s;
+        }
         
         /* Buttons */
         .btn { 
@@ -124,6 +123,7 @@
         .btn-large { padding: 18px 40px; font-size: 1.1rem; }
         .btn-gradient { background: linear-gradient(45deg, #ff00ff, #00ffff); color: white; }
         .btn-icon { margin-left: 10px; }
+        .btn-block { width: 100%; text-align: center; }
         
         /* Hero */
         .hero { 
@@ -237,59 +237,6 @@
         .benefit-title { font-size: 1.3rem; font-weight: 700; margin-bottom: 0.8rem; }
         .benefit-text { opacity: 0.8; line-height: 1.7; }
         
-        /* Cases */
-        .cases-grid { 
-            display: grid; 
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); 
-            gap: 2rem; 
-        }
-        .case-card { 
-            background: rgba(255,255,255,0.05); 
-            border-radius: 20px; 
-            overflow: hidden;
-            border: 1px solid rgba(255,255,255,0.1);
-            transition: all 0.3s;
-        }
-        .case-card:hover { 
-            transform: translateY(-5px);
-            box-shadow: 0 20px 40px rgba(255,0,255,0.2);
-        }
-        .case-image { 
-            height: 200px; 
-            background: linear-gradient(135deg, #ff00ff, #00ffff);
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .case-label { 
-            background: rgba(0,0,0,0.8);
-            padding: 6px 16px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 600;
-        }
-        .case-content { padding: 2rem; }
-        .case-title { font-size: 1.4rem; font-weight: 700; margin-bottom: 0.8rem; }
-        .case-description { opacity: 0.8; margin-bottom: 1.5rem; line-height: 1.7; }
-        .case-metrics { 
-            display: flex; 
-            gap: 2rem; 
-            margin-bottom: 1.5rem; 
-        }
-        .metric { }
-        .metric-value { 
-            display: block;
-            font-size: 1.8rem; 
-            font-weight: 900; 
-            color: var(--color-primary);
-        }
-        .metric-label { 
-            display: block;
-            font-size: 0.85rem; 
-            opacity: 0.7;
-        }
-        
         /* Testimonials */
         .testimonials-grid { 
             display: grid; 
@@ -312,35 +259,6 @@
         .author-role { font-size: 0.9rem; opacity: 0.7; }
         .testimonials-cta { text-align: center; margin-top: 3rem; }
         .testimonials-note { font-size: 1.1rem; opacity: 0.9; }
-        
-        /* Process Timeline */
-        .process-timeline { display: flex; flex-direction: column; gap: 2rem; }
-        .timeline-item { 
-            display: flex; 
-            gap: 2rem; 
-            align-items: flex-start;
-        }
-        .timeline-number { 
-            font-size: 2.5rem; 
-            font-weight: 900; 
-            background: linear-gradient(45deg, #ff00ff, #00ffff); 
-            -webkit-background-clip: text; 
-            -webkit-text-fill-color: transparent;
-            flex-shrink: 0;
-        }
-        .timeline-content { flex: 1; }
-        .timeline-title { font-size: 1.5rem; font-weight: 700; margin-bottom: 0.5rem; }
-        .timeline-text { opacity: 0.8; line-height: 1.7; margin-bottom: 0.8rem; }
-        .timeline-duration { 
-            display: inline-block;
-            background: rgba(255,0,255,0.2);
-            color: var(--color-primary);
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            font-weight: 600;
-        }
-        .process-cta { text-align: center; margin-top: 3rem; }
         
         /* Packages */
         .packages-grid { 
@@ -399,7 +317,6 @@
             border-bottom: 1px solid rgba(255,255,255,0.1);
         }
         .feature-included { opacity: 0.9; }
-        .btn-block { width: 100%; text-align: center; }
         .packages-footer { text-align: center; margin-top: 3rem; }
         .packages-note { font-size: 1.1rem; opacity: 0.9; }
         .link-gradient { 
@@ -507,31 +424,19 @@
                 right: 0; 
                 background: rgba(0,0,0,0.98);
                 padding: 2rem;
+                gap: 1rem;
             }
             .nav-menu.active { display: flex; }
-            .nav-toggle { 
-                display: flex; 
-                flex-direction: column; 
-                gap: 4px; 
-                cursor: pointer;
-            }
-            .nav-toggle span { 
-                width: 25px; 
-                height: 3px; 
-                background: white; 
-                border-radius: 3px;
-            }
+            .nav-toggle { display: block; }
             .hero { padding: 80px 0 60px; }
             .hero-cta { flex-direction: column; }
-            .benefits-grid, .cases-grid, .testimonials-grid, .packages-grid { 
+            .benefits-grid, .testimonials-grid, .packages-grid { 
                 grid-template-columns: 1fr; 
             }
             .footer-content { grid-template-columns: 1fr; }
             .footer-links { grid-template-columns: 1fr; }
             .footer-bottom { flex-direction: column; gap: 1rem; }
             .package-featured { transform: scale(1); }
-            .timeline-item { flex-direction: column; }
-            .timeline-number { font-size: 2rem; }
         }
     </style>
 </head>
@@ -547,7 +452,9 @@
             </div>
             <ul class="nav-menu" id="navMenu">
                 <li><a href="index.html" class="nav-link active">Home</a></li>
-                <li><a href="captacao.html" class="nav-link">Landing Page</a></li>
+                <li><a href="#servicos" class="nav-link">Serviços</a></li>
+                <li><a href="#processo" class="nav-link">Processo</a></li>
+                <li><a href="#contato" class="nav-link">Contato</a></li>
                 <li><a href="https://wa.me/5548984580234?text=Quero%20solicitar%20uma%20proposta!" target="_blank" class="btn btn-primary">Solicitar Proposta</a></li>
             </ul>
             <div class="nav-toggle" id="navToggle">
@@ -579,8 +486,8 @@
                         <span>Solicitar Proposta Personalizada</span>
                         <span class="btn-icon">→</span>
                     </a>
-                    <a href="captacao.html" class="btn btn-large btn-outline">
-                        <span>Ver Landing Page</span>
+                    <a href="#servicos" class="btn btn-large btn-outline">
+                        <span>Ver Serviços</span>
                     </a>
                 </div>
                 <div class="hero-stats">
@@ -602,7 +509,7 @@
     </section>
 
     <!-- BENEFÍCIOS -->
-    <section class="benefits section">
+    <section id="servicos" class="benefits section">
         <div class="container">
             <div class="section-header">
                 <span class="section-badge">Por que Prismatic Labs?</span>
@@ -643,6 +550,38 @@
         </div>
     </section>
 
+    <!-- PROCESSO -->
+    <section id="processo" class="section">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-badge">Processo Transparente</span>
+                <h2 class="section-title">Como <span class="gradient-text">Trabalhamos</span></h2>
+            </div>
+            <div class="benefits-grid">
+                <div class="benefit-card">
+                    <div class="benefit-icon">1️⃣</div>
+                    <h3 class="benefit-title">Briefing Estratégico</h3>
+                    <p class="benefit-text">Entendemos seu produto, público-alvo e objetivos. Definimos métricas claras de sucesso.</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon">2️⃣</div>
+                    <h3 class="benefit-title">Design Dark Mode</h3>
+                    <p class="benefit-text">Criamos o design completo com componentes interativos. Você aprova antes de desenvolvermos.</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon">3️⃣</div>
+                    <h3 class="benefit-title">Desenvolvimento</h3>
+                    <p class="benefit-text">Código limpo e otimizado. 100% responsivo e integrado com suas ferramentas.</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon">4️⃣</div>
+                    <h3 class="benefit-title">Lançamento</h3>
+                    <p class="benefit-text">Publicamos e acompanhamos métricas. 30-60 dias de suporte e ajustes inclusos.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- DEPOIMENTOS -->
     <section class="testimonials section">
         <div class="container">
@@ -651,13 +590,12 @@
                 <h2 class="section-title">O que nossos <span class="gradient-text">Clientes Dizem</span></h2>
             </div>
             <div class="testimonials-grid">
-                <!-- DEPOIMENTO 1 -->
                 <div class="testimonial-card">
                     <div class="testimonial-header">
                         <div class="stars">⭐⭐⭐⭐⭐</div>
                         <p class="testimonial-title">"Resultado acima das expectativas"</p>
                     </div>
-                    <p class="testimonial-text">Contratei a Prismatic Labs para minha landing page de curso e ficou perfeito! Em 7 dias estava no ar e já começou a gerar conversões. O design neon é realmente único e chama atenção.</p>
+                    <p class="testimonial-text">Contratei a Prismatic Labs para minha landing page de curso e ficou perfeito! Em 7 dias estava no ar e já começou a gerar conversões.</p>
                     <div class="testimonial-author">
                         <div class="author-avatar">💜</div>
                         <div class="author-info">
@@ -667,13 +605,12 @@
                     </div>
                 </div>
 
-                <!-- DEPOIMENTO 2 -->
                 <div class="testimonial-card">
                     <div class="testimonial-header">
                         <div class="stars">⭐⭐⭐⭐⭐</div>
                         <p class="testimonial-title">"Aumentou minhas vendas em 67%"</p>
                     </div>
-                    <p class="testimonial-text">Meu e-commerce estava estagnado. A Prismatic Labs fez um redesign completo e os resultados foram imediatos. Meu ticket médio triplicou! Altamente recomendo.</p>
+                    <p class="testimonial-text">Meu e-commerce estava estagnado. A Prismatic Labs fez um redesign completo e os resultados foram imediatos.</p>
                     <div class="testimonial-author">
                         <div class="author-avatar">🚀</div>
                         <div class="author-info">
@@ -683,13 +620,12 @@
                     </div>
                 </div>
 
-                <!-- DEPOIMENTO 3 -->
                 <div class="testimonial-card">
                     <div class="testimonial-header">
                         <div class="stars">⭐⭐⭐⭐⭐</div>
                         <p class="testimonial-title">"Profissionais e atenciosos"</p>
                     </div>
-                    <p class="testimonial-text">Excelente processo. Daniel entendeu perfeitamente minha visão, fez um site lindo e funcional. O atendimento foi impecável e a entrega foi no prazo. Voltarei com mais projetos!</p>
+                    <p class="testimonial-text">Excelente processo. Daniel entendeu perfeitamente minha visão, fez um site lindo e funcional. Voltarei com mais projetos!</p>
                     <div class="testimonial-author">
                         <div class="author-avatar">⚡</div>
                         <div class="author-info">
@@ -787,19 +723,19 @@
                 </div>
             </div>
             <div class="packages-footer">
-                <p class="packages-note">💡 Não sabe qual escolher? <a href="https://wa.me/5548984580234?text=Preciso%20de%20ajuda%20para%20escolher%20pacote!" target="_blank" class="link-gradient">Solicite uma proposta personalizada</a> baseada nas suas necessidades.</p>
+                <p class="packages-note">💡 Não sabe qual escolher? <a href="https://wa.me/5548984580234?text=Preciso%20de%20ajuda%20para%20escolher%20pacote!" target="_blank" class="link-gradient">Solicite uma proposta personalizada</a>.</p>
             </div>
         </div>
     </section>
 
-    <!-- CTA FINAL -->
-    <section class="cta-section section">
+    <!-- CTA FINAL + CONTATO -->
+    <section id="contato" class="cta-section section">
         <div class="container">
             <div class="cta-content">
                 <h2 class="cta-title">Pronto para ter uma Landing Page que <span class="gradient-text">Realmente Converte?</span></h2>
                 <p class="cta-text">Solicite uma proposta personalizada em 2 minutos. Sem compromisso.</p>
                 <a href="https://wa.me/5548984580234?text=Quero%20orçamento%20grátis%20landing%20page!" target="_blank" class="btn btn-large btn-gradient pulse">
-                    <span>Solicitar Proposta Gratuita</span>
+                    <span>💬 WhatsApp Direto</span>
                     <span class="btn-icon">→</span>
                 </a>
                 <p class="cta-subtext">⏰ Resposta em até 24 horas | 💜 Sem compromisso</p>
@@ -821,17 +757,18 @@
                 </div>
                 <div class="footer-links">
                     <div class="footer-col">
-                        <h4 class="footer-title">Serviços</h4>
+                        <h4 class="footer-title">Navegação</h4>
                         <ul class="footer-menu">
-                            <li><a href="captacao.html">Landing Page</a></li>
-                            <li><a href="https://wa.me/5548984580234" target="_blank">Proposta</a></li>
+                            <li><a href="#servicos">Serviços</a></li>
+                            <li><a href="#processo">Processo</a></li>
+                            <li><a href="#contato">Contato</a></li>
                         </ul>
                     </div>
                     <div class="footer-col">
                         <h4 class="footer-title">Empresa</h4>
                         <ul class="footer-menu">
                             <li><a href="index.html">Home</a></li>
-                            <li><a href="https://wa.me/5548984580234" target="_blank">Contato</a></li>
+                            <li><a href="https://wa.me/5548984580234" target="_blank">Proposta</a></li>
                         </ul>
                     </div>
                     <div class="footer-col">
@@ -861,16 +798,18 @@
         const navToggle = document.getElementById('navToggle');
         const navMenu = document.getElementById('navMenu');
         
-        navToggle.addEventListener('click', () => {
-            navMenu.classList.toggle('active');
-        });
-        
-        // Close menu when clicking a link
-        document.querySelectorAll('.nav-link').forEach(link => {
-            link.addEventListener('click', () => {
-                navMenu.classList.remove('active');
+        if (navToggle && navMenu) {
+            navToggle.addEventListener('click', () => {
+                navMenu.classList.toggle('active');
             });
-        });
+            
+            // Close menu when clicking a link
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.addEventListener('click', () => {
+                    navMenu.classList.remove('active');
+                });
+            });
+        }
         
         // Smooth scroll
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -884,12 +823,10 @@
         });
         
         // Log
-        console.log('🏢 PRISMATIC LABS - Site Institucional Carregado');
+        console.log('🏢 PRISMATIC LABS - Site Institucional');
         console.log('📅', new Date().toISOString());
-        console.log('✅ 3 sites online:');
-        console.log('  1. Institucional (este)');
-        console.log('  2. Landing Captação V1 (/captacao.html)');
-        console.log('  3. Landing Premium (repo separado)');
+        console.log('✅ Cabeçalho ORIGINAL restaurado');
+        console.log('✅ Landing pages SEPARADAS');
     </script>
 </body>
 </html>
