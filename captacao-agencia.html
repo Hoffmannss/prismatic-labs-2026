@@ -116,6 +116,217 @@
             z-index: 1;
         }
         
+        /* CSS MOCKUP STYLES */
+        .mockup-container {
+            position: relative;
+            width: 100%;
+            margin: 1.5rem 0;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            z-index: 1;
+            transition: transform 0.3s;
+        }
+        
+        .case-card:hover .mockup-container {
+            transform: scale(1.02);
+        }
+        
+        .mockup-browser {
+            background: #1a1a1a;
+            border-radius: 8px 8px 0 0;
+            overflow: hidden;
+        }
+        
+        .mockup-toolbar {
+            background: #2a2a2a;
+            padding: 8px 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border-bottom: 1px solid #333;
+        }
+        
+        .mockup-dots {
+            display: flex;
+            gap: 6px;
+        }
+        
+        .mockup-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+        
+        .dot-red { background: #ff5f56; }
+        .dot-yellow { background: #ffbd2e; }
+        .dot-green { background: #27c93f; }
+        
+        .mockup-url {
+            flex: 1;
+            background: #1a1a1a;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            color: #888;
+            margin-left: 12px;
+        }
+        
+        .mockup-content {
+            background: #0a0a0a;
+            min-height: 200px;
+            position: relative;
+        }
+        
+        /* E-COMMERCE MOCKUP */
+        .ecommerce-mockup {
+            padding: 20px;
+        }
+        
+        .ecommerce-header {
+            background: linear-gradient(45deg, #00ff88, #00cc66);
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            text-align: center;
+            font-weight: 900;
+            color: #000;
+            font-size: 1.1rem;
+        }
+        
+        .ecommerce-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+        }
+        
+        .product-card {
+            background: rgba(0,255,136,0.1);
+            border: 2px solid rgba(0,255,136,0.3);
+            border-radius: 8px;
+            padding: 12px;
+            text-align: center;
+        }
+        
+        .product-img {
+            width: 100%;
+            height: 60px;
+            background: linear-gradient(135deg, rgba(0,255,136,0.2), rgba(0,204,102,0.2));
+            border-radius: 6px;
+            margin-bottom: 8px;
+        }
+        
+        .product-name {
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: #00ff88;
+            margin-bottom: 4px;
+        }
+        
+        .product-price {
+            font-size: 0.8rem;
+            font-weight: 900;
+            color: #fff;
+        }
+        
+        /* INFOPRODUTO MOCKUP */
+        .infoproduto-mockup {
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .vsl-player {
+            background: #000;
+            border-radius: 12px;
+            padding: 40px 20px;
+            margin-bottom: 15px;
+            position: relative;
+            border: 2px solid rgba(255,165,0,0.5);
+        }
+        
+        .play-icon {
+            width: 60px;
+            height: 60px;
+            background: rgba(255,165,0,0.9);
+            border-radius: 50%;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: #000;
+        }
+        
+        .vsl-title {
+            margin-top: 15px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: #ffa500;
+        }
+        
+        .infoproduto-cta {
+            background: linear-gradient(45deg, #ff6600, #ff8800);
+            padding: 15px;
+            border-radius: 50px;
+            font-weight: 900;
+            color: #fff;
+            font-size: 0.9rem;
+            box-shadow: 0 10px 20px rgba(255,102,0,0.4);
+        }
+        
+        /* AGÊNCIA MOCKUP */
+        .agencia-mockup {
+            padding: 20px;
+        }
+        
+        .agencia-hero {
+            background: linear-gradient(135deg, rgba(138,43,226,0.3), rgba(0,191,255,0.3));
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            margin-bottom: 15px;
+            border: 1px solid rgba(138,43,226,0.5);
+        }
+        
+        .agencia-title {
+            font-size: 1rem;
+            font-weight: 900;
+            background: linear-gradient(45deg, #8a2be2, #00bfff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 8px;
+        }
+        
+        .agencia-subtitle {
+            font-size: 0.7rem;
+            color: #00bfff;
+        }
+        
+        .portfolio-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+        
+        .portfolio-item {
+            background: rgba(138,43,226,0.1);
+            border: 1px solid rgba(138,43,226,0.3);
+            border-radius: 8px;
+            padding: 15px 10px;
+            text-align: center;
+        }
+        
+        .portfolio-icon {
+            font-size: 1.5rem;
+            margin-bottom: 5px;
+        }
+        
+        .portfolio-label {
+            font-size: 0.65rem;
+            color: #8a2be2;
+            font-weight: 600;
+        }
+        
         .case-title { 
             font-size: 1.5rem; 
             font-weight: 700; 
@@ -173,7 +384,7 @@
         
         .case-popup {
             background: linear-gradient(135deg, #1a0a2e 0%, #0a0a0a 100%);
-            max-width: 800px;
+            max-width: 900px;
             width: 100%;
             border-radius: 20px;
             padding: 40px;
@@ -276,6 +487,10 @@
         }
         .popup-cta:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(255,0,255,0.4); }
         
+        .popup-mockup {
+            margin: 2rem 0;
+        }
+        
         .cta-final {
             background: linear-gradient(45deg, #ff00ff, #00ffff);
             color: white;
@@ -297,6 +512,8 @@
             .case-popup { padding: 30px 20px; }
             .popup-title { font-size: 1.5rem; }
             .popup-grid { grid-template-columns: 1fr 1fr; }
+            .ecommerce-grid { grid-template-columns: repeat(2, 1fr); }
+            .portfolio-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -327,6 +544,40 @@
                     <span class="case-emoji">🛒</span>
                     <h3 class="case-title">E-commerce Fitness</h3>
                     <p class="case-subtitle">Loja de suplementos que multiplicou vendas</p>
+                    
+                    <div class="mockup-container">
+                        <div class="mockup-browser">
+                            <div class="mockup-toolbar">
+                                <div class="mockup-dots">
+                                    <div class="mockup-dot dot-red"></div>
+                                    <div class="mockup-dot dot-yellow"></div>
+                                    <div class="mockup-dot dot-green"></div>
+                                </div>
+                                <div class="mockup-url">fitshop.com.br/suplementos</div>
+                            </div>
+                            <div class="mockup-content ecommerce-mockup">
+                                <div class="ecommerce-header">🏋️ FITSHOP SUPLEMENTOS</div>
+                                <div class="ecommerce-grid">
+                                    <div class="product-card">
+                                        <div class="product-img"></div>
+                                        <div class="product-name">Whey Protein</div>
+                                        <div class="product-price">R$ 89,90</div>
+                                    </div>
+                                    <div class="product-card">
+                                        <div class="product-img"></div>
+                                        <div class="product-name">Creatina</div>
+                                        <div class="product-price">R$ 59,90</div>
+                                    </div>
+                                    <div class="product-card">
+                                        <div class="product-img"></div>
+                                        <div class="product-name">BCAA</div>
+                                        <div class="product-price">R$ 79,90</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
                     <div class="case-stat">🚀 +320% vendas em 45 dias</div>
                     <span class="case-cta">🔍 Ver bastidores completos →</span>
                 </div>
@@ -336,6 +587,27 @@
                     <span class="case-emoji">🎓</span>
                     <h3 class="case-title">Curso Online Marketing</h3>
                     <p class="case-subtitle">Landing page que converteu R$180k</p>
+                    
+                    <div class="mockup-container">
+                        <div class="mockup-browser">
+                            <div class="mockup-toolbar">
+                                <div class="mockup-dots">
+                                    <div class="mockup-dot dot-red"></div>
+                                    <div class="mockup-dot dot-yellow"></div>
+                                    <div class="mockup-dot dot-green"></div>
+                                </div>
+                                <div class="mockup-url">marketingpro.com/curso</div>
+                            </div>
+                            <div class="mockup-content infoproduto-mockup">
+                                <div class="vsl-player">
+                                    <div class="play-icon">▶</div>
+                                    <div class="vsl-title">Assista ao Vídeo Completo</div>
+                                </div>
+                                <div class="infoproduto-cta">🚀 GARANTIR MINHA VAGA AGORA</div>
+                            </div>
+                        </div>
+                    </div>
+                    
                     <div class="case-stat">💰 R$180k em lançamento</div>
                     <span class="case-cta">🔍 Ver bastidores completos →</span>
                 </div>
@@ -345,6 +617,36 @@
                     <span class="case-emoji">🏢</span>
                     <h3 class="case-title">Agência Marketing Digital</h3>
                     <p class="case-subtitle">Site institucional premium</p>
+                    
+                    <div class="mockup-container">
+                        <div class="mockup-browser">
+                            <div class="mockup-toolbar">
+                                <div class="mockup-dots">
+                                    <div class="mockup-dot dot-red"></div>
+                                    <div class="mockup-dot dot-yellow"></div>
+                                    <div class="mockup-dot dot-green"></div>
+                                </div>
+                                <div class="mockup-url">digitalagency.pro</div>
+                            </div>
+                            <div class="mockup-content agencia-mockup">
+                                <div class="agencia-hero">
+                                    <div class="agencia-title">DIGITAL AGENCY PRO</div>
+                                    <div class="agencia-subtitle">Marketing que Transforma Negócios</div>
+                                </div>
+                                <div class="portfolio-grid">
+                                    <div class="portfolio-item">
+                                        <div class="portfolio-icon">🎨</div>
+                                        <div class="portfolio-label">Branding</div>
+                                    </div>
+                                    <div class="portfolio-item">
+                                        <div class="portfolio-icon">📱</div>
+                                        <div class="portfolio-label">Social Media</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
                     <div class="case-stat">✨ +150% taxa de conversão</div>
                     <span class="case-cta">🔍 Ver bastidores completos →</span>
                 </div>
@@ -358,7 +660,7 @@
         </div>
     </section>
 
-    <!-- POPUPS DOS CASES -->
+    <!-- POPUPS DOS CASES (mantidos sem alteração) -->
     
     <!-- CASE 1 POPUP -->
     <div class="case-overlay" id="case1Overlay" onclick="closeCase('case1')">
@@ -553,7 +855,7 @@
     </div>
 
     <script>
-        console.log('🎯 Prismatic Labs - Cases META-CASE');
+        console.log('🎯 Prismatic Labs - Cases META-CASE com Mockups CSS');
         
         function openCase(caseId) {
             document.getElementById(caseId + 'Overlay').classList.add('active');
@@ -572,7 +874,7 @@
             }
         });
         
-        console.log('✅ Sistema META-CASE ativo nos 3 cases');
+        console.log('✅ Sistema META-CASE ativo com mockups CSS inline');
     </script>
 </body>
 </html>
