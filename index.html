@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="refresh" content="0; url=captacao-v2.html">
+    <title>Prismatic Labs - Redirecionando...</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+            background: #0a0a1a;
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            text-align: center;
+        }
+        .redirect-box {
+            padding: 40px;
+        }
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid rgba(255,0,255,0.2);
+            border-top-color: #ff00ff;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin: 0 auto 20px;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        h1 {
+            font-size: 24px;
+            margin-bottom: 15px;
+            color: #ff00ff;
+        }
+        p {
+            opacity: 0.8;
+            margin-bottom: 20px;
+        }
+        a {
+            color: #00ffff;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="redirect-box">
+        <div class="spinner"></div>
+        <h1>🚀 Redirecionando...</h1>
+        <p>Você será redirecionado automaticamente.</p>
+        <p>Se não funcionar, <a href="captacao-v2.html">clique aqui</a>.</p>
+    </div>
+    
+    <script>
+        // Redireciona instantaneamente via JavaScript também
+        window.location.replace('captacao-v2.html');
+    </script>
+</body>
+</html>
