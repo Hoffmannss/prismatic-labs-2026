@@ -294,7 +294,7 @@
             line-height: 1.8;
         }
         
-        /* CASES */
+        /* CASES - Agora clicáveis! */
         .cases-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -307,11 +307,39 @@
             overflow: hidden;
             border: 1px solid rgba(255,255,255,0.1);
             transition: all 0.3s;
+            cursor: pointer;
+            position: relative;
+        }
+        
+        .case-card::after {
+            content: '🔍 Ver Detalhes';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(255,0,255,0.95);
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-weight: 700;
+            opacity: 0;
+            transition: all 0.3s;
+            pointer-events: none;
+            z-index: 10;
         }
         
         .case-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 40px rgba(255,0,255,0.2);
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(255,0,255,0.3);
+            border-color: #ff00ff;
+        }
+        
+        .case-card:hover::after {
+            opacity: 1;
+        }
+        
+        .case-card:hover .case-mockup,
+        .case-card:hover .case-content {
+            opacity: 0.3;
         }
         
         .case-mockup {
@@ -322,10 +350,12 @@
             justify-content: center;
             font-size: 3rem;
             border-bottom: 2px solid rgba(255,0,255,0.3);
+            transition: all 0.3s;
         }
         
         .case-content {
             padding: 25px;
+            transition: all 0.3s;
         }
         
         .case-content h3 {
@@ -352,6 +382,351 @@
             font-size: 0.9rem;
             color: #00ffff;
             border: 1px solid rgba(0,255,255,0.3);
+        }
+        
+        /* MODAL CASE EXPANDIDO */
+        .case-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.95);
+            backdrop-filter: blur(10px);
+            z-index: 2000;
+            padding: 20px;
+            overflow-y: auto;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        .case-modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .case-modal-content {
+            background: linear-gradient(135deg, #1a0a2e 0%, #0a0a1a 100%);
+            max-width: 1000px;
+            width: 100%;
+            border-radius: 20px;
+            padding: 0;
+            border: 2px solid rgba(255,0,255,0.3);
+            box-shadow: 0 30px 80px rgba(255,0,255,0.5);
+            animation: slideUp 0.4s ease;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+        }
+        
+        @keyframes slideUp {
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        
+        .modal-close {
+            position: sticky;
+            top: 20px;
+            right: 20px;
+            float: right;
+            background: rgba(255,0,0,0.2);
+            border: 2px solid rgba(255,0,0,0.5);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+            z-index: 10;
+        }
+        
+        .modal-close:hover {
+            background: rgba(255,0,0,0.4);
+            transform: rotate(90deg);
+        }
+        
+        .modal-header {
+            padding: 40px 40px 20px;
+            clear: both;
+        }
+        
+        .modal-header h2 {
+            font-size: 2.5rem;
+            background: linear-gradient(45deg, #ff00ff, #00ffff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+        
+        .modal-header p {
+            opacity: 0.8;
+            font-size: 1.1rem;
+        }
+        
+        .modal-mockup {
+            margin: 30px 40px;
+            padding: 40px;
+            background: linear-gradient(135deg, #0f0f1e, #1a1a2e);
+            border-radius: 15px;
+            border: 2px solid rgba(255,0,255,0.2);
+            min-height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal-body {
+            padding: 0 40px 40px;
+        }
+        
+        .modal-section {
+            margin-bottom: 30px;
+        }
+        
+        .modal-section h3 {
+            color: #00ffff;
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+        
+        .metric-card {
+            background: rgba(255,255,255,0.05);
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.1);
+            text-align: center;
+        }
+        
+        .metric-value {
+            font-size: 2.5rem;
+            font-weight: 900;
+            background: linear-gradient(45deg, #ff00ff, #00ffff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: block;
+            margin-bottom: 5px;
+        }
+        
+        .metric-label {
+            opacity: 0.8;
+            font-size: 0.95rem;
+        }
+        
+        .tech-stack {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .tech-badge {
+            background: rgba(0,255,255,0.1);
+            padding: 8px 16px;
+            border-radius: 20px;
+            border: 1px solid rgba(0,255,255,0.3);
+            color: #00ffff;
+            font-size: 0.9rem;
+        }
+        
+        .timeline {
+            position: relative;
+            padding-left: 30px;
+        }
+        
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(180deg, #ff00ff, #00ffff);
+        }
+        
+        .timeline-item {
+            position: relative;
+            padding: 15px 0;
+        }
+        
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -35px;
+            top: 20px;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #ff00ff;
+            border: 2px solid #0a0a1a;
+        }
+        
+        .timeline-day {
+            font-weight: 700;
+            color: #ff00ff;
+            margin-bottom: 5px;
+        }
+        
+        /* MOCKUPS VISUAIS */
+        .mockup-ecommerce {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            width: 100%;
+        }
+        
+        .product-card {
+            background: rgba(255,0,255,0.1);
+            border: 2px solid rgba(255,0,255,0.3);
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            transition: all 0.3s;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-5px);
+            border-color: #ff00ff;
+            box-shadow: 0 10px 30px rgba(255,0,255,0.3);
+        }
+        
+        .product-img {
+            width: 100%;
+            height: 120px;
+            background: linear-gradient(135deg, #ff00ff, #00ffff);
+            border-radius: 8px;
+            margin-bottom: 10px;
+            opacity: 0.3;
+        }
+        
+        .product-name {
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .product-price {
+            color: #00ffff;
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+        
+        .mockup-landing {
+            width: 100%;
+            text-align: center;
+        }
+        
+        .vsl-player {
+            width: 100%;
+            height: 300px;
+            background: linear-gradient(135deg, #000, #1a1a2e);
+            border-radius: 15px;
+            border: 3px solid rgba(255,0,255,0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            position: relative;
+        }
+        
+        .play-btn {
+            width: 80px;
+            height: 80px;
+            background: rgba(255,0,255,0.8);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .play-btn:hover {
+            transform: scale(1.1);
+            background: rgba(255,0,255,1);
+        }
+        
+        .cta-form {
+            background: rgba(255,255,255,0.05);
+            padding: 20px;
+            border-radius: 10px;
+            border: 2px solid rgba(0,255,255,0.3);
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 10px;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 8px;
+            color: #fff;
+        }
+        
+        .form-button {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(45deg, #ff00ff, #00ffff);
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-weight: 700;
+            cursor: pointer;
+        }
+        
+        .mockup-agencia {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            width: 100%;
+        }
+        
+        .portfolio-item {
+            background: rgba(0,255,255,0.1);
+            border: 2px solid rgba(0,255,255,0.3);
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s;
+        }
+        
+        .portfolio-item:hover {
+            transform: scale(1.05);
+            border-color: #00ffff;
+            box-shadow: 0 10px 30px rgba(0,255,255,0.3);
+        }
+        
+        .portfolio-thumb {
+            width: 100%;
+            height: 150px;
+            background: linear-gradient(135deg, #00ffff, #ff00ff);
+            border-radius: 8px;
+            margin-bottom: 10px;
+            opacity: 0.3;
+        }
+        
+        .portfolio-title {
+            font-weight: 600;
+            color: #00ffff;
         }
         
         /* DEPOIMENTOS */
@@ -564,6 +939,24 @@
             .section {
                 padding: 50px 0;
             }
+            
+            .mockup-ecommerce {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .mockup-agencia {
+                grid-template-columns: 1fr;
+            }
+            
+            .modal-header,
+            .modal-body,
+            .modal-mockup {
+                padding: 20px;
+            }
+            
+            .case-modal-content {
+                margin: 10px;
+            }
         }
     </style>
 </head>
@@ -661,10 +1054,10 @@
     <section id="cases" class="section">
         <div class="container">
             <h2 class="section-title">Cases de <span class="gradient">Sucesso</span></h2>
-            <p class="section-subtitle">Veja projetos reais que entregamos e os resultados alcançados</p>
+            <p class="section-subtitle">Clique para ver detalhes completos dos projetos e seus resultados</p>
             
             <div class="cases-grid">
-                <div class="case-card">
+                <div class="case-card" onclick="openCase('ecommerce')">
                     <div class="case-mockup">🛍️</div>
                     <div class="case-content">
                         <h3>E-commerce NEON</h3>
@@ -676,7 +1069,7 @@
                     </div>
                 </div>
                 
-                <div class="case-card">
+                <div class="case-card" onclick="openCase('landing')">
                     <div class="case-mockup">📚</div>
                     <div class="case-content">
                         <h3>Landing Infoproduto</h3>
@@ -688,7 +1081,7 @@
                     </div>
                 </div>
                 
-                <div class="case-card">
+                <div class="case-card" onclick="openCase('agencia')">
                     <div class="case-mockup">🚀</div>
                     <div class="case-content">
                         <h3>Site Agência Growth</h3>
@@ -702,6 +1095,326 @@
             </div>
         </div>
     </section>
+
+    <!-- MODAL CASE: E-COMMERCE -->
+    <div id="modal-ecommerce" class="case-modal">
+        <div class="case-modal-content">
+            <button class="modal-close" onclick="closeCase('ecommerce')">×</button>
+            
+            <div class="modal-header">
+                <h2>🛍️ E-commerce NEON Streetwear</h2>
+                <p>Loja virtual completa com design dark mode + neon para marca de streetwear premium</p>
+            </div>
+            
+            <div class="modal-mockup">
+                <div class="mockup-ecommerce">
+                    <div class="product-card">
+                        <div class="product-img"></div>
+                        <div class="product-name">Moletom Cyber</div>
+                        <div class="product-price">R$ 299</div>
+                    </div>
+                    <div class="product-card">
+                        <div class="product-img"></div>
+                        <div class="product-name">Camiseta Neon</div>
+                        <div class="product-price">R$ 149</div>
+                    </div>
+                    <div class="product-card">
+                        <div class="product-img"></div>
+                        <div class="product-name">Jaqueta Dark</div>
+                        <div class="product-price">R$ 499</div>
+                    </div>
+                    <div class="product-card">
+                        <div class="product-img"></div>
+                        <div class="product-name">Tênis Cyber</div>
+                        <div class="product-price">R$ 399</div>
+                    </div>
+                    <div class="product-card">
+                        <div class="product-img"></div>
+                        <div class="product-name">Bone Neon</div>
+                        <div class="product-price">R$ 99</div>
+                    </div>
+                    <div class="product-card">
+                        <div class="product-img"></div>
+                        <div class="product-name">Meia Pack</div>
+                        <div class="product-price">R$ 59</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="modal-body">
+                <div class="modal-section">
+                    <h3>📊 Resultados Comprovados</h3>
+                    <div class="metrics-grid">
+                        <div class="metric-card">
+                            <span class="metric-value">+67%</span>
+                            <span class="metric-label">Aumento Vendas</span>
+                        </div>
+                        <div class="metric-card">
+                            <span class="metric-value">3.2x</span>
+                            <span class="metric-label">Ticket Médio</span>
+                        </div>
+                        <div class="metric-card">
+                            <span class="metric-value">4.8%</span>
+                            <span class="metric-label">Taxa Conversão</span>
+                        </div>
+                        <div class="metric-card">
+                            <span class="metric-value">1.4s</span>
+                            <span class="metric-label">Load Time</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="modal-section">
+                    <h3>🎯 Desafio</h3>
+                    <p style="opacity: 0.9; line-height: 1.8;">Cliente tinha loja Shopify genérica com baixa conversão e abandono de carrinho alto. Precisava de identidade visual forte e checkout otimizado.</p>
+                </div>
+                
+                <div class="modal-section">
+                    <h3>💡 Solução</h3>
+                    <p style="opacity: 0.9; line-height: 1.8;">Desenvolvemos e-commerce custom com design dark mode + neon, checkout one-page, upsell automático e integração com PIX/cartão. Sistema de rastreamento de conversão implementado.</p>
+                </div>
+                
+                <div class="modal-section">
+                    <h3>⚙️ Stack Técnica</h3>
+                    <div class="tech-stack">
+                        <span class="tech-badge">HTML5/CSS3</span>
+                        <span class="tech-badge">JavaScript ES6+</span>
+                        <span class="tech-badge">Stripe API</span>
+                        <span class="tech-badge">Mercado Pago</span>
+                        <span class="tech-badge">Google Analytics 4</span>
+                        <span class="tech-badge">Facebook Pixel</span>
+                    </div>
+                </div>
+                
+                <div class="modal-section">
+                    <h3>📅 Timeline</h3>
+                    <div class="timeline">
+                        <div class="timeline-item">
+                            <div class="timeline-day">Dias 1-2</div>
+                            <div>Briefing + Pesquisa de Mercado</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-day">Dias 3-4</div>
+                            <div>Design UI/UX + Aprovação</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-day">Dias 5-7</div>
+                            <div>Desenvolvimento Frontend</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-day">Dia 8</div>
+                            <div>Integrações + Testes</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-day">Dia 9</div>
+                            <div>Deploy + Treinamento</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL CASE: LANDING INFOPRODUTO -->
+    <div id="modal-landing" class="case-modal">
+        <div class="case-modal-content">
+            <button class="modal-close" onclick="closeCase('landing')">×</button>
+            
+            <div class="modal-header">
+                <h2>📚 Landing Page Infoproduto</h2>
+                <p>Página de vendas para curso online com VSL profissional e funil de conversão otimizado</p>
+            </div>
+            
+            <div class="modal-mockup">
+                <div class="mockup-landing">
+                    <div class="vsl-player">
+                        <div class="play-btn">▶</div>
+                    </div>
+                    <div class="cta-form">
+                        <input type="text" class="form-input" placeholder="Seu melhor email" readonly>
+                        <button class="form-button">🚀 QUERO ACESSO AGORA</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="modal-body">
+                <div class="modal-section">
+                    <h3>📊 Resultados Comprovados</h3>
+                    <div class="metrics-grid">
+                        <div class="metric-card">
+                            <span class="metric-value">R$ 180k</span>
+                            <span class="metric-label">Faturamento 30d</span>
+                        </div>
+                        <div class="metric-card">
+                            <span class="metric-value">12.3%</span>
+                            <span class="metric-label">Taxa Conversão</span>
+                        </div>
+                        <div class="metric-card">
+                            <span class="metric-value">4.5k</span>
+                            <span class="metric-label">Leads Capturados</span>
+                        </div>
+                        <div class="metric-card">
+                            <span class="metric-value">0.9s</span>
+                            <span class="metric-label">Load Time</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="modal-section">
+                    <h3>🎯 Desafio</h3>
+                    <p style="opacity: 0.9; line-height: 1.8;">Infoprodutora precisava de landing page de alta conversão para lançamento de curso. Tinha vídeo pronto mas página genérica que não convertia.</p>
+                </div>
+                
+                <div class="modal-section">
+                    <h3>💡 Solução</h3>
+                    <p style="opacity: 0.9; line-height: 1.8;">Criamos landing page focada em conversão com VSL destacado, timer de escassez, prova social e checkout em 2 cliques. Otimizamos funil completo com recuperação de carrinho.</p>
+                </div>
+                
+                <div class="modal-section">
+                    <h3>⚙️ Stack Técnica</h3>
+                    <div class="tech-stack">
+                        <span class="tech-badge">HTML5/CSS3</span>
+                        <span class="tech-badge">JavaScript</span>
+                        <span class="tech-badge">Hotmart API</span>
+                        <span class="tech-badge">RD Station</span>
+                        <span class="tech-badge">Facebook Ads Pixel</span>
+                        <span class="tech-badge">GTM</span>
+                    </div>
+                </div>
+                
+                <div class="modal-section">
+                    <h3>📅 Timeline</h3>
+                    <div class="timeline">
+                        <div class="timeline-item">
+                            <div class="timeline-day">Dia 1</div>
+                            <div>Briefing + Estratégia de Funil</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-day">Dias 2-3</div>
+                            <div>Design da Landing + VSL</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-day">Dias 4-5</div>
+                            <div>Desenvolvimento + Automações</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-day">Dia 6</div>
+                            <div>Integrações + Testes A/B</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-day">Dia 7</div>
+                            <div>Deploy + Setup Ads</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL CASE: AGÊNCIA -->
+    <div id="modal-agencia" class="case-modal">
+        <div class="case-modal-content">
+            <button class="modal-close" onclick="closeCase('agencia')">×</button>
+            
+            <div class="modal-header">
+                <h2>🚀 Site Agência Growth</h2>
+                <p>Site institucional premium com portfólio interativo e sistema de captação de leads</p>
+            </div>
+            
+            <div class="modal-mockup">
+                <div class="mockup-agencia">
+                    <div class="portfolio-item">
+                        <div class="portfolio-thumb"></div>
+                        <div class="portfolio-title">Case E-commerce</div>
+                    </div>
+                    <div class="portfolio-item">
+                        <div class="portfolio-thumb"></div>
+                        <div class="portfolio-title">Case SaaS</div>
+                    </div>
+                    <div class="portfolio-item">
+                        <div class="portfolio-thumb"></div>
+                        <div class="portfolio-title">Case Fintech</div>
+                    </div>
+                    <div class="portfolio-item">
+                        <div class="portfolio-thumb"></div>
+                        <div class="portfolio-title">Case Startup</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="modal-body">
+                <div class="modal-section">
+                    <h3>📊 Resultados Comprovados</h3>
+                    <div class="metrics-grid">
+                        <div class="metric-card">
+                            <span class="metric-value">8.5%</span>
+                            <span class="metric-label">Taxa Conversão</span>
+                        </div>
+                        <div class="metric-card">
+                            <span class="metric-value">2.1k</span>
+                            <span class="metric-label">Leads/Mês</span>
+                        </div>
+                        <div class="metric-card">
+                            <span class="metric-value">95</span>
+                            <span class="metric-label">PageSpeed Score</span>
+                        </div>
+                        <div class="metric-card">
+                            <span class="metric-value">78%</span>
+                            <span class="metric-label">Mobile Traffic</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="modal-section">
+                    <h3>🎯 Desafio</h3>
+                    <p style="opacity: 0.9; line-height: 1.8;">Agência de growth tinha site desatualizado e conversão baixa. Precisava transmitir autoridade e capturar leads qualificados.</p>
+                </div>
+                
+                <div class="modal-section">
+                    <h3>💡 Solução</h3>
+                    <p style="opacity: 0.9; line-height: 1.8;">Desenvolvemos site institucional premium com portfólio interativo, sistema de cases filtráveis, blog otimizado para SEO e formulário multiestágio de qualificação de leads.</p>
+                </div>
+                
+                <div class="modal-section">
+                    <h3>⚙️ Stack Técnica</h3>
+                    <div class="tech-stack">
+                        <span class="tech-badge">HTML5/CSS3</span>
+                        <span class="tech-badge">JavaScript</span>
+                        <span class="tech-badge">Zapier</span>
+                        <span class="tech-badge">Pipedrive</span>
+                        <span class="tech-badge">LinkedIn Pixel</span>
+                        <span class="tech-badge">SEO On-Page</span>
+                    </div>
+                </div>
+                
+                <div class="modal-section">
+                    <h3>📅 Timeline</h3>
+                    <div class="timeline">
+                        <div class="timeline-item">
+                            <div class="timeline-day">Dias 1-2</div>
+                            <div>Briefing + Arquitetura de Informação</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-day">Dias 3-5</div>
+                            <div>Design UI/UX + Sistema de Portfolio</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-day">Dias 6-9</div>
+                            <div>Desenvolvimento + CMS Custom</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-day">Dia 10-11</div>
+                            <div>SEO + Integrações</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-day">Dia 12</div>
+                            <div>Deploy + Treinamento</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- DEPOIMENTOS -->
     <section id="depoimentos" class="section">
@@ -835,6 +1548,39 @@
     </footer>
 
     <script>
+        // SISTEMA DE CASES EXPANSÍVEIS
+        function openCase(caseId) {
+            document.getElementById(`modal-${caseId}`).classList.add('active');
+            document.body.style.overflow = 'hidden';
+            console.log(`✨ Case aberto: ${caseId}`);
+        }
+        
+        function closeCase(caseId) {
+            document.getElementById(`modal-${caseId}`).classList.remove('active');
+            document.body.style.overflow = 'auto';
+            console.log(`❌ Case fechado: ${caseId}`);
+        }
+        
+        // Fechar com ESC
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                document.querySelectorAll('.case-modal').forEach(modal => {
+                    modal.classList.remove('active');
+                });
+                document.body.style.overflow = 'auto';
+            }
+        });
+        
+        // Fechar ao clicar fora
+        document.querySelectorAll('.case-modal').forEach(modal => {
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.classList.remove('active');
+                    document.body.style.overflow = 'auto';
+                }
+            });
+        });
+        
         // WhatsApp auto-format
         document.getElementById('whatsapp').addEventListener('input', function(e) {
             let val = e.target.value.replace(/[^0-9]/g, '').slice(0, 11);
@@ -892,6 +1638,9 @@
                 }
             });
         });
+        
+        console.log('🎨 Prismatic Labs - Landing Completa com Cases Expansíveis');
+        console.log('📅 Timestamp:', new Date().toISOString());
     </script>
 </body>
 </html>
