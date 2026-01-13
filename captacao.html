@@ -140,32 +140,54 @@
             margin-bottom: 0.5rem; 
             font-weight: 600; 
             color: #fff; 
+            font-size: 1rem;
         }
+        
+        /* INPUTS VISÍVEIS - CORREÇÃO CRÍTICA */
         .form-group input, 
         .form-group textarea, 
         .form-group select { 
             width: 100%; 
             padding: 15px; 
-            background: rgba(255,255,255,0.1); 
-            border: 2px solid rgba(255,255,255,0.2); 
+            background: rgba(255,255,255,0.15); /* AUMENTADO de 0.1 para 0.15 */
+            border: 2px solid rgba(255,255,255,0.3); /* AUMENTADO de 0.2 para 0.3 */
             border-radius: 12px; 
-            color: white; 
+            color: #ffffff; /* Branco puro */
             font-size: 1rem; 
             transition: all 0.3s;
             font-family: inherit;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.1); /* Profundidade */
         }
+        
         .form-group input:focus, 
         .form-group textarea:focus, 
         .form-group select:focus { 
             outline: none; 
             border-color: #ff00ff; 
-            box-shadow: 0 0 20px rgba(255,0,255,0.3); 
-            background: rgba(255,255,255,0.15); 
+            box-shadow: 0 0 20px rgba(255,0,255,0.4), inset 0 2px 4px rgba(0,0,0,0.1); 
+            background: rgba(255,255,255,0.2); /* Ainda mais visível no focus */
         }
+        
         .form-group input::placeholder, 
         .form-group textarea::placeholder { 
-            color: rgba(255,255,255,0.6); 
+            color: rgba(255,255,255,0.7); /* AUMENTADO de 0.6 para 0.7 */
         }
+        
+        /* Select precisa de tratamento especial */
+        .form-group select {
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23ffffff' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 15px center;
+            padding-right: 40px;
+        }
+        
+        .form-group select option {
+            background: #1a0a2e;
+            color: white;
+        }
+        
         .error { 
             color: #ff4444; 
             font-size: 0.9rem; 
@@ -173,6 +195,7 @@
             display: none; 
         }
         .error.show { display: block; }
+        
         .submit-btn { 
             width: 100%; 
             background: linear-gradient(45deg, #ff00ff, #00ffff); 
@@ -353,7 +376,7 @@
                 <form id="leadForm">
                     <div class="form-group">
                         <label>Nome Completo *</label>
-                        <input type="text" id="nome" required minlength="3">
+                        <input type="text" id="nome" required minlength="3" placeholder="Seu nome completo">
                         <div class="error" id="nomeError">Nome deve ter no mínimo 3 caracteres</div>
                     </div>
                     
@@ -409,6 +432,7 @@
     <script>
         console.log('🚀 Prismatic Labs - Landing Page Carregada');
         console.log('📅 Timestamp:', new Date().toISOString());
+        console.log('✅ Formulário visível:', document.getElementById('leadForm') ? 'SIM' : 'NÃO');
         
         // Regex Validações BR
         const REGEX_WHATSAPP = /^\(\d{2}\)\s\d{5}-\d{4}$/;
@@ -513,14 +537,14 @@
             console.log('📦 Dados do formulário:', formData);
             
             try {
-                // WEBHOOK ZAPIER REAL (CONFIGURAR COM SUA URL)
+                // WEBHOOK ZAPIER REAL
                 const webhookUrl = 'https://hooks.zapier.com/hooks/catch/20962426/27d20te/';
                 
                 console.log('🔗 Enviando para webhook:', webhookUrl);
                 
                 const response = await fetch(webhookUrl, {
                     method: 'POST',
-                    mode: 'no-cors', // Importante para CORS do Zapier
+                    mode: 'no-cors',
                     headers: {
                         'Content-Type': 'application/json',
                     },
@@ -580,6 +604,8 @@
         console.log('- User Agent:', navigator.userAgent);
         console.log('- Screen:', window.innerWidth + 'x' + window.innerHeight);
         console.log('- Timezone:', Intl.DateTimeFormat().resolvedOptions().timeZone);
+        console.log('- Form existe?', document.getElementById('leadForm') !== null);
+        console.log('- Inputs existem?', document.querySelectorAll('input').length);
     </script>
 </body>
 </html>
