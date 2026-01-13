@@ -70,11 +70,13 @@
             -webkit-text-fill-color: transparent; 
         }
         
+        /* CORREÇÃO: Grid com altura uniforme */
         .cases-grid { 
             display: grid; 
             grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); 
             gap: 2rem; 
             margin-bottom: 3rem;
+            align-items: stretch; /* Força mesma altura */
         }
         
         .case-card { 
@@ -86,6 +88,9 @@
             transition: all 0.3s;
             position: relative;
             overflow: hidden;
+            display: flex;
+            flex-direction: column; /* Flexbox para alinhar conteúdo */
+            height: 100%; /* Altura total do grid cell */
         }
         
         .case-card::before {
@@ -126,6 +131,9 @@
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
             z-index: 1;
             transition: transform 0.3s;
+            flex-grow: 1; /* Ocupa espaço disponível */
+            display: flex;
+            flex-direction: column;
         }
         
         .case-card:hover .mockup-container {
@@ -136,6 +144,9 @@
             background: #1a1a1a;
             border-radius: 8px 8px 0 0;
             overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
         }
         
         .mockup-toolbar {
@@ -145,6 +156,7 @@
             align-items: center;
             gap: 8px;
             border-bottom: 1px solid #333;
+            flex-shrink: 0; /* Não encolhe */
         }
         
         .mockup-dots {
@@ -174,13 +186,19 @@
         
         .mockup-content {
             background: #0a0a0a;
-            min-height: 200px;
+            min-height: 250px; /* Altura mínima consistente */
             position: relative;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
         }
         
         /* E-COMMERCE MOCKUP */
         .ecommerce-mockup {
             padding: 20px;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
         }
         
         .ecommerce-header {
@@ -198,6 +216,7 @@
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 10px;
+            flex-grow: 1;
         }
         
         .product-card {
@@ -206,6 +225,9 @@
             border-radius: 8px;
             padding: 12px;
             text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
         
         .product-img {
@@ -233,6 +255,10 @@
         .infoproduto-mockup {
             padding: 20px;
             text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 100%;
         }
         
         .vsl-player {
@@ -242,6 +268,11 @@
             margin-bottom: 15px;
             position: relative;
             border: 2px solid rgba(255,165,0,0.5);
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
         }
         
         .play-icon {
@@ -277,6 +308,9 @@
         /* AGÊNCIA MOCKUP */
         .agencia-mockup {
             padding: 20px;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
         }
         
         .agencia-hero {
@@ -306,6 +340,7 @@
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             gap: 10px;
+            flex-grow: 1;
         }
         
         .portfolio-item {
@@ -314,6 +349,10 @@
             border-radius: 8px;
             padding: 15px 10px;
             text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
         }
         
         .portfolio-icon {
@@ -347,7 +386,7 @@
             background: rgba(255,0,255,0.2); 
             padding: 10px; 
             border-radius: 10px; 
-            margin-top: 1rem;
+            margin-top: auto; /* Push to bottom */
             font-weight: 600;
             text-align: center;
             position: relative;
@@ -855,7 +894,7 @@
     </div>
 
     <script>
-        console.log('🎯 Prismatic Labs - Cases META-CASE com Mockups CSS');
+        console.log('🎯 Prismatic Labs - Cases META-CASE com Mockups CSS - CARDS SIMÉTRICOS');
         
         function openCase(caseId) {
             document.getElementById(caseId + 'Overlay').classList.add('active');
@@ -874,7 +913,7 @@
             }
         });
         
-        console.log('✅ Sistema META-CASE ativo com mockups CSS inline');
+        console.log('✅ Sistema META-CASE ativo com cards simétricos e mockups CSS inline');
     </script>
 </body>
 </html>
