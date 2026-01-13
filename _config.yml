@@ -1,0 +1,17 @@
+# GitHub Pages Configuration
+title: Prismatic Labs
+description: Landing pages profissionais
+
+# Tema (none para HTML puro)
+theme: null
+
+# Excluir arquivos
+exclude:
+  - README.md
+  - LICENSE
+  - backup/
+  - .github/
+
+# Incluir arquivos
+include:
+  - .nojekyll
