@@ -268,7 +268,7 @@
             border-radius:8px
         }
         .highlight-text{font-size:1.125rem;color:var(--text-primary);line-height:1.7}
-        .solution-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:2rem}
+        .solution-grid{display:grid;grid-template-columns:repeat(auto-fit,minmin(300px,1fr));gap:2rem}
         .solution-card{
             padding:2rem;
             background:rgba(255,255,255,0.02);
@@ -402,11 +402,24 @@
         .form-wrapper{max-width:800px;margin:0 auto}
         .form-intro{font-size:1.125rem;color:var(--text-secondary);line-height:1.7;text-align:center;margin-bottom:3rem}
         .form-intro strong{color:var(--text-primary);font-weight:700}
-        .form-container{
-            padding:2rem;
-            background:rgba(255,255,255,0.03);
-            border:1px solid rgba(0,255,255,0.2);
+        .form-cta-box{
+            text-align:center;
+            padding:4rem 2rem;
+            background:rgba(0,255,255,0.05);
+            border:2px solid var(--primary-neon);
             border-radius:24px;
+            margin-bottom:2rem
+        }
+        .form-cta-title{
+            font-family:'Space Grotesk',sans-serif;
+            font-size:clamp(1.5rem,4vw,2.5rem);
+            font-weight:800;
+            margin-bottom:1.5rem
+        }
+        .form-cta-text{
+            font-size:1.125rem;
+            color:var(--text-secondary);
+            line-height:1.7;
             margin-bottom:2rem
         }
         .trust-badges{display:flex;justify-content:center;gap:2rem;flex-wrap:wrap}
@@ -491,10 +504,9 @@
             .trust-item{padding:0.5rem 1rem;font-size:0.75rem}
             .btn-large{padding:1.25rem 2rem;font-size:1rem}
             .urgency-box,.guarantee-box{flex-direction:column;text-align:center;padding:2rem}
-            .form-container{padding:1rem}
             .trust-badges{gap:1rem}
             .trust-badge-item{padding:0.5rem 1rem;font-size:0.75rem}
-            .final-cta-box{padding:4rem 1rem}
+            .final-cta-box,.form-cta-box{padding:3rem 1rem}
             .final-cta-trust{flex-direction:column;gap:1rem}
             .footer-content-lp{flex-direction:column;text-align:center}
         }
@@ -540,9 +552,15 @@
                 </p>
                 
                 <div class="hero-cta-lp">
-                    <a href="#formulario" class="btn btn-large btn-gradient pulse">
+                    <button 
+                        data-tally-open="wAjRvb" 
+                        data-tally-layout="modal" 
+                        data-tally-width="600"
+                        data-tally-emoji-text="🚀" 
+                        data-tally-emoji-animation="wave"
+                        class="btn btn-large btn-gradient pulse">
                         <span>🚀 Quero Meu Orçamento Gratuito Agora</span>
-                    </a>
+                    </button>
                     <p class="cta-subtext-lp">✅ Sem compromisso | 💜 Resposta em 24h</p>
                 </div>
                 
@@ -654,7 +672,7 @@
             <div class="testimonials-slider">
                 <div class="testimonial-card-lp">
                     <div class="stars">⭐⭐⭐⭐⭐</div>
-                    <p class="testimonial-text-lp">“Em 7 dias estava no ar e minha landing page começou a converter imediatamente. Faturei <strong>R$ 180 mil no primeiro mês</strong> de lançamento. O design neon é realmente diferenciado!”</p>
+                    <p class="testimonial-text-lp">"Em 7 dias estava no ar e minha landing page começou a converter imediatamente. Faturei <strong>R$ 180 mil no primeiro mês</strong> de lançamento. O design neon é realmente diferenciado!"</p>
                     <div class="testimonial-author-lp">
                         <div class="author-avatar">M</div>
                         <div>
@@ -667,7 +685,7 @@
                 
                 <div class="testimonial-card-lp">
                     <div class="stars">⭐⭐⭐⭐⭐</div>
-                    <p class="testimonial-text-lp">“Meu e-commerce estava parado. Depois do redesign da Prismatic Labs, <strong>vendas aumentaram 67%</strong> e meu ticket médio triplicou. Investimento que se pagou em 15 dias!”</p>
+                    <p class="testimonial-text-lp">"Meu e-commerce estava parado. Depois do redesign da Prismatic Labs, <strong>vendas aumentaram 67%</strong> e meu ticket médio triplicou. Investimento que se pagou em 15 dias!"</p>
                     <div class="testimonial-author-lp">
                         <div class="author-avatar">R</div>
                         <div>
@@ -680,7 +698,7 @@
                 
                 <div class="testimonial-card-lp">
                     <div class="stars">⭐⭐⭐⭐⭐</div>
-                    <p class="testimonial-text-lp">“Profissionalismo do início ao fim. Entregaram em 9 dias e minha taxa de conversão subiu de 2% para <strong>8.5%</strong>. Agora sim tenho uma máquina de capturar leads!”</p>
+                    <p class="testimonial-text-lp">"Profissionalismo do início ao fim. Entregaram em 9 dias e minha taxa de conversão subiu de 2% para <strong>8.5%</strong>. Agora sim tenho uma máquina de capturar leads!"</p>
                     <div class="testimonial-author-lp">
                         <div class="author-avatar">J</div>
                         <div>
@@ -727,29 +745,35 @@
         </div>
     </section>
 
-    <!-- FORMULÁRIO -->
+    <!-- FORMULÁRIO (POPUP TALLY) -->
     <section id="formulario" class="lp-form-section section">
         <div class="container">
             <div class="form-wrapper">
                 <div style="text-align:center;margin-bottom:4rem">
                     <span class="section-badge">Orçamento Gratuito</span>
                     <h2 class="section-title">Solicite Sua <span class="gradient-text">Proposta Personalizada</span></h2>
-                    <p class="form-intro">Preencha o formulário abaixo e receba uma <strong>proposta detalhada em até 24 horas</strong>. Sem compromisso, sem pegadinhas.</p>
+                    <p class="form-intro">Preencha o formulário e receba uma <strong>proposta detalhada em até 24 horas</strong>. Sem compromisso, sem pegadinhas.</p>
                 </div>
                 
-                <!-- FORMULÁRIO TALLY SIMPLIFICADO -->
-                <div class="form-container">
-                    <iframe 
-                        data-tally-src="https://tally.so/embed/wAjRvb?alignLeft=1&hideTitle=1&transparentBackground=1&dynamicHeight=1" 
-                        loading="lazy" 
-                        width="100%" 
-                        height="600" 
-                        frameborder="0" 
-                        marginheight="0" 
-                        marginwidth="0" 
-                        title="Formulário de Orçamento"
-                        style="border:none">
-                    </iframe>
+                <!-- POPUP TALLY CTA -->
+                <div class="form-cta-box">
+                    <h3 class="form-cta-title">
+                        <span class="gradient-text">Clique no Botão Abaixo</span><br>
+                        e Receba Seu Orçamento Gratuito
+                    </h3>
+                    <p class="form-cta-text">
+                        Leva apenas <strong>2 minutos</strong> para preencher. Nossa equipe responde em até <strong>24 horas</strong> com uma proposta personalizada.
+                    </p>
+                    
+                    <button 
+                        data-tally-open="wAjRvb" 
+                        data-tally-layout="modal" 
+                        data-tally-width="600"
+                        data-tally-emoji-text="📋" 
+                        data-tally-emoji-animation="wave"
+                        class="btn btn-large btn-gradient pulse">
+                        <span>📋 Abrir Formulário de Orçamento</span>
+                    </button>
                 </div>
                 
                 <div class="trust-badges">
@@ -839,9 +863,15 @@
                 <h2 class="final-cta-title">Pare de Perder Vendas. <br><span class="gradient-text">Comece a Faturar Hoje.</span></h2>
                 <p class="final-cta-text">Cada dia sem um site profissional é dinheiro deixado na mesa. Preencha o formulário agora e receba sua proposta em 24 horas.</p>
                 
-                <a href="#formulario" class="btn btn-large btn-gradient pulse">
+                <button 
+                    data-tally-open="wAjRvb" 
+                    data-tally-layout="modal" 
+                    data-tally-width="600"
+                    data-tally-emoji-text="🚀" 
+                    data-tally-emoji-animation="wave"
+                    class="btn btn-large btn-gradient pulse">
                     <span>🚀 Sim, Quero Meu Site Agora!</span>
-                </a>
+                </button>
                 
                 <p class="final-cta-subtext">⏰ Últimas 2 vagas para Janeiro/2026 | ✅ Sem compromisso</p>
                 
@@ -877,12 +907,14 @@
         </div>
     </footer>
 
-    <!-- Tally Script -->
+    <!-- Tally Popup Script -->
+    <script src="https://tally.so/widgets/embed.js"></script>
+    
     <script>
-        var d=document,w="https://tally.so/widgets/embed.js",v=function(){"undefined"!=typeof Tally?Tally.loadEmbeds():d.querySelectorAll("iframe[data-tally-src]:not([src])").forEach((function(e){e.src=e.dataset.tallySrc}))};if("undefined"!=typeof Tally)v();else if(d.querySelector('script[src="'+w+'"]')==null){var s=d.createElement("script");s.src=w,s.onload=v,s.onerror=v,d.body.appendChild(s);}
+        console.log('✅ Prismatic Labs Landing Page Loaded (Popup Version)');
+        console.log('✅ Tally Popup Ready');
         
-        console.log('✅ Prismatic Labs Landing Page Loaded');
-        window.addEventListener('load',function(){
+        window.addEventListener('load', function() {
             console.log('✅ Page fully loaded');
         });
     </script>
