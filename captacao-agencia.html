@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🤝 Parceria para Agências | Prismatic Labs</title>
+    <meta name="description" content="Parceria white label para agências. Entregue landing pages premium aos seus clientes em 10-15 dias.">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🤝</text></svg>">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+            line-height: 1.6;
+            color: #fff;
+            background: linear-gradient(135deg, #0a0a1a 0%, #1a0a2e 50%, #16213e 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header */
+        header {
+            background: rgba(0,0,0,0.95);
+            backdrop-filter: blur(20px);
+            padding: 20px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 2px solid rgba(0,255,255,0.3);
+        }
+        
+        .header-flex {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: 900;
+            background: linear-gradient(45deg, #00ffff, #ff00ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-transform: uppercase;
+        }
+        
+        .whatsapp-header {
+            background: #25D366;
+            color: #fff;
+            padding: 12px 24px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-block;
+            transition: transform 0.2s;
+        }
+        
+        .whatsapp-header:hover {
+            transform: scale(1.05);
+        }
+        
+        /* Hero */
+        .hero {
+            padding: 80px 0;
+            text-align: center;
+        }
+        
+        .hero-badge {
+            display: inline-block;
+            background: rgba(0,255,255,0.1);
+            border: 1px solid rgba(0,255,255,0.3);
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-size: 14px;
+            margin-bottom: 20px;
+            color: #00ffff;
+        }
+        
+        .hero h1 {
+            font-size: clamp(28px, 5vw, 48px);
+            font-weight: 900;
+            margin-bottom: 20px;
+            color: #fff;
+        }
+        
+        .hero h1 .highlight {
+            background: linear-gradient(45deg, #00ffff, #ff00ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .hero p {
+            font-size: 18px;
+            max-width: 700px;
+            margin: 0 auto 30px;
+            opacity: 0.9;
+        }
+        
+        .cta-button {
+            background: linear-gradient(135deg, #00ffff, #ff00ff);
+            color: #fff;
+            padding: 18px 40px;
+            font-size: 20px;
+            font-weight: 700;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            display: inline-block;
+            text-decoration: none;
+            transition: transform 0.2s;
+            box-shadow: 0 10px 30px rgba(0,255,255,0.3);
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-3px);
+        }
+        
+        /* Stats */
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            margin: 60px 0;
+            text-align: center;
+        }
+        
+        .stat {
+            padding: 20px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 15px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .stat-number {
+            font-size: 48px;
+            font-weight: 900;
+            background: linear-gradient(45deg, #00ffff, #ff00ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: block;
+            margin-bottom: 5px;
+        }
+        
+        .stat-label {
+            font-size: 16px;
+            opacity: 0.8;
+        }
+        
+        /* Benefits */
+        .benefits {
+            padding: 60px 0;
+        }
+        
+        .section-title {
+            font-size: 36px;
+            font-weight: 900;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+        
+        .section-subtitle {
+            text-align: center;
+            max-width: 700px;
+            margin: 0 auto 50px;
+            opacity: 0.9;
+        }
+        
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
+        
+        .benefit-card {
+            background: rgba(255,255,255,0.05);
+            padding: 30px;
+            border-radius: 15px;
+            border: 1px solid rgba(255,255,255,0.1);
+            transition: all 0.3s;
+        }
+        
+        .benefit-card:hover {
+            transform: translateY(-5px);
+            border-color: #00ffff;
+            box-shadow: 0 10px 30px rgba(0,255,255,0.2);
+        }
+        
+        .benefit-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+        }
+        
+        .benefit-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            color: #00ffff;
+        }
+        
+        .benefit-card p {
+            opacity: 0.8;
+            line-height: 1.8;
+        }
+        
+        /* Form Section */
+        .form-section {
+            background: rgba(255,255,255,0.05);
+            padding: 60px 20px;
+            border-radius: 20px;
+            margin: 50px 0;
+            border: 2px solid rgba(0,255,255,0.3);
+        }
+        
+        .form-container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .form-title {
+            font-size: 32px;
+            font-weight: 900;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+        
+        .form-subtitle {
+            text-align: center;
+            margin-bottom: 40px;
+            opacity: 0.9;
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            font-size: 16px;
+        }
+        
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 15px;
+            font-size: 16px;
+            border: 2px solid rgba(255,255,255,0.2);
+            border-radius: 12px;
+            background: rgba(255,255,255,0.1);
+            color: #fff;
+            font-family: inherit;
+            transition: all 0.3s;
+        }
+        
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #00ffff;
+            background: rgba(255,255,255,0.15);
+            box-shadow: 0 0 15px rgba(0,255,255,0.3);
+        }
+        
+        .form-group input::placeholder,
+        .form-group textarea::placeholder {
+            color: #aaa;
+        }
+        
+        .form-group select {
+            cursor: pointer;
+        }
+        
+        .submit-button {
+            width: 100%;
+            background: linear-gradient(135deg, #00ffff, #ff00ff);
+            color: #fff;
+            padding: 18px;
+            font-size: 20px;
+            font-weight: 700;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .submit-button:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0,255,255,0.4);
+        }
+        
+        .submit-button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        
+        .success-box {
+            display: none;
+            background: linear-gradient(135deg, #00ff88, #00cc66);
+            color: #000;
+            padding: 30px;
+            border-radius: 12px;
+            text-align: center;
+            margin-top: 20px;
+            font-weight: 600;
+        }
+        
+        .success-box.show {
+            display: block;
+        }
+        
+        /* Footer */
+        footer {
+            background: rgba(0,0,0,0.9);
+            padding: 40px 0;
+            margin-top: 80px;
+            border-top: 2px solid rgba(0,255,255,0.3);
+        }
+        
+        .footer-content {
+            text-align: center;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero {
+                padding: 60px 0;
+            }
+            
+            .hero h1 {
+                font-size: 28px;
+            }
+            
+            .stats {
+                gap: 20px;
+            }
+            
+            .form-section {
+                padding: 40px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- HEADER -->
+    <header>
+        <div class="container">
+            <div class="header-flex">
+                <div class="logo">PRISMATIC LABS</div>
+                <a href="https://wa.me/5548984580234?text=Quero%20conversar%20sobre%20parceria!" class="whatsapp-header" target="_blank">
+                    💬 WhatsApp Direto
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- HERO -->
+    <section class="hero">
+        <div class="container">
+            <span class="hero-badge">🤝 Parceria B2B para Agências</span>
+            <h1>Entregue Landing Pages <span class="highlight">Premium</span><br>aos Seus Clientes em 10-15 Dias</h1>
+            <p><strong>Parceria White Label</strong> com design dark mode + neon exclusivo. Preços especiais para agências, consultorias e freelancers.</p>
+            <button class="cta-button" onclick="document.getElementById('formulario').scrollIntoView({behavior: 'smooth'})">
+                🚀 Solicitar Proposta de Parceria
+            </button>
+            <p style="margin-top: 20px; opacity: 0.8;">✅ White Label | ⚡ Suporte Técnico | 💰 Desconto para Volume</p>
+        </div>
+    </section>
+
+    <!-- STATS -->
+    <div class="container">
+        <div class="stats">
+            <div class="stat">
+                <span class="stat-number">50+</span>
+                <span class="stat-label">Projetos Entregues</span>
+            </div>
+            <div class="stat">
+                <span class="stat-number">10-15</span>
+                <span class="stat-label">Dias Entrega</span>
+            </div>
+            <div class="stat">
+                <span class="stat-number">30%</span>
+                <span class="stat-label">Desconto Volume</span>
+            </div>
+            <div class="stat">
+                <span class="stat-number">24/7</span>
+                <span class="stat-label">Suporte</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- BENEFÍCIOS -->
+    <section class="benefits">
+        <div class="container">
+            <h2 class="section-title">Por que Fazer Parceria?</h2>
+            <p class="section-subtitle">Vantagens exclusivas para agências, consultorias e profissionais de marketing</p>
+            
+            <div class="benefits-grid">
+                <div class="benefit-card">
+                    <div class="benefit-icon">🤝</div>
+                    <h3>White Label</h3>
+                    <p>Entregue como seu próprio trabalho. Sua marca, sua reputação, seu cliente. Nós ficamos invisíveis.</p>
+                </div>
+                
+                <div class="benefit-card">
+                    <div class="benefit-icon">💰</div>
+                    <h3>Preços Especiais</h3>
+                    <p>Até 30% de desconto em projetos mensais. Quanto mais você vende, mais você economiza.</p>
+                </div>
+                
+                <div class="benefit-card">
+                    <div class="benefit-icon">⚡</div>
+                    <h3>Entrega Rápida</h3>
+                    <p>10-15 dias garantidos. Impressione seus clientes com prazos que ninguém mais cumpre.</p>
+                </div>
+                
+                <div class="benefit-card">
+                    <div class="benefit-icon">👨‍💻</div>
+                    <h3>Suporte Dedicado</h3>
+                    <p>Canal direto no WhatsApp para parceiros. Tire dúvidas técnicas e acompanhe projetos.</p>
+                </div>
+                
+                <div class="benefit-card">
+                    <div class="benefit-icon">🎨</div>
+                    <h3>Design Premium</h3>
+                    <p>Dark mode + neon exclusivo. Seus clientes vão adorar o visual moderno e diferenciado.</p>
+                </div>
+                
+                <div class="benefit-card">
+                    <div class="benefit-icon">📈</div>
+                    <h3>Alta Conversão</h3>
+                    <p>Landing pages otimizadas para 40%+ de conversão. Resultados reais que renovam contratos.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FORMULÁRIO -->
+    <section id="formulario" class="form-section">
+        <div class="container">
+            <div class="form-container">
+                <h2 class="form-title">Solicite Proposta de Parceria</h2>
+                <p class="form-subtitle">Preencha e receba condições especiais em 24h no WhatsApp</p>
+                
+                <form id="leadForm">
+                    <div class="form-group">
+                        <label>Nome Completo *</label>
+                        <input type="text" id="nome" required placeholder="Seu nome">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>WhatsApp (com DDD) *</label>
+                        <input type="tel" id="whatsapp" placeholder="(48) 99999-9999" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Email *</label>
+                        <input type="email" id="email" placeholder="seu@email.com" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Nome da Agência/Empresa *</label>
+                        <input type="text" id="agencia" required placeholder="Ex: Digital Agency">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Tipo de Negócio *</label>
+                        <select id="tipo" required>
+                            <option value="agencia">Agência Digital</option>
+                            <option value="consultoria">Consultoria/Marketing</option>
+                            <option value="freelancer">Freelancer/Autônomo</option>
+                            <option value="agencia-infoprodutos">Agência de Infoprodutos</option>
+                            <option value="outro">Outro</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Volume Mensal Esperado</label>
+                        <select id="volume">
+                            <option value="1-3">1-3 projetos/mês</option>
+                            <option value="4-7">4-7 projetos/mês</option>
+                            <option value="8+">8+ projetos/mês</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Mensagem (opcional)</label>
+                        <textarea id="mensagem" rows="3" placeholder="Conte mais sobre seu interesse..."></textarea>
+                    </div>
+                    
+                    <button type="submit" class="submit-button">
+                        🚀 Enviar e Receber Proposta
+                    </button>
+                </form>
+                
+                <div id="successMsg" class="success-box">
+                    ✅ <strong>Formulário enviado com sucesso!</strong><br>
+                    Você receberá nossa proposta de parceria no WhatsApp em minutos! 📱
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="logo" style="margin-bottom: 15px;">PRISMATIC LABS</div>
+                <p style="opacity: 0.8;">Parcerias B2B para Agências</p>
+                <p style="margin-top: 15px;">📧 labs.prismatic@gmail.com | 📱 +55 48 98458-0234</p>
+                <p style="margin-top: 10px; opacity: 0.7;">© 2026 Prismatic Labs. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        console.log('🤝 PRISMATIC LABS - Parceria Agências');
+        console.log('📅', new Date().toISOString());
+        
+        // WhatsApp auto-format
+        document.getElementById('whatsapp').addEventListener('input', function(e) {
+            let val = e.target.value.replace(/[^0-9]/g, '').slice(0, 11);
+            if (val.length >= 11) {
+                val = val.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3');
+            } else if (val.length >= 7) {
+                val = val.replace(/(\d{2})(\d{0,5})/, '($1) $2');
+            } else if (val.length >= 2) {
+                val = val.replace(/(\d{2})/, '($1) ');
+            }
+            e.target.value = val;
+        });
+        
+        // Form submit
+        document.getElementById('leadForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const btn = document.querySelector('.submit-button');
+            const successMsg = document.getElementById('successMsg');
+            const form = document.getElementById('leadForm');
+            
+            btn.disabled = true;
+            btn.textContent = 'Enviando... ⏳';
+            
+            const formData = {
+                nome: document.getElementById('nome').value,
+                whatsapp: document.getElementById('whatsapp').value,
+                email: document.getElementById('email').value,
+                agencia: document.getElementById('agencia').value,
+                tipo: document.getElementById('tipo').value,
+                volume: document.getElementById('volume').value,
+                mensagem: document.getElementById('mensagem').value,
+                timestamp: new Date().toISOString(),
+                source: 'captacao-agencia'
+            };
+            
+            console.log('📦 Data:', formData);
+            
+            try {
+                const webhookUrl = 'https://hooks.zapier.com/hooks/catch/20962426/27d20te/';
+                
+                await fetch(webhookUrl, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(formData)
+                });
+                
+                console.log('✅ Enviado!');
+                
+                form.style.display = 'none';
+                successMsg.classList.add('show');
+                
+                setTimeout(() => {
+                    const message = `🤝 PARCERIA AGÊNCIA\n\n` +
+                                  `Nome: ${formData.nome}\n` +
+                                  `Agência: ${formData.agencia}\n` +
+                                  `Tipo: ${formData.tipo}\n` +
+                                  `Volume: ${formData.volume}\n` +
+                                  `WhatsApp: ${formData.whatsapp}\n` +
+                                  `Email: ${formData.email}`;
+                    
+                    window.open(`https://wa.me/5548984580234?text=${encodeURIComponent(message)}`, '_blank');
+                }, 1500);
+                
+            } catch (error) {
+                console.error('❌ Erro:', error);
+                alert('Erro! Redirecionando para WhatsApp...');
+                window.open(`https://wa.me/5548984580234?text=Quero%20conversar%20sobre%20parceria!`, '_blank');
+            } finally {
+                btn.disabled = false;
+                btn.textContent = '🚀 Enviar e Receber Proposta';
+            }
+        });
+        
+        console.log('✅ Form Ready');
+    </script>
+</body>
+</html>
