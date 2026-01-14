@@ -312,7 +312,7 @@
         }
         
         .case-card::after {
-            content: '🔍 Ver Detalhes';
+            content: '👁️ Ver Site Completo';
             position: absolute;
             top: 50%;
             left: 50%;
@@ -325,6 +325,7 @@
             transition: all 0.3s;
             pointer-events: none;
             z-index: 10;
+            font-size: 1.1rem;
         }
         
         .case-card:hover {
@@ -413,7 +414,7 @@
         
         .case-modal-content {
             background: linear-gradient(135deg, #1a0a2e 0%, #0a0a1a 100%);
-            max-width: 1100px;
+            max-width: 1400px;
             width: 100%;
             border-radius: 20px;
             padding: 0;
@@ -473,34 +474,455 @@
             font-size: 1.1rem;
         }
         
+        /* ===== MOCKUPS REALISTAS - SITES COMPLETOS ===== */
+        
         .modal-mockup {
             margin: 30px 40px;
-            padding: 50px 40px;
-            background: linear-gradient(135deg, #0f0f1e, #1a1a2e);
+            background: #0a0a0a;
             border-radius: 15px;
+            border: 3px solid rgba(255,0,255,0.3);
+            overflow: hidden;
+            box-shadow: 0 30px 80px rgba(255,0,255,0.4);
+        }
+        
+        /* E-COMMERCE COMPLETO */
+        .mockup-ecommerce {
+            min-height: 600px;
+        }
+        
+        .shop-header {
+            background: linear-gradient(135deg, #1a0a2e, #0f0520);
+            padding: 20px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid rgba(255,0,255,0.3);
+        }
+        
+        .shop-logo {
+            font-size: 1.8rem;
+            font-weight: 900;
+            background: linear-gradient(45deg, #ff00ff, #00ffff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .shop-nav {
+            display: flex;
+            gap: 25px;
+            font-size: 0.95rem;
+        }
+        
+        .shop-nav span {
+            opacity: 0.9;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .shop-nav span:hover {
+            color: #ff00ff;
+            opacity: 1;
+        }
+        
+        .shop-cart {
+            background: rgba(255,0,255,0.2);
+            padding: 8px 18px;
+            border-radius: 20px;
+            border: 1px solid rgba(255,0,255,0.4);
+            font-size: 1.2rem;
+        }
+        
+        .shop-hero {
+            background: linear-gradient(135deg, rgba(255,0,255,0.1), rgba(0,255,255,0.1));
+            padding: 50px 30px;
+            text-align: center;
+            border-bottom: 2px solid rgba(255,0,255,0.2);
+        }
+        
+        .shop-hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            background: linear-gradient(45deg, #ff00ff, #00ffff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .shop-hero p {
+            opacity: 0.8;
+            font-size: 1.1rem;
+        }
+        
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            padding: 30px;
+        }
+        
+        .product-card-full {
+            background: linear-gradient(135deg, rgba(255,0,255,0.05), rgba(0,255,255,0.05));
             border: 2px solid rgba(255,0,255,0.2);
-            min-height: 450px;
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        
+        .product-card-full:hover {
+            transform: translateY(-5px);
+            border-color: #ff00ff;
+            box-shadow: 0 15px 40px rgba(255,0,255,0.3);
+        }
+        
+        .product-image {
+            height: 180px;
+            background: linear-gradient(135deg, #ff00ff, #8000ff, #00ffff);
+            background-size: 200% 200%;
+            animation: gradient-move 5s ease infinite;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+        }
+        
+        @keyframes gradient-move {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+        
+        .product-info {
+            padding: 15px;
+        }
+        
+        .product-name {
+            font-weight: 700;
+            margin-bottom: 8px;
+            font-size: 1.05rem;
+        }
+        
+        .product-price {
+            color: #00ffff;
+            font-weight: 900;
+            font-size: 1.4rem;
+            margin-bottom: 12px;
+        }
+        
+        .buy-btn {
+            width: 100%;
+            background: linear-gradient(45deg, #ff00ff, #00ffff);
+            border: none;
+            padding: 10px;
+            border-radius: 8px;
+            color: white;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .buy-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 20px rgba(255,0,255,0.4);
+        }
+        
+        /* LANDING PAGE VSL COMPLETA */
+        .mockup-landing {
+            min-height: 700px;
+        }
+        
+        .landing-header {
+            background: linear-gradient(135deg, #0a0a1a, #1a0a2e);
+            padding: 15px 30px;
+            text-align: center;
+            border-bottom: 2px solid rgba(255,0,255,0.3);
+        }
+        
+        .landing-logo {
+            font-size: 1.5rem;
+            font-weight: 900;
+            background: linear-gradient(45deg, #ff00ff, #00ffff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .landing-content {
+            padding: 40px 30px;
+        }
+        
+        .landing-headline {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+        
+        .landing-headline h1 {
+            font-size: 2.2rem;
+            line-height: 1.3;
+            margin-bottom: 15px;
+            background: linear-gradient(45deg, #fff, #ff00ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .landing-headline .sub {
+            color: #00ffff;
+            font-size: 1.3rem;
+            font-weight: 600;
+        }
+        
+        .vsl-container {
+            max-width: 900px;
+            margin: 0 auto 40px;
+            position: relative;
+        }
+        
+        .vsl-player-full {
+            width: 100%;
+            height: 450px;
+            background: linear-gradient(135deg, #000, #1a0a2e, #000);
+            border-radius: 15px;
+            border: 4px solid rgba(255,0,255,0.5);
             display: flex;
             align-items: center;
             justify-content: center;
             position: relative;
             overflow: hidden;
+            box-shadow: 0 20px 60px rgba(255,0,255,0.5);
         }
         
-        .modal-mockup::before {
+        .vsl-player-full::before {
             content: '';
             position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(255,0,255,0.05) 0%, transparent 70%);
-            animation: rotate 20s linear infinite;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, rgba(255,0,255,0.2), transparent 60%);
+            animation: pulse-glow 3s ease-in-out infinite;
         }
         
-        @keyframes rotate {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
+        @keyframes pulse-glow {
+            0%, 100% { opacity: 0.5; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.1); }
+        }
+        
+        .play-button-large {
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(135deg, #ff00ff, #ff0080);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            color: white;
+            cursor: pointer;
+            transition: all 0.4s;
+            position: relative;
+            z-index: 10;
+            border: 4px solid rgba(255,255,255,0.3);
+            box-shadow: 0 15px 50px rgba(255,0,255,0.6);
+        }
+        
+        .play-button-large:hover {
+            transform: scale(1.2) rotate(90deg);
+            box-shadow: 0 20px 70px rgba(255,0,255,0.8);
+        }
+        
+        .landing-bullets {
+            max-width: 700px;
+            margin: 0 auto 40px;
+        }
+        
+        .bullet-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px;
+            margin-bottom: 12px;
+            background: rgba(255,255,255,0.03);
+            border-radius: 10px;
+            border-left: 3px solid #00ffff;
+        }
+        
+        .bullet-icon {
+            font-size: 1.5rem;
+        }
+        
+        .cta-section {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 35px;
+            background: linear-gradient(135deg, rgba(255,0,255,0.1), rgba(0,255,255,0.1));
+            border-radius: 20px;
+            border: 3px solid rgba(0,255,255,0.3);
+            box-shadow: 0 20px 60px rgba(0,255,255,0.3);
+        }
+        
+        .cta-section h3 {
+            text-align: center;
+            font-size: 1.8rem;
+            margin-bottom: 25px;
+            color: #00ffff;
+        }
+        
+        .input-field {
+            width: 100%;
+            padding: 18px;
+            margin-bottom: 15px;
+            background: rgba(255,255,255,0.1);
+            border: 2px solid rgba(255,255,255,0.2);
+            border-radius: 12px;
+            color: white;
+            font-size: 1.05rem;
+        }
+        
+        .cta-button {
+            width: 100%;
+            padding: 20px;
+            background: linear-gradient(45deg, #ff00ff, #00ffff);
+            border: none;
+            border-radius: 12px;
+            color: white;
+            font-size: 1.3rem;
+            font-weight: 900;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 15px 40px rgba(255,0,255,0.4);
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 20px 60px rgba(255,0,255,0.6);
+        }
+        
+        /* AGÊNCIA PORTFOLIO COMPLETO */
+        .mockup-agencia {
+            min-height: 700px;
+        }
+        
+        .agency-header {
+            background: linear-gradient(135deg, #0a0a1a, #1a0a2e);
+            padding: 20px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid rgba(0,255,255,0.3);
+        }
+        
+        .agency-logo {
+            font-size: 1.8rem;
+            font-weight: 900;
+            background: linear-gradient(45deg, #00ffff, #0080ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .agency-nav {
+            display: flex;
+            gap: 25px;
+            font-size: 0.95rem;
+        }
+        
+        .agency-nav span {
+            opacity: 0.9;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .agency-nav span:hover {
+            color: #00ffff;
+            opacity: 1;
+        }
+        
+        .agency-hero {
+            background: linear-gradient(135deg, rgba(0,255,255,0.1), rgba(0,128,255,0.1));
+            padding: 60px 30px;
+            text-align: center;
+            border-bottom: 2px solid rgba(0,255,255,0.2);
+        }
+        
+        .agency-hero h1 {
+            font-size: 2.8rem;
+            margin-bottom: 15px;
+            background: linear-gradient(45deg, #00ffff, #0080ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .agency-hero p {
+            font-size: 1.2rem;
+            opacity: 0.8;
+        }
+        
+        .portfolio-section {
+            padding: 40px 30px;
+        }
+        
+        .portfolio-section h2 {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 35px;
+            color: #00ffff;
+        }
+        
+        .portfolio-grid-full {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+        }
+        
+        .portfolio-card-full {
+            background: linear-gradient(135deg, rgba(0,255,255,0.05), rgba(0,128,255,0.05));
+            border: 2px solid rgba(0,255,255,0.2);
+            border-radius: 15px;
+            overflow: hidden;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        
+        .portfolio-card-full:hover {
+            transform: translateY(-8px);
+            border-color: #00ffff;
+            box-shadow: 0 20px 50px rgba(0,255,255,0.4);
+        }
+        
+        .portfolio-image {
+            height: 200px;
+            background: linear-gradient(135deg, #00ffff, #0080ff, #8000ff);
+            background-size: 200% 200%;
+            animation: gradient-move 6s ease infinite;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3.5rem;
+        }
+        
+        .portfolio-details {
+            padding: 20px;
+        }
+        
+        .portfolio-title {
+            font-weight: 900;
+            font-size: 1.2rem;
+            margin-bottom: 8px;
+            color: #00ffff;
+        }
+        
+        .portfolio-desc {
+            opacity: 0.8;
+            font-size: 0.95rem;
+            margin-bottom: 15px;
+        }
+        
+        .portfolio-tags {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        
+        .tag {
+            background: rgba(0,255,255,0.1);
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 0.85rem;
+            border: 1px solid rgba(0,255,255,0.3);
         }
         
         .modal-body {
@@ -534,30 +956,12 @@
             border: 1px solid rgba(255,255,255,0.1);
             text-align: center;
             transition: all 0.3s;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .metric-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(45deg, rgba(255,0,255,0.1), rgba(0,255,255,0.1));
-            opacity: 0;
-            transition: all 0.3s;
         }
         
         .metric-card:hover {
             transform: translateY(-5px);
             border-color: #ff00ff;
             box-shadow: 0 10px 30px rgba(255,0,255,0.3);
-        }
-        
-        .metric-card:hover::before {
-            opacity: 1;
         }
         
         .metric-value {
@@ -568,15 +972,11 @@
             -webkit-text-fill-color: transparent;
             display: block;
             margin-bottom: 8px;
-            position: relative;
-            z-index: 1;
         }
         
         .metric-label {
             opacity: 0.8;
             font-size: 0.95rem;
-            position: relative;
-            z-index: 1;
         }
         
         .tech-stack {
@@ -646,344 +1046,6 @@
             font-weight: 700;
             color: #ff00ff;
             margin-bottom: 5px;
-        }
-        
-        /* ===== MOCKUPS VISUAIS MEGA REALISTAS ===== */
-        
-        /* E-COMMERCE MOCKUP 3D */
-        .mockup-ecommerce {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 25px;
-            width: 100%;
-            position: relative;
-            z-index: 1;
-            perspective: 1000px;
-        }
-        
-        .product-card {
-            background: linear-gradient(135deg, rgba(255,0,255,0.08), rgba(0,255,255,0.08));
-            border: 2px solid rgba(255,0,255,0.3);
-            border-radius: 15px;
-            padding: 20px;
-            text-align: center;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            cursor: pointer;
-            position: relative;
-            overflow: hidden;
-            transform-style: preserve-3d;
-        }
-        
-        .product-card::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(45deg, transparent, rgba(255,0,255,0.1), transparent);
-            transform: rotate(45deg);
-            transition: all 0.5s;
-        }
-        
-        .product-card:hover {
-            transform: translateY(-15px) rotateY(5deg) scale(1.05);
-            border-color: #ff00ff;
-            box-shadow: 0 20px 60px rgba(255,0,255,0.5), 0 0 40px rgba(255,0,255,0.3);
-            background: linear-gradient(135deg, rgba(255,0,255,0.15), rgba(0,255,255,0.15));
-        }
-        
-        .product-card:hover::before {
-            left: 150%;
-        }
-        
-        .product-img {
-            width: 100%;
-            height: 180px;
-            background: linear-gradient(135deg, #ff00ff 0%, #ff0080 25%, #ff00c8 50%, #8000ff 75%, #00ffff 100%);
-            background-size: 300% 300%;
-            border-radius: 12px;
-            margin-bottom: 18px;
-            position: relative;
-            overflow: hidden;
-            box-shadow: 0 10px 30px rgba(255,0,255,0.3);
-            animation: gradient-shift 8s ease infinite;
-        }
-        
-        @keyframes gradient-shift {
-            0%, 100% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-        }
-        
-        .product-img::before {
-            content: '👕';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 4rem;
-            filter: drop-shadow(0 0 10px rgba(255,255,255,0.5));
-            animation: float 3s ease-in-out infinite;
-        }
-        
-        @keyframes float {
-            0%, 100% { transform: translate(-50%, -50%) translateY(0px); }
-            50% { transform: translate(-50%, -50%) translateY(-10px); }
-        }
-        
-        .product-card:hover .product-img {
-            box-shadow: 0 15px 50px rgba(255,0,255,0.6);
-            transform: scale(1.05);
-        }
-        
-        .product-name {
-            font-size: 1.1rem;
-            font-weight: 700;
-            margin-bottom: 12px;
-            color: #fff;
-            text-shadow: 0 0 10px rgba(255,0,255,0.5);
-        }
-        
-        .product-price {
-            color: #00ffff;
-            font-weight: 900;
-            font-size: 1.5rem;
-            text-shadow: 0 0 15px rgba(0,255,255,0.5);
-        }
-        
-        /* LANDING PAGE VSL MOCKUP */
-        .mockup-landing {
-            width: 100%;
-            text-align: center;
-            position: relative;
-            z-index: 1;
-        }
-        
-        .vsl-player {
-            width: 100%;
-            height: 400px;
-            background: linear-gradient(135deg, #000, #1a0a2e 50%, #000);
-            border-radius: 20px;
-            border: 4px solid rgba(255,0,255,0.6);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 30px;
-            position: relative;
-            overflow: hidden;
-            box-shadow: 0 30px 80px rgba(255,0,255,0.5), inset 0 0 60px rgba(255,0,255,0.1);
-        }
-        
-        .vsl-player::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle at center, rgba(255,0,255,0.2) 0%, transparent 50%);
-            animation: pulse-wave 4s ease-in-out infinite;
-        }
-        
-        @keyframes pulse-wave {
-            0%, 100% { transform: scale(1); opacity: 0.5; }
-            50% { transform: scale(1.2); opacity: 0.8; }
-        }
-        
-        .play-btn {
-            width: 130px;
-            height: 130px;
-            background: linear-gradient(135deg, #ff00ff, #ff0080);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 3rem;
-            cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-            position: relative;
-            z-index: 10;
-            box-shadow: 0 15px 50px rgba(255,0,255,0.6), 0 0 40px rgba(255,0,255,0.4);
-            border: 5px solid rgba(255,255,255,0.2);
-        }
-        
-        .play-btn:hover {
-            transform: scale(1.2) rotate(90deg);
-            background: linear-gradient(135deg, #ff0080, #00ffff);
-            box-shadow: 0 20px 70px rgba(255,0,255,0.8), 0 0 60px rgba(255,0,255,0.6);
-        }
-        
-        .play-btn::before {
-            content: '';
-            position: absolute;
-            width: 170px;
-            height: 170px;
-            border: 3px solid rgba(255,0,255,0.4);
-            border-radius: 50%;
-            animation: ripple 2s infinite;
-        }
-        
-        @keyframes ripple {
-            0% { transform: scale(1); opacity: 1; }
-            100% { transform: scale(1.5); opacity: 0; }
-        }
-        
-        .play-btn::after {
-            content: '';
-            position: absolute;
-            width: 170px;
-            height: 170px;
-            border: 3px solid rgba(0,255,255,0.4);
-            border-radius: 50%;
-            animation: ripple 2s infinite 1s;
-        }
-        
-        .cta-form {
-            background: linear-gradient(135deg, rgba(255,0,255,0.1), rgba(0,255,255,0.1));
-            padding: 35px;
-            border-radius: 20px;
-            border: 3px solid rgba(0,255,255,0.4);
-            box-shadow: 0 15px 50px rgba(0,255,255,0.3);
-            backdrop-filter: blur(10px);
-        }
-        
-        .form-input {
-            width: 100%;
-            padding: 20px;
-            margin-bottom: 18px;
-            background: rgba(255,255,255,0.15);
-            border: 3px solid rgba(255,255,255,0.3);
-            border-radius: 15px;
-            color: #fff;
-            font-size: 1.1rem;
-            transition: all 0.3s;
-            backdrop-filter: blur(5px);
-        }
-        
-        .form-input:hover {
-            border-color: #00ffff;
-            box-shadow: 0 0 30px rgba(0,255,255,0.3);
-        }
-        
-        .form-button {
-            width: 100%;
-            padding: 22px;
-            background: linear-gradient(45deg, #ff00ff, #00ffff);
-            border: none;
-            border-radius: 15px;
-            color: white;
-            font-weight: 900;
-            font-size: 1.3rem;
-            cursor: pointer;
-            transition: all 0.4s;
-            box-shadow: 0 15px 40px rgba(255,0,255,0.4);
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .form-button::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            border-radius: 50%;
-            background: rgba(255,255,255,0.3);
-            transform: translate(-50%, -50%);
-            transition: width 0.6s, height 0.6s;
-        }
-        
-        .form-button:hover::before {
-            width: 300px;
-            height: 300px;
-        }
-        
-        .form-button:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 60px rgba(255,0,255,0.6);
-        }
-        
-        /* AGÊNCIA PORTFOLIO MOCKUP */
-        .mockup-agencia {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 30px;
-            width: 100%;
-            position: relative;
-            z-index: 1;
-        }
-        
-        .portfolio-item {
-            background: linear-gradient(135deg, rgba(0,255,255,0.08), rgba(0,128,255,0.08));
-            border: 2px solid rgba(0,255,255,0.3);
-            border-radius: 18px;
-            padding: 25px;
-            text-align: center;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            cursor: pointer;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .portfolio-item::before {
-            content: '';
-            position: absolute;
-            top: -100%;
-            left: -100%;
-            width: 300%;
-            height: 300%;
-            background: linear-gradient(45deg, transparent, rgba(0,255,255,0.15), transparent);
-            transform: rotate(45deg);
-            transition: all 0.6s;
-        }
-        
-        .portfolio-item:hover {
-            transform: scale(1.08) rotate(-2deg);
-            border-color: #00ffff;
-            box-shadow: 0 25px 70px rgba(0,255,255,0.5), 0 0 50px rgba(0,255,255,0.3);
-            background: linear-gradient(135deg, rgba(0,255,255,0.15), rgba(0,128,255,0.15));
-        }
-        
-        .portfolio-item:hover::before {
-            top: 100%;
-            left: 100%;
-        }
-        
-        .portfolio-thumb {
-            width: 100%;
-            height: 220px;
-            background: linear-gradient(135deg, #00ffff 0%, #0080ff 25%, #0040ff 50%, #8000ff 75%, #ff00ff 100%);
-            background-size: 300% 300%;
-            border-radius: 12px;
-            margin-bottom: 20px;
-            position: relative;
-            overflow: hidden;
-            box-shadow: 0 15px 40px rgba(0,255,255,0.4);
-            animation: gradient-shift 8s ease infinite;
-        }
-        
-        .portfolio-thumb::before {
-            content: '🖥️';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 5rem;
-            filter: drop-shadow(0 0 15px rgba(255,255,255,0.6));
-            animation: float 3s ease-in-out infinite;
-        }
-        
-        .portfolio-item:hover .portfolio-thumb {
-            box-shadow: 0 20px 60px rgba(0,255,255,0.7);
-            transform: scale(1.05);
-        }
-        
-        .portfolio-title {
-            font-weight: 900;
-            color: #00ffff;
-            font-size: 1.3rem;
-            text-shadow: 0 0 15px rgba(0,255,255,0.5);
         }
         
         /* DEPOIMENTOS */
@@ -1197,41 +1259,40 @@
                 padding: 50px 0;
             }
             
-            .mockup-ecommerce {
+            .products-grid {
                 grid-template-columns: repeat(2, 1fr);
                 gap: 15px;
+                padding: 20px;
             }
             
-            .mockup-agencia {
+            .portfolio-grid-full {
                 grid-template-columns: 1fr;
+            }
+            
+            .shop-nav,
+            .agency-nav {
+                display: none;
+            }
+            
+            .vsl-player-full {
+                height: 300px;
+            }
+            
+            .play-button-large {
+                width: 80px;
+                height: 80px;
+                font-size: 2rem;
             }
             
             .modal-header,
             .modal-body,
             .modal-mockup {
                 padding: 20px;
+                margin: 20px;
             }
             
             .case-modal-content {
                 margin: 10px;
-            }
-            
-            .vsl-player {
-                height: 250px;
-            }
-            
-            .play-btn {
-                width: 90px;
-                height: 90px;
-                font-size: 2rem;
-            }
-            
-            .product-img {
-                height: 140px;
-            }
-            
-            .portfolio-thumb {
-                height: 180px;
             }
         }
     </style>
@@ -1330,7 +1391,7 @@
     <section id="cases" class="section">
         <div class="container">
             <h2 class="section-title">Cases de <span class="gradient">Sucesso</span></h2>
-            <p class="section-subtitle">Clique para ver detalhes completos, mockups visuais e resultados</p>
+            <p class="section-subtitle">👁️ Clique para ver o site completo funcionando em tempo real</p>
             
             <div class="cases-grid">
                 <div class="case-card" onclick="openCase('ecommerce')">
@@ -1379,40 +1440,102 @@
             
             <div class="modal-header">
                 <h2>🛍️ E-commerce NEON Streetwear</h2>
-                <p>Loja virtual completa com design dark mode + neon para marca de streetwear premium</p>
+                <p>Veja como seria seu e-commerce completo funcionando em tempo real</p>
             </div>
             
             <div class="modal-mockup">
                 <div class="mockup-ecommerce">
-                    <div class="product-card">
-                        <div class="product-img"></div>
-                        <div class="product-name">Moletom Cyber</div>
-                        <div class="product-price">R$ 299</div>
+                    <!-- HEADER LOJA -->
+                    <div class="shop-header">
+                        <div class="shop-logo">NEON STORE</div>
+                        <div class="shop-nav">
+                            <span>Novidades</span>
+                            <span>Masculino</span>
+                            <span>Feminino</span>
+                            <span>Sale</span>
+                        </div>
+                        <div class="shop-cart">🛒 (3)</div>
                     </div>
-                    <div class="product-card">
-                        <div class="product-img"></div>
-                        <div class="product-name">Camiseta Neon</div>
-                        <div class="product-price">R$ 149</div>
+                    
+                    <!-- HERO SECTION -->
+                    <div class="shop-hero">
+                        <h1>🔥 COLEÇÃO CYBER 2026</h1>
+                        <p>Streetwear premium com design dark mode + neon exclusivo</p>
                     </div>
-                    <div class="product-card">
-                        <div class="product-img"></div>
-                        <div class="product-name">Jaqueta Dark</div>
-                        <div class="product-price">R$ 499</div>
-                    </div>
-                    <div class="product-card">
-                        <div class="product-img"></div>
-                        <div class="product-name">Tênis Cyber</div>
-                        <div class="product-price">R$ 399</div>
-                    </div>
-                    <div class="product-card">
-                        <div class="product-img"></div>
-                        <div class="product-name">Bone Neon</div>
-                        <div class="product-price">R$ 99</div>
-                    </div>
-                    <div class="product-card">
-                        <div class="product-img"></div>
-                        <div class="product-name">Meia Pack</div>
-                        <div class="product-price">R$ 59</div>
+                    
+                    <!-- PRODUTOS -->
+                    <div class="products-grid">
+                        <div class="product-card-full">
+                            <div class="product-image">👕</div>
+                            <div class="product-info">
+                                <div class="product-name">Moletom Cyber</div>
+                                <div class="product-price">R$ 299</div>
+                                <button class="buy-btn">COMPRAR</button>
+                            </div>
+                        </div>
+                        
+                        <div class="product-card-full">
+                            <div class="product-image">👔</div>
+                            <div class="product-info">
+                                <div class="product-name">Camiseta Neon</div>
+                                <div class="product-price">R$ 149</div>
+                                <button class="buy-btn">COMPRAR</button>
+                            </div>
+                        </div>
+                        
+                        <div class="product-card-full">
+                            <div class="product-image">🧥</div>
+                            <div class="product-info">
+                                <div class="product-name">Jaqueta Dark</div>
+                                <div class="product-price">R$ 499</div>
+                                <button class="buy-btn">COMPRAR</button>
+                            </div>
+                        </div>
+                        
+                        <div class="product-card-full">
+                            <div class="product-image">👟</div>
+                            <div class="product-info">
+                                <div class="product-name">Tênis Cyber</div>
+                                <div class="product-price">R$ 399</div>
+                                <button class="buy-btn">COMPRAR</button>
+                            </div>
+                        </div>
+                        
+                        <div class="product-card-full">
+                            <div class="product-image">🧢</div>
+                            <div class="product-info">
+                                <div class="product-name">Boné Neon</div>
+                                <div class="product-price">R$ 99</div>
+                                <button class="buy-btn">COMPRAR</button>
+                            </div>
+                        </div>
+                        
+                        <div class="product-card-full">
+                            <div class="product-image">🧦</div>
+                            <div class="product-info">
+                                <div class="product-name">Meia Pack 3x</div>
+                                <div class="product-price">R$ 59</div>
+                                <button class="buy-btn">COMPRAR</button>
+                            </div>
+                        </div>
+                        
+                        <div class="product-card-full">
+                            <div class="product-image">👖</div>
+                            <div class="product-info">
+                                <div class="product-name">Calça Cargo</div>
+                                <div class="product-price">R$ 349</div>
+                                <button class="buy-btn">COMPRAR</button>
+                            </div>
+                        </div>
+                        
+                        <div class="product-card-full">
+                            <div class="product-image">🎒</div>
+                            <div class="product-info">
+                                <div class="product-name">Mochila Tech</div>
+                                <div class="product-price">R$ 279</div>
+                                <button class="buy-btn">COMPRAR</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -1498,17 +1621,59 @@
             
             <div class="modal-header">
                 <h2>📚 Landing Page Infoproduto</h2>
-                <p>Página de vendas para curso online com VSL profissional e funil de conversão otimizado</p>
+                <p>Veja sua landing page com VSL funcionando em tempo real</p>
             </div>
             
             <div class="modal-mockup">
                 <div class="mockup-landing">
-                    <div class="vsl-player">
-                        <div class="play-btn">▶</div>
+                    <!-- HEADER -->
+                    <div class="landing-header">
+                        <div class="landing-logo">CURSO ONLINE</div>
                     </div>
-                    <div class="cta-form">
-                        <input type="text" class="form-input" placeholder="Seu melhor email" readonly>
-                        <button class="form-button">🚀 QUERO ACESSO AGORA</button>
+                    
+                    <!-- CONTEÚDO -->
+                    <div class="landing-content">
+                        <!-- HEADLINE -->
+                        <div class="landing-headline">
+                            <h1>Como Faturar R$ 50k/mês<br>Vendendo Online</h1>
+                            <p class="sub">🔥 Método validado por 2.300+ alunos</p>
+                        </div>
+                        
+                        <!-- VSL PLAYER -->
+                        <div class="vsl-container">
+                            <div class="vsl-player-full">
+                                <div class="play-button-large">▶</div>
+                            </div>
+                        </div>
+                        
+                        <!-- BULLETS -->
+                        <div class="landing-bullets">
+                            <div class="bullet-item">
+                                <span class="bullet-icon">✅</span>
+                                <span>Aprenda do zero ao avançado em 8 semanas</span>
+                            </div>
+                            <div class="bullet-item">
+                                <span class="bullet-icon">✅</span>
+                                <span>Mentoria em grupo + suporte 24/7</span>
+                            </div>
+                            <div class="bullet-item">
+                                <span class="bullet-icon">✅</span>
+                                <span>Certificado reconhecido pelo mercado</span>
+                            </div>
+                            <div class="bullet-item">
+                                <span class="bullet-icon">✅</span>
+                                <span>Garantia incondicional de 30 dias</span>
+                            </div>
+                        </div>
+                        
+                        <!-- CTA FORM -->
+                        <div class="cta-section">
+                            <h3>🚀 Garanta Sua Vaga Agora</h3>
+                            <input type="text" class="input-field" placeholder="Seu nome completo" readonly>
+                            <input type="email" class="input-field" placeholder="Seu melhor email" readonly>
+                            <input type="tel" class="input-field" placeholder="WhatsApp (opcional)" readonly>
+                            <button class="cta-button">QUERO ACESSO IMEDIATO</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -1594,26 +1759,107 @@
             
             <div class="modal-header">
                 <h2>🚀 Site Agência Growth</h2>
-                <p>Site institucional premium com portfólio interativo e sistema de captação de leads</p>
+                <p>Veja o site institucional completo com portfolio funcionando</p>
             </div>
             
             <div class="modal-mockup">
                 <div class="mockup-agencia">
-                    <div class="portfolio-item">
-                        <div class="portfolio-thumb"></div>
-                        <div class="portfolio-title">Case E-commerce</div>
+                    <!-- HEADER -->
+                    <div class="agency-header">
+                        <div class="agency-logo">GROWTH AGENCY</div>
+                        <div class="agency-nav">
+                            <span>Serviços</span>
+                            <span>Portfolio</span>
+                            <span>Sobre</span>
+                            <span>Contato</span>
+                        </div>
                     </div>
-                    <div class="portfolio-item">
-                        <div class="portfolio-thumb"></div>
-                        <div class="portfolio-title">Case SaaS</div>
+                    
+                    <!-- HERO -->
+                    <div class="agency-hero">
+                        <h1>Escalamos Negócios Digitais</h1>
+                        <p>Performance Marketing + Growth Hacking para startups e scale-ups</p>
                     </div>
-                    <div class="portfolio-item">
-                        <div class="portfolio-thumb"></div>
-                        <div class="portfolio-title">Case Fintech</div>
-                    </div>
-                    <div class="portfolio-item">
-                        <div class="portfolio-thumb"></div>
-                        <div class="portfolio-title">Case Startup</div>
+                    
+                    <!-- PORTFOLIO -->
+                    <div class="portfolio-section">
+                        <h2>📂 Nossos Projetos</h2>
+                        
+                        <div class="portfolio-grid-full">
+                            <div class="portfolio-card-full">
+                                <div class="portfolio-image">🛒</div>
+                                <div class="portfolio-details">
+                                    <div class="portfolio-title">E-commerce Fashion</div>
+                                    <p class="portfolio-desc">Loja virtual com 500k+ visitas/mês</p>
+                                    <div class="portfolio-tags">
+                                        <span class="tag">Shopify</span>
+                                        <span class="tag">SEO</span>
+                                        <span class="tag">Ads</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="portfolio-card-full">
+                                <div class="portfolio-image">💻</div>
+                                <div class="portfolio-details">
+                                    <div class="portfolio-title">SaaS B2B</div>
+                                    <p class="portfolio-desc">Plataforma com 10k+ usuários ativos</p>
+                                    <div class="portfolio-tags">
+                                        <span class="tag">React</span>
+                                        <span class="tag">Node.js</span>
+                                        <span class="tag">AWS</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="portfolio-card-full">
+                                <div class="portfolio-image">💳</div>
+                                <div class="portfolio-details">
+                                    <div class="portfolio-title">Fintech App</div>
+                                    <p class="portfolio-desc">App mobile com 250k downloads</p>
+                                    <div class="portfolio-tags">
+                                        <span class="tag">React Native</span>
+                                        <span class="tag">API</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="portfolio-card-full">
+                                <div class="portfolio-image">🎓</div>
+                                <div class="portfolio-details">
+                                    <div class="portfolio-title">EdTech Platform</div>
+                                    <p class="portfolio-desc">Plataforma de ensino com 50k alunos</p>
+                                    <div class="portfolio-tags">
+                                        <span class="tag">Vue.js</span>
+                                        <span class="tag">LMS</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="portfolio-card-full">
+                                <div class="portfolio-image">🏥</div>
+                                <div class="portfolio-details">
+                                    <div class="portfolio-title">HealthTech</div>
+                                    <p class="portfolio-desc">Sistema de agendamento médico</p>
+                                    <div class="portfolio-tags">
+                                        <span class="tag">Angular</span>
+                                        <span class="tag">HIPAA</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="portfolio-card-full">
+                                <div class="portfolio-image">🚗</div>
+                                <div class="portfolio-details">
+                                    <div class="portfolio-title">Marketplace Auto</div>
+                                    <p class="portfolio-desc">Compra/venda de veículos online</p>
+                                    <div class="portfolio-tags">
+                                        <span class="tag">Next.js</span>
+                                        <span class="tag">AI</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -1828,7 +2074,7 @@
         function openCase(caseId) {
             document.getElementById(`modal-${caseId}`).classList.add('active');
             document.body.style.overflow = 'hidden';
-            console.log(`✨ Case aberto: ${caseId}`);
+            console.log(`✨ Case aberto: ${caseId} - DEMONSTRAÇÃO REALISTA!`);
         }
         
         function closeCase(caseId) {
@@ -1881,7 +2127,7 @@
                 tipo: document.getElementById('tipo').value,
                 objetivo: document.getElementById('objetivo').value,
                 timestamp: new Date().toISOString(),
-                source: 'landing-completa'
+                source: 'landing-completa-realista'
             };
             
             try {
@@ -1915,9 +2161,10 @@
             });
         });
         
-        console.log('🎨 Prismatic Labs - Landing Completa COM MOCKUPS VISUAIS REALISTAS');
+        console.log('🎨 Prismatic Labs - MOCKUPS REALISTAS DE SITES COMPLETOS!');
         console.log('📅 Timestamp:', new Date().toISOString());
-        console.log('✨ Sistema de popups interativos ativo!');
+        console.log('✨ E-commerce, Landing VSL e Agência funcionando em tempo real!');
+        console.log('👁️ Leads podem VER exatamente como seria o site deles!');
     </script>
 </body>
 </html>
