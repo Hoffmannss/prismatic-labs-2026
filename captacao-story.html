@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- SEO Otimizado -->
+    <title>🚀 Orçamento Rápido | Prismatic Labs</title>
+    <meta name="description" content="Orçamento gratis em 2 minutos. Site profissional dark mode + neon. Resposta em 24h no WhatsApp.">
+    
+    <!-- Favicon Inline Base64 -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22 fill=%22%23ff00ff%22>💜</text></svg>">
+    
+    <!-- CSS ULTRA-MINIMALISTA -->
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6; 
+            color: #e0e0e0; 
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a0a2e 100%);
+            min-height: 100vh; 
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .form-container { 
+            max-width: 500px; 
+            width: 100%;
+            background: rgba(255,255,255,0.08); 
+            padding: 40px 30px; 
+            border-radius: 20px; 
+            backdrop-filter: blur(20px); 
+            border: 2px solid rgba(255,255,255,0.15); 
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+        }
+        
+        .logo { 
+            font-size: 2rem; 
+            font-weight: 900; 
+            background: linear-gradient(45deg, #ff00ff, #00ffff); 
+            -webkit-background-clip: text; 
+            -webkit-text-fill-color: transparent; 
+            text-align: center;
+            margin-bottom: 0.5rem;
+        }
+        
+        .subtitle {
+            text-align: center;
+            opacity: 0.9;
+            margin-bottom: 2rem;
+            font-size: 1.1rem;
+        }
+        
+        .form-group { 
+            margin-bottom: 1.5rem; 
+        }
+        
+        .form-group label { 
+            display: block; 
+            margin-bottom: 0.5rem; 
+            font-weight: 600; 
+            color: #fff; 
+            font-size: 1rem;
+        }
+        
+        .form-group input, 
+        .form-group select { 
+            width: 100%; 
+            padding: 16px; 
+            background: rgba(255,255,255,0.15);
+            border: 2px solid rgba(255,255,255,0.3);
+            border-radius: 12px; 
+            color: #ffffff;
+            font-size: 1.05rem; 
+            transition: all 0.3s;
+            font-family: inherit;
+        }
+        
+        .form-group input:focus, 
+        .form-group select:focus { 
+            outline: none; 
+            border-color: #ff00ff; 
+            box-shadow: 0 0 20px rgba(255,0,255,0.4); 
+            background: rgba(255,255,255,0.2);
+        }
+        
+        .form-group input::placeholder { 
+            color: rgba(255,255,255,0.6);
+        }
+        
+        .form-group select {
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23ffffff' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 15px center;
+            padding-right: 40px;
+        }
+        
+        .form-group select option {
+            background: #1a0a2e;
+            color: white;
+        }
+        
+        .error { 
+            color: #ff4444; 
+            font-size: 0.9rem; 
+            margin-top: 0.3rem; 
+            display: none; 
+        }
+        .error.show { display: block; }
+        
+        .submit-btn { 
+            width: 100%; 
+            background: linear-gradient(45deg, #ff00ff, #00ffff); 
+            color: white; 
+            padding: 18px; 
+            font-size: 1.2rem; 
+            font-weight: 700; 
+            border: none; 
+            border-radius: 12px; 
+            cursor: pointer; 
+            transition: all 0.3s;
+            position: relative;
+            margin-top: 1rem;
+        }
+        
+        .submit-btn:hover:not(:disabled) { 
+            transform: translateY(-2px); 
+            box-shadow: 0 20px 40px rgba(255,0,255,0.4); 
+        }
+        
+        .submit-btn:disabled { 
+            opacity: 0.6; 
+            cursor: not-allowed; 
+        }
+        
+        .spinner { 
+            display: none; 
+            width: 20px; 
+            height: 20px; 
+            border: 3px solid rgba(255,255,255,0.3); 
+            border-top-color: white; 
+            border-radius: 50%; 
+            animation: spin 0.8s linear infinite; 
+            margin: 0 auto;
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        .submit-btn.loading .spinner { display: block; }
+        @keyframes spin { to { transform: translateY(-50%) rotate(360deg); } }
+        
+        .success { 
+            display: none; 
+            background: linear-gradient(45deg, #00ff88, #00cc66); 
+            color: #000; 
+            padding: 30px; 
+            border-radius: 12px; 
+            text-align: center; 
+            margin-top: 20px;
+            font-weight: 600;
+        }
+        .success.show { 
+            display: block; 
+            animation: slideIn 0.5s ease; 
+        }
+        @keyframes slideIn { 
+            from { opacity: 0; transform: translateY(-20px); } 
+            to { opacity: 1; transform: translateY(0); } 
+        }
+        
+        .privacy {
+            text-align: center;
+            font-size: 0.85rem;
+            opacity: 0.7;
+            margin-top: 1.5rem;
+        }
+        
+        @keyframes pulse { 
+            0%, 100% { transform: scale(1); } 
+            50% { transform: scale(1.02); } 
+        }
+        .pulse { animation: pulse 2s infinite; }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <div class="logo">PRISMATIC</div>
+        <p class="subtitle">⚡ Orçamento em 2 minutos<br>💬 Resposta em 24h no WhatsApp</p>
+        
+        <form id="storyForm">
+            <div class="form-group">
+                <label>Seu Nome *</label>
+                <input type="text" id="nome" required minlength="3" placeholder="Como prefere ser chamado(a)?">
+                <div class="error" id="nomeError">Nome deve ter no mínimo 3 caracteres</div>
+            </div>
+            
+            <div class="form-group">
+                <label>WhatsApp (com DDD) *</label>
+                <input type="tel" id="whatsapp" placeholder="(48) 99999-9999" required>
+                <div class="error" id="whatsappError">WhatsApp inválido. Use formato: (XX) XXXXX-XXXX</div>
+            </div>
+            
+            <div class="form-group">
+                <label>O que você precisa? *</label>
+                <select id="servico" required>
+                    <option value="">Selecione...</option>
+                    <option value="landing">🚀 Landing Page (desde R$2.500)</option>
+                    <option value="ecommerce">🛍️ E-commerce (desde R$4.500)</option>
+                    <option value="blog">📝 Blog/Site Corporativo (desde R$3.000)</option>
+                    <option value="redesign">🎨 Redesign de Site Existente</option>
+                    <option value="outro">🤔 Outro (me conte no WhatsApp)</option>
+                </select>
+            </div>
+            
+            <button type="submit" class="submit-btn pulse">
+                <span class="spinner"></span>
+                <span class="btn-text">🚀 Enviar e Receber Proposta</span>
+            </button>
+        </form>
+        
+        <div id="successMsg" class="success">
+            ✅ <strong>Enviado com sucesso!</strong><br>
+            Você receberá sua proposta no WhatsApp em minutos! 📱
+        </div>
+        
+        <p class="privacy">🔒 Seus dados estão seguros. Não compartilhamos com terceiros.</p>
+    </div>
+
+    <!-- JAVASCRIPT COM VALIDAÇÃO -->
+    <script>
+        console.log('🚀 Prismatic Labs - Story Form v1.0'); 
+        console.log('📅 Timestamp:', new Date().toISOString());
+        
+        // Regex Validações BR
+        const REGEX_WHATSAPP = /^\(\d{2}\)\s\d{5}-\d{4}$/;
+        
+        // Auto-format WhatsApp
+        document.getElementById('whatsapp').addEventListener('input', function(e) {
+            let val = e.target.value.replace(/[^0-9]/g, '');
+            
+            if (val.length > 11) val = val.slice(0, 11);
+            
+            if (val.length >= 11) {
+                val = val.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3');
+            } else if (val.length >= 7) {
+                val = val.replace(/(\d{2})(\d{0,5})/, '($1) $2');
+            } else if (val.length >= 2) {
+                val = val.replace(/(\d{2})/, '($1) ');
+            }
+            
+            e.target.value = val;
+        });
+        
+        // Validação Form
+        function validateForm() {
+            let isValid = true;
+            
+            // Validate Nome
+            const nome = document.getElementById('nome').value.trim();
+            const nomeError = document.getElementById('nomeError');
+            if (nome.length < 3) {
+                nomeError.classList.add('show');
+                isValid = false;
+            } else {
+                nomeError.classList.remove('show');
+            }
+            
+            // Validate WhatsApp
+            const whatsapp = document.getElementById('whatsapp').value;
+            const whatsappError = document.getElementById('whatsappError');
+            if (!REGEX_WHATSAPP.test(whatsapp)) {
+                whatsappError.classList.add('show');
+                isValid = false;
+            } else {
+                whatsappError.classList.remove('show');
+            }
+            
+            // Validate Servico
+            const servico = document.getElementById('servico').value;
+            if (!servico) {
+                isValid = false;
+                alert('⚠️ Selecione o serviço desejado');
+            }
+            
+            return isValid;
+        }
+        
+        // Submit Handler
+        document.getElementById('storyForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            console.log('📋 Formulário Story submetido');
+            
+            if (!validateForm()) {
+                console.error('❌ Validação falhou');
+                return;
+            }
+            
+            const btn = document.querySelector('.submit-btn');
+            const btnText = document.querySelector('.btn-text');
+            const successMsg = document.getElementById('successMsg');
+            const form = document.getElementById('storyForm');
+            
+            // Loading state
+            btn.disabled = true;
+            btn.classList.add('loading');
+            btnText.textContent = 'Enviando... ⏳';
+            
+            const formData = {
+                nome: document.getElementById('nome').value.trim(),
+                whatsapp: document.getElementById('whatsapp').value,
+                servico: document.getElementById('servico').value,
+                timestamp: new Date().toISOString(),
+                source: 'story-form',
+                userAgent: navigator.userAgent,
+                screenWidth: window.innerWidth
+            };
+            
+            console.log('📦 Dados do formulário:', formData);
+            
+            try {
+                // WEBHOOK ZAPIER (MESMO DO PREMIUM - SERÁ CRIADO ZAP SEPARADO)
+                const webhookUrl = 'https://hooks.zapier.com/hooks/catch/20962426/2qo9h90/';
+                
+                console.log('🔗 Enviando para webhook story:', webhookUrl);
+                
+                const response = await fetch(webhookUrl, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(formData)
+                });
+                
+                console.log('✅ Webhook enviado com sucesso');
+                
+                // Show success
+                form.style.display = 'none';
+                successMsg.classList.add('show');
+                
+                // WhatsApp redirect
+                setTimeout(() => {
+                    const servicoLabels = {
+                        'landing': 'Landing Page',
+                        'ecommerce': 'E-commerce',
+                        'blog': 'Blog/Site Corporativo',
+                        'redesign': 'Redesign de Site',
+                        'outro': 'Outro serviço'
+                    };
+                    
+                    const message = `🚀 LEAD STORY INSTAGRAM!\n\n` +
+                                  `👤 ${formData.nome}\n` +
+                                  `📱 ${formData.whatsapp}\n` +
+                                  `🎯 Serviço: ${servicoLabels[formData.servico]}\n\n` +
+                                  `⏰ ${new Date().toLocaleString('pt-BR')}`;
+                    
+                    const whatsappUrl = `https://wa.me/5548984580234?text=${encodeURIComponent(message)}`;
+                    console.log('📲 Redirecionando para WhatsApp...');
+                    window.open(whatsappUrl, '_blank');
+                }, 1500);
+                
+            } catch (error) {
+                console.error('❌ ERRO ao enviar:', error);
+                
+                // Fallback WhatsApp
+                const fallbackMsg = `Quero orçamento!\nNome: ${formData.nome}\nWhatsApp: ${formData.whatsapp}\nServiço: ${formData.servico}`;
+                window.open(`https://wa.me/5548984580234?text=${encodeURIComponent(fallbackMsg)}`, '_blank');
+            } finally {
+                btn.disabled = false;
+                btn.classList.remove('loading');
+                btnText.textContent = '🚀 Enviar e Receber Proposta';
+            }
+        });
+    </script>
+</body>
+</html>
