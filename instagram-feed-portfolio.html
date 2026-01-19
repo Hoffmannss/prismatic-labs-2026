@@ -18,7 +18,7 @@
         }
         
         .header {
-            padding: 20px;
+            padding: 18px 20px;
             background: rgba(0,0,0,0.8);
             backdrop-filter: blur(10px);
             border-bottom: 1px solid rgba(168,85,247,0.2);
@@ -37,18 +37,23 @@
         .content {
             flex: 1;
             padding: 25px 20px;
-            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
         
-        .emoji { font-size: 50px; margin-bottom: 15px; text-align: center; }
+        .header-section {
+            text-align: center;
+        }
+        
+        .emoji { font-size: 45px; margin-bottom: 12px; }
         
         h1 {
-            font-size: 28px;
+            font-size: 26px;
             font-weight: 900;
             line-height: 1.2;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
             color: #FFFFFF;
-            text-align: center;
         }
         
         .highlight {
@@ -58,51 +63,48 @@
         }
         
         .subtitle {
-            font-size: 14px;
+            font-size: 13px;
             color: rgba(255,255,255,0.6);
-            margin-bottom: 25px;
-            text-align: center;
+            margin-bottom: 20px;
         }
         
-        .projects { display: flex; flex-direction: column; gap: 15px; }
+        .projects { display: flex; flex-direction: column; gap: 12px; }
         
         .project {
             background: rgba(168,85,247,0.08);
             border: 1px solid rgba(168,85,247,0.3);
-            border-radius: 15px;
-            padding: 18px;
-        }
-        
-        .project-header {
+            border-radius: 12px;
+            padding: 14px;
             display: flex;
             align-items: center;
             gap: 12px;
-            margin-bottom: 10px;
         }
         
-        .project-icon { font-size: 32px; }
+        .project-icon { font-size: 28px; flex-shrink: 0; }
+        
+        .project-info { flex: 1; }
         
         .project-title {
-            font-size: 18px;
+            font-size: 16px;
             font-weight: 700;
             color: #FFFFFF;
+            margin-bottom: 3px;
         }
         
         .project-desc {
-            font-size: 13px;
-            color: rgba(255,255,255,0.7);
-            line-height: 1.4;
-            margin-bottom: 10px;
+            font-size: 12px;
+            color: rgba(255,255,255,0.6);
+            margin-bottom: 5px;
         }
         
         .project-metric {
-            font-size: 16px;
+            font-size: 15px;
             font-weight: 700;
             color: #06D9D7;
         }
         
         .footer {
-            padding: 20px;
+            padding: 18px 20px;
             background: rgba(0,0,0,0.9);
             border-top: 1px solid rgba(168,85,247,0.2);
         }
@@ -110,7 +112,7 @@
         .cta {
             background: linear-gradient(45deg, #A855F7, #06D9D7);
             color: white;
-            padding: 16px;
+            padding: 15px;
             font-size: 16px;
             font-weight: 700;
             border-radius: 25px;
@@ -124,45 +126,47 @@
     </div>
     
     <div class="content">
-        <div class="emoji">💼</div>
-        <h1>Sites que<br><span class="highlight">Entregam Resultados</span></h1>
-        <p class="subtitle">Portfólio 2025-2026</p>
+        <div class="header-section">
+            <div class="emoji">💼</div>
+            <h1>Sites que<br><span class="highlight">Entregam Resultados</span></h1>
+            <p class="subtitle">Portfólio 2025-2026</p>
+        </div>
         
         <div class="projects">
             <div class="project">
-                <div class="project-header">
-                    <div class="project-icon">🚀</div>
+                <div class="project-icon">🚀</div>
+                <div class="project-info">
                     <div class="project-title">Infoprodutor</div>
+                    <div class="project-desc">Landing + checkout</div>
+                    <div class="project-metric">+65% conversão</div>
                 </div>
-                <div class="project-desc">Landing page de lançamento com checkout integrado</div>
-                <div class="project-metric">+65% conversão</div>
             </div>
             
             <div class="project">
-                <div class="project-header">
-                    <div class="project-icon">📊</div>
+                <div class="project-icon">📊</div>
+                <div class="project-info">
                     <div class="project-title">E-commerce</div>
+                    <div class="project-desc">Loja 300+ produtos</div>
+                    <div class="project-metric">R$180k/mês</div>
                 </div>
-                <div class="project-desc">Loja completa com 300+ produtos</div>
-                <div class="project-metric">R$180k/mês</div>
             </div>
             
             <div class="project">
-                <div class="project-header">
-                    <div class="project-icon">⚖️</div>
+                <div class="project-icon">⚖️</div>
+                <div class="project-info">
                     <div class="project-title">Advocacia</div>
+                    <div class="project-desc">Site + blog SEO</div>
+                    <div class="project-metric">+240% leads</div>
                 </div>
-                <div class="project-desc">Site institucional + blog SEO</div>
-                <div class="project-metric">+240% leads</div>
             </div>
             
             <div class="project">
-                <div class="project-header">
-                    <div class="project-icon">🏋️</div>
+                <div class="project-icon">🏋️</div>
+                <div class="project-info">
                     <div class="project-title">Fitness Coach</div>
+                    <div class="project-desc">Área de membros</div>
+                    <div class="project-metric">420 alunos ativos</div>
                 </div>
-                <div class="project-desc">Plataforma com área de membros</div>
-                <div class="project-metric">420 alunos ativos</div>
             </div>
         </div>
     </div>
