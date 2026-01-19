@@ -4,66 +4,216 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Solicitar Proposta | Prismatic Labs</title>
-    <meta name="description" content="Solicite uma proposta personalizada. Responda 3 perguntas e receba um orçamento sob medida.">
-    <link rel="stylesheet" href="css/style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&family=Space+Grotesk:wght@700&display=swap" rel="stylesheet">
     
     <style>
-        select {
-            -webkit-appearance: none;
-            -moz-appearance: none;
-            appearance: none;
-            background-image: url('data:image/svg+xml;utf8,<svg fill="%23a855f7" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
-            background-repeat: no-repeat;
-            background-position: right 15px center;
-            background-size: 20px;
-            padding-right: 45px !important;
-            color: #ffffff !important;
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        :root {
+            --color-primary: #ff00ff;
+            --color-secondary: #00ffff;
+            --color-bg: #0a0a0a;
+            --color-bg-secondary: #1a0a2e;
+            --color-text: #e0e0e0;
+            --color-text-secondary: #a0a0a0;
         }
         
-        select option {
-            background-color: #1a1a1a !important;
-            color: #ffffff !important;
-            padding: 12px !important;
+        body { 
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6; 
+            color: var(--color-text); 
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a0a2e 50%, #16213e 100%);
+            min-height: 100vh; 
+            overflow-x: hidden;
         }
         
-        .pacote-error {
-            margin-top: 10px;
-            padding: 10px;
-            background: rgba(239, 68, 68, 0.1);
-            border: 1px solid #ef4444;
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        .section { padding: 80px 0; }
+        
+        /* Header */
+        .header { 
+            background: rgba(0,0,0,0.95); 
+            backdrop-filter: blur(20px); 
+            padding: 1rem 0; 
+            position: sticky; 
+            top: 0; 
+            z-index: 100;
+            box-shadow: 0 4px 30px rgba(0,0,0,0.5);
+        }
+        .nav { display: flex; justify-content: space-between; align-items: center; }
+        .nav-logo .logo-text { 
+            font-size: 1.8rem; 
+            font-weight: 900; 
+            background: linear-gradient(45deg, #ff00ff, #00ffff); 
+            -webkit-background-clip: text; 
+            -webkit-text-fill-color: transparent; 
+        }
+        .nav-logo .logo-sub { 
+            font-size: 0.7em; 
+            opacity: 0.8; 
+            background: linear-gradient(45deg, #ff00ff, #00ffff); 
+            -webkit-background-clip: text; 
+            -webkit-text-fill-color: transparent;
+        }
+        .nav-menu { display: flex; gap: 2rem; list-style: none; align-items: center; flex-wrap: wrap; }
+        .nav-link { 
+            color: var(--color-text); 
+            text-decoration: none; 
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+        .nav-link:hover, .nav-link.active { color: var(--color-primary); }
+        .nav-toggle { display: none; cursor: pointer; }
+        .nav-toggle span { 
+            display: block;
+            width: 25px; 
+            height: 3px; 
+            background: white; 
+            margin: 5px 0;
+            border-radius: 3px;
+            transition: 0.3s;
+        }
+        
+        /* Buttons */
+        .btn { 
+            display: inline-block;
+            padding: 12px 24px; 
+            border-radius: 50px; 
+            text-decoration: none; 
+            font-weight: 600; 
+            transition: all 0.3s;
+            cursor: pointer;
+            border: none;
+        }
+        .btn-primary { 
+            background: linear-gradient(45deg, #ff00ff, #00ffff); 
+            color: white; 
+        }
+        .btn-primary:hover { transform: scale(1.05); box-shadow: 0 10px 30px rgba(255,0,255,0.4); }
+        .btn-outline { 
+            background: transparent; 
+            color: white; 
+            border: 2px solid rgba(255,255,255,0.3);
+        }
+        .btn-outline:hover { 
+            border-color: var(--color-primary);
+            box-shadow: 0 0 20px rgba(255,0,255,0.3);
+        }
+        .btn-gradient { background: linear-gradient(45deg, #ff00ff, #00ffff); color: white; }
+        
+        /* Section Headers */
+        .section-header { text-align: center; margin-bottom: 4rem; }
+        .section-badge { 
+            display: inline-block;
+            background: rgba(255,0,255,0.2);
+            color: var(--color-primary);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+        .section-title { 
+            font-size: clamp(2rem, 4vw, 3rem); 
+            font-weight: 900; 
+            margin-bottom: 1rem;
+        }
+        .gradient-text { 
+            background: linear-gradient(45deg, #fff, #ff00ff, #00ffff); 
+            -webkit-background-clip: text; 
+            -webkit-text-fill-color: transparent; 
+        }
+        
+        /* Forms */
+        input, textarea, select {
+            width: 100%;
+            padding: 15px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(168,85,247,0.3);
             border-radius: 8px;
-            color: #fca5a5;
-            font-size: 14px;
-            display: none;
+            color: #fff;
+            font-family: inherit;
+            transition: all 0.3s;
+        }
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: var(--color-primary);
+            box-shadow: 0 0 15px rgba(255,0,255,0.2);
         }
         
-        button[type="submit"]:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
+        /* Radio buttons */
+        .radio-group {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
         }
-        
-        .error-message {
-            display: none;
-            margin-top: 20px;
+        .radio-card {
+            flex: 1;
+            min-width: 150px;
             padding: 20px;
-            background: rgba(239, 68, 68, 0.1);
-            border: 2px solid #ef4444;
+            background: rgba(255,255,255,0.05);
+            border: 2px solid rgba(168,85,247,0.3);
             border-radius: 12px;
-            color: #fca5a5;
+            cursor: pointer;
+            transition: all 0.3s;
             text-align: center;
         }
-        
-        .error-message.show {
-            display: block;
-            animation: slideIn 0.3s ease;
+        .radio-card:hover {
+            border-color: var(--color-primary);
+            transform: translateY(-2px);
+        }
+        .radio-card input[type="radio"] {
+            display: none;
+        }
+        .radio-card input[type="radio"]:checked + label {
+            color: var(--color-primary);
+        }
+        .radio-card input[type="radio"]:checked ~ * {
+            border-color: var(--color-primary);
         }
         
-        @keyframes slideIn {
-            from { opacity: 0; transform: translateY(-10px); }
-            to { opacity: 1; transform: translateY(0); }
+        /* Footer */
+        .footer { 
+            background: rgba(0,0,0,0.8); 
+            padding: 60px 0 30px;
+            margin-top: 80px;
+        }
+        .footer-content { 
+            display: grid; 
+            grid-template-columns: 1fr 2fr; 
+            gap: 3rem; 
+            margin-bottom: 3rem;
+        }
+        .footer-logo { margin-bottom: 1rem; }
+        .footer-bottom { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            padding-top: 2rem; 
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+        .footer-copyright { opacity: 0.7; }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-menu { 
+                display: none; 
+                flex-direction: column; 
+                position: absolute; 
+                top: 100%; 
+                left: 0; 
+                right: 0; 
+                background: rgba(0,0,0,0.98);
+                padding: 2rem;
+                gap: 1rem;
+            }
+            .nav-menu.active { display: flex; }
+            .nav-toggle { display: block; }
+            .footer-content { grid-template-columns: 1fr; }
+            .footer-bottom { flex-direction: column; gap: 1rem; }
+            .radio-group { flex-direction: column; }
         }
     </style>
 </head>
@@ -87,100 +237,93 @@
         <div class="container">
             <div class="section-header" style="text-align: center; margin-bottom: 60px;">
                 <span class="section-badge">Proposta Personalizada</span>
-                <h1 class="section-title">Receba um Orçamento <span class="gradient-text">Sob Medida</span></h1>
-                <p style="color: rgba(255,255,255,0.7); margin-top: 20px; max-width: 700px; margin-left: auto; margin-right: auto;">Responda 3 perguntas rápidas e receba uma proposta detalhada em até 24 horas. Sem compromisso.</p>
+                <h1 class="section-title">Receba um <span class="gradient-text">Orçamento Sob Medida</span></h1>
+                <p style="color: rgba(255,255,255,0.7); margin-top: 20px;">Responda 3 perguntas rápidas e receba uma proposta personalizada em até 24 horas.</p>
             </div>
 
-            <div style="max-width: 700px; margin: 0 auto; background: rgba(255,255,255,0.03); padding: 40px; border-radius: 20px; border: 1px solid rgba(168,85,247,0.3);">
-                <form id="propostaForm" style="display: flex; flex-direction: column; gap: 30px;">
+            <div style="max-width: 800px; margin: 0 auto; background: rgba(255,255,255,0.03); padding: 50px; border-radius: 20px; border: 1px solid rgba(168,85,247,0.2);">
+                <form id="propostaForm" style="display: flex; flex-direction: column; gap: 35px;">
+                    <!-- NOME -->
                     <div>
-                        <label style="display: block; margin-bottom: 15px; color: #fff; font-weight: 600; font-size: 18px;">👉 Qual é o objetivo do seu projeto?</label>
-                        <select name="objetivo" id="objetivoSelect" required style="width: 100%; padding: 15px; background: rgba(255,255,255,0.05); border: 1px solid rgba(168,85,247,0.3); border-radius: 10px; color: #fff; font-size: 16px; cursor: pointer;">
-                            <option value="" disabled selected>Selecione uma opção</option>
-                            <option value="lancamento_infoproduto">Lançamento de Infoproduto</option>
-                            <option value="ecommerce">E-commerce / Loja Online</option>
-                            <option value="captacao_leads">Captação de Leads</option>
-                            <option value="institucional">Site Institucional</option>
-                            <option value="outro">Outro</option>
-                        </select>
+                        <label style="display: block; margin-bottom: 12px; color: rgba(255,255,255,0.9); font-weight: 600; font-size: 16px;">👤 Nome Completo *</label>
+                        <input type="text" name="nome" required placeholder="Digite seu nome completo">
                     </div>
 
+                    <!-- TIPO PROJETO -->
                     <div>
-                        <label style="display: block; margin-bottom: 15px; color: #fff; font-weight: 600; font-size: 18px;">👉 Qual pacote te interessa?</label>
-                        <div id="pacoteContainer" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px;">
-                            <label class="pacote-option" style="padding: 20px; background: rgba(255,255,255,0.05); border: 2px solid rgba(168,85,247,0.3); border-radius: 10px; cursor: pointer; transition: all 0.3s; text-align: center;">
-                                <input type="radio" name="pacote" value="basico" style="position: absolute; opacity: 0; pointer-events: none;">
-                                <div style="color: #14b8a6; font-weight: 700; font-size: 20px; margin-bottom: 5px;">Básico</div>
-                                <div style="color: rgba(255,255,255,0.7); font-size: 14px;">R$ 2.500</div>
+                        <label style="display: block; margin-bottom: 12px; color: rgba(255,255,255,0.9); font-weight: 600; font-size: 16px;">🚀 Tipo de Projeto *</label>
+                        <div class="radio-group">
+                            <label class="radio-card" style="position: relative;">
+                                <input type="radio" name="tipo" value="Basico" required>
+                                <div style="font-size: 24px; margin-bottom: 10px;">🔵</div>
+                                <div style="font-weight: 600; color: #14b8a6;">Básico</div>
+                                <div style="font-size: 12px; color: rgba(255,255,255,0.6); margin-top: 5px;">Landing simples</div>
                             </label>
-                            <label class="pacote-option" style="padding: 20px; background: rgba(168,85,247,0.1); border: 2px solid rgba(168,85,247,0.5); border-radius: 10px; cursor: pointer; transition: all 0.3s; text-align: center;">
-                                <input type="radio" name="pacote" value="pro" style="position: absolute; opacity: 0; pointer-events: none;">
-                                <div style="color: #a855f7; font-weight: 700; font-size: 20px; margin-bottom: 5px;">Pro 👑</div>
-                                <div style="color: rgba(255,255,255,0.7); font-size: 14px;">R$ 3.500</div>
+                            <label class="radio-card" style="position: relative;">
+                                <input type="radio" name="tipo" value="Pro" required>
+                                <div style="font-size: 24px; margin-bottom: 10px;">🔥</div>
+                                <div style="font-weight: 600; color: #a855f7;">Pro 🎉</div>
+                                <div style="font-size: 12px; color: rgba(255,255,255,0.6); margin-top: 5px;">Completo + integrações</div>
                             </label>
-                            <label class="pacote-option" style="padding: 20px; background: rgba(255,255,255,0.05); border: 2px solid rgba(236,72,153,0.3); border-radius: 10px; cursor: pointer; transition: all 0.3s; text-align: center;">
-                                <input type="radio" name="pacote" value="premium" style="position: absolute; opacity: 0; pointer-events: none;">
-                                <div style="color: #ec4899; font-weight: 700; font-size: 20px; margin-bottom: 5px;">Premium</div>
-                                <div style="color: rgba(255,255,255,0.7); font-size: 14px;">R$ 4.500</div>
+                            <label class="radio-card" style="position: relative;">
+                                <input type="radio" name="tipo" value="Premium" required>
+                                <div style="font-size: 24px; margin-bottom: 10px;">💎</div>
+                                <div style="font-weight: 600; color: #ec4899;">Premium</div>
+                                <div style="font-size: 12px; color: rgba(255,255,255,0.6); margin-top: 5px;">Automação completa</div>
                             </label>
                         </div>
-                        <div id="pacoteError" class="pacote-error">⚠️ Por favor, selecione um pacote</div>
                     </div>
 
+                    <!-- DESCRIÇÃO -->
                     <div>
-                        <label style="display: block; margin-bottom: 15px; color: #fff; font-weight: 600; font-size: 18px;">👉 Descreva brevemente seu projeto</label>
-                        <textarea name="descricao" required rows="5" placeholder="Ex: Preciso de uma landing page para lançar meu curso online de marketing digital..." style="width: 100%; padding: 15px; background: rgba(255,255,255,0.05); border: 1px solid rgba(168,85,247,0.3); border-radius: 10px; color: #fff; font-family: inherit; resize: vertical; font-size: 16px;"></textarea>
+                        <label style="display: block; margin-bottom: 12px; color: rgba(255,255,255,0.9); font-weight: 600; font-size: 16px;">📝 Descreva seu Projeto *</label>
+                        <textarea name="descricao" required rows="6" placeholder="Ex: Preciso de uma landing page para lançar meu curso online de marketing digital..."></textarea>
+                        <p style="font-size: 13px; color: rgba(255,255,255,0.5); margin-top: 8px;">💡 Dica: Quanto mais detalhes, melhor o orçamento!</p>
                     </div>
 
+                    <!-- CONTATO -->
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
                         <div>
-                            <label style="display: block; margin-bottom: 8px; color: rgba(255,255,255,0.9); font-weight: 500;">Nome *</label>
-                            <input type="text" name="nome" required style="width: 100%; padding: 15px; background: rgba(255,255,255,0.05); border: 1px solid rgba(168,85,247,0.3); border-radius: 8px; color: #fff;">
+                            <label style="display: block; margin-bottom: 12px; color: rgba(255,255,255,0.9); font-weight: 600; font-size: 16px;">📱 WhatsApp *</label>
+                            <input type="tel" name="whatsapp" required placeholder="(48) 98458-0234">
                         </div>
                         <div>
-                            <label style="display: block; margin-bottom: 8px; color: rgba(255,255,255,0.9); font-weight: 500;">WhatsApp *</label>
-                            <input type="tel" name="whatsapp" required placeholder="(48) 98458-0234" style="width: 100%; padding: 15px; background: rgba(255,255,255,0.05); border: 1px solid rgba(168,85,247,0.3); border-radius: 8px; color: #fff;">
+                            <label style="display: block; margin-bottom: 12px; color: rgba(255,255,255,0.9); font-weight: 600; font-size: 16px;">📧 Email *</label>
+                            <input type="email" name="email" required placeholder="seu@email.com">
                         </div>
                     </div>
-                    <div>
-                        <label style="display: block; margin-bottom: 8px; color: rgba(255,255,255,0.9); font-weight: 500;">Email *</label>
-                        <input type="email" name="email" required style="width: 100%; padding: 15px; background: rgba(255,255,255,0.05); border: 1px solid rgba(168,85,247,0.3); border-radius: 8px; color: #fff;">
-                    </div>
 
-                    <button type="submit" id="submitBtn" class="btn btn-large btn-gradient" style="width: 100%; margin-top: 20px;">Enviar Solicitação →</button>
+                    <!-- BOTÃO ENVIAR -->
+                    <button type="submit" class="btn btn-gradient" style="width: 100%; padding: 18px; font-size: 18px; margin-top: 10px;">🚀 Enviar Solicitação →</button>
                 </form>
 
-                <div id="errorMessage" class="error-message">
-                    <div style="font-size: 32px; margin-bottom: 10px;">⚠️</div>
-                    <p style="font-weight: 600; margin-bottom: 5px;">Ops! Algo deu errado</p>
-                    <p style="font-size: 14px; opacity: 0.9;">Por favor, entre em contato via WhatsApp: <a href="https://wa.me/5548984580234" style="color: #14b8a6; font-weight: 600;" target="_blank">+55 48 98458-0234</a></p>
+                <!-- MENSAGENS DE RETORNO -->
+                <div id="propostaSuccess" style="display: none; margin-top: 30px; padding: 25px; background: rgba(20,184,166,0.1); border: 2px solid #14b8a6; border-radius: 12px; text-align: center;">
+                    <p style="color: #14b8a6; font-weight: 600; font-size: 18px; margin-bottom: 10px;">✅ Solicitação enviada com sucesso!</p>
+                    <p style="color: rgba(255,255,255,0.7);">Responderemos com sua proposta personalizada em até 24 horas.</p>
                 </div>
-
-                <div id="propostaSuccess" style="display: none; margin-top: 30px; padding: 30px; background: rgba(20,184,166,0.1); border: 2px solid #14b8a6; border-radius: 15px; text-align: center;">
-                    <div style="font-size: 48px; margin-bottom: 15px;">✅</div>
-                    <h3 style="color: #14b8a6; margin-bottom: 10px; font-size: 24px;">Proposta Enviada!</h3>
-                    <p style="color: rgba(255,255,255,0.8); line-height: 1.6;">Recebemos sua solicitação. Entraremos em contato em até 24 horas com uma proposta detalhada.</p>
-                    <div style="margin-top: 20px;">
-                        <a href="https://wa.me/5548984580234" target="_blank" class="btn btn-primary" style="display: inline-block;">Falar no WhatsApp 💬</a>
-                    </div>
+                <div id="propostaError" style="display: none; margin-top: 30px; padding: 25px; background: rgba(239,68,68,0.1); border: 2px solid #ef4444; border-radius: 12px; text-align: center;">
+                    <p style="color: #fca5a5; font-weight: 600; font-size: 18px; margin-bottom: 10px;">⚠️ Erro ao enviar</p>
+                    <p style="color: rgba(255,255,255,0.7);">Por favor, tente novamente ou entre em contato pelo WhatsApp.</p>
                 </div>
             </div>
 
-            <div style="max-width: 900px; margin: 60px auto 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px;">
-                <div style="text-align: center; padding: 25px;">
-                    <div style="font-size: 40px; margin-bottom: 10px;">⚡</div>
-                    <h4 style="color: #a855f7; margin-bottom: 8px; font-size: 18px;">Resposta Rápida</h4>
-                    <p style="color: rgba(255,255,255,0.7); font-size: 14px;">Retorno em até 24 horas</p>
-                </div>
-                <div style="text-align: center; padding: 25px;">
-                    <div style="font-size: 40px; margin-bottom: 10px;">💎</div>
-                    <h4 style="color: #14b8a6; margin-bottom: 8px; font-size: 18px;">Sem Compromisso</h4>
-                    <p style="color: rgba(255,255,255,0.7); font-size: 14px;">Receba o orçamento sem custo</p>
-                </div>
-                <div style="text-align: center; padding: 25px;">
-                    <div style="font-size: 40px; margin-bottom: 10px;">🎯</div>
-                    <h4 style="color: #ec4899; margin-bottom: 8px; font-size: 18px;">Proposta Personalizada</h4>
-                    <p style="color: rgba(255,255,255,0.7); font-size: 14px;">Feita sob medida para você</p>
+            <!-- INFO COMPLEMENTAR -->
+            <div style="max-width: 800px; margin: 50px auto 0; text-align: center; padding: 35px; background: rgba(168,85,247,0.05); border-radius: 15px; border: 1px solid rgba(168,85,247,0.2);">
+                <h3 style="color: #a855f7; margin-bottom: 15px; font-size: 20px;">✨ O que acontece depois?</h3>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 25px; margin-top: 25px;">
+                    <div>
+                        <div style="font-size: 36px; margin-bottom: 10px;">📄</div>
+                        <p style="color: rgba(255,255,255,0.8); font-weight: 500;">Analisamos seu projeto</p>
+                    </div>
+                    <div>
+                        <div style="font-size: 36px; margin-bottom: 10px;">💬</div>
+                        <p style="color: rgba(255,255,255,0.8); font-weight: 500;">Entramos em contato</p>
+                    </div>
+                    <div>
+                        <div style="font-size: 36px; margin-bottom: 10px;">💰</div>
+                        <p style="color: rgba(255,255,255,0.8); font-weight: 500;">Enviamos orçamento</p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -192,95 +335,90 @@
             <div class="footer-bottom"><p class="footer-copyright">© 2026 Prismatic Labs. Todos os direitos reservados.</p></div>
         </div>
     </footer>
-
-    <script src="js/main.js"></script>
-    <script src="js/copyright.js"></script>
     <script>
-        document.querySelectorAll('input[name="pacote"]').forEach(radio => {
-            radio.addEventListener('change', function() {
-                document.getElementById('pacoteError').style.display = 'none';
-                document.querySelectorAll('.pacote-option').forEach(label => {
-                    label.style.background = 'rgba(255,255,255,0.05)';
-                    label.style.borderColor = 'rgba(168,85,247,0.3)';
-                    label.style.transform = 'scale(1)';
-                });
-                const selectedLabel = this.closest('.pacote-option');
-                selectedLabel.style.background = 'rgba(168,85,247,0.2)';
-                selectedLabel.style.borderColor = '#a855f7';
-                selectedLabel.style.transform = 'scale(1.05)';
+        // Mobile Menu Toggle
+        const navToggle = document.getElementById('navToggle');
+        const navMenu = document.getElementById('navMenu');
+        if (navToggle && navMenu) {
+          navToggle.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+          });
+          document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', () => {
+              navMenu.classList.remove('active');
+            });
+          });
+        }
+
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+          anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+              target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+          });
+        });
+
+        // Radio Card Selection
+        document.querySelectorAll('.radio-card').forEach(card => {
+            card.addEventListener('click', function() {
+                const radio = this.querySelector('input[type="radio"]');
+                if (radio) {
+                    radio.checked = true;
+                    document.querySelectorAll('.radio-card').forEach(c => {
+                        c.style.borderColor = 'rgba(168,85,247,0.3)';
+                        c.style.background = 'rgba(255,255,255,0.05)';
+                    });
+                    this.style.borderColor = '#a855f7';
+                    this.style.background = 'rgba(168,85,247,0.1)';
+                }
             });
         });
 
+        // Formulário de Proposta
         document.getElementById('propostaForm').addEventListener('submit', async function(e) {
             e.preventDefault();
-            
-            const submitBtn = document.getElementById('submitBtn');
-            const errorMessage = document.getElementById('errorMessage');
-            const successMessage = document.getElementById('propostaSuccess');
-            const pacoteError = document.getElementById('pacoteError');
-            
-            errorMessage.classList.remove('show');
-            pacoteError.style.display = 'none';
             
             const formData = new FormData(this);
             const data = Object.fromEntries(formData);
             
-            if (!data.pacote) {
-                pacoteError.style.display = 'block';
-                pacoteError.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                return;
-            }
-            
-            if (!data.objetivo || !data.nome || !data.email || !data.whatsapp || !data.descricao) {
-                alert('⚠️ Por favor, preencha todos os campos obrigatórios.');
-                return;
-            }
-            
             data.timestamp = new Date().toISOString();
             data.fonte = 'Site - Página Proposta';
+            data.status = 'Novo';
             
             console.log('📤 [PROPOSTA] Enviando:', data);
             
-            submitBtn.textContent = 'Enviando...';
-            submitBtn.disabled = true;
+            document.getElementById('propostaSuccess').style.display = 'none';
+            document.getElementById('propostaError').style.display = 'none';
             
             try {
-                // ✅ WEBHOOK ATUALIZADO - ZAP ATIVO
-                const params = new URLSearchParams(data);
-                
-                const response = await fetch('https://hooks.zapier.com/hooks/catch/25974741/ug2pai8/', {
+                const response = await fetch('https://hooks.zapier.com/hooks/catch/25974741/2jxtxyz/', {
                     method: 'POST',
-                    body: params
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
                 });
                 
                 console.log('📥 [PROPOSTA] Resposta:', response.status);
                 
-                if (response.ok || response.status === 200) {
-                    console.log('✅ [PROPOSTA] Sucesso!');
+                if (response.ok) {
                     this.style.display = 'none';
-                    successMessage.style.display = 'block';
-                    successMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                    
-                    if (window.gtag) {
-                        gtag('event', 'form_submit', {
-                            'event_category': 'Proposta',
-                            'event_label': data.pacote
-                        });
-                    }
+                    document.getElementById('propostaSuccess').style.display = 'block';
+                    console.log('✅ [PROPOSTA] Enviado com sucesso!');
                 } else {
                     throw new Error(`HTTP ${response.status}`);
                 }
             } catch (error) {
                 console.error('❌ [PROPOSTA] Erro:', error);
-                errorMessage.classList.add('show');
-                submitBtn.textContent = 'Tentar Novamente';
-                submitBtn.disabled = false;
+                document.getElementById('propostaError').style.display = 'block';
             }
         });
-        
-        document.getElementById('objetivoSelect').addEventListener('change', function() {
-            console.log('🔸 [SELECT] Objetivo:', this.value);
-        });
+
+        console.log('🏢 PRISMATIC LABS - Proposta');
+        console.log('📅', new Date().toISOString());
     </script>
 </body>
 </html>
