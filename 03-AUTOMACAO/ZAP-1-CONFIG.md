@@ -11,7 +11,7 @@ Capturar leads do formulário `proposta.html` e criar registro no Notion com **A
 
 ### **TRIGGER: Webhooks by Zapier**
 - **Evento:** Catch Hook
-- **Webhook URL:** `https://hooks.zapier.com/hooks/catch/25974741/uw77c8k/`
+- **Webhook URL:** `https://hooks.zapier.com/hooks/catch/25974741/ug2pai8/`
 - **Dados esperados do formulário:**
   ```json
   {
@@ -150,7 +150,7 @@ output = {
 ## ✅ CHECKLIST DE VALIDAÇÃO
 
 ### **1. Webhook**
-- [ ] Webhook `uw77c8k` está ativo
+- [ ] Webhook `ug2pai8` está ativo
 - [ ] Formulário `proposta.html` usa webhook correto
 - [ ] Teste manual: enviar formulário e verificar trigger
 
@@ -200,7 +200,7 @@ output = {
 
 ## 🔗 LINKS ÚTEIS
 
-- **Zap 1 Editor:** https://zapier.com/editor/zap/342764091
+- **Zap 1 Editor:** https://zapier.com/editor/ (verificar ID do Zap ativo)
 - **Notion Database:** https://www.notion.so/c9ef8025597c411bb9a5460f2da7c355
 - **Formulário:** https://hoffmannss.github.io/prismatic-labs-2026/proposta.html
 - **Documentação Zap 2:** `03-AUTOMACAO/ZAP-2-CONFIG.md` (próximo)
@@ -211,9 +211,10 @@ output = {
 
 - **v1.0** (2026-01-10): Configuração inicial com mapeamento básico
 - **v1.1** (2026-01-10): Separação de responsabilidades (Zap 1 vs Zap 2)
-- **v1.2** (próxima): Validação de campos obrigatórios
+- **v1.2** (2026-01-19): **Atualização webhook para `ug2pai8` (Zap ativo atual)**
 
 ---
 
-**Última atualização:** 10/01/2026 21:30 BRT  
-**Responsável:** Sistema de automação Prismatic Labs
+**Última atualização:** 19/01/2026 01:26 BRT  
+**Responsável:** Sistema de automação Prismatic Labs  
+**Status:** ✅ ATIVO E OPERACIONAL
