@@ -9,7 +9,7 @@
         
         body { 
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: linear-gradient(135deg, #0a0a0a 0%, #16213e 50%, #1a0a2e 100%);
+            background: #0a0a0a;
             width: 1080px;
             height: 1080px;
             display: flex;
@@ -19,82 +19,78 @@
             overflow: hidden;
         }
         
-        /* Cyber Grid */
         body::before {
             content: '';
             position: absolute;
             top: 0;
             left: 0;
-            right: 0;
-            bottom: 0;
+            width: 100%;
+            height: 100%;
             background: 
-                linear-gradient(90deg, rgba(168,85,247,0.03) 2px, transparent 2px),
-                linear-gradient(rgba(168,85,247,0.03) 2px, transparent 2px);
-            background-size: 60px 60px;
+                linear-gradient(90deg, rgba(168,85,247,0.03) 1px, transparent 1px),
+                linear-gradient(rgba(168,85,247,0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
             pointer-events: none;
         }
         
-        /* Glows */
         body::after {
             content: '';
             position: absolute;
             bottom: -20%;
             left: -10%;
-            width: 700px;
-            height: 700px;
-            background: radial-gradient(circle, rgba(6,217,215,0.12) 0%, transparent 70%);
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(6,217,215,0.15) 0%, transparent 70%);
             border-radius: 50%;
-            filter: blur(90px);
+            filter: blur(80px);
+            pointer-events: none;
         }
         
         .container {
-            width: 900px;
-            height: 900px;
-            background: rgba(255,255,255,0.02);
-            border: 2px solid rgba(168,85,247,0.25);
-            border-radius: 40px;
-            padding: 70px;
-            position: relative;
-            backdrop-filter: blur(20px);
-            box-shadow: 0 20px 60px rgba(0,0,0,0.6);
-        }
-        
-        /* Logo */
-        .logo {
-            position: absolute;
-            top: 40px;
-            left: 60px;
-            font-size: 32px;
-            font-weight: 900;
-            background: linear-gradient(45deg, #A855F7, #06D9D7);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            letter-spacing: -1px;
-        }
-        
-        .logo span {
-            font-size: 24px;
-            opacity: 1.0;
-        }
-        
-        /* Content */
-        .content {
-            display: flex;
-            flex-direction: column;
-            height: 100%;
+            width: 980px;
+            height: 980px;
+            background: rgba(10,10,10,0.95);
+            border: 3px solid rgba(168,85,247,0.3);
+            border-radius: 30px;
+            padding: 60px;
             position: relative;
             z-index: 1;
         }
         
+        .logo {
+            position: absolute;
+            top: 35px;
+            left: 50px;
+            font-size: 28px;
+            font-weight: 900;
+            background: linear-gradient(45deg, #A855F7, #00ffff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -0.5px;
+        }
+        
+        .logo-sub {
+            font-size: 20px;
+            margin-left: 5px;
+            opacity: 0.9;
+        }
+        
+        .content {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            padding-top: 40px;
+        }
+        
         .header {
             text-align: center;
-            margin-bottom: 40px;
+            margin-bottom: 35px;
         }
         
         .emoji {
             font-size: 80px;
             margin-bottom: 20px;
-            filter: drop-shadow(0 0 25px rgba(6,217,215,0.5));
+            display: block;
         }
         
         h1 {
@@ -102,100 +98,86 @@
             font-weight: 900;
             line-height: 1.1;
             margin-bottom: 15px;
-            background: linear-gradient(135deg, #FFFFFF 0%, #06D9D7 100%);
+            background: linear-gradient(135deg, #FFFFFF 0%, #00ffff 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
         
         .subtitle {
-            font-size: 28px;
-            color: #F5F5F5;
-            opacity: 0.85;
+            font-size: 26px;
+            color: rgba(255,255,255,0.8);
         }
         
-        /* Portfolio Grid */
         .portfolio {
+            flex: 1;
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 25px;
-            flex: 1;
+            gap: 20px;
+            margin-bottom: 25px;
         }
         
         .project {
             background: rgba(168,85,247,0.08);
             border: 2px solid rgba(168,85,247,0.3);
-            border-radius: 20px;
-            padding: 30px;
+            border-radius: 18px;
+            padding: 25px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            transition: all 0.3s;
-        }
-        
-        .project:hover {
-            transform: translateY(-5px);
-            border-color: #A855F7;
-            box-shadow: 0 15px 35px rgba(168,85,247,0.3);
         }
         
         .project-icon {
-            font-size: 48px;
-            margin-bottom: 15px;
+            font-size: 46px;
+            margin-bottom: 12px;
         }
         
         .project-title {
-            font-size: 28px;
+            font-size: 26px;
             font-weight: 700;
             color: #FFFFFF;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
         }
         
         .project-desc {
-            font-size: 18px;
+            font-size: 17px;
             color: rgba(255,255,255,0.7);
             line-height: 1.4;
-            margin-bottom: 15px;
+            margin-bottom: 12px;
             flex: 1;
         }
         
         .project-metric {
             display: flex;
             align-items: center;
-            gap: 10px;
-            font-size: 20px;
+            gap: 8px;
+            font-size: 19px;
             font-weight: 600;
-            color: #06D9D7;
+            color: #00ffff;
         }
         
         .project-metric span {
-            font-size: 32px;
+            font-size: 28px;
         }
         
-        /* CTA */
         .cta {
-            position: absolute;
-            bottom: 50px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: linear-gradient(45deg, #A855F7, #06D9D7);
+            background: linear-gradient(45deg, #A855F7, #00ffff);
             color: white;
-            padding: 18px 50px;
+            padding: 22px 50px;
             font-size: 24px;
             font-weight: 700;
             border-radius: 50px;
-            text-decoration: none;
-            box-shadow: 0 15px 35px rgba(168,85,247,0.4);
-            white-space: nowrap;
+            text-align: center;
+            box-shadow: 0 15px 40px rgba(168,85,247,0.4);
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="logo">PRISMATIC <span>LABS</span></div>
+        <div class="logo">PRISMATIC<span class="logo-sub">LABS</span></div>
         
         <div class="content">
             <div class="header">
-                <div class="emoji">💼</div>
+                <span class="emoji">💼</span>
                 <h1>Sites que Entregam<br>Resultados Reais</h1>
                 <p class="subtitle">Portfólio 2025-2026</p>
             </div>
@@ -245,9 +227,9 @@
                     </div>
                 </div>
             </div>
+            
+            <div class="cta">📍 Ver Portfolio Completo</div>
         </div>
-        
-        <div class="cta">📍 Ver Portfolio Completo</div>
     </div>
 </body>
 </html>

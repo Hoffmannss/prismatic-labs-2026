@@ -9,7 +9,7 @@
         
         body { 
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: linear-gradient(135deg, #0a0a0a 0%, #1a0a2e 100%);
+            background: #0a0a0a;
             width: 1080px;
             height: 1080px;
             display: flex;
@@ -19,29 +19,20 @@
             overflow: hidden;
         }
         
-        /* Animated particles */
         body::before {
             content: '';
             position: absolute;
             top: 0;
             left: 0;
-            right: 0;
-            bottom: 0;
-            background-image: 
-                radial-gradient(circle, rgba(168,85,247,0.4) 2px, transparent 2px),
-                radial-gradient(circle, rgba(6,217,215,0.3) 1px, transparent 1px);
-            background-size: 100px 100px, 150px 150px;
-            background-position: 0 0, 50px 50px;
-            animation: particleFloat 15s linear infinite;
-            opacity: 0.3;
+            width: 100%;
+            height: 100%;
+            background: 
+                linear-gradient(90deg, rgba(255,0,110,0.03) 1px, transparent 1px),
+                linear-gradient(rgba(255,0,110,0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            pointer-events: none;
         }
         
-        @keyframes particleFloat {
-            0% { transform: translateY(0); }
-            100% { transform: translateY(-200px); }
-        }
-        
-        /* Central glow */
         body::after {
             content: '';
             position: absolute;
@@ -52,40 +43,39 @@
             height: 600px;
             background: radial-gradient(circle, rgba(255,0,110,0.15) 0%, transparent 70%);
             border-radius: 50%;
-            filter: blur(120px);
+            filter: blur(100px);
+            pointer-events: none;
         }
         
         .container {
-            width: 900px;
-            height: 900px;
-            background: rgba(255,255,255,0.02);
-            border: 2px solid rgba(255,0,110,0.25);
-            border-radius: 40px;
-            padding: 70px;
+            width: 980px;
+            height: 980px;
+            background: rgba(10,10,10,0.95);
+            border: 3px solid rgba(255,0,110,0.3);
+            border-radius: 30px;
+            padding: 60px;
             position: relative;
-            backdrop-filter: blur(20px);
-            box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+            z-index: 1;
         }
         
-        /* Logo */
         .logo {
             position: absolute;
-            top: 40px;
-            left: 60px;
-            font-size: 32px;
+            top: 35px;
+            left: 50px;
+            font-size: 28px;
             font-weight: 900;
             background: linear-gradient(45deg, #FF006E, #A855F7);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            letter-spacing: -1px;
+            letter-spacing: -0.5px;
         }
         
-        .logo span {
-            font-size: 24px;
-            opacity: 1.0;
+        .logo-sub {
+            font-size: 20px;
+            margin-left: 5px;
+            opacity: 0.9;
         }
         
-        /* Content */
         .content {
             display: flex;
             flex-direction: column;
@@ -93,55 +83,45 @@
             justify-content: center;
             height: 100%;
             text-align: center;
-            position: relative;
-            z-index: 1;
+            padding-top: 30px;
         }
         
         .emoji {
-            font-size: 100px;
-            margin-bottom: 30px;
-            filter: drop-shadow(0 0 30px rgba(255,0,110,0.6));
-            animation: float 3s ease-in-out infinite;
-        }
-        
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-20px); }
+            font-size: 90px;
+            margin-bottom: 25px;
         }
         
         h1 {
-            font-size: 58px;
+            font-size: 56px;
             font-weight: 900;
-            line-height: 1.1;
-            margin-bottom: 20px;
+            line-height: 1.15;
+            margin-bottom: 18px;
             background: linear-gradient(135deg, #FFFFFF 0%, #FF006E 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
         
         .subtitle {
-            font-size: 30px;
-            color: #F5F5F5;
-            opacity: 0.85;
-            margin-bottom: 50px;
+            font-size: 26px;
+            color: rgba(255,255,255,0.8);
+            margin-bottom: 45px;
             max-width: 700px;
         }
         
-        /* Comparison */
         .comparison {
             display: grid;
             grid-template-columns: 1fr auto 1fr;
-            gap: 30px;
+            gap: 25px;
             width: 100%;
-            max-width: 750px;
+            max-width: 700px;
             align-items: center;
-            margin-bottom: 40px;
+            margin-bottom: 35px;
         }
         
         .side {
             background: rgba(255,255,255,0.03);
-            border-radius: 20px;
-            padding: 30px;
+            border-radius: 18px;
+            padding: 25px;
         }
         
         .side.bad {
@@ -154,18 +134,18 @@
         }
         
         .side-icon {
-            font-size: 48px;
-            margin-bottom: 15px;
+            font-size: 44px;
+            margin-bottom: 12px;
         }
         
         .side-label {
-            font-size: 20px;
+            font-size: 18px;
             color: rgba(255,255,255,0.6);
-            margin-bottom: 10px;
+            margin-bottom: 8px;
         }
         
         .side-value {
-            font-size: 42px;
+            font-size: 38px;
             font-weight: 900;
         }
         
@@ -174,54 +154,51 @@
         }
         
         .side.good .side-value {
-            color: #06D9D7;
+            color: #00ffff;
         }
         
         .vs {
-            font-size: 36px;
+            font-size: 32px;
             font-weight: 900;
             color: rgba(255,255,255,0.3);
         }
         
-        /* ROI Box */
         .roi-box {
             background: linear-gradient(135deg, rgba(6,217,215,0.1) 0%, rgba(168,85,247,0.1) 100%);
             border: 2px solid rgba(6,217,215,0.4);
-            border-radius: 20px;
-            padding: 25px 40px;
-            margin-bottom: 30px;
+            border-radius: 18px;
+            padding: 22px 35px;
+            margin-bottom: 28px;
         }
         
         .roi-label {
-            font-size: 22px;
+            font-size: 20px;
             color: rgba(255,255,255,0.7);
             margin-bottom: 5px;
         }
         
         .roi-value {
-            font-size: 56px;
+            font-size: 50px;
             font-weight: 900;
-            background: linear-gradient(45deg, #06D9D7, #A855F7);
+            background: linear-gradient(45deg, #00ffff, #A855F7);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
         
-        /* CTA */
         .cta {
             background: linear-gradient(45deg, #FF006E, #A855F7);
             color: white;
-            padding: 20px 60px;
-            font-size: 28px;
+            padding: 22px 55px;
+            font-size: 26px;
             font-weight: 700;
             border-radius: 50px;
-            text-decoration: none;
-            box-shadow: 0 20px 40px rgba(255,0,110,0.4);
+            box-shadow: 0 15px 40px rgba(255,0,110,0.4);
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="logo">PRISMATIC <span>LABS</span></div>
+        <div class="logo">PRISMATIC<span class="logo-sub">LABS</span></div>
         
         <div class="content">
             <div class="emoji">💰</div>
