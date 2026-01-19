@@ -2,90 +2,55 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=1080, initial-scale=1.0">
-    <title>Última Vaga Janeiro | Prismatic Labs</title>
+    <meta name="viewport" content="width=375, initial-scale=1.0">
+    <title>🚨 Última Vaga Janeiro | Prismatic Labs</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
         body { 
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: #0a0a0a;
-            width: 1080px;
-            height: 1920px;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a0a2e 100%);
+            width: 375px;
+            height: 667px;
             display: flex;
             flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            position: relative;
             overflow: hidden;
-            padding: 100px 70px;
         }
         
-        body::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: 
-                linear-gradient(90deg, rgba(255,0,110,0.03) 1px, transparent 1px),
-                linear-gradient(rgba(255,0,110,0.03) 1px, transparent 1px);
-            background-size: 50px 50px;
-            pointer-events: none;
-        }
-        
-        body::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 800px;
-            height: 800px;
-            background: radial-gradient(ellipse, rgba(255,0,110,0.2) 0%, transparent 70%);
-            filter: blur(120px);
-            pointer-events: none;
+        .header {
+            padding: 50px 20px 20px;
+            text-align: center;
         }
         
         .logo {
-            position: absolute;
-            top: 70px;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 38px;
+            font-size: 24px;
             font-weight: 900;
             background: linear-gradient(45deg, #FF006E, #A855F7);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            text-align: center;
         }
         
-        .logo-sub {
-            font-size: 26px;
-            margin-left: 5px;
-            opacity: 0.9;
-        }
+        .logo-sub { font-size: 16px; display: block; opacity: 0.9; }
         
         .content {
+            flex: 1;
             display: flex;
             flex-direction: column;
-            align-items: center;
+            justify-content: center;
+            padding: 30px;
             text-align: center;
-            position: relative;
-            z-index: 1;
-            max-width: 900px;
         }
         
         .badge {
-            background: rgba(255,0,0,0.2);
-            border: 2px solid rgba(255,0,0,0.5);
-            color: #FF4444;
-            padding: 12px 35px;
-            border-radius: 50px;
-            font-size: 28px;
+            background: rgba(255,0,110,0.2);
+            border: 2px solid #FF006E;
+            color: #FF006E;
+            padding: 10px 25px;
+            border-radius: 25px;
+            font-size: 18px;
             font-weight: 700;
-            margin-bottom: 40px;
+            margin: 0 auto 30px;
+            display: inline-block;
             animation: pulse 2s infinite;
         }
         
@@ -94,129 +59,104 @@
             50% { transform: scale(1.05); }
         }
         
-        .emoji {
-            font-size: 110px;
-            margin-bottom: 30px;
-        }
+        .emoji { font-size: 70px; margin-bottom: 25px; }
         
         h1 {
-            font-size: 68px;
+            font-size: 38px;
             font-weight: 900;
             line-height: 1.1;
+            margin-bottom: 20px;
+            color: #FFFFFF;
+        }
+        
+        .highlight {
+            background: linear-gradient(135deg, #FF006E, #A855F7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .deadline {
+            background: rgba(255,0,110,0.1);
+            border: 1px solid rgba(255,0,110,0.3);
+            border-radius: 15px;
+            padding: 20px;
             margin-bottom: 25px;
-            background: linear-gradient(135deg, #FFFFFF, #FF006E);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
         }
         
-        .subtitle {
+        .deadline-label {
+            font-size: 14px;
+            color: rgba(255,255,255,0.6);
+            margin-bottom: 5px;
+        }
+        
+        .deadline-value {
             font-size: 32px;
-            color: rgba(255,255,255,0.85);
-            margin-bottom: 50px;
-            line-height: 1.5;
-        }
-        
-        .countdown {
-            background: rgba(255,0,110,0.15);
-            border: 2px solid rgba(255,0,110,0.4);
-            border-radius: 20px;
-            padding: 35px;
-            margin-bottom: 45px;
-            width: 100%;
-            max-width: 700px;
-        }
-        
-        .countdown-label {
-            font-size: 24px;
-            color: rgba(255,255,255,0.7);
-            margin-bottom: 15px;
-        }
-        
-        .countdown-value {
-            font-size: 70px;
             font-weight: 900;
-            background: linear-gradient(45deg, #FF006E, #A855F7);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            color: #FF006E;
         }
         
         .features {
-            display: flex;
-            flex-direction: column;
-            gap: 18px;
-            margin-bottom: 45px;
-            width: 100%;
-            max-width: 700px;
+            text-align: left;
+            margin-bottom: 25px;
         }
         
         .feature {
-            background: rgba(255,255,255,0.03);
-            border: 2px solid rgba(168,85,247,0.3);
-            border-radius: 15px;
-            padding: 20px 25px;
-            text-align: left;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            font-size: 24px;
-            color: rgba(255,255,255,0.9);
+            font-size: 16px;
+            color: rgba(255,255,255,0.8);
+            margin-bottom: 12px;
+            padding-left: 25px;
+            position: relative;
         }
         
-        .feature-icon {
-            font-size: 32px;
+        .feature::before {
+            content: '✅';
+            position: absolute;
+            left: 0;
+            font-size: 18px;
+        }
+        
+        .footer {
+            padding: 20px;
         }
         
         .cta {
             background: linear-gradient(45deg, #FF006E, #A855F7);
             color: white;
-            padding: 28px 70px;
-            font-size: 34px;
+            padding: 18px;
+            font-size: 18px;
             font-weight: 700;
-            border-radius: 50px;
-            box-shadow: 0 20px 50px rgba(255,0,110,0.5);
-            margin-bottom: 25px;
-        }
-        
-        .warning {
-            font-size: 20px;
-            color: rgba(255,255,255,0.6);
-            font-style: italic;
+            border-radius: 30px;
+            text-align: center;
+            box-shadow: 0 15px 35px rgba(255,0,110,0.4);
         }
     </style>
 </head>
 <body>
-    <div class="logo">PRISMATIC<span class="logo-sub">LABS</span></div>
+    <div class="header">
+        <div class="logo">PRISMATIC <span class="logo-sub">LABS</span></div>
+    </div>
     
     <div class="content">
         <div class="badge">🚨 URGENTE</div>
         
         <div class="emoji">⏰</div>
-        <h1>Última Vaga<br>Janeiro 2026</h1>
-        <p class="subtitle">Só aceitamos 5 projetos/mês para manter qualidade premium</p>
+        <h1><span class="highlight">Última Vaga</span><br>Janeiro 2026</h1>
         
-        <div class="countdown">
-            <div class="countdown-label">Vagas restantes:</div>
-            <div class="countdown-value">1/5</div>
+        <div class="deadline">
+            <div class="deadline-label">Prazo final:</div>
+            <div class="deadline-value">31/JAN</div>
         </div>
         
         <div class="features">
-            <div class="feature">
-                <span class="feature-icon">✅</span>
-                <span>Entrega em 10-15 dias</span>
-            </div>
-            <div class="feature">
-                <span class="feature-icon">✅</span>
-                <span>Design dark mode exclusivo</span>
-            </div>
-            <div class="feature">
-                <span class="feature-icon">✅</span>
-                <span>Taxa de conversão 40%+</span>
-            </div>
+            <div class="feature">Entrega em 10-15 dias</div>
+            <div class="feature">Dark mode premium</div>
+            <div class="feature">PageSpeed 90+ garantido</div>
+            <div class="feature">Suporte incluso</div>
         </div>
-        
-        <div class="cta">🚀 Garantir Minha Vaga</div>
-        
-        <p class="warning">Próxima abertura: Fevereiro</p>
+    </div>
+    
+    <div class="footer">
+        <div class="cta">⚡ Garantir Minha Vaga AGORA</div>
     </div>
 </body>
 </html>
