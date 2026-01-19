@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contato | Prismatic Labs</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header class="header">
+        <nav class="nav container">
+            <div class="nav-logo"><a href="index.html" style="text-decoration: none; color: inherit;"><span class="logo-text">PRISMATIC</span><span class="logo-sub">LABS</span></a></div>
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="index.html" class="nav-link">Home</a></li>
+                <li><a href="servicos.html" class="nav-link">Serviços</a></li>
+                <li><a href="processo.html" class="nav-link">Processo</a></li>
+                <li><a href="documentos.html" class="nav-link">Documentos</a></li>
+                <li><a href="contato.html" class="nav-link active">Contato</a></li>
+                <li><a href="proposta.html" class="btn btn-primary">Solicitar Proposta</a></li>
+            </ul>
+            <div class="nav-toggle" id="navToggle"><span></span><span></span><span></span></div>
+        </nav>
+    </header>
+
+    <section class="section">
+        <div class="container">
+            <div class="section-header" style="text-align: center; margin-bottom: 60px;">
+                <span class="section-badge">Fale Conosco</span>
+                <h1 class="section-title">Entre em <span class="gradient-text">Contato</span></h1>
+                <p style="color: rgba(255,255,255,0.7); margin-top: 20px;">Tire suas dúvidas ou solicite uma proposta. Respondemos em até 24 horas.</p>
+            </div>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 40px; max-width: 1000px; margin: 0 auto;">
+                <!-- INFORMAÇÕES -->
+                <div>
+                    <h3 style="color: #a855f7; margin-bottom: 30px; font-size: 22px;">Informações de Contato</h3>
+                    <div style="margin-bottom: 25px;">
+                        <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 10px;">
+                            <div style="width: 50px; height: 50px; background: rgba(168,85,247,0.1); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 24px;">📧</div>
+                            <div>
+                                <p style="color: rgba(255,255,255,0.6); font-size: 14px;">Email</p>
+                                <a href="mailto:labs.prismatic@gmail.com" style="color: #a855f7; font-weight: 500;">labs.prismatic@gmail.com</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="margin-bottom: 25px;">
+                        <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 10px;">
+                            <div style="width: 50px; height: 50px; background: rgba(20,184,166,0.1); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 24px;">📱</div>
+                            <div>
+                                <p style="color: rgba(255,255,255,0.6); font-size: 14px;">WhatsApp</p>
+                                <a href="https://wa.me/5548984580234" target="_blank" style="color: #14b8a6; font-weight: 500;">+55 48 98458-0234</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="margin-bottom: 25px;">
+                        <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 10px;">
+                            <div style="width: 50px; height: 50px; background: rgba(236,72,153,0.1); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 24px;">📸</div>
+                            <div>
+                                <p style="color: rgba(255,255,255,0.6); font-size: 14px;">Instagram</p>
+                                <a href="https://instagram.com/labs.prismatic" target="_blank" style="color: #ec4899; font-weight: 500;">@labs.prismatic</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="margin-top: 40px; padding: 25px; background: rgba(168,85,247,0.1); border-radius: 12px; border-left: 3px solid #a855f7;">
+                        <p style="color: rgba(255,255,255,0.8); margin-bottom: 10px; font-weight: 600;">📍 Localização</p>
+                        <p style="color: rgba(255,255,255,0.7);">Florianópolis, Santa Catarina, Brasil</p>
+                    </div>
+                </div>
+
+                <!-- FORMULÁRIO -->
+                <div>
+                    <h3 style="color: #14b8a6; margin-bottom: 30px; font-size: 22px;">Envie uma Mensagem</h3>
+                    <form id="contactForm" style="display: flex; flex-direction: column; gap: 20px;">
+                        <div>
+                            <label style="display: block; margin-bottom: 8px; color: rgba(255,255,255,0.9); font-weight: 500;">Nome *</label>
+                            <input type="text" name="nome" required style="width: 100%; padding: 15px; background: rgba(255,255,255,0.05); border: 1px solid rgba(168,85,247,0.3); border-radius: 8px; color: #fff;">
+                        </div>
+                        <div>
+                            <label style="display: block; margin-bottom: 8px; color: rgba(255,255,255,0.9); font-weight: 500;">Email *</label>
+                            <input type="email" name="email" required style="width: 100%; padding: 15px; background: rgba(255,255,255,0.05); border: 1px solid rgba(168,85,247,0.3); border-radius: 8px; color: #fff;">
+                        </div>
+                        <div>
+                            <label style="display: block; margin-bottom: 8px; color: rgba(255,255,255,0.9); font-weight: 500;">Mensagem *</label>
+                            <textarea name="mensagem" required rows="5" style="width: 100%; padding: 15px; background: rgba(255,255,255,0.05); border: 1px solid rgba(168,85,247,0.3); border-radius: 8px; color: #fff; font-family: inherit; resize: vertical;"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-gradient" style="width: 100%;">Enviar Mensagem →</button>
+                    </form>
+                    <div id="contactSuccess" style="display: none; margin-top: 20px; padding: 20px; background: rgba(20,184,166,0.1); border: 2px solid #14b8a6; border-radius: 10px; text-align: center;">
+                        <p style="color: #14b8a6; font-weight: 600;">✅ Mensagem enviada com sucesso! Responderemos em breve.</p>
+                    </div>
+                    <div id="contactError" style="display: none; margin-top: 20px; padding: 20px; background: rgba(239,68,68,0.1); border: 2px solid #ef4444; border-radius: 10px; text-align: center;">
+                        <p style="color: #fca5a5; font-weight: 600;">⚠️ Erro ao enviar. Por favor, tente pelo WhatsApp ou email.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PREFERIR PROPOSTA -->
+            <div style="max-width: 700px; margin: 80px auto 0; text-align: center; padding: 40px; background: rgba(168,85,247,0.1); border-radius: 15px;">
+                <h3 style="color: #a855f7; margin-bottom: 15px; font-size: 24px;">🚀 Prefere uma Proposta Personalizada?</h3>
+                <p style="color: rgba(255,255,255,0.7); margin-bottom: 25px;">Responda 3 perguntas rápidas e receba um orçamento sob medida para seu projeto.</p>
+                <a href="proposta.html" class="btn btn-gradient">Solicitar Proposta Personalizada →</a>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content"><div class="footer-brand"><div class="footer-logo"><span class="logo-text">PRISMATIC</span><span class="logo-sub">LABS</span></div></div></div>
+            <div class="footer-bottom"><p class="footer-copyright">© 2026 Prismatic Labs. Todos os direitos reservados.</p></div>
+        </div>
+    </footer>
+    <script src="js/main.js"></script>
+    <script src="js/copyright.js"></script>
+    <script>
+        // 🔧 FORMULÁRIO DE CONTATO (SEPARADO DE PROPOSTA)
+        // Este formulário é para dúvidas/suporte, NÃO é lead de venda
+        document.getElementById('contactForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            const data = Object.fromEntries(formData);
+            
+            // Adicionar metadados
+            data.timestamp = new Date().toISOString();
+            data.tipo = 'Contato/Suporte';
+            data.fonte = 'Site - Página Contato';
+            
+            console.log('📤 [CONTATO] Enviando:', data);
+            
+            // Esconder mensagens anteriores
+            document.getElementById('contactSuccess').style.display = 'none';
+            document.getElementById('contactError').style.display = 'none';
+            
+            try {
+                // ⚠️ IMPORTANTE: Este webhook é DIFERENTE do formulário de proposta
+                // Este envia email direto, NÃO cria lead no Notion
+                const response = await fetch('https://hooks.zapier.com/hooks/catch/25974741/2jxtxyz/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+                
+                console.log('📥 [CONTATO] Resposta:', response.status);
+                
+                if (response.ok) {
+                    // Sucesso!
+                    this.style.display = 'none';
+                    document.getElementById('contactSuccess').style.display = 'block';
+                    console.log('✅ [CONTATO] Enviado com sucesso!');
+                } else {
+                    throw new Error(`HTTP ${response.status}`);
+                }
+            } catch (error) {
+                console.error('❌ [CONTATO] Erro:', error);
+                document.getElementById('contactError').style.display = 'block';
+            }
+        });
+    </script>
+</body>
+</html>
