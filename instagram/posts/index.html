@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prismatic Labs - Posts Instagram</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22 fill=%22%23ff00ff%22>💜</text></svg>">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a0a2e 50%, #16213e 100%);
+            color: #e0e0e0;
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+        
+        .header h1 {
+            font-size: 3rem;
+            font-weight: 900;
+            background: linear-gradient(45deg, #ff00ff, #00ffff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+        }
+        
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.8;
+        }
+        
+        .carousel-section {
+            margin-bottom: 80px;
+        }
+        
+        .carousel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 15px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .carousel-info h2 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        
+        .carousel-info p {
+            opacity: 0.8;
+        }
+        
+        .carousel-meta {
+            text-align: right;
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+        
+        .slides-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        
+        .slide-card {
+            background: rgba(255,255,255,0.05);
+            border-radius: 20px;
+            border: 1px solid rgba(255,255,255,0.1);
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+        
+        .slide-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(255,0,255,0.3);
+            border-color: rgba(255,0,255,0.5);
+        }
+        
+        .slide-preview {
+            width: 100%;
+            aspect-ratio: 1;
+            background: #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .slide-preview iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        
+        .slide-info {
+            padding: 20px;
+        }
+        
+        .slide-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        
+        .slide-description {
+            font-size: 0.9rem;
+            opacity: 0.8;
+            margin-bottom: 1rem;
+        }
+        
+        .slide-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            cursor: pointer;
+            border: none;
+            font-size: 0.9rem;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(45deg, #ff00ff, #00ffff);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 30px rgba(255,0,255,0.4);
+        }
+        
+        .btn-outline {
+            background: transparent;
+            color: white;
+            border: 2px solid rgba(255,255,255,0.3);
+        }
+        
+        .btn-outline:hover {
+            border-color: var(--color-primary);
+            box-shadow: 0 0 20px rgba(255,0,255,0.3);
+        }
+        
+        .instructions {
+            background: rgba(255,0,255,0.1);
+            padding: 30px;
+            border-radius: 20px;
+            border: 1px solid rgba(255,0,255,0.3);
+            margin-top: 60px;
+        }
+        
+        .instructions h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #ff00ff;
+        }
+        
+        .instructions ol {
+            margin-left: 20px;
+            line-height: 1.8;
+        }
+        
+        .instructions li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .instructions code {
+            background: rgba(0,0,0,0.5);
+            padding: 2px 8px;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+        }
+        
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .carousel-header {
+                flex-direction: column;
+                text-align: center;
+                gap: 20px;
+            }
+            
+            .carousel-meta {
+                text-align: center;
+            }
+            
+            .slides-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📸 Posts Instagram - Prismatic Labs</h1>
+            <p>Visualize, abra em tela cheia e tire screenshots profissionais</p>
+        </div>
+        
+        <!-- CARROSSEL: VELOCIDADE DE SITES -->
+        <div class="carousel-section">
+            <div class="carousel-header">
+                <div class="carousel-info">
+                    <h2>🚀 Carrossel: Velocidade de Sites</h2>
+                    <p>5 slides sobre otimização de performance web</p>
+                </div>
+                <div class="carousel-meta">
+                    <p><strong>Formato:</strong> 1080x1080px</p>
+                    <p><strong>Status:</strong> ✅ Pronto</p>
+                </div>
+            </div>
+            
+            <div class="slides-grid">
+                <!-- Slide 1 -->
+                <div class="slide-card">
+                    <div class="slide-preview">
+                        <iframe src="velocidade-sites-slide-1.html" loading="lazy"></iframe>
+                    </div>
+                    <div class="slide-info">
+                        <h3 class="slide-title">Slide 1 - Capa</h3>
+                        <p class="slide-description">Hook de atenção: "Seu Site Está 3x Mais Lento do Que Deveria"</p>
+                        <div class="slide-actions">
+                            <a href="velocidade-sites-slide-1.html" target="_blank" class="btn btn-primary">
+                                🖼️ Abrir Fullscreen
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Slide 2 -->
+                <div class="slide-card">
+                    <div class="slide-preview">
+                        <iframe src="velocidade-sites-slide-2.html" loading="lazy"></iframe>
+                    </div>
+                    <div class="slide-info">
+                        <h3 class="slide-title">Slide 2 - Problema</h3>
+                        <p class="slide-description">Dor: Estatísticas impactantes sobre performance ruim</p>
+                        <div class="slide-actions">
+                            <a href="velocidade-sites-slide-2.html" target="_blank" class="btn btn-primary">
+                                🖼️ Abrir Fullscreen
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Slide 3 -->
+                <div class="slide-card">
+                    <div class="slide-preview">
+                        <iframe src="velocidade-sites-slide-3.html" loading="lazy"></iframe>
+                    </div>
+                    <div class="slide-info">
+                        <h3 class="slide-title">Slide 3 - Solução</h3>
+                        <p class="slide-description">Esperança: Como a Prismatic Labs resolve o problema</p>
+                        <div class="slide-actions">
+                            <a href="velocidade-sites-slide-3.html" target="_blank" class="btn btn-primary">
+                                🖼️ Abrir Fullscreen
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Slide 4 -->
+                <div class="slide-card">
+                    <div class="slide-preview">
+                        <iframe src="velocidade-sites-slide-4.html" loading="lazy"></iframe>
+                    </div>
+                    <div class="slide-info">
+                        <h3 class="slide-title">Slide 4 - Resultados</h3>
+                        <p class="slide-description">Prova: Métricas reais de performance alcançadas</p>
+                        <div class="slide-actions">
+                            <a href="velocidade-sites-slide-4.html" target="_blank" class="btn btn-primary">
+                                🖼️ Abrir Fullscreen
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Slide 5 -->
+                <div class="slide-card">
+                    <div class="slide-preview">
+                        <iframe src="velocidade-sites-slide-5.html" target="_blank" loading="lazy"></iframe>
+                    </div>
+                    <div class="slide-info">
+                        <h3 class="slide-title">Slide 5 - CTA</h3>
+                        <p class="slide-description">Ação: Call-to-action direto para conversão</p>
+                        <div class="slide-actions">
+                            <a href="velocidade-sites-slide-5.html" target="_blank" class="btn btn-primary">
+                                🖼️ Abrir Fullscreen
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- INSTRUÇÕES -->
+        <div class="instructions">
+            <h3>📋 Como Tirar Screenshots Profissionais</h3>
+            <ol>
+                <li>Clique em <strong>"🖼️ Abrir Fullscreen"</strong> no slide desejado</li>
+                <li>Pressione <code>F11</code> para modo tela cheia (ou ⌘+Ctrl+F no Mac)</li>
+                <li>Ajuste o zoom do navegador para 100% (<code>Ctrl+0</code> ou <code>⌘+0</code>)</li>
+                <li>Tire o screenshot:
+                    <ul style="margin-top: 10px; margin-left: 20px;">
+                        <li><strong>Windows:</strong> <code>Windows+Shift+S</code> e selecione a área</li>
+                        <li><strong>Mac:</strong> <code>⌘+Shift+4</code> e selecione a área</li>
+                        <li><strong>Chrome DevTools:</strong> F12 → Cmd Palette (Ctrl+Shift+P) → "Capture screenshot"</li>
+                    </ul>
+                </li>
+                <li>Salve como PNG com alta qualidade</li>
+            </ol>
+            
+            <h3 style="margin-top: 30px;">💡 Dicas</h3>
+            <ul style="margin-left: 20px; line-height: 1.8;">
+                <li>Use <strong>1080x1080px</strong> para Instagram feed</li>
+                <li>Use <strong>1080x1920px</strong> para Stories (adaptar CSS se necessário)</li>
+                <li>Ferramenta recomendada: <a href="https://www.figma.com" target="_blank" style="color: #00ffff;">Figma</a> ou <a href="https://screenshot.rocks" target="_blank" style="color: #00ffff;">Screenshot.rocks</a></li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>
