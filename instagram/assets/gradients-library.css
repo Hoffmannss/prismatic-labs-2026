@@ -1,0 +1,316 @@
+/* ============================================ */
+/* BIBLIOTECA DE GRADIENTES - PRISMATIC LABS  */
+/* Para uso em posts Instagram e carrosséis   */
+/* ============================================ */
+
+/* ---------- GRADIENTES TECH/MODERNO ---------- */
+
+.gradient-tech-blue {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.gradient-tech-cyan {
+  background: linear-gradient(135deg, #00d2ff 0%, #3a47d5 100%);
+}
+
+.gradient-neon-purple {
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+}
+
+.gradient-dark-tech {
+  background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+}
+
+.gradient-deep-space {
+  background: linear-gradient(135deg, #000428 0%, #004e92 100%);
+}
+
+/* ---------- GRADIENTES VELOCIDADE/ENERGIA ---------- */
+
+.gradient-speed-orange {
+  background: linear-gradient(135deg, #ff6b6b 0%, #ffa500 100%);
+}
+
+.gradient-lightning-bolt {
+  background: linear-gradient(135deg, #ffdd00 0%, #fbb034 100%);
+}
+
+.gradient-fire-red {
+  background: linear-gradient(135deg, #ff0844 0%, #ffb199 100%);
+}
+
+.gradient-sunset {
+  background: linear-gradient(135deg, #ff6e7f 0%, #bfe9ff 100%);
+}
+
+/* ---------- GRADIENTES SUAVES/ELEGANTES ---------- */
+
+.gradient-soft-mint {
+  background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+}
+
+.gradient-rose-gold {
+  background: linear-gradient(135deg, #f4c4f3 0%, #fc67fa 100%);
+}
+
+.gradient-sky-blue {
+  background: linear-gradient(135deg, #e0f7fa 0%, #80deea 100%);
+}
+
+.gradient-lavender {
+  background: linear-gradient(135deg, #d299c2 0%, #fef9d7 100%);
+}
+
+/* ---------- GRADIENTES CONVERSÃO/CTA ---------- */
+
+.gradient-cta-green {
+  background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+}
+
+.gradient-cta-blue {
+  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+}
+
+.gradient-premium-gold {
+  background: linear-gradient(135deg, #ffd89b 0%, #19547b 100%);
+}
+
+/* ---------- GRADIENTES ANIMADOS ---------- */
+
+.gradient-animated {
+  background: linear-gradient(
+    -45deg, 
+    #ee7752, 
+    #e73c7e, 
+    #23a6d5, 
+    #23d5ab
+  );
+  background-size: 400% 400%;
+  animation: gradientShift 15s ease infinite;
+}
+
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.gradient-pulse {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  animation: pulse 3s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.8; }
+}
+
+/* ---------- OVERLAYS ESCUROS (Para legibilidade) ---------- */
+
+.overlay-dark-gradient {
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0) 0%,
+    rgba(0, 0, 0, 0.5) 50%,
+    rgba(0, 0, 0, 0.8) 100%
+  );
+}
+
+.overlay-dark-vignette {
+  background: radial-gradient(
+    ellipse at center,
+    rgba(0, 0, 0, 0) 0%,
+    rgba(0, 0, 0, 0.7) 100%
+  );
+}
+
+/* ---------- PADRÕES GEOMÉTRICOS ---------- */
+
+.pattern-dots {
+  background-color: #1a1a2e;
+  background-image: 
+    radial-gradient(circle, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+.pattern-grid {
+  background-color: #0f3460;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+  background-size: 30px 30px;
+}
+
+.pattern-diagonal-lines {
+  background: 
+    repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 10px,
+      rgba(255, 255, 255, 0.05) 10px,
+      rgba(255, 255, 255, 0.05) 20px
+    );
+}
+
+/* ---------- BACKGROUNDS COM BLUR/GLASS EFFECT ---------- */
+
+.glass-effect {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+}
+
+.glass-dark {
+  background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* ---------- SOMBRAS PROFISSIONAIS ---------- */
+
+.shadow-soft {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.shadow-medium {
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+}
+
+.shadow-strong {
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
+}
+
+.shadow-glow-blue {
+  box-shadow: 0 0 30px rgba(103, 126, 234, 0.6);
+}
+
+.shadow-glow-purple {
+  box-shadow: 0 0 30px rgba(118, 75, 162, 0.6);
+}
+
+/* ---------- ANIMAÇÕES UTILITÁRIAS ---------- */
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideInUp {
+  from {
+    transform: translateY(50px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* Classes de aplicação */
+.animate-fade-in {
+  animation: fadeIn 0.6s ease-out;
+}
+
+.animate-slide-right {
+  animation: slideInRight 0.6s ease-out;
+}
+
+.animate-slide-left {
+  animation: slideInLeft 0.6s ease-out;
+}
+
+.animate-slide-up {
+  animation: slideInUp 0.6s ease-out;
+}
+
+.animate-scale-in {
+  animation: scaleIn 0.6s ease-out;
+}
+
+/* ---------- CORES DA MARCA PRISMATIC LABS ---------- */
+
+:root {
+  /* Cores primárias */
+  --color-primary: #667eea;
+  --color-primary-dark: #5568d3;
+  --color-secondary: #764ba2;
+  
+  /* Cores de destaque */
+  --color-accent-orange: #ff6b6b;
+  --color-accent-cyan: #00d2ff;
+  --color-accent-green: #38ef7d;
+  
+  /* Cores neutras */
+  --color-dark: #1a1a2e;
+  --color-medium: #16213e;
+  --color-light: #f5f5f5;
+  --color-white: #ffffff;
+  
+  /* Tamanhos padrão Instagram */
+  --instagram-post: 1080px;
+  --instagram-story: 1080px; /* altura: 1920px */
+  --instagram-reel: 1080px; /* altura: 1920px */
+}
+
+/* ---------- CLASSES UTILITÁRIAS ---------- */
+
+.text-gradient {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.border-gradient {
+  border: 3px solid transparent;
+  background-clip: padding-box;
+  position: relative;
+}
+
+.border-gradient::before {
+  content: '';
+  position: absolute;
+  top: -3px;
+  left: -3px;
+  right: -3px;
+  bottom: -3px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: inherit;
+  z-index: -1;
+}
