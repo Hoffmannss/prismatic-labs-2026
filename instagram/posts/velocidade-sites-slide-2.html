@@ -21,7 +21,7 @@
             justify-content: center;
             background: linear-gradient(135deg, #0a0a0a 0%, #1a0a2e 50%, #16213e 100%);
             position: relative;
-            padding: 45px;
+            padding: 80px 50px 100px 50px;
         }
         
         body::before {
@@ -33,19 +33,21 @@
                 linear-gradient(rgba(255,0,255,0.06) 2px, transparent 2px),
                 linear-gradient(90deg, rgba(255,0,255,0.06) 2px, transparent 2px);
             background-size: 50px 50px;
+            z-index: 1;
         }
         
         .content {
             z-index: 10;
             width: 100%;
+            max-width: 960px;
         }
         
         h2 {
             text-align: center;
-            font-size: 82px;
+            font-size: 76px;
             font-weight: 900;
             color: #ffffff;
-            margin-bottom: 65px;
+            margin-bottom: 55px;
             text-shadow: 0 0 25px rgba(0,255,255,0.6);
         }
         
@@ -58,38 +60,38 @@
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 30px;
-            margin-bottom: 55px;
+            gap: 26px;
+            margin-bottom: 48px;
         }
         
         .stat-card {
             background: rgba(255,0,255,0.1);
             backdrop-filter: blur(10px);
             border: 3px solid rgba(255,0,255,0.4);
-            border-radius: 28px;
-            padding: 50px 30px;
+            border-radius: 26px;
+            padding: 44px 26px;
             text-align: center;
             box-shadow: 0 15px 40px rgba(255,0,255,0.25);
         }
         
         .stat-icon {
-            font-size: 72px;
-            margin-bottom: 22px;
+            font-size: 66px;
+            margin-bottom: 18px;
             filter: drop-shadow(0 0 15px rgba(255,0,255,0.4));
         }
         
         .stat-number {
-            font-size: 76px;
+            font-size: 70px;
             font-weight: 900;
             background: linear-gradient(135deg, #ff00ff 0%, #ff0066 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             display: block;
-            margin-bottom: 15px;
+            margin-bottom: 14px;
         }
         
         .stat-label {
-            font-size: 26px;
+            font-size: 24px;
             color: rgba(255,255,255,0.95);
             line-height: 1.3;
             font-weight: 700;
@@ -98,37 +100,38 @@
         .warning {
             background: rgba(255,0,255,0.15);
             border: 4px solid rgba(255,0,255,0.5);
-            border-radius: 28px;
-            padding: 38px 35px;
+            border-radius: 26px;
+            padding: 34px 30px;
             text-align: center;
             box-shadow: 0 0 50px rgba(255,0,255,0.35);
         }
         
         .warning-text {
-            font-size: 36px;
+            font-size: 33px;
             color: #ffffff;
             font-weight: 800;
             text-shadow: 0 0 20px rgba(255,0,255,0.6);
-            line-height: 1.3;
+            line-height: 1.35;
         }
         
         .warning-emoji {
-            font-size: 50px;
-            margin-right: 15px;
+            font-size: 46px;
+            margin-right: 12px;
             vertical-align: middle;
         }
         
         .logo {
             position: absolute;
-            bottom: 35px;
+            bottom: 40px;
             left: 50%;
             transform: translateX(-50%);
-            font-size: 36px;
+            font-size: 34px;
             font-weight: 900;
             background: linear-gradient(135deg, #ff00ff 0%, #00ffff 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             letter-spacing: 1.5px;
+            z-index: 20;
         }
     </style>
 </head>
