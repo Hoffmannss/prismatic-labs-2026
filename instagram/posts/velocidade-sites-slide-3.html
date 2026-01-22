@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Slide 3 - Velocidade de Sites | Prismatic Labs</title>
+    <title>Slide 3 - Solução | Prismatic Labs</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
@@ -15,10 +15,28 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            background: linear-gradient(135deg, #0f9b0f 0%, #00d084 50%, #00e6a0 100%);
+            background: linear-gradient(135deg, #0a0a0a 0%, #0a1a2e 50%, #0f2940 100%);
             position: relative;
             overflow: hidden;
             padding: 80px;
+        }
+        
+        /* Cyan glow */
+        body::before {
+            content: '';
+            position: absolute;
+            width: 700px;
+            height: 700px;
+            background: radial-gradient(circle, rgba(0,255,255,0.25) 0%, transparent 70%);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation: pulse 3s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.25; }
+            50% { transform: translate(-50%, -50%) scale(1.1); opacity: 0.4; }
         }
         
         .content {
@@ -28,17 +46,19 @@
         }
         
         .icon-large {
-            width: 150px;
-            height: 150px;
-            margin: 0 auto 40px;
-            background: rgba(255,255,255,0.2);
-            backdrop-filter: blur(10px);
+            width: 160px;
+            height: 160px;
+            margin: 0 auto 50px;
+            background: rgba(0,255,255,0.12);
+            backdrop-filter: blur(20px);
+            border: 3px solid rgba(0,255,255,0.5);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 80px;
+            font-size: 90px;
             animation: rocketLaunch 1.5s ease-out;
+            box-shadow: 0 0 60px rgba(0,255,255,0.4);
         }
         
         @keyframes rocketLaunch {
@@ -48,11 +68,14 @@
         }
         
         h2 {
-            font-size: 64px;
+            font-size: 72px;
             font-weight: 900;
-            color: white;
-            margin-bottom: 20px;
+            background: linear-gradient(135deg, #00ffff 0%, #00ffaa 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 25px;
             animation: fadeIn 0.8s ease-out;
+            filter: drop-shadow(0 0 30px rgba(0,255,255,0.5));
         }
         
         @keyframes fadeIn {
@@ -61,29 +84,31 @@
         }
         
         .subtitle {
-            font-size: 32px;
+            font-size: 34px;
             color: rgba(255,255,255,0.9);
-            margin-bottom: 60px;
+            margin-bottom: 70px;
             animation: fadeIn 1s ease-out;
+            font-weight: 600;
         }
         
         .features {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 25px;
+            gap: 28px;
             max-width: 900px;
             margin: 0 auto;
         }
         
         .feature {
-            background: rgba(255,255,255,0.15);
+            background: rgba(0,255,255,0.08);
             backdrop-filter: blur(10px);
-            border: 2px solid rgba(255,255,255,0.3);
-            border-radius: 20px;
-            padding: 30px;
+            border: 2px solid rgba(0,255,255,0.3);
+            border-radius: 25px;
+            padding: 35px;
             text-align: left;
             animation: slideIn 0.8s ease-out;
             animation-fill-mode: both;
+            box-shadow: 0 10px 30px rgba(0,255,255,0.15);
         }
         
         .feature:nth-child(1) { animation-delay: 0.2s; }
@@ -97,26 +122,29 @@
         }
         
         .feature-icon {
-            font-size: 36px;
+            font-size: 40px;
             margin-bottom: 15px;
+            display: block;
         }
         
         .feature-text {
-            font-size: 24px;
-            color: white;
-            font-weight: 600;
+            font-size: 26px;
+            color: #ffffff;
+            font-weight: 700;
             line-height: 1.3;
+            text-shadow: 0 0 10px rgba(0,255,255,0.3);
         }
         
         .logo {
             position: absolute;
-            bottom: 40px;
+            bottom: 50px;
             left: 50%;
             transform: translateX(-50%);
-            font-size: 28px;
+            font-size: 32px;
             font-weight: 900;
-            color: white;
-            opacity: 0.9;
+            background: linear-gradient(135deg, #ff00ff 0%, #00ffff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
     </style>
 </head>
@@ -129,22 +157,22 @@
         
         <div class="features">
             <div class="feature">
-                <div class="feature-icon">✅</div>
+                <span class="feature-icon">✅</span>
                 <div class="feature-text">Código limpo e otimizado</div>
             </div>
             
             <div class="feature">
-                <div class="feature-icon">✅</div>
+                <span class="feature-icon">✅</span>
                 <div class="feature-text">Imagens comprimidas</div>
             </div>
             
             <div class="feature">
-                <div class="feature-icon">✅</div>
+                <span class="feature-icon">✅</span>
                 <div class="feature-text">Cache inteligente</div>
             </div>
             
             <div class="feature">
-                <div class="feature-icon">✅</div>
+                <span class="feature-icon">✅</span>
                 <div class="feature-text">CDN global</div>
             </div>
         </div>

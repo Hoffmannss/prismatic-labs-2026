@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Slide 2 - Velocidade de Sites | Prismatic Labs</title>
+    <title>Slide 2 - Problema | Prismatic Labs</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
@@ -15,23 +15,22 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a0a2e 50%, #16213e 100%);
             position: relative;
             overflow: hidden;
             padding: 80px;
         }
         
-        /* Grid pattern background */
+        /* Grid pattern */
         body::before {
             content: '';
             position: absolute;
             width: 100%;
             height: 100%;
             background-image: 
-                linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+                linear-gradient(rgba(255,0,255,0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,0,255,0.05) 1px, transparent 1px);
             background-size: 50px 50px;
-            opacity: 0.5;
         }
         
         .content {
@@ -41,15 +40,18 @@
         
         h2 {
             text-align: center;
-            font-size: 56px;
+            font-size: 64px;
             font-weight: 900;
-            color: white;
-            margin-bottom: 60px;
+            color: #ffffff;
+            margin-bottom: 70px;
             animation: fadeIn 0.6s ease-out;
+            text-shadow: 0 0 20px rgba(0,255,255,0.5);
         }
         
         h2 span {
-            color: #ff6b6b;
+            background: linear-gradient(135deg, #ff00ff 0%, #ff0066 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
         
         @keyframes fadeIn {
@@ -61,18 +63,19 @@
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 30px;
-            margin-bottom: 50px;
+            margin-bottom: 60px;
         }
         
         .stat-card {
-            background: rgba(255,255,255,0.05);
+            background: rgba(255,0,255,0.08);
             backdrop-filter: blur(10px);
-            border: 2px solid rgba(255,255,255,0.1);
-            border-radius: 20px;
-            padding: 40px 30px;
+            border: 2px solid rgba(255,0,255,0.3);
+            border-radius: 25px;
+            padding: 45px 30px;
             text-align: center;
             animation: slideUp 0.8s ease-out;
             animation-fill-mode: both;
+            box-shadow: 0 10px 30px rgba(255,0,255,0.2);
         }
         
         .stat-card:nth-child(1) { animation-delay: 0.2s; }
@@ -85,53 +88,60 @@
         }
         
         .stat-icon {
-            font-size: 60px;
+            font-size: 64px;
             margin-bottom: 20px;
+            filter: drop-shadow(0 0 10px rgba(255,0,255,0.5));
         }
         
         .stat-number {
-            font-size: 56px;
+            font-size: 64px;
             font-weight: 900;
-            color: #ff6b6b;
+            background: linear-gradient(135deg, #ff00ff 0%, #ff0066 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
             display: block;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
         }
         
         .stat-label {
-            font-size: 20px;
-            color: rgba(255,255,255,0.8);
+            font-size: 22px;
+            color: rgba(255,255,255,0.9);
             line-height: 1.4;
-        }
-        
-        .warning {
-            background: rgba(255,107,107,0.1);
-            border: 2px solid rgba(255,107,107,0.3);
-            border-radius: 20px;
-            padding: 30px;
-            text-align: center;
-            animation: fadeIn 1s ease-out;
-        }
-        
-        .warning-text {
-            font-size: 28px;
-            color: white;
             font-weight: 600;
         }
         
+        .warning {
+            background: rgba(255,0,255,0.12);
+            border: 3px solid rgba(255,0,255,0.4);
+            border-radius: 25px;
+            padding: 35px;
+            text-align: center;
+            animation: fadeIn 1s ease-out;
+            box-shadow: 0 0 40px rgba(255,0,255,0.3);
+        }
+        
+        .warning-text {
+            font-size: 30px;
+            color: #ffffff;
+            font-weight: 700;
+            text-shadow: 0 0 15px rgba(255,0,255,0.5);
+        }
+        
         .warning-emoji {
-            font-size: 40px;
+            font-size: 44px;
             margin-right: 15px;
         }
         
         .logo {
             position: absolute;
-            bottom: 40px;
+            bottom: 50px;
             left: 50%;
             transform: translateX(-50%);
-            font-size: 28px;
+            font-size: 32px;
             font-weight: 900;
-            color: white;
-            opacity: 0.9;
+            background: linear-gradient(135deg, #ff00ff 0%, #00ffff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
     </style>
 </head>
@@ -143,19 +153,19 @@
             <div class="stat-card">
                 <div class="stat-icon">📉</div>
                 <span class="stat-number">53%</span>
-                <div class="stat-label">Abandonam sites lentos</div>
+                <div class="stat-label">Abandonam<br>sites lentos</div>
             </div>
             
             <div class="stat-card">
                 <div class="stat-icon">📱</div>
                 <span class="stat-number">-20%</span>
-                <div class="stat-label">Conversão por cada segundo</div>
+                <div class="stat-label">Conversão por<br>cada segundo</div>
             </div>
             
             <div class="stat-card">
-                <div class="stat-icon">📈</div>
+                <div class="stat-icon">💸</div>
                 <span class="stat-number">100ms</span>
-                <div class="stat-label">Delay = -1% vendas</div>
+                <div class="stat-label">Delay =<br>-1% vendas</div>
             </div>
         </div>
         
