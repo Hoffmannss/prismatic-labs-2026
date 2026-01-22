@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=1080, initial-scale=1.0">
+  <title>Slide 5 - Chamada para Ação</title>
+  <link rel="stylesheet" href="../../assets/gradients-library.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      width: 1080px;
+      height: 1080px;
+      overflow: hidden;
+    }
+
+    .slide {
+      width: 1080px;
+      height: 1080px;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 80px;
+      text-align: center;
+    }
+
+    .background {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+    }
+
+    .pattern-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+    }
+
+    .content {
+      position: relative;
+      z-index: 2;
+    }
+
+    /* Sparkles decorativos */
+    .sparkle {
+      position: absolute;
+      width: 60px;
+      height: 60px;
+      color: rgba(255, 255, 255, 0.6);
+      animation: twinkle 2s ease-in-out infinite;
+    }
+
+    .sparkle-1 { top: 15%; left: 10%; animation-delay: 0s; }
+    .sparkle-2 { top: 25%; right: 15%; animation-delay: 0.5s; }
+    .sparkle-3 { bottom: 20%; left: 15%; animation-delay: 1s; }
+    .sparkle-4 { bottom: 15%; right: 10%; animation-delay: 1.5s; }
+
+    @keyframes twinkle {
+      0%, 100% { opacity: 0.3; transform: scale(1); }
+      50% { opacity: 1; transform: scale(1.2); }
+    }
+
+    /* Badge final -->
+    .final-badge {
+      background: rgba(255, 215, 0, 0.9);
+      padding: 15px 35px;
+      border-radius: 50px;
+      font-size: 18px;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: #1a1a2e;
+      margin-bottom: 40px;
+      display: inline-block;
+      box-shadow: 0 10px 30px rgba(255, 215, 0, 0.5);
+      animation: slideInUp 0.6s ease-out;
+    }
+
+    /* Título CTA -->
+    h1 {
+      font-size: 76px;
+      font-weight: 900;
+      line-height: 1.1;
+      color: white;
+      margin-bottom: 35px;
+      text-shadow: 0 6px 25px rgba(0, 0, 0, 0.4);
+      animation: slideInUp 0.6s ease-out 0.2s both;
+    }
+
+    .highlight {
+      color: #FFD700;
+      position: relative;
+      display: inline-block;
+    }
+
+    /* Subtítulo -->
+    .subtitle {
+      font-size: 30px;
+      line-height: 1.5;
+      color: rgba(255, 255, 255, 0.95);
+      font-weight: 600;
+      margin-bottom: 60px;
+      animation: slideInUp 0.6s ease-out 0.3s both;
+    }
+
+    /* Botão CTA grande -->
+    .cta-button {
+      background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+      padding: 35px 70px;
+      border-radius: 25px;
+      font-size: 32px;
+      font-weight: 900;
+      color: #1a1a2e;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      box-shadow: 0 15px 50px rgba(255, 215, 0, 0.6);
+      display: inline-flex;
+      align-items: center;
+      gap: 20px;
+      margin-bottom: 50px;
+      animation: slideInUp 0.6s ease-out 0.4s both, pulse 2s ease-in-out 1s infinite;
+    }
+
+    .cta-icon {
+      width: 45px;
+      height: 45px;
+      color: #1a1a2e;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+
+    /* Informações de contato -->
+    .contact-info {
+      animation: fadeIn 0.8s ease-out 0.6s both;
+    }
+
+    .contact-text {
+      font-size: 24px;
+      color: rgba(255, 255, 255, 0.9);
+      font-weight: 600;
+      margin-bottom: 15px;
+    }
+
+    .whatsapp {
+      font-size: 32px;
+      font-weight: 800;
+      color: #FFD700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 15px;
+    }
+
+    /* Logo e branding -->
+    .branding {
+      position: absolute;
+      bottom: 50px;
+      left: 50%;
+      transform: translateX(-50%);
+      animation: fadeIn 0.8s ease-out 0.8s both;
+    }
+
+    .logo-text {
+      font-size: 28px;
+      font-weight: 900;
+      color: white;
+      letter-spacing: 2px;
+      margin-bottom: 8px;
+    }
+
+    .logo-tagline {
+      font-size: 16px;
+      color: rgba(255, 255, 255, 0.8);
+      font-weight: 600;
+    }
+
+    /* Animações */
+    @keyframes slideInUp {
+      from {
+        transform: translateY(30px);
+        opacity: 0;
+      }
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+  <object data="../../assets/icons-library.svg" style="display: none;"></object>
+
+  <div class="slide">
+    <!-- Background -->
+    <div class="background gradient-tech-blue"></div>
+    <div class="pattern-overlay pattern-grid"></div>
+
+    <!-- Sparkles decorativos -->
+    <svg class="sparkle sparkle-1" viewBox="0 0 64 64">
+      <use href="#effect-sparkles"></use>
+    </svg>
+    <svg class="sparkle sparkle-2" viewBox="0 0 64 64">
+      <use href="#effect-sparkles"></use>
+    </svg>
+    <svg class="sparkle sparkle-3" viewBox="0 0 64 64">
+      <use href="#effect-sparkles"></use>
+    </svg>
+    <svg class="sparkle sparkle-4" viewBox="0 0 64 64">
+      <use href="#effect-sparkles"></use>
+    </svg>
+
+    <div class="content">
+      <!-- Badge -->
+      <div class="final-badge">⚡ Oferta Especial</div>
+
+      <!-- Título -->
+      <h1>
+        Acelere Seu Site<br>
+        <span class="highlight">Hoje Mesmo!</span>
+      </h1>
+
+      <!-- Subtítulo -->
+      <p class="subtitle">
+        Análise gratuita + orçamento sem compromisso<br>
+        Resultados em até 48 horas
+      </p>
+
+      <!-- Botão CTA -->
+      <div class="cta-button">
+        <span>Fale Conosco</span>
+        <svg class="cta-icon" viewBox="0 0 64 64">
+          <use href="#icon-arrow-right"></use>
+        </svg>
+      </div>
+
+      <!-- Contato -->
+      <div class="contact-info">
+        <div class="contact-text">📱 WhatsApp:</div>
+        <div class="whatsapp">(00) 00000-0000</div>
+      </div>
+    </div>
+
+    <!-- Branding -->
+    <div class="branding">
+      <div class="logo-text">PRISMATIC LABS</div>
+      <div class="logo-tagline">Tecnologia que Impulsiona Vendas</div>
+    </div>
+  </div>
+</body>
+</html>

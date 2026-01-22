@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=1080, initial-scale=1.0">
+  <title>Slide 4 - Resultados Reais</title>
+  <link rel="stylesheet" href="../../assets/gradients-library.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      width: 1080px;
+      height: 1080px;
+      overflow: hidden;
+    }
+
+    .slide {
+      width: 1080px;
+      height: 1080px;
+      position: relative;
+      padding: 80px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .background {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+    }
+
+    .content {
+      position: relative;
+      z-index: 2;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Header */
+    .header {
+      text-align: center;
+      margin-bottom: 60px;
+      animation: slideInUp 0.6s ease-out;
+    }
+
+    .slide-number {
+      font-size: 18px;
+      font-weight: 700;
+      color: rgba(255, 255, 255, 0.7);
+      letter-spacing: 2px;
+      margin-bottom: 15px;
+    }
+
+    h2 {
+      font-size: 64px;
+      font-weight: 900;
+      color: white;
+      line-height: 1.1;
+      text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    /* Grid de métricas */
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 30px;
+      margin-bottom: 40px;
+      animation: slideInUp 0.8s ease-out 0.3s both;
+    }
+
+    .metric-card {
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(15px);
+      -webkit-backdrop-filter: blur(15px);
+      border: 2px solid rgba(255, 255, 255, 0.25);
+      border-radius: 25px;
+      padding: 45px 35px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.3s ease;
+    }
+
+    .metric-card:hover {
+      transform: scale(1.05);
+    }
+
+    .metric-card::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(
+        circle,
+        rgba(255, 255, 255, 0.1) 0%,
+        transparent 70%
+      );
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .metric-card:hover::before {
+      opacity: 1;
+    }
+
+    .metric-icon {
+      width: 80px;
+      height: 80px;
+      color: #FFD700;
+      margin: 0 auto 25px;
+    }
+
+    .metric-value {
+      font-size: 72px;
+      font-weight: 900;
+      color: white;
+      line-height: 1;
+      margin-bottom: 15px;
+      text-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    .metric-label {
+      font-size: 22px;
+      color: rgba(255, 255, 255, 0.9);
+      font-weight: 600;
+      line-height: 1.3;
+    }
+
+    /* Destaque ROI */
+    .roi-highlight {
+      background: rgba(255, 215, 0, 0.2);
+      border: 3px solid #FFD700;
+      border-radius: 25px;
+      padding: 40px;
+      text-align: center;
+      animation: slideInUp 0.8s ease-out 0.5s both;
+    }
+
+    .roi-icon {
+      width: 100px;
+      height: 100px;
+      color: #FFD700;
+      margin: 0 auto 20px;
+      filter: drop-shadow(0 8px 25px rgba(255, 215, 0, 0.5));
+    }
+
+    .roi-text {
+      font-size: 28px;
+      font-weight: 700;
+      color: white;
+      line-height: 1.4;
+    }
+
+    .roi-value {
+      font-size: 56px;
+      font-weight: 900;
+      color: #FFD700;
+      margin: 15px 0;
+    }
+
+    /* Animações */
+    @keyframes slideInUp {
+      from {
+        transform: translateY(30px);
+        opacity: 0;
+      }
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+  </style>
+</head>
+<body>
+  <object data="../../assets/icons-library.svg" style="display: none;"></object>
+
+  <div class="slide">
+    <div class="background gradient-premium-gold"></div>
+
+    <div class="content">
+      <!-- Header -->
+      <div class="header">
+        <div class="slide-number">SLIDE 4/5</div>
+        <h2>Resultados Reais</h2>
+      </div>
+
+      <!-- Métricas -->
+      <div class="metrics-grid">
+        <div class="metric-card">
+          <svg class="metric-icon" viewBox="0 0 64 64">
+            <use href="#icon-speedometer"></use>
+          </svg>
+          <div class="metric-value">3x</div>
+          <div class="metric-label">Mais rápido que<br>a concorrência</div>
+        </div>
+
+        <div class="metric-card">
+          <svg class="metric-icon" viewBox="0 0 64 64">
+            <use href="#icon-arrow-up"></use>
+          </svg>
+          <div class="metric-value">47%</div>
+          <div class="metric-label">Aumento em<br>conversões</div>
+        </div>
+
+        <div class="metric-card">
+          <svg class="metric-icon" viewBox="0 0 64 64">
+            <use href="#icon-star"></use>
+          </svg>
+          <div class="metric-value">95+</div>
+          <div class="metric-label">Score Google<br>PageSpeed</div>
+        </div>
+
+        <div class="metric-card">
+          <svg class="metric-icon" viewBox="0 0 64 64">
+            <use href="#icon-mobile"></use>
+          </svg>
+          <div class="metric-value">-68%</div>
+          <div class="metric-label">Redução em<br>taxa de rejeição</div>
+        </div>
+      </div>
+
+      <!-- ROI -->
+      <div class="roi-highlight">
+        <svg class="roi-icon" viewBox="0 0 64 64">
+          <use href="#icon-check"></use>
+        </svg>
+        <div class="roi-text">Retorno sobre investimento</div>
+        <div class="roi-value">320%</div>
+        <div class="roi-text">em média nos primeiros 6 meses</div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
