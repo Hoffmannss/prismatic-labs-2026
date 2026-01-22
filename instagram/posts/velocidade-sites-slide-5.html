@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Slide 5 - Velocidade de Sites | Prismatic Labs</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            width: 1080px;
+            height: 1080px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            position: relative;
+            overflow: hidden;
+            padding: 80px;
+        }
+        
+        /* Efeito de círculos animados */
+        .circles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+        
+        .circle {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.1);
+            animation: float 20s infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-50px) rotate(180deg); }
+        }
+        
+        .content {
+            z-index: 10;
+            text-align: center;
+            width: 100%;
+        }
+        
+        h2 {
+            font-size: 68px;
+            font-weight: 900;
+            color: white;
+            line-height: 1.2;
+            margin-bottom: 50px;
+            animation: fadeIn 0.8s ease-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .cta-button {
+            display: inline-block;
+            background: white;
+            color: #667eea;
+            font-size: 40px;
+            font-weight: 900;
+            padding: 40px 80px;
+            border-radius: 50px;
+            text-decoration: none;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            transition: all 0.3s ease;
+            animation: scaleIn 1s ease-out;
+            cursor: pointer;
+        }
+        
+        @keyframes scaleIn {
+            from { opacity: 0; transform: scale(0.8); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        
+        .cta-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 25px 80px rgba(0,0,0,0.4);
+        }
+        
+        .subtitle {
+            font-size: 32px;
+            color: rgba(255,255,255,0.9);
+            margin-top: 40px;
+            animation: fadeIn 1.2s ease-out;
+        }
+        
+        .contact {
+            margin-top: 60px;
+            animation: fadeIn 1.4s ease-out;
+        }
+        
+        .contact-item {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255,255,255,0.3);
+            padding: 20px 40px;
+            border-radius: 50px;
+            margin: 10px;
+            font-size: 28px;
+            color: white;
+            font-weight: 600;
+        }
+        
+        .logo {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 32px;
+            font-weight: 900;
+            color: white;
+            opacity: 0.9;
+        }
+    </style>
+</head>
+<body>
+    <div class="circles">
+        <div class="circle" style="width: 200px; height: 200px; left: 10%; top: 20%; animation-delay: 0s;"></div>
+        <div class="circle" style="width: 300px; height: 300px; right: 10%; top: 30%; animation-delay: 2s;"></div>
+        <div class="circle" style="width: 150px; height: 150px; left: 20%; bottom: 20%; animation-delay: 4s;"></div>
+    </div>
+    
+    <div class="content">
+        <h2>
+            Pronto Para<br>
+            Acelerar Seu Site?
+        </h2>
+        
+        <div class="cta-button">
+            💬 FALE CONOSCO
+        </div>
+        
+        <p class="subtitle">
+            Resposta em 24h • Orçamento Grátis
+        </p>
+        
+        <div class="contact">
+            <div class="contact-item">📸 @labs.prismatic</div>
+            <div class="contact-item">📧 DM Direto</div>
+        </div>
+    </div>
+    
+    <div class="logo">PRISMATIC LABS</div>
+</body>
+</html>

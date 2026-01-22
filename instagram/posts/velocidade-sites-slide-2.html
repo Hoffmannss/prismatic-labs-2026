@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Slide 2 - Velocidade de Sites | Prismatic Labs</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            width: 1080px;
+            height: 1080px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            position: relative;
+            overflow: hidden;
+            padding: 80px;
+        }
+        
+        /* Grid pattern background */
+        body::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            opacity: 0.5;
+        }
+        
+        .content {
+            z-index: 10;
+            width: 100%;
+        }
+        
+        h2 {
+            text-align: center;
+            font-size: 56px;
+            font-weight: 900;
+            color: white;
+            margin-bottom: 60px;
+            animation: fadeIn 0.6s ease-out;
+        }
+        
+        h2 span {
+            color: #ff6b6b;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+        
+        .stat-card {
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255,255,255,0.1);
+            border-radius: 20px;
+            padding: 40px 30px;
+            text-align: center;
+            animation: slideUp 0.8s ease-out;
+            animation-fill-mode: both;
+        }
+        
+        .stat-card:nth-child(1) { animation-delay: 0.2s; }
+        .stat-card:nth-child(2) { animation-delay: 0.4s; }
+        .stat-card:nth-child(3) { animation-delay: 0.6s; }
+        
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .stat-icon {
+            font-size: 60px;
+            margin-bottom: 20px;
+        }
+        
+        .stat-number {
+            font-size: 56px;
+            font-weight: 900;
+            color: #ff6b6b;
+            display: block;
+            margin-bottom: 10px;
+        }
+        
+        .stat-label {
+            font-size: 20px;
+            color: rgba(255,255,255,0.8);
+            line-height: 1.4;
+        }
+        
+        .warning {
+            background: rgba(255,107,107,0.1);
+            border: 2px solid rgba(255,107,107,0.3);
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            animation: fadeIn 1s ease-out;
+        }
+        
+        .warning-text {
+            font-size: 28px;
+            color: white;
+            font-weight: 600;
+        }
+        
+        .warning-emoji {
+            font-size: 40px;
+            margin-right: 15px;
+        }
+        
+        .logo {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 28px;
+            font-weight: 900;
+            color: white;
+            opacity: 0.9;
+        }
+    </style>
+</head>
+<body>
+    <div class="content">
+        <h2>O <span>Problema</span> é Real</h2>
+        
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon">📉</div>
+                <span class="stat-number">53%</span>
+                <div class="stat-label">Abandonam sites lentos</div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-icon">📱</div>
+                <span class="stat-number">-20%</span>
+                <div class="stat-label">Conversão por cada segundo</div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-icon">📈</div>
+                <span class="stat-number">100ms</span>
+                <div class="stat-label">Delay = -1% vendas</div>
+            </div>
+        </div>
+        
+        <div class="warning">
+            <span class="warning-emoji">⚠️</span>
+            <span class="warning-text">Sites lentos custam milhões em vendas perdidas</span>
+        </div>
+    </div>
+    
+    <div class="logo">PRISMATIC LABS</div>
+</body>
+</html>
