@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=1080, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Story 1 - Amplificação | Prismatic Labs</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        html, body {
+            width: 1080px;
+            height: 1920px;
+            overflow: hidden;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a0a2e 50%, #16213e 100%);
+            position: relative;
+            padding: 80px 60px;
+        }
+        
+        body::before {
+            content: '';
+            position: absolute;
+            width: 800px;
+            height: 800px;
+            background: radial-gradient(circle, rgba(255,0,255,0.35) 0%, transparent 70%);
+            top: -200px;
+            right: -200px;
+            z-index: 1;
+        }
+        
+        body::after {
+            content: '';
+            position: absolute;
+            width: 700px;
+            height: 700px;
+            background: radial-gradient(circle, rgba(0,255,255,0.3) 0%, transparent 70%);
+            bottom: -150px;
+            left: -150px;
+            z-index: 1;
+        }
+        
+        .content {
+            z-index: 10;
+            text-align: center;
+            width: 100%;
+        }
+        
+        .emoji {
+            font-size: 180px;
+            margin-bottom: 60px;
+            filter: drop-shadow(0 0 40px rgba(255,0,255,0.6));
+        }
+        
+        h1 {
+            font-size: 95px;
+            font-weight: 900;
+            color: #ffffff;
+            line-height: 1.15;
+            margin-bottom: 50px;
+            text-shadow: 0 0 40px rgba(255,0,255,0.7);
+        }
+        
+        h1 span {
+            display: block;
+            font-size: 120px;
+            background: linear-gradient(135deg, #ff00ff 0%, #ff0066 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 0 50px rgba(255,0,255,0.8));
+            margin-top: 25px;
+        }
+        
+        .stats {
+            background: rgba(255,0,255,0.15);
+            backdrop-filter: blur(20px);
+            border: 5px solid rgba(255,0,255,0.6);
+            border-radius: 40px;
+            padding: 70px 60px;
+            margin: 60px 0;
+            box-shadow: 0 0 80px rgba(255,0,255,0.4);
+        }
+        
+        .stat-line {
+            font-size: 52px;
+            color: #ffffff;
+            font-weight: 800;
+            margin: 35px 0;
+            line-height: 1.4;
+            text-shadow: 0 0 20px rgba(255,0,255,0.5);
+        }
+        
+        .cta {
+            font-size: 68px;
+            font-weight: 900;
+            color: #ffffff;
+            margin-top: 80px;
+            text-shadow: 0 0 35px rgba(0,255,255,0.7);
+        }
+        
+        .cta-emoji {
+            font-size: 85px;
+            margin-left: 20px;
+            vertical-align: middle;
+        }
+        
+        .logo {
+            position: absolute;
+            top: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 42px;
+            font-weight: 900;
+            background: linear-gradient(135deg, #ff00ff 0%, #00ffff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: 2px;
+            z-index: 20;
+        }
+    </style>
+</head>
+<body>
+    <div class="logo">PRISMATIC LABS</div>
+    
+    <div class="content">
+        <div class="emoji">🚨</div>
+        
+        <h1>
+            Isso está acontecendo
+            <span>NO SEU SITE</span>
+            agora
+        </h1>
+        
+        <div class="stats">
+            <div class="stat-line">→ 53% abandonam</div>
+            <div class="stat-line">→ -20% conversão</div>
+            <div class="stat-line">→ R$ perdidos/mês</div>
+        </div>
+        
+        <div class="cta">
+            Novo post<span class="cta-emoji">👆</span>
+        </div>
+    </div>
+</body>
+</html>

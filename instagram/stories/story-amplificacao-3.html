@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=1080, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Story 3 - CTA Final | Prismatic Labs</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        html, body {
+            width: 1080px;
+            height: 1920px;
+            overflow: hidden;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #0a0a0a 0%, #0a1a2e 50%, #0f2940 100%);
+            position: relative;
+            padding: 80px 60px;
+        }
+        
+        body::before {
+            content: '';
+            position: absolute;
+            width: 900px;
+            height: 900px;
+            background: radial-gradient(circle, rgba(0,255,255,0.4) 0%, transparent 70%);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1;
+        }
+        
+        .content {
+            z-index: 10;
+            text-align: center;
+            width: 100%;
+        }
+        
+        .badge {
+            display: inline-block;
+            background: rgba(255,0,255,0.2);
+            backdrop-filter: blur(15px);
+            border: 4px solid rgba(255,0,255,0.6);
+            padding: 22px 60px;
+            border-radius: 50px;
+            font-size: 48px;
+            font-weight: 900;
+            color: #ff00ff;
+            margin-bottom: 70px;
+            box-shadow: 0 0 50px rgba(255,0,255,0.4);
+            text-shadow: 0 0 20px rgba(255,0,255,0.6);
+        }
+        
+        h1 {
+            font-size: 105px;
+            font-weight: 900;
+            color: #ffffff;
+            line-height: 1.15;
+            margin-bottom: 50px;
+            text-shadow: 0 0 45px rgba(0,255,255,0.7);
+        }
+        
+        h1 span {
+            display: block;
+            font-size: 130px;
+            background: linear-gradient(135deg, #00ffff 0%, #00ffaa 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 0 60px rgba(0,255,255,0.9));
+            margin: 35px 0;
+        }
+        
+        .offer-box {
+            background: rgba(0,255,255,0.15);
+            backdrop-filter: blur(25px);
+            border: 6px solid rgba(0,255,255,0.6);
+            border-radius: 45px;
+            padding: 80px 70px;
+            margin: 80px 0;
+            box-shadow: 0 0 100px rgba(0,255,255,0.4);
+        }
+        
+        .offer-title {
+            font-size: 72px;
+            font-weight: 900;
+            background: linear-gradient(135deg, #00ffff 0%, #ffffff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 45px;
+        }
+        
+        .offer-item {
+            font-size: 54px;
+            color: #ffffff;
+            font-weight: 800;
+            margin: 30px 0;
+            line-height: 1.4;
+            text-shadow: 0 0 25px rgba(0,255,255,0.5);
+        }
+        
+        .cta-button {
+            display: inline-block;
+            background: linear-gradient(135deg, #ff00ff 0%, #00ffff 100%);
+            color: #ffffff;
+            font-size: 68px;
+            font-weight: 900;
+            padding: 55px 90px;
+            border-radius: 60px;
+            margin-top: 80px;
+            box-shadow: 0 30px 90px rgba(255,0,255,0.6), 0 0 70px rgba(0,255,255,0.5);
+            text-shadow: 0 2px 15px rgba(0,0,0,0.4);
+        }
+        
+        .urgency {
+            font-size: 52px;
+            color: #ff00ff;
+            font-weight: 900;
+            margin-top: 60px;
+            text-shadow: 0 0 30px rgba(255,0,255,0.7);
+        }
+        
+        .logo {
+            position: absolute;
+            top: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 42px;
+            font-weight: 900;
+            background: linear-gradient(135deg, #ff00ff 0%, #00ffff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: 2px;
+            z-index: 20;
+        }
+    </style>
+</head>
+<body>
+    <div class="logo">PRISMATIC LABS</div>
+    
+    <div class="content">
+        <div class="badge">🔥 ÚLTIMA CHANCE HOJE</div>
+        
+        <h1>
+            Acelere Seu Site
+            <span>AGORA</span>
+        </h1>
+        
+        <div class="offer-box">
+            <div class="offer-title">Análise GRÁTIS</div>
+            <div class="offer-item">✓ Diagnóstico completo</div>
+            <div class="offer-item">✓ Resposta em 24h</div>
+            <div class="offer-item">✓ Sem compromisso</div>
+        </div>
+        
+        <div class="cta-button">
+            💬 CHAMA NO DIRECT
+        </div>
+        
+        <div class="urgency">
+            ⚡ Vagas limitadas
+        </div>
+    </div>
+</body>
+</html>
