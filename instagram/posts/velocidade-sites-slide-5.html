@@ -97,22 +97,26 @@
         .contact {
             margin-top: 58px;
             display: flex;
-            gap: 20px;
+            gap: 28px;
             justify-content: center;
-            flex-wrap: wrap;
+            align-items: center;
+            flex-wrap: nowrap;
         }
         
         .contact-item {
-            display: inline-block;
+            flex: 1;
+            max-width: 380px;
             background: rgba(255,0,255,0.12);
             backdrop-filter: blur(10px);
             border: 3px solid rgba(255,0,255,0.5);
-            padding: 20px 44px;
+            padding: 24px 40px;
             border-radius: 50px;
             font-size: 30px;
             color: #ffffff;
             font-weight: 800;
             box-shadow: 0 12px 35px rgba(255,0,255,0.25);
+            text-align: center;
+            white-space: nowrap;
         }
         
         .logo {
