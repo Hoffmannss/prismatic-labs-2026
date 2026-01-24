@@ -5,21 +5,21 @@
  * 
  * O QUE FAZ:
  * - Lê tópicos gerados
- * - Usa Gemini para criar legendas otimizadas
+ * - Usa Groq (Llama 3.3 70B) para criar legendas otimizadas
  * - Estrutura: Hook + Problema + Solução + CTA + Hashtags
  * 
  * INPUT: /generated/topics-[mes].json
  * OUTPUT: /generated/captions/post-[1-28].txt
  */
 
-const { GoogleGenerativeAI } = require('@google/generative-ai');
+const axios = require('axios');
 const fs = require('fs').promises;
 const path = require('path');
 const chalk = require('chalk');
 require('dotenv').config();
 
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash-latest' });
+const GROQ_API_URL = 'https://api.groq.com/openai/v1/chat/completions';
+const GROQ_MODEL = 'llama-3.3-70b-versatile';
 
 // Prompt para cada tipo de post
 const CAPTION_PROMPTS = {
@@ -86,9 +86,32 @@ async function generateCaption(post) {
     .replace('{{ANGULO}}', post.angulo || '')
     .replace('{{VALOR}}', post.valor || '');
 
-  const result = await model.generateContent(prompt);
-  const response = await result.response;
-  return response.text().trim();
+  const response = await axios.post(
+    GROQ_API_URL,
+    {
+      model: GROQ_MODEL,
+      messages: [
+        {
+          role: 'system',
+          content: 'Você é especialista em copywriting para Instagram. Crie legendas persuasivas, educacionais e orientadas a resultados.'
+        },
+        {
+          role: 'user',
+          content: prompt
+        }
+      ],
+      temperature: 0.8,
+      max_tokens: 2000
+    },
+    {
+      headers: {
+        'Authorization': `Bearer ${process.env.GROQ_API_KEY}`,
+        'Content-Type': 'application/json'
+      }
+    }
+  );
+
+  return response.data.choices[0].message.content.trim();
 }
 
 // Função principal
@@ -96,20 +119,25 @@ async function generateCaptions(month) {
   console.log(chalk.blue.bold('\n✍️ ETAPA 4: GERAÇÃO DE LEGENDAS\n'));
 
   try {
+    // Verificar API key
+    if (!process.env.GROQ_API_KEY) {
+      throw new Error('GROQ_API_KEY não configurada no .env');
+    }
+
     // Ler tópicos
     const topicsFile = path.join(__dirname, '../generated', `topics-${month.toLowerCase()}.json`);
     const topicsData = await fs.readFile(topicsFile, 'utf-8');
     const topics = JSON.parse(topicsData);
 
     console.log(chalk.gray(`Tópicos: ${topics.posts.length} posts`));
-    console.log(chalk.gray('Modelo: Gemini 1.5 Flash Latest (50 req/dia)'));
-    console.log(chalk.gray('Delay: 3s entre requisições (evitar rate limit)\n'));
+    console.log(chalk.gray('Modelo: Llama 3.3 70B via Groq (GRATUITO)'));
+    console.log(chalk.gray('Sem limites de rate! Rápido e confiável\n'));
 
     // Criar pasta captions
     const captionsDir = path.join(__dirname, '../generated/captions');
     await fs.mkdir(captionsDir, { recursive: true });
 
-    // Gerar legendas (com delay para evitar rate limit)
+    // Gerar legendas
     for (const [index, post] of topics.posts.entries()) {
       try {
         const caption = await generateCaption(post);
@@ -121,14 +149,14 @@ async function generateCaptions(month) {
         
         console.log(chalk.green(`✓ ${filename} gerado (${caption.length} caracteres)`));
         
-        // Delay 3s entre requisições (mais conservador)
+        // Pequeno delay para evitar overload (opcional, Groq é rápido)
         if (index < topics.posts.length - 1) {
-          await new Promise(resolve => setTimeout(resolve, 3000));
+          await new Promise(resolve => setTimeout(resolve, 500));
         }
         
       } catch (error) {
-        console.log(chalk.yellow(`⚠️ Erro post ${index + 1}, tentando novamente em 5s...`));
-        await new Promise(resolve => setTimeout(resolve, 5000));
+        console.log(chalk.yellow(`⚠️ Erro post ${index + 1}, tentando novamente...`));
+        await new Promise(resolve => setTimeout(resolve, 2000));
         
         const caption = await generateCaption(post);
         const filename = `post-${String(index + 1).padStart(2, '0')}.txt`;
@@ -148,6 +176,12 @@ async function generateCaptions(month) {
   } catch (error) {
     console.error(chalk.red.bold('\n✗ ERRO na geração de legendas:\n'));
     console.error(chalk.red(error.message));
+    
+    if (error.message.includes('GROQ_API_KEY')) {
+      console.log(chalk.yellow('\n🔑 Configure GROQ_API_KEY no arquivo .env'));
+      console.log(chalk.gray('Obtenha GRÁTIS em: https://console.groq.com/keys\n'));
+    }
+    
     process.exit(1);
   }
 }
