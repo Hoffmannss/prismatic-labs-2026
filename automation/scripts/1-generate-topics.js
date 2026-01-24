@@ -20,7 +20,7 @@ require('dotenv').config();
 
 // Configuração
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-const model = genAI.getGenerativeModel({ model: 'gemini-pro' });
+const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
 
 // Prompt otimizado para geração de tópicos
 const PROMPT_TEMPLATE = `
@@ -46,7 +46,7 @@ Gere EXATAMENTE 28 tópicos para posts Instagram da PRISMATIC LABS.
 - SEO e autoridade
 - Cases reais com números
 - Comparações (site profissional vs amador)
-- Objeções ("site é caro", "demora muito")
+- Obreções ("site é caro", "demora muito")
 
 **FORMATO JSON OBRIGATÓRIO:**
 {
@@ -79,7 +79,7 @@ Retorne APENAS o JSON válido, sem markdown ou explicações.
 async function generateTopics(month) {
   console.log(chalk.blue.bold('\n🧠 ETAPA 1: GERAÇÃO DE TÓPICOS\n'));
   console.log(chalk.gray(`Mês: ${month}`));
-  console.log(chalk.gray('Modelo: Google Gemini Pro'));
+  console.log(chalk.gray('Modelo: Google Gemini 1.5 Flash'));
   console.log(chalk.gray('Aguarde... isso pode levar 30-60 segundos\n'));
 
   try {
