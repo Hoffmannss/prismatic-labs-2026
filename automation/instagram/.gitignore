@@ -1,0 +1,21 @@
+# Node
+node_modules/
+package-lock.json
+
+# Env
+.env
+.env.local
+
+# Generated
+generated/images/*.png
+generated/html/*.html
+generated/captions/*.txt
+generated/*.json
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS
+.DS_Store
+Thumbs.db

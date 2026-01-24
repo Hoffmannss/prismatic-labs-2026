@@ -1,0 +1,30 @@
+{
+  "name": "instagram-automation-prismatic",
+  "version": "1.0.0",
+  "description": "Sistema completo de automação Instagram: geração, agendamento, publicação",
+  "scripts": {
+    "generate-topics": "node scripts/1-generate-topics.js",
+    "create-html": "node scripts/2-create-html.js",
+    "screenshots": "node scripts/3-screenshots.js",
+    "generate-captions": "node scripts/4-generate-captions.js",
+    "upload-drive": "node scripts/5-upload-drive.js",
+    "trigger-make": "node scripts/6-trigger-make.js",
+    "full-automation": "npm run generate-topics && npm run create-html && npm run screenshots && npm run generate-captions && npm run upload-drive && npm run trigger-make"
+  },
+  "dependencies": {
+    "@google/generative-ai": "^0.21.0",
+    "puppeteer": "^22.0.0",
+    "googleapis": "^134.0.0",
+    "dotenv": "^16.4.5",
+    "axios": "^1.7.9",
+    "sharp": "^0.33.5"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.2"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "author": "Prismatic Labs",
+  "license": "MIT"
+}
