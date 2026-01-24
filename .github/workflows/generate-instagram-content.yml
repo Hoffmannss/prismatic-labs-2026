@@ -1,0 +1,105 @@
+name: 🎨 Gerador Automático Instagram Posts
+
+on:
+  workflow_dispatch:
+    inputs:
+      month:
+        description: 'Mês para gerar conteúdo (ex: Fevereiro)'
+        required: true
+        default: 'Fevereiro'
+      year:
+        description: 'Ano'
+        required: true
+        default: '2026'
+      total_posts:
+        description: 'Número de posts'
+        required: true
+        default: '28'
+  
+  schedule:
+    # Roda automaticamente dia 25 de cada mês às 20h (UTC-3 = 23h UTC)
+    - cron: '0 23 25 * *'
+
+env:
+  NODE_VERSION: '18'
+
+jobs:
+  generate-content:
+    name: 📸 Gerar Posts Instagram
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: 📥 Checkout código
+        uses: actions/checkout@v4
+      
+      - name: 📦 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+      
+      - name: 🔧 Instalar dependências
+        working-directory: ./automation/instagram
+        run: npm ci
+      
+      - name: 🎯 ETAPA 1 - Gerar Tópicos (Gemini AI)
+        working-directory: ./automation/instagram
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: |
+          echo "🤖 Gerando ${{ github.event.inputs.total_posts || '28' }} tópicos para ${{ github.event.inputs.month || 'próximo mês' }}..."
+          node scripts/1-generate-topics.js "${{ github.event.inputs.month }}" "${{ github.event.inputs.year }}" "${{ github.event.inputs.total_posts }}"
+      
+      - name: 🎨 ETAPA 2 - Criar HTMLs dos Posts
+        working-directory: ./automation/instagram
+        run: |
+          echo "🎨 Criando arquivos HTML com design Prismatic..."
+          node scripts/2-create-html.js
+      
+      - name: 📸 ETAPA 3 - Gerar Screenshots (Puppeteer)
+        working-directory: ./automation/instagram
+        run: |
+          echo "📸 Gerando screenshots 1080x1080..."
+          node scripts/3-screenshots.js
+      
+      - name: ✍️ ETAPA 4 - Gerar Legendas (Gemini AI)
+        working-directory: ./automation/instagram
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: |
+          echo "✍️ Criando legendas otimizadas..."
+          node scripts/4-generate-captions.js
+      
+      - name: ☁️ ETAPA 5 - Upload Google Drive
+        working-directory: ./automation/instagram
+        env:
+          GOOGLE_DRIVE_CREDENTIALS: ${{ secrets.GOOGLE_DRIVE_CREDENTIALS }}
+        run: |
+          echo "☁️ Fazendo upload para Google Drive..."
+          node scripts/5-upload-drive.js
+      
+      - name: 🚀 ETAPA 6 - Trigger Make.com (Agendamento)
+        working-directory: ./automation/instagram
+        env:
+          MAKE_WEBHOOK_URL: ${{ secrets.MAKE_WEBHOOK_URL }}
+        run: |
+          echo "🚀 Disparando webhook Make.com para agendamento..."
+          node scripts/6-trigger-make.js
+      
+      - name: 📊 Upload Artifacts (Backup)
+        uses: actions/upload-artifact@v4
+        with:
+          name: instagram-content-${{ github.event.inputs.month || 'auto' }}-${{ github.event.inputs.year || '2026' }}
+          path: |
+            automation/instagram/generated/
+          retention-days: 30
+      
+      - name: ✅ Sucesso!
+        run: |
+          echo "✅ CONCLUÍDO!"
+          echo "📸 Posts gerados: ${{ github.event.inputs.total_posts || '28' }}"
+          echo "📅 Período: ${{ github.event.inputs.month || 'Automático' }} ${{ github.event.inputs.year || '2026' }}"
+          echo "☁️ Armazenado: Google Drive"
+          echo "📅 Agendados: Make.com → Instagram"
+          echo ""
+          echo "🎯 Próxima ação: ZERO! Tudo automático 🚀"
