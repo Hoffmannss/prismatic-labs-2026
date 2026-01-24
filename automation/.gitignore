@@ -1,0 +1,29 @@
+# Node
+node_modules/
+package-lock.json
+
+# Ambiente
+.env
+.env.local
+.env.*.local
+
+# Arquivos gerados
+generated/
+*.log
+*.png
+*.jpg
+*.jpeg
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Puppeteer
+.local-chromium/
