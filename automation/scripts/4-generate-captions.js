@@ -1,136 +1,160 @@
 #!/usr/bin/env node
+/**
+ * PRISMATIC LABS - INSTAGRAM AUTOMATION
+ * Script 4: Geração de Legendas com IA
+ * 
+ * O QUE FAZ:
+ * - Lê tópicos gerados
+ * - Usa Gemini para criar legendas otimizadas
+ * - Estrutura: Hook + Problema + Solução + CTA + Hashtags
+ * 
+ * INPUT: /generated/topics-[mes].json
+ * OUTPUT: /generated/captions/post-[1-28].txt
+ */
+
 const { GoogleGenerativeAI } = require('@google/generative-ai');
 const fs = require('fs').promises;
 const path = require('path');
+const chalk = require('chalk');
+require('dotenv').config();
 
-const PROMPT_CAPTION = (tema, tipo) => `Crie uma legenda Instagram VENDAS para post da Prismatic Labs.
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+const model = genAI.getGenerativeModel({ model: 'gemini-pro' });
 
-TEMA DO POST: ${tema}
-TIPO: ${tipo}
+// Prompt para cada tipo de post
+const CAPTION_PROMPTS = {
+  educacional: `
+Crie uma legenda Instagram EDUCACIONAL para:
+Tema: {{TEMA}}
+Subtema: {{SUBTEMA}}
 
-CONTEXTO EMPRESA:
-- Prismatic Labs: Landing pages e sites premium high-ticket
-- Público: Infoprodutores, e-commerces, consultores (faturamento R$50k+/mês)
-- Ticket médio: R$8k-R$50k
-- Diferencial: Dark mode premium, performance extrema, entrega 10-15 dias
-- Resultados clientes reais: +40-60% conversão, +240% leads, R$180k/mês
-- Fase: Pré-vendas, precisa LEADS qualificados RÁPIDO
+ESTRUTURA OBRIGATÓRIA:
+1. HOOK (1 linha): Estatística ou fato chocante
+2. PROBLEMA (2-3 linhas): Dor do cliente
+3. SOLUÇÃO (3-4 linhas): Como resolver, dica prática
+4. PROVA (1-2 linhas): Dado ou resultado real
+5. CTA (1 linha): Convite para ação
+6. HASHTAGS (10-12): Mix alcance + nicho
 
-ESTRUTURA LEGENDA:
+TOM: Educativo mas direto, sem fofura
+FORMATO: Espaçamento entre blocos, emojis estratégicos (max 3)
+MAX: 1800 caracteres
+`,
+  vendas: `
+Crie uma legenda Instagram VENDAS/CTA para:
+Tema: {{TEMA}}
+Angulo: {{ANGULO}}
 
-1. HOOK (1 linha impactante com emoji)
-   - Número específico OU pergunta provocativa OU afirmação polêmica
-   - Exemplos: "🚫 73% dos sites perdem clientes nos primeiros 3 segundos"
-   
-2. PROBLEMA (2-3 linhas)
-   - Dor específica do público
-   - Consequência financeira/emocional
-   
-3. SOLUÇÃO (3-4 linhas com bullets)
-   - Como resolvemos
-   - Resultados específicos (números reais)
-   - Bullets com emojis
-   
-4. PROVA SOCIAL (1-2 linhas)
-   - Dado concreto de cliente
-   - Resultado mensurável
-   
-5. CTA FORTE (2 linhas)
-   - Urgência/escassez se tipo="vendas"
-   - Direção clara (link bio/DM/comentário)
-   - Emoji de ação
+ESTRUTURA OBRIGATÓRIA:
+1. HOOK (1 linha): Pergunta provocativa ou afirmação forte
+2. RESULTADO (3-4 linhas): Case real com NÚMEROS
+3. SOCIAL PROOF (2-3 linhas): Depoimento ou métrica
+4. ESCASSEZ (1-2 linhas): Urgência ou limitação
+5. CTA (1-2 linhas): Instrução clara (DM, link bio)
+6. HASHTAGS (10-12): Focadas em conversão
 
-6. HASHTAGS (linha separada)
-   - 8-12 tags mix: nicho + alcance
-   - Incluir sempre: #PrismaticLabs #SitesProfissionais
+TOM: Confiante, orientado a resultados, SEM promessas irreais
+FORMATO: Bullets para resultados, espaçamento generoso
+MAX: 1600 caracteres
+`,
+  'social-proof': `
+Crie uma legenda Instagram SOCIAL PROOF para:
+Tema: {{TEMA}}
+Valor: {{VALOR}}
 
-TOM:
-- Direto, sem enrolação
-- Confiança (não arrogância)
-- Números/dados sempre que possível
-- Evitar clichês ("revolucionar", "game changer")
-- Focar ROI e resultados mensuráveis
+ESTRUTURA OBRIGATÓRIA:
+1. HOOK (1 linha): "Cliente X alcançou Y resultado"
+2. CONTEXTO (2-3 linhas): Situação antes
+3. TRANSFORMAÇÃO (3-4 linhas): O que mudou, resultados específicos
+4. APRENDIZADO (2-3 linhas): Insight útil para audiência
+5. CTA (1 linha): Convite para obter mesmo resultado
+6. HASHTAGS (10-12): Mix autoridade + nicho
 
-EXEMPLO ESTRUTURA:
+TOM: Inspirador mas fact-based, celebrar vitória cliente
+FORMATO: Story-driven, emojis sutis
+MAX: 1700 caracteres
+`
+};
 
-🚫 73% dos sites perdem vendas nos primeiros 3 segundos
-
-Seu site pode ser lindo, mas se demora +2s pra carregar, você está jogando R$15-30k/mês no lixo.
-
-Na Prismatic Labs, sites carregam em 0.8s (98% mais rápido que a média):
-✅ Core Web Vitals 100/100
-✅ +40% taxa de conversão
-✅ -65% taxa de rejeição
-✅ Performance que seus concorrentes não conseguem copiar
-
-Último cliente (e-commerce): De R$45k → R$180k/mês em 90 dias.
-
-Você tá perdendo dinheiro AGORA.
-👉 Link na bio pra orçamento grátis (só 2 vagas Janeiro)
-
-#WebDesign #SitesProfissionais #Performance #Conversao #PrismaticLabs #LandingPage #Ecommerce #VendasOnline
-
-Retorne APENAS a legenda pronta, sem títulos ou explicações.`;
-
-async function generateCaptions() {
-  console.log('✍️ Gerando legendas com Gemini AI...');
+// Função gerar legenda individual
+async function generateCaption(post) {
+  const promptTemplate = CAPTION_PROMPTS[post.tipo] || CAPTION_PROMPTS.educacional;
   
-  const generatedDir = path.join(__dirname, '../generated');
-  
+  const prompt = promptTemplate
+    .replace('{{TEMA}}', post.tema)
+    .replace('{{SUBTEMA}}', post.subtema || post.angulo || '')
+    .replace('{{ANGULO}}', post.angulo || '')
+    .replace('{{VALOR}}', post.valor || '');
+
+  const result = await model.generateContent(prompt);
+  const response = await result.response;
+  return response.text().trim();
+}
+
+// Função principal
+async function generateCaptions(month) {
+  console.log(chalk.blue.bold('\n✍️ ETAPA 4: GERAÇÃO DE LEGENDAS\n'));
+
   try {
-    // Carrega tópicos
-    const files = await fs.readdir(generatedDir);
-    const topicFile = files.find(f => f.startsWith('topics-') && f.endsWith('.json'));
-    
-    if (!topicFile) {
-      throw new Error('Arquivo de tópicos não encontrado.');
-    }
-    
-    const topics = JSON.parse(await fs.readFile(path.join(generatedDir, topicFile), 'utf-8'));
-    
-    // Cria pasta captions
-    const captionsDir = path.join(generatedDir, 'captions');
+    // Ler tópicos
+    const topicsFile = path.join(__dirname, '../generated', `topics-${month.toLowerCase()}.json`);
+    const topicsData = await fs.readFile(topicsFile, 'utf-8');
+    const topics = JSON.parse(topicsData);
+
+    console.log(chalk.gray(`Tópicos: ${topics.posts.length} posts`));
+    console.log(chalk.gray('Gerando legendas otimizadas...\n'));
+
+    // Criar pasta captions
+    const captionsDir = path.join(__dirname, '../generated/captions');
     await fs.mkdir(captionsDir, { recursive: true });
-    
-    // Inicializa Gemini
-    const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-    const model = genAI.getGenerativeModel({ model: 'gemini-pro' });
-    
-    let created = 0;
-    
-    for (const topic of topics) {
-      const prompt = PROMPT_CAPTION(topic.tema, topic.tipo);
-      
+
+    // Gerar legendas (com delay para evitar rate limit)
+    for (const [index, post] of topics.posts.entries()) {
       try {
-        const result = await model.generateContent(prompt);
-        const caption = result.response.text().trim();
+        const caption = await generateCaption(post);
         
-        const filename = `caption-${String(topic.dia).padStart(2, '0')}.txt`;
+        const filename = `post-${String(index + 1).padStart(2, '0')}.txt`;
         const filepath = path.join(captionsDir, filename);
         
-        await fs.writeFile(filepath, caption);
-        created++;
-        console.log(`   ✓ ${filename}`);
+        await fs.writeFile(filepath, caption, 'utf-8');
         
-        // Rate limit: 60 req/min = 1 req/segundo
-        await new Promise(resolve => setTimeout(resolve, 1100));
+        console.log(chalk.green(`✓ ${filename} gerado (${caption.length} caracteres)`));
+        
+        // Delay 2s entre requisições
+        if (index < topics.posts.length - 1) {
+          await new Promise(resolve => setTimeout(resolve, 2000));
+        }
         
       } catch (error) {
-        console.warn(`   ⚠️ Erro no dia ${topic.dia}: ${error.message}`);
+        console.log(chalk.yellow(`⚠️ Erro post ${index + 1}, tentando novamente...`));
+        await new Promise(resolve => setTimeout(resolve, 5000));
+        
+        const caption = await generateCaption(post);
+        const filename = `post-${String(index + 1).padStart(2, '0')}.txt`;
+        const filepath = path.join(captionsDir, filename);
+        await fs.writeFile(filepath, caption, 'utf-8');
+        
+        console.log(chalk.green(`✓ ${filename} gerado (retry)`));
       }
     }
-    
-    console.log(`✅ ${created} legendas geradas em: ${captionsDir}`);
-    return created;
-    
+
+    console.log(chalk.green.bold(`\n✓ ${topics.posts.length} legendas geradas com sucesso!\n`));
+    console.log(chalk.gray(`Pasta: ${captionsDir}\n`));
+    console.log(chalk.blue.bold('ETAPA 4 CONCLUÍDA ✅\n'));
+
+    return captionsDir;
+
   } catch (error) {
-    console.error('❌ Erro ao gerar legendas:', error.message);
+    console.error(chalk.red.bold('\n✗ ERRO na geração de legendas:\n'));
+    console.error(chalk.red(error.message));
     process.exit(1);
   }
 }
 
+// Executar se chamado diretamente
 if (require.main === module) {
-  generateCaptions();
+  const month = process.argv[2] || 'Fevereiro';
+  generateCaptions(month);
 }
 
-module.exports = { generateCaptions };
+module.exports = generateCaptions;
