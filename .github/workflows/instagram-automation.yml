@@ -1,25 +1,25 @@
 name: 🤖 Instagram Content Automation
 
 on:
-  # OPÇÃO 1: Manual (você clica "Run workflow")
+  # Trigger manual (você clica "Run workflow")
   workflow_dispatch:
     inputs:
       month:
-        description: 'Mês para gerar (ex: Fevereiro)'
+        description: 'Mês para gerar conteúdo (ex: Fevereiro)'
         required: true
         default: 'Fevereiro'
       year:
         description: 'Ano'
         required: true
         default: '2026'
-      posts_count:
+      post_count:
         description: 'Quantidade de posts'
         required: true
         default: '28'
   
-  # OPÇÃO 2: Automático (todo dia 25 às 20h)
+  # Trigger automático: dia 25 de cada mês às 20h
   schedule:
-    - cron: '0 23 25 * *' # 20h BRT = 23h UTC
+    - cron: '0 23 25 * *' # UTC 23h = 20h BRT
 
 jobs:
   generate-content:
@@ -37,65 +37,59 @@ jobs:
       
       - name: 📦 Instalar dependências
         run: |
-          cd automation/instagram
+          cd automation
           npm ci
       
-      - name: 🎨 Gerar tópicos (Gemini AI)
+      - name: 🎨 Gerar tópicos com Gemini
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: |
-          cd automation/instagram
-          node scripts/1-generate-topics.js "${{ github.event.inputs.month || 'Próximo' }}" "${{ github.event.inputs.year || '2026' }}" "${{ github.event.inputs.posts_count || '28' }}"
+          cd automation
+          node scripts/1-generate-topics.js "${{ github.event.inputs.month || 'próximo-mês' }}" "${{ github.event.inputs.year || '2026' }}" "${{ github.event.inputs.post_count || '28' }}"
       
       - name: 🏗️ Criar HTMLs dos posts
         run: |
-          cd automation/instagram
+          cd automation
           node scripts/2-create-html.js
       
       - name: 📸 Gerar screenshots
         run: |
-          cd automation/instagram
+          cd automation
           node scripts/3-screenshots.js
       
-      - name: ✍️ Gerar legendas (Gemini AI)
+      - name: ✍️ Gerar legendas com Gemini
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: |
-          cd automation/instagram
+          cd automation
           node scripts/4-generate-captions.js
       
       - name: ☁️ Upload para Google Drive
         env:
-          GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
-          DRIVE_FOLDER_ID: ${{ secrets.DRIVE_FOLDER_ID }}
+          GOOGLE_DRIVE_CREDENTIALS: ${{ secrets.GOOGLE_DRIVE_CREDENTIALS }}
         run: |
-          cd automation/instagram
+          cd automation
           node scripts/5-upload-drive.js
       
-      - name: 🚀 Trigger Make.com (agendamento Instagram)
+      - name: 🚀 Trigger Make.com para agendamento
         env:
           MAKE_WEBHOOK_URL: ${{ secrets.MAKE_WEBHOOK_URL }}
         run: |
-          cd automation/instagram
+          cd automation
           node scripts/6-trigger-make.js
       
-      - name: 💾 Commit arquivos gerados
-        run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "Instagram Bot"
-          git add automation/instagram/generated/
-          git commit -m "🤖 Conteúdo Instagram gerado: ${{ github.event.inputs.month || 'auto' }} ${{ github.event.inputs.year || '2026' }}" || echo "Sem mudanças"
-          git push
+      - name: 📊 Upload artifacts (backup)
+        uses: actions/upload-artifact@v4
+        with:
+          name: instagram-content-${{ github.event.inputs.month || 'auto' }}
+          path: |
+            automation/generated/
+          retention-days: 30
       
-      - name: ✅ Relatório final
+      - name: ✅ Resumo execução
         run: |
-          echo "🎉 AUTOMAÇÃO COMPLETA!"
-          echo "📅 Mês: ${{ github.event.inputs.month || 'Auto' }}"
-          echo "📊 Posts gerados: ${{ github.event.inputs.posts_count || '28' }}"
-          echo "☁️ Drive: Uploaded"
-          echo "📲 Instagram: Agendamento iniciado no Make.com"
-          echo ""
-          echo "🔗 Próximos passos:"
-          echo "1. Conferir pasta Google Drive"
-          echo "2. Make.com executará agendamento em ~5min"
-          echo "3. Posts aparecerão no Creator Studio do Instagram"
+          echo "🎉 Automação concluída com sucesso!"
+          echo "📅 Mês: ${{ github.event.inputs.month || 'automático' }}"
+          echo "📊 Posts gerados: ${{ github.event.inputs.post_count || '28' }}"
+          echo "☁️ Arquivos no Google Drive"
+          echo "📱 Agendamento Make.com iniciado"
