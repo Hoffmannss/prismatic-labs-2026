@@ -1,225 +1,211 @@
+#!/usr/bin/env node
 /**
- * SCRIPT 2: CRIAÇÃO DE HTMLS
- * Gera arquivos HTML para cada tópico usando template base
+ * SCRIPT 2: CRIAÇÃO DE HTMLs DOS POSTS
+ * 
+ * Função: Transforma tópicos JSON em páginas HTML prontas para screenshot
+ * Input: topics-[mes].json
+ * Output: 28 arquivos HTML estilizados
+ * 
+ * Como funciona:
+ * 1. Lê tópicos gerados no Script 1
+ * 2. Para cada tópico, cria HTML com:
+ *    - Cores/fontes Prismatic Labs
+ *    - Gradientes animados
+ *    - Badges de categoria
+ *    - Responsive 1080x1080
+ * 3. Salva na pasta generated/html/
  */
 
 const fs = require('fs').promises;
 const path = require('path');
 
-// Template HTML base (cores Prismatic)
-function createHTMLTemplate(topic) {
-  const { tema, subtitulo, badge, cta, cores } = topic;
-  
-  // Define cores baseado no esquema
-  const colorSchemes = {
-    'purple-teal': { glow1: '#A855F7', glow2: '#06D9D7', gradient: 'linear-gradient(135deg, #A855F7, #06D9D7)' },
-    'pink-purple': { glow1: '#FF006E', glow2: '#A855F7', gradient: 'linear-gradient(135deg, #FF006E, #A855F7)' },
-    'teal-pink': { glow1: '#06D9D7', glow2: '#FF006E', gradient: 'linear-gradient(135deg, #06D9D7, #FF006E)' }
+const COLORS = {
+  purple: '#A855F7',
+  teal: '#06D9D7',
+  pink: '#FF006E',
+  black: '#0a0a0a',
+  white: '#ffffff'
+};
+
+const VISUAL_STYLES = {
+  'dark-gradient': {
+    background: `linear-gradient(135deg, ${COLORS.black} 0%, #1a0a2e 100%)`,
+    accent: COLORS.purple
+  },
+  'neon-cards': {
+    background: COLORS.black,
+    accent: COLORS.teal
+  },
+  'minimal-stats': {
+    background: `linear-gradient(135deg, #0f0f0f 0%, ${COLORS.black} 100%)`,
+    accent: COLORS.pink
+  },
+  'testimonial': {
+    background: `radial-gradient(circle at 50% 50%, #1a0a2e 0%, ${COLORS.black} 100%)`,
+    accent: COLORS.purple
+  }
+};
+
+function generateHTML(topic, index) {
+  const style = VISUAL_STYLES[topic.visual_style] || VISUAL_STYLES['dark-gradient'];
+  const badgeColors = {
+    'educacional': COLORS.teal,
+    'social-proof': COLORS.purple,
+    'vendas': COLORS.pink,
+    'bastidores': '#FFD700'
   };
-  
-  const scheme = colorSchemes[cores] || colorSchemes['purple-teal'];
-  
+
   return `<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=1080, height=1080">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+  <title>Post ${index + 1} - ${topic.theme}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700;900&family=Inter:wght@400;600&display=swap" rel="stylesheet">
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
     body {
       width: 1080px;
       height: 1080px;
-      background: radial-gradient(circle at 30% 20%, #1a0033 0%, #000000 50%, #0a0014 100%);
+      background: ${style.background};
       display: flex;
-      align-items: center;
+      flex-direction: column;
       justify-content: center;
+      align-items: center;
+      padding: 80px;
       font-family: 'Inter', sans-serif;
-      overflow: hidden;
+      color: ${COLORS.white};
       position: relative;
+      overflow: hidden;
     }
-    
-    .glow {
+    /* Glow effect */
+    body::before {
+      content: '';
       position: absolute;
-      border-radius: 50%;
-      filter: blur(140px);
-      opacity: 0.4;
-    }
-    
-    .glow-1 {
       width: 600px;
       height: 600px;
-      background: ${scheme.glow1};
+      background: radial-gradient(circle, ${style.accent}40 0%, transparent 70%);
       top: -200px;
       right: -200px;
+      border-radius: 50%;
+      animation: pulse 4s ease-in-out infinite;
     }
-    
-    .glow-2 {
-      width: 500px;
-      height: 500px;
-      background: ${scheme.glow2};
-      bottom: -150px;
-      left: -150px;
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); opacity: 0.5; }
+      50% { transform: scale(1.1); opacity: 0.8; }
     }
-    
-    .container {
-      position: relative;
-      z-index: 1;
-      width: 880px;
-      text-align: center;
-      padding: 60px;
-    }
-    
-    .logo {
-      font-size: 22px;
-      font-weight: 700;
-      letter-spacing: 4px;
-      margin-bottom: 120px;
-      background: ${scheme.gradient};
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      text-transform: uppercase;
-    }
-    
     .badge {
-      display: inline-block;
-      background: rgba(168, 85, 247, 0.15);
-      border: 2px solid ${scheme.glow1};
-      color: ${scheme.glow1};
+      background: ${badgeColors[topic.type] || COLORS.purple};
+      color: ${COLORS.black};
+      padding: 12px 28px;
+      border-radius: 50px;
       font-size: 18px;
       font-weight: 700;
-      padding: 10px 28px;
-      border-radius: 50px;
-      margin-bottom: 50px;
       text-transform: uppercase;
       letter-spacing: 2px;
+      margin-bottom: 40px;
+      box-shadow: 0 8px 32px ${badgeColors[topic.type] || COLORS.purple}60;
     }
-    
-    .title {
-      font-size: 82px;
+    h1 {
+      font-family: 'Poppins', sans-serif;
+      font-size: 64px;
       font-weight: 900;
-      line-height: 1.05;
-      margin-bottom: 45px;
-      color: #FFFFFF;
-      text-shadow: 0 0 60px rgba(168, 85, 247, 0.6);
-    }
-    
-    .highlight {
-      background: ${scheme.gradient};
+      line-height: 1.2;
+      text-align: center;
+      margin-bottom: 30px;
+      background: linear-gradient(135deg, ${COLORS.white} 0%, ${style.accent} 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      display: block;
-      margin-top: 10px;
+      background-clip: text;
+      text-shadow: 0 4px 20px ${style.accent}40;
     }
-    
-    .subtitle {
-      font-size: 34px;
-      font-weight: 400;
-      color: #D0D0D0;
-      line-height: 1.5;
-      margin-bottom: 70px;
-    }
-    
-    .cta {
-      display: inline-block;
-      background: ${scheme.gradient};
-      color: #FFFFFF;
+    .hook {
       font-size: 28px;
+      text-align: center;
+      line-height: 1.6;
+      color: #cccccc;
+      margin-bottom: 50px;
+      max-width: 800px;
+    }
+    .cta {
+      background: ${style.accent};
+      color: ${COLORS.white};
+      padding: 20px 50px;
+      border-radius: 12px;
+      font-size: 24px;
       font-weight: 700;
-      padding: 22px 55px;
-      border-radius: 14px;
-      text-decoration: none;
-      box-shadow: 0 25px 70px rgba(168, 85, 247, 0.5);
       text-transform: uppercase;
+      box-shadow: 0 12px 40px ${style.accent}60;
       letter-spacing: 1px;
+    }
+    .logo {
+      position: absolute;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: 'Poppins', sans-serif;
+      font-size: 28px;
+      font-weight: 900;
+      color: ${COLORS.white};
+      opacity: 0.8;
     }
   </style>
 </head>
 <body>
-  <div class="glow glow-1"></div>
-  <div class="glow glow-2"></div>
-  
-  <div class="container">
-    <div class="logo">Prismatic Labs</div>
-    
-    <div class="badge">${badge}</div>
-    
-    <h1 class="title">
-      ${tema.split(' ').slice(0, -2).join(' ')}
-      <span class="highlight">${tema.split(' ').slice(-2).join(' ')}</span>
-    </h1>
-    
-    <p class="subtitle">
-      ${subtitulo}
-    </p>
-    
-    <div class="cta">${cta}</div>
-  </div>
+  <div class="badge">${topic.type.replace('-', ' ')}</div>
+  <h1>${topic.theme}</h1>
+  <p class="hook">${topic.hook}</p>
+  <div class="cta">${topic.cta}</div>
+  <div class="logo">PRISMATIC LABS</div>
 </body>
 </html>`;
 }
 
-async function createHTMLs() {
-  console.log('\n📝 ETAPA 2: Criando HTMLs...');
-  
+async function createHTML() {
   try {
-    // Lê tópicos gerados
+    console.log('🏗️ Criando HTMLs dos posts...');
+
+    // 1. Lê tópicos
     const generatedDir = path.join(__dirname, '../generated');
     const files = await fs.readdir(generatedDir);
     const topicsFile = files.find(f => f.startsWith('topics-') && f.endsWith('.json'));
     
     if (!topicsFile) {
-      throw new Error('Arquivo de tópicos não encontrado. Execute script 1 primeiro.');
+      throw new Error('Arquivo topics-*.json não encontrado. Execute script 1 primeiro.');
     }
-    
+
     const topicsPath = path.join(generatedDir, topicsFile);
-    const topicsData = await fs.readFile(topicsPath, 'utf8');
-    const topics = JSON.parse(topicsData);
-    
-    console.log(`📂 Lido: ${topicsFile} (${topics.length} tópicos)`);
-    
-    // Cria pasta para HTMLs
-    const htmlDir = path.join(generatedDir, 'html-posts');
+    const topicsData = JSON.parse(await fs.readFile(topicsPath, 'utf-8'));
+
+    // 2. Cria pasta HTML
+    const htmlDir = path.join(generatedDir, 'html');
     await fs.mkdir(htmlDir, { recursive: true });
-    
-    // Gera HTML para cada tópico
-    let created = 0;
-    for (const topic of topics) {
-      const html = createHTMLTemplate(topic);
-      const filename = `post-${String(topic.dia).padStart(2, '0')}.html`;
+
+    // 3. Gera HTML para cada tópico
+    for (let i = 0; i < topicsData.topics.length; i++) {
+      const topic = topicsData.topics[i];
+      const html = generateHTML(topic, i);
+      const filename = `post-${String(i + 1).padStart(2, '0')}.html`;
       const filepath = path.join(htmlDir, filename);
-      
-      await fs.writeFile(filepath, html, 'utf8');
-      created++;
-      
-      if (created % 7 === 0 || created === topics.length) {
-        console.log(`  ✅ Criados: ${created}/${topics.length}`);
-      }
+      await fs.writeFile(filepath, html);
     }
-    
-    console.log(`\n🎉 ${created} arquivos HTML criados!`);
+
+    console.log(`✅ ${topicsData.topics.length} HTMLs criados com sucesso!`);
     console.log(`📁 Pasta: ${htmlDir}`);
-    
-    return htmlDir;
-    
+
   } catch (error) {
     console.error('❌ Erro ao criar HTMLs:', error.message);
-    throw error;
+    process.exit(1);
   }
 }
 
-// Executa se chamado diretamente
 if (require.main === module) {
-  createHTMLs()
-    .then(() => {
-      console.log('\n✅ ETAPA 2 CONCLUÍDA');
-      process.exit(0);
-    })
-    .catch(error => {
-      console.error('\n❌ FALHA:', error);
-      process.exit(1);
-    });
+  createHTML();
 }
 
-module.exports = { createHTMLs };
+module.exports = { createHTML };
