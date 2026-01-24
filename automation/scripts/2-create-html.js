@@ -1,8 +1,23 @@
 #!/usr/bin/env node
+/**
+ * PRISMATIC LABS - INSTAGRAM AUTOMATION
+ * Script 2: Criação de HTMLs para Posts
+ * 
+ * O QUE FAZ:
+ * - Lê tópicos gerados (script 1)
+ * - Cria 28 arquivos HTML com design Prismatic
+ * - Injeta: título, subtema, badges, glows
+ * 
+ * INPUT: /generated/topics-[mes].json
+ * OUTPUT: /generated/posts/post-[1-28].html
+ */
+
 const fs = require('fs').promises;
 const path = require('path');
+const chalk = require('chalk');
 
-const TEMPLATE_POST = `<!DOCTYPE html>
+// Template HTML base (design Prismatic)
+const HTML_TEMPLATE = `<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
@@ -18,122 +33,99 @@ const TEMPLATE_POST = `<!DOCTYPE html>
     body {
       width: 1080px;
       height: 1080px;
-      background: #0a0a0a;
+      background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', system-ui, sans-serif;
-      overflow: hidden;
+      font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
       position: relative;
+      overflow: hidden;
     }
     
-    /* Glows de fundo */
+    /* Glow effects */
     .glow-purple {
       position: absolute;
       width: 600px;
       height: 600px;
-      background: radial-gradient(circle, rgba(168, 85, 247, 0.15) 0%, transparent 70%);
+      background: radial-gradient(circle, rgba(168, 85, 247, 0.4) 0%, transparent 70%);
       top: -200px;
-      right: -200px;
-      filter: blur(80px);
+      left: -200px;
+      animation: pulse 4s ease-in-out infinite;
     }
     
     .glow-teal {
       position: absolute;
       width: 500px;
       height: 500px;
-      background: radial-gradient(circle, rgba(6, 217, 215, 0.12) 0%, transparent 70%);
+      background: radial-gradient(circle, rgba(6, 217, 215, 0.3) 0%, transparent 70%);
       bottom: -150px;
-      left: -150px;
-      filter: blur(70px);
+      right: -150px;
+      animation: pulse 4s ease-in-out infinite 2s;
     }
     
-    /* Container principal */
+    @keyframes pulse {
+      0%, 100% { opacity: 0.6; transform: scale(1); }
+      50% { opacity: 1; transform: scale(1.1); }
+    }
+    
     .container {
       position: relative;
-      z-index: 1;
-      width: 900px;
-      padding: 80px;
+      z-index: 10;
       text-align: center;
+      padding: 80px;
+      max-width: 900px;
     }
     
-    /* Badge superior */
     .badge {
       display: inline-block;
-      padding: 12px 28px;
-      background: rgba(168, 85, 247, 0.1);
-      border: 1px solid rgba(168, 85, 247, 0.3);
-      border-radius: 50px;
-      color: #A855F7;
+      background: linear-gradient(135deg, #A855F7, #06D9D7);
+      color: #fff;
       font-size: 14px;
       font-weight: 700;
-      letter-spacing: 1.5px;
       text-transform: uppercase;
+      letter-spacing: 2px;
+      padding: 12px 28px;
+      border-radius: 25px;
       margin-bottom: 40px;
-      backdrop-filter: blur(10px);
+      box-shadow: 0 8px 32px rgba(168, 85, 247, 0.4);
     }
     
-    /* Título principal */
     h1 {
       font-size: 72px;
       font-weight: 900;
       line-height: 1.1;
-      margin-bottom: 32px;
-      background: linear-gradient(135deg, #FFFFFF 0%, #A855F7 100%);
+      color: #fff;
+      margin-bottom: 30px;
+      text-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+    }
+    
+    .gradient-text {
+      background: linear-gradient(135deg, #A855F7, #06D9D7, #FF006E);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
-      letter-spacing: -2px;
     }
     
-    /* Subtítulo */
     .subtitle {
       font-size: 28px;
       color: rgba(255, 255, 255, 0.7);
       line-height: 1.4;
       margin-bottom: 60px;
-      font-weight: 400;
     }
     
-    /* CTA */
-    .cta {
-      display: inline-flex;
-      align-items: center;
-      gap: 12px;
-      padding: 20px 40px;
-      background: linear-gradient(135deg, #A855F7 0%, #06D9D7 100%);
-      border-radius: 12px;
-      color: #0a0a0a;
-      font-size: 18px;
-      font-weight: 700;
-      text-decoration: none;
-      box-shadow: 0 20px 60px rgba(168, 85, 247, 0.4);
-      transition: transform 0.3s;
-    }
-    
-    .cta:hover {
-      transform: translateY(-2px);
-    }
-    
-    /* Logo rodapé */
-    .footer {
+    .logo {
       position: absolute;
       bottom: 60px;
-      left: 0;
-      right: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 12px;
-      color: rgba(255, 255, 255, 0.5);
-      font-size: 16px;
-      font-weight: 600;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 20px;
+      font-weight: 700;
+      color: #fff;
+      opacity: 0.8;
     }
     
-    .logo-text {
-      font-size: 24px;
-      font-weight: 900;
-      background: linear-gradient(135deg, #A855F7 0%, #06D9D7 100%);
+    .logo span {
+      background: linear-gradient(135deg, #A855F7, #06D9D7);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
@@ -146,193 +138,95 @@ const TEMPLATE_POST = `<!DOCTYPE html>
   
   <div class="container">
     <div class="badge">{{BADGE}}</div>
-    <h1>{{TITLE}}</h1>
+    <h1>{{TITLE_PART1}}<br><span class="gradient-text">{{TITLE_PART2}}</span></h1>
     <div class="subtitle">{{SUBTITLE}}</div>
-    <div class="cta">{{CTA}} →</div>
   </div>
   
-  <div class="footer">
-    <span class="logo-text">PRISMATIC</span>
-    <span>LABS</span>
+  <div class="logo">
+    <span>PRISMATIC</span> LABS
   </div>
 </body>
 </html>`;
 
-const TEMPLATE_STORY = `<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{{TITLE}}</title>
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-    
-    body {
-      width: 1080px;
-      height: 1920px;
-      background: linear-gradient(180deg, #0a0a0a 0%, #1a0a1a 100%);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', system-ui, sans-serif;
-      overflow: hidden;
-      position: relative;
-    }
-    
-    .glow {
-      position: absolute;
-      width: 800px;
-      height: 800px;
-      background: radial-gradient(circle, rgba(168, 85, 247, 0.2) 0%, transparent 70%);
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      filter: blur(100px);
-    }
-    
-    .container {
-      position: relative;
-      z-index: 1;
-      width: 100%;
-      padding: 120px 80px;
-      text-align: center;
-    }
-    
-    h1 {
-      font-size: 96px;
-      font-weight: 900;
-      line-height: 1;
-      margin-bottom: 48px;
-      background: linear-gradient(135deg, #FFFFFF 0%, #A855F7 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      letter-spacing: -3px;
-    }
-    
-    .subtitle {
-      font-size: 36px;
-      color: rgba(255, 255, 255, 0.8);
-      line-height: 1.3;
-      margin-bottom: 80px;
-    }
-    
-    .cta {
-      font-size: 28px;
-      color: #06D9D7;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 2px;
-    }
-    
-    .footer {
-      position: absolute;
-      bottom: 100px;
-      left: 0;
-      right: 0;
-      text-align: center;
-    }
-    
-    .logo-text {
-      font-size: 32px;
-      font-weight: 900;
-      background: linear-gradient(135deg, #A855F7 0%, #06D9D7 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-  </style>
-</head>
-<body>
-  <div class="glow"></div>
-  
-  <div class="container">
-    <h1>{{TITLE}}</h1>
-    <div class="subtitle">{{SUBTITLE}}</div>
-    <div class="cta">{{CTA}}</div>
-  </div>
-  
-  <div class="footer">
-    <div class="logo-text">PRISMATIC LABS</div>
-  </div>
-</body>
-</html>`;
+// Função para dividir título em 2 partes
+function splitTitle(title) {
+  const words = title.split(' ');
+  const mid = Math.ceil(words.length / 2);
+  return {
+    part1: words.slice(0, mid).join(' '),
+    part2: words.slice(mid).join(' ')
+  };
+}
 
-function generateBadge(tipo) {
+// Função para gerar badge baseado no tipo
+function getBadge(type) {
   const badges = {
-    'educacional': 'APRENDA',
-    'social-proof': 'RESULTADOS REAIS',
-    'vendas': 'OPORTUNIDADE',
-    'engajamento': 'VOCÊ SABIA?'
+    'educacional': 'APRENDA AGORA',
+    'vendas': 'RESULTADO REAL',
+    'social-proof': 'CASO DE SUCESSO',
+    'cta': 'OPORTUNIDADE'
   };
-  return badges[tipo] || 'PRISMATIC LABS';
+  return badges[type] || 'PRISMATIC LABS';
 }
 
-function generateCTA(tipo) {
-  const ctas = {
-    'educacional': 'Saiba mais',
-    'social-proof': 'Ver cases completos',
-    'vendas': 'Quero meu site',
-    'engajamento': 'Comente aqui'
-  };
-  return ctas[tipo] || 'Link na bio';
-}
+// Função principal
+async function createHTML(month) {
+  console.log(chalk.blue.bold('\n🎨 ETAPA 2: CRIAÇÃO DE HTMLs\n'));
 
-async function createHTML() {
-  console.log('🎨 Criando arquivos HTML...');
-  
   try {
-    // Encontra arquivo de tópicos mais recente
-    const generatedDir = path.join(__dirname, '../generated');
-    const files = await fs.readdir(generatedDir);
-    const topicFile = files.find(f => f.startsWith('topics-') && f.endsWith('.json'));
-    
-    if (!topicFile) {
-      throw new Error('Arquivo de tópicos não encontrado. Execute 1-generate-topics.js primeiro.');
+    // Ler tópicos
+    const topicsFile = path.join(__dirname, '../generated', `topics-${month.toLowerCase()}.json`);
+    const topicsData = await fs.readFile(topicsFile, 'utf-8');
+    const topics = JSON.parse(topicsData);
+
+    console.log(chalk.gray(`Tópicos carregados: ${topics.posts.length} posts\n`));
+
+    // Criar pasta de destino
+    const outputDir = path.join(__dirname, '../generated/posts');
+    await fs.mkdir(outputDir, { recursive: true });
+
+    // Gerar HTMLs
+    for (const [index, post] of topics.posts.entries()) {
+      const { part1, part2 } = splitTitle(post.tema);
+      const badge = getBadge(post.tipo);
+      
+      const html = HTML_TEMPLATE
+        .replace('{{TITLE}}', post.tema)
+        .replace('{{BADGE}}', badge)
+        .replace('{{TITLE_PART1}}', part1)
+        .replace('{{TITLE_PART2}}', part2)
+        .replace('{{SUBTITLE}}', post.subtema || post.angulo || '');
+
+      const filename = `post-${String(index + 1).padStart(2, '0')}.html`;
+      const filepath = path.join(outputDir, filename);
+      
+      await fs.writeFile(filepath, html, 'utf-8');
+      
+      console.log(chalk.green(`✓ ${filename} criado`));
     }
-    
-    const topicsPath = path.join(generatedDir, topicFile);
-    const topics = JSON.parse(await fs.readFile(topicsPath, 'utf-8'));
-    
-    // Cria pasta HTML
-    const htmlDir = path.join(generatedDir, 'html');
-    await fs.mkdir(htmlDir, { recursive: true });
-    
-    let created = 0;
-    
-    for (const topic of topics) {
-      const template = topic.formato === 'story' ? TEMPLATE_STORY : TEMPLATE_POST;
-      
-      // Gera título e subtítulo a partir do tema
-      const [title, ...subtitleParts] = topic.tema.split(' - ');
-      const subtitle = subtitleParts.join(' ') || 'Resultados que seus concorrentes não querem que você veja';
-      
-      const html = template
-        .replace(/{{BADGE}}/g, generateBadge(topic.tipo))
-        .replace(/{{TITLE}}/g, title)
-        .replace(/{{SUBTITLE}}/g, subtitle)
-        .replace(/{{CTA}}/g, generateCTA(topic.tipo));
-      
-      const filename = `post-${String(topic.dia).padStart(2, '0')}.html`;
-      const filepath = path.join(htmlDir, filename);
-      
-      await fs.writeFile(filepath, html);
-      created++;
-    }
-    
-    console.log(`✅ ${created} arquivos HTML criados em: ${htmlDir}`);
-    return created;
-    
+
+    console.log(chalk.green.bold(`\n✓ ${topics.posts.length} HTMLs criados com sucesso!\n`));
+    console.log(chalk.gray(`Pasta: ${outputDir}\n`));
+    console.log(chalk.blue.bold('ETAPA 2 CONCLUÍDA ✅\n'));
+
+    return outputDir;
+
   } catch (error) {
-    console.error('❌ Erro ao criar HTML:', error.message);
+    console.error(chalk.red.bold('\n✗ ERRO na criação de HTMLs:\n'));
+    console.error(chalk.red(error.message));
+    
+    if (error.code === 'ENOENT') {
+      console.log(chalk.yellow('\n⚠️ Execute primeiro: npm run generate:topics\n'));
+    }
+    
     process.exit(1);
   }
 }
 
+// Executar se chamado diretamente
 if (require.main === module) {
-  createHTML();
+  const month = process.argv[2] || 'Fevereiro';
+  createHTML(month);
 }
 
-module.exports = { createHTML };
+module.exports = createHTML;
