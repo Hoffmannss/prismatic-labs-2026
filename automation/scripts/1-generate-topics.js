@@ -4,7 +4,7 @@
  * Script 1: Geração de Tópicos com IA
  * 
  * O QUE FAZ:
- * - Usa Google Gemini para gerar 28 tópicos estratégicos
+ * - Usa Groq (Llama 3.3 70B) para gerar 28 tópicos estratégicos
  * - Mix: 40% educacional, 30% vendas, 30% social proof
  * - Distribuição semanal otimizada
  * 
@@ -12,15 +12,15 @@
  * OUTPUT: /generated/topics-[mes].json
  */
 
-const { GoogleGenerativeAI } = require('@google/generative-ai');
+const axios = require('axios');
 const fs = require('fs').promises;
 const path = require('path');
 const chalk = require('chalk');
 require('dotenv').config();
 
-// Configuração - gemini-1.5-flash-latest tem limite maior (50 req/dia grátis)
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash-latest' });
+// Configuração Groq API - 100% gratuito, sem limites
+const GROQ_API_URL = 'https://api.groq.com/openai/v1/chat/completions';
+const GROQ_MODEL = 'llama-3.3-70b-versatile';
 
 // Prompt otimizado para geração de tópicos
 const PROMPT_TEMPLATE = `
@@ -50,7 +50,7 @@ Gere EXATAMENTE 28 tópicos para posts Instagram da PRISMATIC LABS.
 
 **FORMATO JSON OBRIGATÓRIO:**
 {
-  "mes": "${process.argv[2] || 'Fevereiro'}",
+  "mes": "{{MONTH}}",
   "ano": 2026,
   "total": 28,
   "posts": [
@@ -79,15 +79,47 @@ Retorne APENAS o JSON válido, sem markdown ou explicações.
 async function generateTopics(month) {
   console.log(chalk.blue.bold('\n🧠 ETAPA 1: GERAÇÃO DE TÓPICOS\n'));
   console.log(chalk.gray(`Mês: ${month}`));
-  console.log(chalk.gray('Modelo: Gemini 1.5 Flash Latest (50 req/dia)'));
-  console.log(chalk.gray('Aguarde... isso pode levar 30-60 segundos\n'));
+  console.log(chalk.gray('Modelo: Llama 3.3 70B via Groq (GRATUITO)'));
+  console.log(chalk.gray('Aguarde... isso pode levar 20-30 segundos\n'));
 
   try {
-    // Gerar conteúdo
-    const prompt = PROMPT_TEMPLATE.replace('${process.argv[2] || \'Fevereiro\'}', month);
-    const result = await model.generateContent(prompt);
-    const response = await result.response;
-    let text = response.text();
+    // Verificar API key
+    if (!process.env.GROQ_API_KEY) {
+      throw new Error('GROQ_API_KEY não configurada no .env');
+    }
+
+    // Preparar prompt
+    const prompt = PROMPT_TEMPLATE.replace('{{MONTH}}', month);
+
+    // Chamar Groq API
+    const response = await axios.post(
+      GROQ_API_URL,
+      {
+        model: GROQ_MODEL,
+        messages: [
+          {
+            role: 'system',
+            content: 'Você é um especialista em marketing digital e geração de conteúdo para Instagram. Retorne sempre JSON válido.'
+          },
+          {
+            role: 'user',
+            content: prompt
+          }
+        ],
+        temperature: 0.7,
+        max_tokens: 4000,
+        response_format: { type: 'json_object' }
+      },
+      {
+        headers: {
+          'Authorization': `Bearer ${process.env.GROQ_API_KEY}`,
+          'Content-Type': 'application/json'
+        }
+      }
+    );
+
+    // Extrair resposta
+    let text = response.data.choices[0].message.content;
 
     // Limpar markdown se houver
     text = text.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
@@ -130,9 +162,9 @@ async function generateTopics(month) {
     console.error(chalk.red.bold('\n✗ ERRO na geração de tópicos:\n'));
     console.error(chalk.red(error.message));
     
-    if (error.message.includes('API key')) {
-      console.log(chalk.yellow('\n🔑 Configure GEMINI_API_KEY no arquivo .env'));
-      console.log(chalk.gray('Obtenha em: https://makersuite.google.com/app/apikey\n'));
+    if (error.message.includes('GROQ_API_KEY')) {
+      console.log(chalk.yellow('\n🔑 Configure GROQ_API_KEY no arquivo .env'));
+      console.log(chalk.gray('Obtenha GRÁTIS em: https://console.groq.com/keys\n'));
     }
     
     process.exit(1);
