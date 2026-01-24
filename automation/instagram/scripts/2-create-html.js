@@ -1,312 +1,312 @@
 #!/usr/bin/env node
+
 /**
- * 🏗️ SCRIPT 2: CRIAÇÃO HTML DOS POSTS
+ * 🎨 SCRIPT 2: CRIAÇÃO AUTOMÁTICA DE HTMLs
  * 
  * O QUE FAZ:
- * 1. Lê: topics-*.json gerado pelo script 1
- * 2. Para cada tópico: cria HTML com identidade visual Prismatic
- * 3. Salva: 28 arquivos HTML prontos para screenshot
+ * - Lê tópicos gerados pelo Script 1
+ * - Cria HTML para cada post com design Prismatic Labs
+ * - Aplica cores, fontes, glows, animações
+ * - Salva 1 HTML por post
  * 
- * TEMPLATE:
- * - Background: Gradient purple/teal + grid
- * - Tipografia: Poppins bold + Inter
- * - Elementos: Badge tipo, glow effects, CTA
- * - Cores: #A855F7 (purple), #06D9D7 (teal), #FF006E (pink)
+ * ENTRADA: generated/topics-{mes}.json
+ * SAÍDA: generated/html/post-{N}.html
+ * 
+ * USO:
+ * node 2-create-html.js
  */
 
-const fs = require('fs').promises;
+const fs = require('fs');
 const path = require('path');
 
-// Template HTML base
-function createPostHTML(post) {
-  const typeColors = {
-    'educacional': '#06D9D7',
-    'social-proof': '#FF006E',
-    'vendas': '#A855F7',
-    'urgencia': '#FF006E'
-  };
+// ========================================
+// CONFIGURAÇÕES
+// ========================================
 
-  const typeLabels = {
-    'educacional': '🎯 APRENDA',
-    'social-proof': '⭐ RESULTADO',
-    'vendas': '🚀 OPORTUNIDADE',
-    'urgencia': '⏰ ÚLTIMA CHANCE'
-  };
+const CONFIG = {
+  generatedDir: path.join(__dirname, '../generated'),
+  outputDir: path.join(__dirname, '../generated/html'),
+  
+  // Cores Prismatic Labs
+  colors: {
+    purple: '#A855F7',
+    teal: '#06D9D7',
+    pink: '#FF006E',
+    black: '#0a0a0a',
+    darkGray: '#1a1a1a',
+    lightGray: '#e0e0e0'
+  },
+  
+  // Fontes
+  fonts: {
+    heading: 'Poppins',
+    body: 'Inter'
+  }
+};
 
-  const color = typeColors[post.tipo] || '#A855F7';
-  const label = typeLabels[post.tipo] || '💡';
+// ========================================
+// TEMPLATE HTML BASE
+// ========================================
 
+function createHTMLTemplate(post, index) {
+  // Escolher cor primária baseada no tipo
+  let primaryColor, secondaryColor, badge;
+  
+  switch(post.type) {
+    case 'educational':
+      primaryColor = CONFIG.colors.purple;
+      secondaryColor = CONFIG.colors.teal;
+      badge = '🎯 APRENDA';
+      break;
+    case 'sales':
+      primaryColor = CONFIG.colors.pink;
+      secondaryColor = CONFIG.colors.purple;
+      badge = '🚀 OFERTA';
+      break;
+    case 'socialProof':
+      primaryColor = CONFIG.colors.teal;
+      secondaryColor = CONFIG.colors.pink;
+      badge = '✅ RESULTADO';
+      break;
+    default:
+      primaryColor = CONFIG.colors.purple;
+      secondaryColor = CONFIG.colors.teal;
+      badge = '💡 DICA';
+  }
+  
   return `<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=1080, initial-scale=1.0">
-  <title>Post ${post.id} - ${post.tema}</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Post ${index + 1} - ${post.title}</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700;900&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700;900&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  
   <style>
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
     }
-
+    
     body {
       width: 1080px;
       height: 1080px;
-      background: linear-gradient(135deg, #0a0a0a 0%, #1a0a2e 50%, #0a0a0a 100%);
+      background: linear-gradient(135deg, ${CONFIG.colors.black} 0%, ${CONFIG.colors.darkGray} 100%);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-family: 'Inter', -apple-system, sans-serif;
+      font-family: '${CONFIG.fonts.body}', system-ui, sans-serif;
       overflow: hidden;
       position: relative;
     }
-
-    /* Grid background */
-    body::before {
-      content: '';
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      background-image: 
-        linear-gradient(rgba(168, 85, 247, 0.03) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(168, 85, 247, 0.03) 1px, transparent 1px);
-      background-size: 50px 50px;
-      opacity: 0.5;
-    }
-
-    /* Glows */
-    .glow-purple {
+    
+    /* Glows de fundo */
+    .glow-1 {
       position: absolute;
       width: 600px;
       height: 600px;
-      background: radial-gradient(circle, rgba(168, 85, 247, 0.15) 0%, transparent 70%);
+      background: radial-gradient(circle, ${primaryColor}40 0%, transparent 70%);
       top: -200px;
       right: -200px;
+      border-radius: 50%;
       filter: blur(80px);
+      animation: pulse 4s ease-in-out infinite;
     }
-
-    .glow-teal {
+    
+    .glow-2 {
       position: absolute;
       width: 500px;
       height: 500px;
-      background: radial-gradient(circle, rgba(6, 217, 215, 0.1) 0%, transparent 70%);
+      background: radial-gradient(circle, ${secondaryColor}30 0%, transparent 70%);
       bottom: -150px;
       left: -150px;
-      filter: blur(80px);
+      border-radius: 50%;
+      filter: blur(60px);
+      animation: pulse 5s ease-in-out infinite reverse;
     }
-
+    
+    @keyframes pulse {
+      0%, 100% { opacity: 0.8; transform: scale(1); }
+      50% { opacity: 1; transform: scale(1.1); }
+    }
+    
     /* Container principal */
     .container {
-      position: relative;
-      z-index: 10;
-      width: 920px;
-      padding: 80px 60px;
+      width: 900px;
+      height: 900px;
+      background: rgba(26, 26, 26, 0.7);
+      backdrop-filter: blur(20px);
+      border-radius: 40px;
+      border: 2px solid rgba(255, 255, 255, 0.1);
+      padding: 60px;
       display: flex;
       flex-direction: column;
-      gap: 40px;
-    }
-
-    /* Badge tipo */
-    .badge {
-      display: inline-flex;
+      justify-content: center;
       align-items: center;
-      gap: 8px;
-      padding: 12px 24px;
-      background: rgba(255, 255, 255, 0.05);
-      border: 2px solid ${color};
+      text-align: center;
+      position: relative;
+      z-index: 10;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    }
+    
+    /* Badge */
+    .badge {
+      background: linear-gradient(135deg, ${primaryColor}, ${secondaryColor});
+      color: white;
+      padding: 12px 30px;
       border-radius: 50px;
       font-size: 16px;
-      font-weight: 600;
-      color: ${color};
-      text-transform: uppercase;
+      font-weight: 700;
       letter-spacing: 1px;
-      width: fit-content;
-      box-shadow: 0 0 30px ${color}40;
+      text-transform: uppercase;
+      margin-bottom: 40px;
+      box-shadow: 0 4px 20px ${primaryColor}60;
     }
-
+    
+    /* Emoji */
+    .emoji {
+      font-size: 100px;
+      margin-bottom: 30px;
+      filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.3));
+    }
+    
     /* Título */
-    .title {
-      font-family: 'Poppins', sans-serif;
-      font-size: 72px;
+    h1 {
+      font-family: '${CONFIG.fonts.heading}', sans-serif;
+      font-size: 64px;
       font-weight: 900;
       line-height: 1.1;
-      color: #ffffff;
-      text-shadow: 0 0 40px rgba(168, 85, 247, 0.3);
-      letter-spacing: -2px;
-    }
-
-    .title .highlight {
-      background: linear-gradient(135deg, #A855F7 0%, #06D9D7 100%);
+      color: white;
+      margin-bottom: 30px;
+      background: linear-gradient(135deg, ${primaryColor}, ${secondaryColor});
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
+      text-shadow: 0 4px 30px ${primaryColor}40;
     }
-
-    /* Hook */
-    .hook {
+    
+    /* Subtítulo */
+    .subtitle {
       font-size: 28px;
-      line-height: 1.5;
-      color: rgba(255, 255, 255, 0.8);
-      font-weight: 400;
+      font-weight: 600;
+      color: ${CONFIG.colors.lightGray};
+      line-height: 1.4;
+      margin-bottom: 40px;
+      max-width: 700px;
     }
-
-    /* CTA */
+    
+    /* Logo/CTA */
     .cta {
-      display: inline-flex;
-      align-items: center;
-      gap: 12px;
+      margin-top: 50px;
       padding: 20px 40px;
-      background: linear-gradient(135deg, #A855F7 0%, #06D9D7 100%);
-      border: none;
-      border-radius: 50px;
-      font-size: 22px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 2px solid ${primaryColor};
+      border-radius: 20px;
+      color: white;
+      font-size: 20px;
       font-weight: 700;
-      color: #ffffff;
-      width: fit-content;
-      margin-top: 20px;
-      box-shadow: 0 20px 60px rgba(168, 85, 247, 0.4);
+      box-shadow: 0 0 30px ${primaryColor}40;
     }
-
-    /* Logo/Brand */
-    .brand {
+    
+    /* Logo Prismatic Labs */
+    .logo {
       position: absolute;
-      bottom: 60px;
+      bottom: 40px;
       right: 60px;
-      font-family: 'Poppins', sans-serif;
+      font-family: '${CONFIG.fonts.heading}', sans-serif;
       font-size: 24px;
       font-weight: 900;
-      color: #ffffff;
+      color: white;
       opacity: 0.6;
-      letter-spacing: 2px;
     }
-
-    /* Post number */
-    .post-number {
-      position: absolute;
-      top: 40px;
-      right: 60px;
-      font-size: 18px;
-      font-weight: 600;
-      color: rgba(255, 255, 255, 0.3);
+    
+    .logo span {
+      background: linear-gradient(135deg, ${CONFIG.colors.purple}, ${CONFIG.colors.teal});
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
   </style>
 </head>
 <body>
-  <div class="glow-purple"></div>
-  <div class="glow-teal"></div>
+  <div class="glow-1"></div>
+  <div class="glow-2"></div>
   
   <div class="container">
-    <span class="badge">${label}</span>
-    
-    <h1 class="title">
-      ${formatTitle(post.tema)}
-    </h1>
-    
-    ${post.hook ? `<p class="hook">${post.hook}</p>` : ''}
-    
-    <div class="cta">
-      <span>→</span>
-      <span>Link na bio</span>
-    </div>
+    <div class="badge">${badge}</div>
+    <div class="emoji">${post.emoji}</div>
+    <h1>${post.title}</h1>
+    <div class="subtitle">${post.subtitle}</div>
+    <div class="cta">${post.cta}</div>
   </div>
-
-  <div class="post-number">${String(post.id).padStart(2, '0')}/28</div>
-  <div class="brand">PRISMATIC</div>
+  
+  <div class="logo">
+    <span>PRISMATIC</span> LABS
+  </div>
 </body>
 </html>`;
 }
 
-// Formatar título: destacar palavras-chave
-function formatTitle(title) {
-  const keywords = [
-    'premium', 'profissional', 'resultado', 'convers\u00e3o', 'vendas',
-    'aumenta', 'dobra', 'triplica', 'r\\$[0-9]+[k]?', '[0-9]+%', '[0-9]+x',
-    'dark mode', 'landing page', 'automa\u00e7\u00e3o', 'roi'
-  ];
+// ========================================
+// FUNÇÃO PRINCIPAL
+// ========================================
 
-  let formatted = title;
-  keywords.forEach(keyword => {
-    const regex = new RegExp(`(${keyword})`, 'gi');
-    formatted = formatted.replace(regex, '<span class="highlight">$1</span>');
-  });
-
-  return formatted;
-}
-
-// Função principal
 async function createHTMLs() {
+  console.log('🎨 Criando HTMLs dos posts...\n');
+  
   try {
-    console.log('\n🏗️ CRIANDO HTMLs...\n');
-
-    // 1. Encontrar arquivo topics mais recente
-    const generatedDir = path.join(__dirname, '..', 'generated');
-    const files = await fs.readdir(generatedDir);
-    const topicsFiles = files.filter(f => f.startsWith('topics-') && f.endsWith('.json'));
-
-    if (topicsFiles.length === 0) {
-      throw new Error('Nenhum arquivo topics-*.json encontrado. Execute: npm run generate-topics');
+    // Encontrar arquivo de tópicos mais recente
+    const files = fs.readdirSync(CONFIG.generatedDir)
+      .filter(f => f.startsWith('topics-') && f.endsWith('.json'))
+      .map(f => ({
+        name: f,
+        time: fs.statSync(path.join(CONFIG.generatedDir, f)).mtime.getTime()
+      }))
+      .sort((a, b) => b.time - a.time);
+    
+    if (files.length === 0) {
+      console.error('❌ ERRO: Nenhum arquivo de tópicos encontrado!');
+      console.error('🔧 Execute primeiro: node 1-generate-topics.js\n');
+      process.exit(1);
     }
-
-    // Pegar mais recente
-    topicsFiles.sort().reverse();
-    const topicsFile = topicsFiles[0];
-    console.log(`📂 Lendo: ${topicsFile}`);
-
-    // 2. Ler tópicos
-    const topicsPath = path.join(generatedDir, topicsFile);
-    const data = JSON.parse(await fs.readFile(topicsPath, 'utf8'));
-
-    if (!data.posts || data.posts.length === 0) {
-      throw new Error('Arquivo topics vazio ou inválido');
+    
+    const topicsFile = path.join(CONFIG.generatedDir, files[0].name);
+    console.log(`📂 Lendo: ${files[0].name}\n`);
+    
+    const data = JSON.parse(fs.readFileSync(topicsFile, 'utf8'));
+    const posts = data.posts;
+    
+    // Criar diretório de saída
+    if (!fs.existsSync(CONFIG.outputDir)) {
+      fs.mkdirSync(CONFIG.outputDir, { recursive: true });
     }
-
-    // 3. Criar pasta HTML
-    const htmlDir = path.join(generatedDir, 'html');
-    await fs.mkdir(htmlDir, { recursive: true });
-
-    // 4. Gerar HTMLs
-    console.log(`\n🎨 Gerando ${data.posts.length} HTMLs...\n`);
-
-    const results = [];
-    for (const post of data.posts) {
-      const html = createPostHTML(post);
-      const filename = `post-${String(post.id).padStart(2, '0')}.html`;
-      const filepath = path.join(htmlDir, filename);
+    
+    // Criar HTML para cada post
+    posts.forEach((post, index) => {
+      const html = createHTMLTemplate(post, index);
+      const filename = `post-${String(index + 1).padStart(2, '0')}.html`;
+      const filepath = path.join(CONFIG.outputDir, filename);
       
-      await fs.writeFile(filepath, html, 'utf8');
-      results.push({ id: post.id, file: filename, tema: post.tema });
-      
-      console.log(`  ✅ ${filename} - ${post.tema.substring(0, 50)}...`);
-    }
-
-    // 5. Salvar índice
-    const indexPath = path.join(htmlDir, 'index.json');
-    await fs.writeFile(indexPath, JSON.stringify({
-      gerado_em: new Date().toISOString(),
-      total: results.length,
-      posts: results
-    }, null, 2));
-
-    // 6. Resumo
-    console.log('\n✅ HTMLs CRIADOS COM SUCESSO!\n');
-    console.log(`📁 Pasta: ${htmlDir}`);
-    console.log(`📊 Total: ${results.length} arquivos`);
-    console.log('\n🚀 Próximo passo: npm run screenshots\n');
-
+      fs.writeFileSync(filepath, html, 'utf8');
+      console.log(`✅ ${filename} - ${post.type} - ${post.title.substring(0, 30)}...`);
+    });
+    
+    console.log(`\n🎉 ${posts.length} HTMLs criados com sucesso!`);
+    console.log(`📁 Local: ${CONFIG.outputDir}`);
+    console.log(`\n🎯 Próxima etapa: Script 3 (gerar screenshots)\n`);
+    
   } catch (error) {
-    console.error('\n❌ ERRO:', error.message);
-    console.error('\n🔧 Verifique:');
-    console.error('1. Arquivo topics-*.json existe?');
-    console.error('2. JSON válido?');
-    console.error('3. Permissões de escrita?\n');
+    console.error('❌ ERRO ao criar HTMLs:', error.message);
     process.exit(1);
   }
 }
 
-// Executar
+// ========================================
+// EXECUÇÃO
+// ========================================
+
 if (require.main === module) {
   createHTMLs();
 }
