@@ -42,7 +42,7 @@ jobs:
       - name: 🔑 Configurar variáveis
         working-directory: ./automation
         run: |
-          echo "GEMINI_API_KEY=${{ secrets.GEMINI_API_KEY }}" >> .env
+          echo "GROQ_API_KEY=${{ secrets.GROQ_API_KEY }}" >> .env
           echo "GOOGLE_DRIVE_CREDENTIALS=${{ secrets.GOOGLE_DRIVE_CREDENTIALS }}" >> .env
           echo "GOOGLE_DRIVE_FOLDER_ID=${{ secrets.GOOGLE_DRIVE_FOLDER_ID }}" >> .env
           echo "MAKE_WEBHOOK_URL=${{ secrets.MAKE_WEBHOOK_URL }}" >> .env
