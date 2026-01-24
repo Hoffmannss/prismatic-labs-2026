@@ -4,38 +4,36 @@
   "description": "Sistema automático de geração e agendamento de posts Instagram para Prismatic Labs",
   "main": "index.js",
   "scripts": {
-    "generate": "node scripts/1-generate-topics.js && node scripts/2-create-html.js && node scripts/3-screenshots.js && node scripts/4-generate-captions.js && node scripts/5-upload-drive.js && node scripts/6-trigger-make.js",
-    "topics": "node scripts/1-generate-topics.js",
-    "html": "node scripts/2-create-html.js",
+    "generate-all": "node scripts/run-all.js",
+    "generate-topics": "node scripts/1-generate-topics.js",
+    "create-html": "node scripts/2-create-html.js",
     "screenshots": "node scripts/3-screenshots.js",
-    "captions": "node scripts/4-generate-captions.js",
-    "upload": "node scripts/5-upload-drive.js",
-    "schedule": "node scripts/6-trigger-make.js",
-    "test": "echo \"Testes em desenvolvimento\" && exit 0"
+    "generate-captions": "node scripts/4-generate-captions.js",
+    "upload-drive": "node scripts/5-upload-drive.js",
+    "trigger-make": "node scripts/6-trigger-make.js",
+    "test": "node scripts/test.js"
   },
   "keywords": [
     "instagram",
     "automation",
     "social-media",
-    "content-generation",
     "ai",
-    "gemini",
-    "puppeteer"
+    "content-generation"
   ],
   "author": "Prismatic Labs",
   "license": "MIT",
   "dependencies": {
     "@google/generative-ai": "^0.21.0",
-    "axios": "^1.7.9",
-    "dotenv": "^16.4.7",
-    "googleapis": "^144.0.0",
-    "puppeteer": "^23.11.1"
+    "puppeteer": "^22.0.0",
+    "googleapis": "^134.0.0",
+    "axios": "^1.7.0",
+    "dotenv": "^16.4.0",
+    "date-fns": "^3.3.0"
   },
   "devDependencies": {
-    "@types/node": "^22.10.2"
+    "@types/node": "^20.11.0"
   },
   "engines": {
-    "node": ">=18.0.0",
-    "npm": ">=9.0.0"
+    "node": ">=20.0.0"
   }
 }
