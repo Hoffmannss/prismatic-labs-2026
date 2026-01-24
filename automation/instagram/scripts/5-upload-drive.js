@@ -1,239 +1,209 @@
-#!/usr/bin/env node
 /**
  * ☁️ SCRIPT 5: UPLOAD GOOGLE DRIVE
  * 
  * O QUE FAZ:
- * 1. Autentica: Service Account Google
- * 2. Cria estrutura: /Instagram/[Mês]/Imagens e /Legendas
- * 3. Upload: Todas imagens + legendas
- * 4. Gera: URLs públicas para cada arquivo
- * 5. Salva: mapping.json (imagem ↔ legenda)
+ * - Faz upload de todas as imagens e legendas para Google Drive
+ * - Organiza em pastas por mês
+ * - Gera URLs públicas para cada arquivo
+ * - Salva mapeamento JSON
  * 
- * ORGANIZAÇÃO DRIVE:
- * Instagram Automation/
- *   └─ Fevereiro-2026/
- *      ├─ Imagens/
- *      │  ├─ post-01.png
- *      │  ├─ post-02.png
- *      │  └─ ...
- *      └─ Legendas/
- *         ├─ post-01.txt
- *         ├─ post-02.txt
- *         └─ ...
+ * COMO FUNCIONA:
+ * 1. Autentica com service account do Google
+ * 2. Cria estrutura de pastas organizada
+ * 3. Upload paralelo de arquivos
+ * 4. Configura permissões públicas
+ * 5. Salva mapping.json com todos os links
  */
 
 const { google } = require('googleapis');
 const fs = require('fs').promises;
 const path = require('path');
 
-// Autenticar Google Drive
-function authenticateDrive() {
-  const credentials = JSON.parse(process.env.GOOGLE_CREDENTIALS);
+const SCOPES = ['https://www.googleapis.com/auth/drive.file'];
+
+async function uploadDrive() {
+  console.log('☁️ Fazendo upload para Google Drive...');
   
-  const auth = new google.auth.GoogleAuth({
-    credentials,
-    scopes: ['https://www.googleapis.com/auth/drive.file']
-  });
-
-  return google.drive({ version: 'v3', auth });
-}
-
-// Criar pasta no Drive
-async function createFolder(drive, name, parentId) {
-  const fileMetadata = {
-    name,
-    mimeType: 'application/vnd.google-apps.folder',
-    parents: parentId ? [parentId] : []
-  };
-
-  const response = await drive.files.create({
-    requestBody: fileMetadata,
-    fields: 'id, name, webViewLink'
-  });
-
-  // Tornar público
-  await drive.permissions.create({
-    fileId: response.data.id,
-    requestBody: {
-      role: 'reader',
-      type: 'anyone'
-    }
-  });
-
-  return response.data;
-}
-
-// Upload arquivo
-async function uploadFile(drive, filepath, filename, folderId) {
-  const fileMetadata = {
-    name: filename,
-    parents: [folderId]
-  };
-
-  const media = {
-    mimeType: filename.endsWith('.png') ? 'image/png' : 'text/plain',
-    body: require('fs').createReadStream(filepath)
-  };
-
-  const response = await drive.files.create({
-    requestBody: fileMetadata,
-    media,
-    fields: 'id, name, webViewLink, webContentLink'
-  });
-
-  // Tornar público
-  await drive.permissions.create({
-    fileId: response.data.id,
-    requestBody: {
-      role: 'reader',
-      type: 'anyone'
-    }
-  });
-
-  // URL direta (não preview)
-  const directUrl = `https://drive.google.com/uc?export=view&id=${response.data.id}`;
-
-  return {
-    ...response.data,
-    directUrl
-  };
-}
-
-// Função principal
-async function uploadToDrive() {
   try {
-    console.log('\n☁️ UPLOAD GOOGLE DRIVE...\n');
-
-    // 1. Autenticar
-    console.log('🔑 Autenticando...');
-    const drive = authenticateDrive();
-    console.log('✅ Autenticado!\n');
-
-    // 2. Verificar arquivos locais
-    const generatedDir = path.join(__dirname, '..', 'generated');
+    // Autenticação
+    const credentials = JSON.parse(process.env.GOOGLE_CREDENTIALS);
+    const auth = new google.auth.GoogleAuth({
+      credentials,
+      scopes: SCOPES
+    });
+    
+    const drive = google.drive({ version: 'v3', auth });
+    
+    // Encontra pasta raiz (configurada nos secrets)
+    const rootFolderId = process.env.GOOGLE_DRIVE_FOLDER_ID;
+    
+    // Lê tópicos para pegar mês/ano
+    const generatedDir = path.join(__dirname, '../generated');
+    const files = await fs.readdir(generatedDir);
+    const topicsFile = files.find(f => f.startsWith('topics-') && f.endsWith('.json'));
+    const topicsData = await fs.readFile(path.join(generatedDir, topicsFile), 'utf8');
+    const topics = JSON.parse(topicsData);
+    
+    const folderName = `${topics.mes}-${topics.ano}`;
+    
+    // Cria estrutura de pastas
+    console.log(`📁 Criando pasta: ${folderName}...`);
+    
+    const monthFolder = await drive.files.create({
+      requestBody: {
+        name: folderName,
+        mimeType: 'application/vnd.google-apps.folder',
+        parents: [rootFolderId]
+      },
+      fields: 'id'
+    });
+    
+    const monthFolderId = monthFolder.data.id;
+    
+    // Subpastas
+    const imagesFolder = await drive.files.create({
+      requestBody: {
+        name: 'Imagens',
+        mimeType: 'application/vnd.google-apps.folder',
+        parents: [monthFolderId]
+      },
+      fields: 'id'
+    });
+    
+    const captionsFolder = await drive.files.create({
+      requestBody: {
+        name: 'Legendas',
+        mimeType: 'application/vnd.google-apps.folder',
+        parents: [monthFolderId]
+      },
+      fields: 'id'
+    });
+    
+    const imagesFolderId = imagesFolder.data.id;
+    const captionsFolderId = captionsFolder.data.id;
+    
+    // Upload imagens
+    console.log('📸 Fazendo upload de imagens...');
     const imagesDir = path.join(generatedDir, 'images');
+    const imageFiles = await fs.readdir(imagesDir);
+    const imageMapping = [];
+    
+    for (const imageFile of imageFiles) {
+      const filePath = path.join(imagesDir, imageFile);
+      const fileBuffer = await fs.readFile(filePath);
+      
+      const response = await drive.files.create({
+        requestBody: {
+          name: imageFile,
+          parents: [imagesFolderId]
+        },
+        media: {
+          mimeType: 'image/png',
+          body: require('stream').Readable.from(fileBuffer)
+        },
+        fields: 'id, webViewLink'
+      });
+      
+      // Torna público
+      await drive.permissions.create({
+        fileId: response.data.id,
+        requestBody: {
+          role: 'reader',
+          type: 'anyone'
+        }
+      });
+      
+      imageMapping.push({
+        numero: parseInt(imageFile.match(/\d+/)[0]),
+        filename: imageFile,
+        fileId: response.data.id,
+        url: `https://drive.google.com/uc?id=${response.data.id}`
+      });
+      
+      console.log(`  ✅ ${imageFile}`);
+    }
+    
+    // Upload legendas
+    console.log('📝 Fazendo upload de legendas...');
     const captionsDir = path.join(generatedDir, 'captions');
-
-    const imageFiles = (await fs.readdir(imagesDir))
-      .filter(f => f.endsWith('.png'));
-    const captionFiles = (await fs.readdir(captionsDir))
-      .filter(f => f.endsWith('.txt'));
-
-    console.log(`📂 Imagens: ${imageFiles.length}`);
-    console.log(`📂 Legendas: ${captionFiles.length}\n`);
-
-    if (imageFiles.length === 0) {
-      throw new Error('Sem imagens. Execute: npm run screenshots');
-    }
-
-    // 3. Obter mês/ano
-    const topicsFiles = (await fs.readdir(generatedDir))
-      .filter(f => f.startsWith('topics-'));
-    topicsFiles.sort().reverse();
-    const topicsData = JSON.parse(
-      await fs.readFile(path.join(generatedDir, topicsFiles[0]), 'utf8')
-    );
-    const monthYear = `${topicsData.meta.mes}-${topicsData.meta.ano}`;
-
-    // 4. Criar estrutura pastas Drive
-    console.log('📁 Criando estrutura Drive...');
+    const captionFiles = await fs.readdir(captionsDir);
+    const captionMapping = [];
     
-    const rootFolderId = process.env.DRIVE_FOLDER_ID;
-    
-    const monthFolder = await createFolder(drive, monthYear, rootFolderId);
-    console.log(`  ✅ Pasta: ${monthYear}`);
-
-    const imagesFolder = await createFolder(drive, 'Imagens', monthFolder.id);
-    console.log(`  ✅ Subpasta: Imagens`);
-
-    const captionsFolder = await createFolder(drive, 'Legendas', monthFolder.id);
-    console.log(`  ✅ Subpasta: Legendas\n`);
-
-    // 5. Upload imagens
-    console.log('📸 Uploading imagens...\n');
-    const uploadedImages = [];
-    
-    for (let i = 0; i < imageFiles.length; i++) {
-      const file = imageFiles[i];
-      const filepath = path.join(imagesDir, file);
+    for (const captionFile of captionFiles) {
+      const filePath = path.join(captionsDir, captionFile);
+      const content = await fs.readFile(filePath, 'utf8');
       
-      console.log(`  [${i+1}/${imageFiles.length}] ${file}`);
-      
-      const uploaded = await uploadFile(drive, filepath, file, imagesFolder.id);
-      uploadedImages.push({
-        filename: file,
-        id: uploaded.id,
-        url: uploaded.directUrl,
-        webViewLink: uploaded.webViewLink
+      const response = await drive.files.create({
+        requestBody: {
+          name: captionFile,
+          parents: [captionsFolderId]
+        },
+        media: {
+          mimeType: 'text/plain',
+          body: require('stream').Readable.from(content)
+        },
+        fields: 'id, webViewLink'
       });
       
-      console.log(`     ✅ ${uploaded.directUrl.substring(0, 60)}...\n`);
+      await drive.permissions.create({
+        fileId: response.data.id,
+        requestBody: {
+          role: 'reader',
+          type: 'anyone'
+        }
+      });
+      
+      captionMapping.push({
+        numero: parseInt(captionFile.match(/\d+/)[0]),
+        filename: captionFile,
+        fileId: response.data.id,
+        url: response.data.webViewLink,
+        text: content
+      });
+      
+      console.log(`  ✅ ${captionFile}`);
     }
-
-    // 6. Upload legendas
-    console.log('\n✍️ Uploading legendas...\n');
-    const uploadedCaptions = [];
     
-    for (let i = 0; i < captionFiles.length; i++) {
-      const file = captionFiles[i];
-      const filepath = path.join(captionsDir, file);
-      
-      console.log(`  [${i+1}/${captionFiles.length}] ${file}`);
-      
-      const uploaded = await uploadFile(drive, filepath, file, captionsFolder.id);
-      uploadedCaptions.push({
-        filename: file,
-        id: uploaded.id,
-        url: uploaded.directUrl,
-        webViewLink: uploaded.webViewLink
-      });
-      
-      console.log(`     ✅ Uploaded\n`);
-    }
-
-    // 7. Criar mapeamento
-    const mapping = [];
-    for (let i = 0; i < Math.max(uploadedImages.length, uploadedCaptions.length); i++) {
-      const postNumber = String(i + 1).padStart(2, '0');
-      mapping.push({
-        post_id: i + 1,
-        post_number: postNumber,
-        image: uploadedImages[i] || null,
-        caption: uploadedCaptions[i] || null
-      });
-    }
-
-    // 8. Salvar mapping local
+    // Salva mapeamento completo
+    const mapping = {
+      mes: topics.mes,
+      ano: topics.ano,
+      drive: {
+        monthFolderId,
+        imagesFolderId,
+        captionsFolderId,
+        monthFolderUrl: `https://drive.google.com/drive/folders/${monthFolderId}`
+      },
+      posts: topics.posts.map(post => {
+        const image = imageMapping.find(i => i.numero === post.numero);
+        const caption = captionMapping.find(c => c.numero === post.numero);
+        return {
+          numero: post.numero,
+          tipo: post.tipo,
+          tema: post.tema,
+          image: image || null,
+          caption: caption || null
+        };
+      })
+    };
+    
     const mappingPath = path.join(generatedDir, 'mapping.json');
-    await fs.writeFile(mappingPath, JSON.stringify({
-      gerado_em: new Date().toISOString(),
-      mes_ano: monthYear,
-      drive_folder: monthFolder.webViewLink,
-      total_posts: mapping.length,
-      posts: mapping
-    }, null, 2));
-
-    console.log('\n✅ UPLOAD COMPLETO!\n');
-    console.log(`📁 Pasta Drive: ${monthFolder.webViewLink}`);
-    console.log(`📸 Imagens: ${uploadedImages.length}`);
-    console.log(`✍️ Legendas: ${uploadedCaptions.length}`);
-    console.log(`\n💾 Mapping salvo: ${mappingPath}`);
-    console.log('\n🚀 Próximo passo: npm run trigger-make\n');
-
+    await fs.writeFile(mappingPath, JSON.stringify(mapping, null, 2));
+    
+    console.log(`✅ Upload completo!`);
+    console.log(`📁 Pasta Drive: ${mapping.drive.monthFolderUrl}`);
+    console.log(`🗂️ Mapeamento salvo: ${mappingPath}`);
+    
+    return mapping;
+    
   } catch (error) {
-    console.error('\n❌ ERRO:', error.message);
-    console.error('\n🔧 Soluções:');
-    console.error('1. GOOGLE_CREDENTIALS correto?');
-    console.error('2. DRIVE_FOLDER_ID correto?');
-    console.error('3. Service account tem permissão na pasta?');
-    console.error('4. Drive API ativada no projeto?\n');
+    console.error('❌ Erro no upload:', error.message);
     process.exit(1);
   }
 }
 
-// Executar
 if (require.main === module) {
-  uploadToDrive();
+  uploadDrive();
 }
 
-module.exports = { uploadToDrive };
+module.exports = uploadDrive;

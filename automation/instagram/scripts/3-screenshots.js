@@ -1,159 +1,102 @@
-#!/usr/bin/env node
-
 /**
- * 📸 SCRIPT 3: GERAÇÃO DE SCREENSHOTS
+ * 📸 SCRIPT 3: GERA SCREENSHOTS AUTOMATIZADOS
  * 
  * O QUE FAZ:
- * - Abre cada HTML em navegador headless (Puppeteer)
- * - Configura viewport 1080x1080 (Instagram feed)
- * - Aguarda fonts/animações carregarem
- * - Captura screenshot PNG alta qualidade
- * - Salva imagens otimizadas
+ * - Usa Puppeteer (navegador headless) para abrir cada HTML
+ * - Tira screenshot em alta qualidade 1080x1080
+ * - Salva PNG otimizado para Instagram
  * 
- * ENTRADA: generated/html/post-*.html
- * SAÍDA: generated/images/post-*.png
- * 
- * USO:
- * node 3-screenshots.js
+ * COMO FUNCIONA:
+ * 1. Inicia navegador Chrome invisível
+ * 2. Para cada HTML: abre → aguarda fonts → screenshot
+ * 3. Salva em /generated/images/
  */
 
 const puppeteer = require('puppeteer');
-const fs = require('fs');
+const fs = require('fs').promises;
 const path = require('path');
 
-// ========================================
-// CONFIGURAÇÕES
-// ========================================
-
-const CONFIG = {
-  htmlDir: path.join(__dirname, '../generated/html'),
-  outputDir: path.join(__dirname, '../generated/images'),
+async function gerarScreenshots() {
+  console.log('📸 Gerando screenshots...');
   
-  // Dimensões Instagram
-  viewport: {
-    width: 1080,
-    height: 1080,
-    deviceScaleFactor: 2 // Retina/alta qualidade
-  },
-  
-  // Qualidade screenshot
-  screenshot: {
-    type: 'png',
-    quality: 100, // Máxima qualidade
-    omitBackground: false
-  },
-  
-  // Tempo aguardar antes screenshot (fonts, animações)
-  waitTime: 2000 // 2 segundos
-};
-
-// ========================================
-// FUNÇÃO PRINCIPAL
-// ========================================
-
-async function generateScreenshots() {
-  console.log('📸 Gerando screenshots com Puppeteer...\n');
+  let browser;
   
   try {
-    // Verificar se existem HTMLs
-    if (!fs.existsSync(CONFIG.htmlDir)) {
-      console.error('❌ ERRO: Pasta de HTMLs não encontrada!');
-      console.error('🔧 Execute primeiro: node 2-create-html.js\n');
-      process.exit(1);
-    }
-    
-    const htmlFiles = fs.readdirSync(CONFIG.htmlDir)
-      .filter(f => f.endsWith('.html'))
-      .sort();
+    // Encontra pasta de HTMLs
+    const htmlDir = path.join(__dirname, '../generated/html');
+    const files = await fs.readdir(htmlDir);
+    const htmlFiles = files.filter(f => f.endsWith('.html'));
     
     if (htmlFiles.length === 0) {
-      console.error('❌ ERRO: Nenhum arquivo HTML encontrado!');
-      console.error('🔧 Execute primeiro: node 2-create-html.js\n');
-      process.exit(1);
+      throw new Error('Nenhum HTML encontrado. Execute script 2 primeiro.');
     }
     
-    console.log(`📂 Encontrados ${htmlFiles.length} arquivos HTML\n`);
+    // Cria pasta para imagens
+    const imagesDir = path.join(__dirname, '../generated/images');
+    await fs.mkdir(imagesDir, { recursive: true });
     
-    // Criar diretório de saída
-    if (!fs.existsSync(CONFIG.outputDir)) {
-      fs.mkdirSync(CONFIG.outputDir, { recursive: true });
-    }
-    
-    // Iniciar Puppeteer
-    console.log('🌐 Iniciando navegador headless...\n');
-    
-    const browser = await puppeteer.launch({
+    // Inicia navegador
+    console.log('🌐 Iniciando navegador...');
+    browser = await puppeteer.launch({
       headless: 'new',
       args: [
         '--no-sandbox',
         '--disable-setuid-sandbox',
         '--disable-dev-shm-usage',
-        '--disable-accelerated-2d-canvas',
         '--disable-gpu'
       ]
     });
     
     const page = await browser.newPage();
     
-    // Configurar viewport
-    await page.setViewport(CONFIG.viewport);
+    // Configura viewport Instagram (1080x1080)
+    await page.setViewport({
+      width: 1080,
+      height: 1080,
+      deviceScaleFactor: 2  // Retina para melhor qualidade
+    });
     
-    // Processar cada HTML
+    // Processa cada HTML
     for (let i = 0; i < htmlFiles.length; i++) {
       const htmlFile = htmlFiles[i];
-      const htmlPath = path.join(CONFIG.htmlDir, htmlFile);
+      const htmlPath = path.join(htmlDir, htmlFile);
       const imageName = htmlFile.replace('.html', '.png');
-      const imagePath = path.join(CONFIG.outputDir, imageName);
+      const imagePath = path.join(imagesDir, imageName);
       
-      console.log(`📸 [${i + 1}/${htmlFiles.length}] ${htmlFile}...`);
+      console.log(`  [${i+1}/${htmlFiles.length}] Processando ${htmlFile}...`);
       
-      try {
-        // Abrir HTML
-        await page.goto(`file://${htmlPath}`, {
-          waitUntil: 'networkidle0'
-        });
-        
-        // Aguardar fonts e animações
-        await page.waitForTimeout(CONFIG.waitTime);
-        
-        // Capturar screenshot
-        await page.screenshot({
-          path: imagePath,
-          type: CONFIG.screenshot.type,
-          omitBackground: CONFIG.screenshot.omitBackground
-        });
-        
-        // Verificar tamanho arquivo
-        const stats = fs.statSync(imagePath);
-        const sizeMB = (stats.size / (1024 * 1024)).toFixed(2);
-        
-        console.log(`   ✅ Salvo: ${imageName} (${sizeMB} MB)`);
-        
-      } catch (error) {
-        console.error(`   ❌ Erro em ${htmlFile}:`, error.message);
-      }
+      // Abre HTML
+      await page.goto(`file://${htmlPath}`, {
+        waitUntil: 'networkidle0'
+      });
+      
+      // Aguarda fonts carregarem (crucial para qualidade)
+      await page.evaluateHandle('document.fonts.ready');
+      await page.waitForTimeout(500);  // Margem de segurança
+      
+      // Screenshot
+      await page.screenshot({
+        path: imagePath,
+        type: 'png',
+        omitBackground: false
+      });
     }
     
-    await browser.close();
-    
-    console.log(`\n🎉 ${htmlFiles.length} screenshots gerados com sucesso!`);
-    console.log(`📁 Local: ${CONFIG.outputDir}`);
-    console.log(`\n🎯 Próxima etapa: Script 4 (gerar legendas)\n`);
+    console.log(`✅ ${htmlFiles.length} screenshots gerados com sucesso!`);
+    console.log(`📂 Salvos em: ${imagesDir}`);
     
   } catch (error) {
-    console.error('❌ ERRO ao gerar screenshots:', error.message);
-    console.error('\n🔧 Dica: Certifique-se que Puppeteer foi instalado corretamente:');
-    console.error('   npm install puppeteer\n');
+    console.error('❌ Erro ao gerar screenshots:', error.message);
     process.exit(1);
+  } finally {
+    if (browser) {
+      await browser.close();
+    }
   }
 }
 
-// ========================================
-// EXECUÇÃO
-// ========================================
-
 if (require.main === module) {
-  generateScreenshots();
+  gerarScreenshots();
 }
 
-module.exports = { generateScreenshots };
+module.exports = gerarScreenshots;

@@ -1,314 +1,255 @@
-#!/usr/bin/env node
-
 /**
- * 🎨 SCRIPT 2: CRIAÇÃO AUTOMÁTICA DE HTMLs
+ * 🖼️ SCRIPT 2: CRIA HTMLs DOS POSTS
  * 
  * O QUE FAZ:
- * - Lê tópicos gerados pelo Script 1
- * - Cria HTML para cada post com design Prismatic Labs
- * - Aplica cores, fontes, glows, animações
- * - Salva 1 HTML por post
+ * - Lê tópicos gerados pela IA
+ * - Cria um HTML para cada post usando template Prismatic
+ * - Aplica cores, fontes e estilo da marca
  * 
- * ENTRADA: generated/topics-{mes}.json
- * SAÍDA: generated/html/post-{N}.html
- * 
- * USO:
- * node 2-create-html.js
+ * COMO FUNCIONA:
+ * 1. Lê topics-{mes}.json
+ * 2. Para cada tópico, injeta no template HTML
+ * 3. Salva post-{numero}.html em /generated/html/
  */
 
-const fs = require('fs');
+const fs = require('fs').promises;
 const path = require('path');
 
-// ========================================
-// CONFIGURAÇÕES
-// ========================================
-
-const CONFIG = {
-  generatedDir: path.join(__dirname, '../generated'),
-  outputDir: path.join(__dirname, '../generated/html'),
-  
-  // Cores Prismatic Labs
-  colors: {
-    purple: '#A855F7',
-    teal: '#06D9D7',
-    pink: '#FF006E',
-    black: '#0a0a0a',
-    darkGray: '#1a1a1a',
-    lightGray: '#e0e0e0'
-  },
-  
-  // Fontes
-  fonts: {
-    heading: 'Poppins',
-    body: 'Inter'
-  }
+// Cores oficiais Prismatic Labs
+const COLORS = {
+  purple: '#A855F7',
+  teal: '#06D9D7',
+  pink: '#FF006E',
+  black: '#0a0a0a',
+  grayDark: '#1a1a1a',
+  grayLight: '#2a2a2a'
 };
 
-// ========================================
-// TEMPLATE HTML BASE
-// ========================================
-
-function createHTMLTemplate(post, index) {
-  // Escolher cor primária baseada no tipo
-  let primaryColor, secondaryColor, badge;
+// Template base HTML
+function criarTemplateHTML(post) {
+  const tipoEmoji = {
+    'educacional': '🎯',
+    'social-proof': '⭐',
+    'vendas': '🚀',
+    'autoridade': '👑'
+  };
   
-  switch(post.type) {
-    case 'educational':
-      primaryColor = CONFIG.colors.purple;
-      secondaryColor = CONFIG.colors.teal;
-      badge = '🎯 APRENDA';
-      break;
-    case 'sales':
-      primaryColor = CONFIG.colors.pink;
-      secondaryColor = CONFIG.colors.purple;
-      badge = '🚀 OFERTA';
-      break;
-    case 'socialProof':
-      primaryColor = CONFIG.colors.teal;
-      secondaryColor = CONFIG.colors.pink;
-      badge = '✅ RESULTADO';
-      break;
-    default:
-      primaryColor = CONFIG.colors.purple;
-      secondaryColor = CONFIG.colors.teal;
-      badge = '💡 DICA';
-  }
+  const tipoCor = {
+    'educacional': COLORS.purple,
+    'social-proof': COLORS.teal,
+    'vendas': COLORS.pink,
+    'autoridade': COLORS.purple
+  };
   
   return `<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Post ${index + 1} - ${post.title}</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700;900&family=Inter:wght@400;600&display=swap" rel="stylesheet">
-  
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-    
-    body {
-      width: 1080px;
-      height: 1080px;
-      background: linear-gradient(135deg, ${CONFIG.colors.black} 0%, ${CONFIG.colors.darkGray} 100%);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: '${CONFIG.fonts.body}', system-ui, sans-serif;
-      overflow: hidden;
-      position: relative;
-    }
-    
-    /* Glows de fundo */
-    .glow-1 {
-      position: absolute;
-      width: 600px;
-      height: 600px;
-      background: radial-gradient(circle, ${primaryColor}40 0%, transparent 70%);
-      top: -200px;
-      right: -200px;
-      border-radius: 50%;
-      filter: blur(80px);
-      animation: pulse 4s ease-in-out infinite;
-    }
-    
-    .glow-2 {
-      position: absolute;
-      width: 500px;
-      height: 500px;
-      background: radial-gradient(circle, ${secondaryColor}30 0%, transparent 70%);
-      bottom: -150px;
-      left: -150px;
-      border-radius: 50%;
-      filter: blur(60px);
-      animation: pulse 5s ease-in-out infinite reverse;
-    }
-    
-    @keyframes pulse {
-      0%, 100% { opacity: 0.8; transform: scale(1); }
-      50% { opacity: 1; transform: scale(1.1); }
-    }
-    
-    /* Container principal */
-    .container {
-      width: 900px;
-      height: 900px;
-      background: rgba(26, 26, 26, 0.7);
-      backdrop-filter: blur(20px);
-      border-radius: 40px;
-      border: 2px solid rgba(255, 255, 255, 0.1);
-      padding: 60px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      position: relative;
-      z-index: 10;
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
-    }
-    
-    /* Badge */
-    .badge {
-      background: linear-gradient(135deg, ${primaryColor}, ${secondaryColor});
-      color: white;
-      padding: 12px 30px;
-      border-radius: 50px;
-      font-size: 16px;
-      font-weight: 700;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      margin-bottom: 40px;
-      box-shadow: 0 4px 20px ${primaryColor}60;
-    }
-    
-    /* Emoji */
-    .emoji {
-      font-size: 100px;
-      margin-bottom: 30px;
-      filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.3));
-    }
-    
-    /* Título */
-    h1 {
-      font-family: '${CONFIG.fonts.heading}', sans-serif;
-      font-size: 64px;
-      font-weight: 900;
-      line-height: 1.1;
-      color: white;
-      margin-bottom: 30px;
-      background: linear-gradient(135deg, ${primaryColor}, ${secondaryColor});
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      text-shadow: 0 4px 30px ${primaryColor}40;
-    }
-    
-    /* Subtítulo */
-    .subtitle {
-      font-size: 28px;
-      font-weight: 600;
-      color: ${CONFIG.colors.lightGray};
-      line-height: 1.4;
-      margin-bottom: 40px;
-      max-width: 700px;
-    }
-    
-    /* Logo/CTA */
-    .cta {
-      margin-top: 50px;
-      padding: 20px 40px;
-      background: rgba(255, 255, 255, 0.05);
-      border: 2px solid ${primaryColor};
-      border-radius: 20px;
-      color: white;
-      font-size: 20px;
-      font-weight: 700;
-      box-shadow: 0 0 30px ${primaryColor}40;
-    }
-    
-    /* Logo Prismatic Labs */
-    .logo {
-      position: absolute;
-      bottom: 40px;
-      right: 60px;
-      font-family: '${CONFIG.fonts.heading}', sans-serif;
-      font-size: 24px;
-      font-weight: 900;
-      color: white;
-      opacity: 0.6;
-    }
-    
-    .logo span {
-      background: linear-gradient(135deg, ${CONFIG.colors.purple}, ${CONFIG.colors.teal});
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=1080, height=1080">
+    <title>Post ${post.numero} - Prismatic Labs</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            width: 1080px;
+            height: 1080px;
+            background: linear-gradient(135deg, ${COLORS.black} 0%, ${COLORS.grayDark} 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        /* Glows de fundo */
+        .glow-purple {
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, ${COLORS.purple}40 0%, transparent 70%);
+            top: -200px;
+            right: -200px;
+            filter: blur(80px);
+        }
+        
+        .glow-teal {
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, ${COLORS.teal}30 0%, transparent 70%);
+            bottom: -150px;
+            left: -150px;
+            filter: blur(80px);
+        }
+        
+        /* Container principal */
+        .container {
+            width: 920px;
+            height: 920px;
+            background: ${COLORS.grayDark};
+            border: 2px solid ${COLORS.grayLight};
+            border-radius: 32px;
+            padding: 60px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+            z-index: 1;
+        }
+        
+        /* Badge tipo */
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            background: ${tipoCor[post.tipo]}20;
+            border: 1px solid ${tipoCor[post.tipo]};
+            border-radius: 100px;
+            color: ${tipoCor[post.tipo]};
+            font-size: 18px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            width: fit-content;
+        }
+        
+        /* Conteúdo */
+        .content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 32px;
+        }
+        
+        h1 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 68px;
+            font-weight: 900;
+            line-height: 1.1;
+            color: white;
+            text-shadow: 0 0 40px ${tipoCor[post.tipo]}40;
+        }
+        
+        .hook {
+            font-size: 28px;
+            line-height: 1.5;
+            color: #ffffff90;
+            font-weight: 500;
+        }
+        
+        .highlight {
+            color: ${tipoCor[post.tipo]};
+            font-weight: 700;
+        }
+        
+        /* Footer */
+        .footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 40px;
+            border-top: 1px solid ${COLORS.grayLight};
+        }
+        
+        .logo {
+            font-family: 'Poppins', sans-serif;
+            font-size: 32px;
+            font-weight: 900;
+            color: white;
+            letter-spacing: -1px;
+        }
+        
+        .logo-gradient {
+            background: linear-gradient(135deg, ${COLORS.purple} 0%, ${COLORS.teal} 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .cta {
+            font-size: 20px;
+            color: #ffffff70;
+            font-weight: 600;
+        }
+    </style>
 </head>
 <body>
-  <div class="glow-1"></div>
-  <div class="glow-2"></div>
-  
-  <div class="container">
-    <div class="badge">${badge}</div>
-    <div class="emoji">${post.emoji}</div>
-    <h1>${post.title}</h1>
-    <div class="subtitle">${post.subtitle}</div>
-    <div class="cta">${post.cta}</div>
-  </div>
-  
-  <div class="logo">
-    <span>PRISMATIC</span> LABS
-  </div>
+    <div class="glow-purple"></div>
+    <div class="glow-teal"></div>
+    
+    <div class="container">
+        <div class="badge">
+            <span>${tipoEmoji[post.tipo]}</span>
+            <span>${post.tipo.toUpperCase()}</span>
+        </div>
+        
+        <div class="content">
+            <h1>${post.tema}</h1>
+            <p class="hook">${post.hook}</p>
+        </div>
+        
+        <div class="footer">
+            <div class="logo">
+                <span class="logo-gradient">PRISMATIC</span> LABS
+            </div>
+            <div class="cta">→ Link na bio</div>
+        </div>
+    </div>
 </body>
 </html>`;
 }
 
-// ========================================
-// FUNÇÃO PRINCIPAL
-// ========================================
-
-async function createHTMLs() {
-  console.log('🎨 Criando HTMLs dos posts...\n');
+async function criarHTMLs() {
+  console.log('🖼️ Criando HTMLs dos posts...');
   
   try {
-    // Encontrar arquivo de tópicos mais recente
-    const files = fs.readdirSync(CONFIG.generatedDir)
-      .filter(f => f.startsWith('topics-') && f.endsWith('.json'))
-      .map(f => ({
-        name: f,
-        time: fs.statSync(path.join(CONFIG.generatedDir, f)).mtime.getTime()
-      }))
-      .sort((a, b) => b.time - a.time);
+    // Encontra arquivo de tópicos mais recente
+    const generatedDir = path.join(__dirname, '../generated');
+    const files = await fs.readdir(generatedDir);
+    const topicsFile = files.find(f => f.startsWith('topics-') && f.endsWith('.json'));
     
-    if (files.length === 0) {
-      console.error('❌ ERRO: Nenhum arquivo de tópicos encontrado!');
-      console.error('🔧 Execute primeiro: node 1-generate-topics.js\n');
-      process.exit(1);
+    if (!topicsFile) {
+      throw new Error('Arquivo de tópicos não encontrado. Execute script 1 primeiro.');
     }
     
-    const topicsFile = path.join(CONFIG.generatedDir, files[0].name);
-    console.log(`📂 Lendo: ${files[0].name}\n`);
+    // Lê tópicos
+    const topicsPath = path.join(generatedDir, topicsFile);
+    const topicsData = await fs.readFile(topicsPath, 'utf8');
+    const topics = JSON.parse(topicsData);
     
-    const data = JSON.parse(fs.readFileSync(topicsFile, 'utf8'));
-    const posts = data.posts;
+    // Cria pasta para HTMLs
+    const htmlDir = path.join(generatedDir, 'html');
+    await fs.mkdir(htmlDir, { recursive: true });
     
-    // Criar diretório de saída
-    if (!fs.existsSync(CONFIG.outputDir)) {
-      fs.mkdirSync(CONFIG.outputDir, { recursive: true });
+    // Gera HTML para cada post
+    for (const post of topics.posts) {
+      const html = criarTemplateHTML(post);
+      const filename = `post-${String(post.numero).padStart(2, '0')}.html`;
+      const filepath = path.join(htmlDir, filename);
+      await fs.writeFile(filepath, html);
     }
     
-    // Criar HTML para cada post
-    posts.forEach((post, index) => {
-      const html = createHTMLTemplate(post, index);
-      const filename = `post-${String(index + 1).padStart(2, '0')}.html`;
-      const filepath = path.join(CONFIG.outputDir, filename);
-      
-      fs.writeFileSync(filepath, html, 'utf8');
-      console.log(`✅ ${filename} - ${post.type} - ${post.title.substring(0, 30)}...`);
-    });
-    
-    console.log(`\n🎉 ${posts.length} HTMLs criados com sucesso!`);
-    console.log(`📁 Local: ${CONFIG.outputDir}`);
-    console.log(`\n🎯 Próxima etapa: Script 3 (gerar screenshots)\n`);
+    console.log(`✅ ${topics.posts.length} HTMLs criados com sucesso!`);
+    console.log(`📂 Salvos em: ${htmlDir}`);
     
   } catch (error) {
-    console.error('❌ ERRO ao criar HTMLs:', error.message);
+    console.error('❌ Erro ao criar HTMLs:', error.message);
     process.exit(1);
   }
 }
 
-// ========================================
-// EXECUÇÃO
-// ========================================
-
 if (require.main === module) {
-  createHTMLs();
+  criarHTMLs();
 }
 
-module.exports = { createHTMLs };
+module.exports = criarHTMLs;
