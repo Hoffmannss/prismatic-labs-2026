@@ -1,0 +1,24 @@
+{
+  "name": "prismatic-instagram-automation",
+  "version": "1.0.0",
+  "description": "Sistema automatizado de geração e agendamento de posts Instagram",
+  "main": "index.js",
+  "scripts": {
+    "generate": "node scripts/generate-all.js",
+    "test": "node scripts/test-generation.js"
+  },
+  "keywords": ["instagram", "automation", "content-generation"],
+  "author": "Prismatic Labs",
+  "license": "MIT",
+  "dependencies": {
+    "puppeteer": "^21.11.0",
+    "axios": "^1.6.5",
+    "@google/generative-ai": "^0.1.3",
+    "googleapis": "^131.0.0",
+    "dotenv": "^16.3.1",
+    "date-fns": "^3.0.6"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
