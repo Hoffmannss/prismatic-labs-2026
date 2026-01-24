@@ -1,0 +1,96 @@
+name: 🤖 Gerar Posts Instagram Automáticos
+
+on:
+  # OPÇÃO 1: Executar manualmente quando quiser
+  workflow_dispatch:
+    inputs:
+      mes:
+        description: 'Mês para gerar posts (ex: Fevereiro)'
+        required: true
+        default: 'Fevereiro'
+      ano:
+        description: 'Ano'
+        required: true
+        default: '2026'
+      total_posts:
+        description: 'Quantidade de posts'
+        required: true
+        default: '28'
+  
+  # OPÇÃO 2: Automático todo dia 25 às 20h (para próximo mês)
+  schedule:
+    - cron: '0 23 25 * *'  # 20h BRT = 23h UTC
+
+jobs:
+  gerar-posts:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: 📥 Checkout repositório
+      uses: actions/checkout@v4
+      
+    - name: 🟢 Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        
+    - name: 📦 Instalar dependências
+      run: |
+        cd automation/instagram
+        npm install
+        
+    - name: 🎨 1. Gerar tópicos com IA
+      env:
+        GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+      run: |
+        cd automation/instagram
+        node scripts/1-generate-topics.js "${{ github.event.inputs.mes || 'Próximo-Mês' }}" "${{ github.event.inputs.ano || '2026' }}" "${{ github.event.inputs.total_posts || '28' }}"
+        
+    - name: 🖼️ 2. Criar HTMLs dos posts
+      run: |
+        cd automation/instagram
+        node scripts/2-create-html.js
+        
+    - name: 📸 3. Gerar screenshots
+      run: |
+        cd automation/instagram
+        node scripts/3-screenshots.js
+        
+    - name: ✍️ 4. Gerar legendas com IA
+      env:
+        GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+      run: |
+        cd automation/instagram
+        node scripts/4-generate-captions.js
+        
+    - name: ☁️ 5. Upload para Google Drive
+      env:
+        GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
+        GOOGLE_DRIVE_FOLDER_ID: ${{ secrets.GOOGLE_DRIVE_FOLDER_ID }}
+      run: |
+        cd automation/instagram
+        node scripts/5-upload-drive.js
+        
+    - name: 🚀 6. Trigger Make.com para agendamento
+      env:
+        MAKE_WEBHOOK_URL: ${{ secrets.MAKE_WEBHOOK_URL }}
+      run: |
+        cd automation/instagram
+        node scripts/6-trigger-make.js
+        
+    - name: 📊 7. Commit resultados no repo
+      run: |
+        git config --global user.name "Prismatic Bot"
+        git config --global user.email "automation@prismatic-labs.com"
+        git add automation/instagram/generated/
+        git commit -m "🤖 Posts gerados: ${{ github.event.inputs.mes || 'Auto' }} ${{ github.event.inputs.ano || '2026' }}"
+        git push
+        
+    - name: ✅ Resumo execução
+      run: |
+        echo "✅ POSTS GERADOS COM SUCESSO!"
+        echo "📅 Mês: ${{ github.event.inputs.mes || 'Automático' }}"
+        echo "📊 Total: ${{ github.event.inputs.total_posts || '28' }} posts"
+        echo "📂 Arquivos salvos em: automation/instagram/generated/"
+        echo "☁️ Imagens no Google Drive"
+        echo "📱 Agendamento Instagram em processo (Make.com)"
