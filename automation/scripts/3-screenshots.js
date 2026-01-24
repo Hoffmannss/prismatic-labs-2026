@@ -1,103 +1,79 @@
 #!/usr/bin/env node
-/**
- * SCRIPT 3: GERAÇÃO DE SCREENSHOTS
- * 
- * Função: Transforma HTMLs em imagens PNG de alta qualidade
- * Input: Arquivos HTML da pasta generated/html/
- * Output: PNGs 1080x1080 prontos para Instagram
- * 
- * Como funciona:
- * 1. Abre navegador headless (Puppeteer)
- * 2. Para cada HTML:
- *    - Carrega página
- *    - Aguarda fontes/animações
- *    - Captura screenshot
- * 3. Salva PNG otimizado
- */
-
 const puppeteer = require('puppeteer');
 const fs = require('fs').promises;
 const path = require('path');
 
 async function generateScreenshots() {
-  let browser;
+  console.log('📸 Gerando screenshots com Puppeteer...');
+  
+  const generatedDir = path.join(__dirname, '../generated');
+  const htmlDir = path.join(generatedDir, 'html');
+  const imagesDir = path.join(generatedDir, 'images');
   
   try {
-    console.log('📸 Gerando screenshots...');
-
-    // 1. Lê arquivos HTML
-    const generatedDir = path.join(__dirname, '../generated');
-    const htmlDir = path.join(generatedDir, 'html');
+    // Verifica se HTML existe
     const htmlFiles = await fs.readdir(htmlDir);
-    const sortedFiles = htmlFiles.filter(f => f.endsWith('.html')).sort();
-
-    if (sortedFiles.length === 0) {
-      throw new Error('Nenhum HTML encontrado. Execute script 2 primeiro.');
+    const postFiles = htmlFiles.filter(f => f.startsWith('post-') && f.endsWith('.html'));
+    
+    if (postFiles.length === 0) {
+      throw new Error('Nenhum arquivo HTML encontrado. Execute 2-create-html.js primeiro.');
     }
-
-    // 2. Cria pasta imagens
-    const imagesDir = path.join(generatedDir, 'images');
+    
+    // Cria pasta imagens
     await fs.mkdir(imagesDir, { recursive: true });
-
-    // 3. Inicia navegador
-    console.log('🌐 Iniciando navegador headless...');
-    browser = await puppeteer.launch({
+    
+    // Inicia navegador
+    const browser = await puppeteer.launch({
       headless: 'new',
-      args: [
-        '--no-sandbox',
-        '--disable-setuid-sandbox',
-        '--disable-dev-shm-usage',
-        '--disable-web-security'
-      ]
+      args: ['--no-sandbox', '--disable-setuid-sandbox']
     });
-
+    
     const page = await browser.newPage();
-
-    // 4. Configura viewport
-    await page.setViewport({
-      width: 1080,
-      height: 1080,
-      deviceScaleFactor: 2 // Retina quality
-    });
-
-    // 5. Processa cada HTML
-    for (let i = 0; i < sortedFiles.length; i++) {
-      const htmlFile = sortedFiles[i];
+    let created = 0;
+    
+    for (const htmlFile of postFiles) {
       const htmlPath = path.join(htmlDir, htmlFile);
-      const pngFile = htmlFile.replace('.html', '.png');
-      const pngPath = path.join(imagesDir, pngFile);
-
-      console.log(`   [${i + 1}/${sortedFiles.length}] ${htmlFile}...`);
-
-      // Carrega HTML
+      const imageName = htmlFile.replace('.html', '.png');
+      const imagePath = path.join(imagesDir, imageName);
+      
+      // Detecta formato (post 1:1 ou story 9:16)
+      const htmlContent = await fs.readFile(htmlPath, 'utf-8');
+      const isStory = htmlContent.includes('height: 1920px');
+      
+      // Seta viewport correto
+      await page.setViewport({
+        width: 1080,
+        height: isStory ? 1920 : 1080,
+        deviceScaleFactor: 1
+      });
+      
+      // Abre HTML
       await page.goto(`file://${htmlPath}`, {
         waitUntil: 'networkidle0'
       });
-
-      // Aguarda fontes carregarem
-      await page.evaluateHandle('document.fonts.ready');
       
-      // Aguarda animações iniciarem
-      await page.waitForTimeout(500);
-
+      // Aguarda fonts carregarem
+      await page.waitForTimeout(1000);
+      
       // Screenshot
       await page.screenshot({
-        path: pngPath,
+        path: imagePath,
         type: 'png',
-        omitBackground: false
+        fullPage: false
       });
+      
+      created++;
+      console.log(`   ✓ ${imageName}`);
     }
-
-    console.log(`✅ ${sortedFiles.length} screenshots gerados!`);
-    console.log(`📁 Pasta: ${imagesDir}`);
-
+    
+    await browser.close();
+    
+    console.log(`✅ ${created} screenshots gerados em: ${imagesDir}`);
+    return created;
+    
   } catch (error) {
     console.error('❌ Erro ao gerar screenshots:', error.message);
     process.exit(1);
-  } finally {
-    if (browser) {
-      await browser.close();
-    }
   }
 }
 

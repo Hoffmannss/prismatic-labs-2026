@@ -1,74 +1,49 @@
 #!/usr/bin/env node
-/**
- * SCRIPT 6: TRIGGER MAKE.COM
- * 
- * Função: Notifica Make.com que conteúdo está pronto para agendamento
- * Input: drive-mapping.json
- * Output: Webhook POST para Make.com iniciar agendamento Instagram
- * 
- * Como funciona:
- * 1. Lê mapeamento Drive
- * 2. Envia payload para webhook Make.com
- * 3. Make.com recebe e inicia scenario de agendamento
- */
-
 const axios = require('axios');
 const fs = require('fs').promises;
 const path = require('path');
 
-const MAKE_WEBHOOK_URL = process.env.MAKE_WEBHOOK_URL;
-
 async function triggerMake() {
+  console.log('🚀 Disparando Make.com para agendamento...');
+  
   try {
-    console.log('🚀 Disparando Make.com webhook...');
-
-    if (!MAKE_WEBHOOK_URL) {
-      throw new Error('MAKE_WEBHOOK_URL não configurada');
-    }
-
-    // 1. Lê mapeamento Drive
-    const generatedDir = path.join(__dirname, '../generated');
-    const mappingPath = path.join(generatedDir, 'drive-mapping.json');
+    // Carrega mapeamento do Drive
+    const mappingPath = path.join(__dirname, '../generated/drive-mapping.json');
     const mapping = JSON.parse(await fs.readFile(mappingPath, 'utf-8'));
-
-    // 2. Prepara payload
+    
+    // Prepara payload
     const payload = {
-      trigger: 'instagram-automation',
-      timestamp: new Date().toISOString(),
       month: mapping.month,
-      drive_folder: mapping.drive_folder,
+      folder_id: mapping.folder_id,
       total_posts: mapping.posts.length,
-      posts: mapping.posts.map(post => ({
-        number: post.post_number,
-        image_url: post.image.url,
-        caption_url: post.caption.url,
-        image_id: post.image.id,
-        caption_id: post.caption.id
-      }))
+      posts: mapping.posts.map(p => ({
+        post_number: p.post,
+        image_url: p.image_url,
+        caption_url: p.caption_url
+      })),
+      generated_at: new Date().toISOString(),
+      source: 'github-actions'
     };
-
-    // 3. Envia webhook
-    console.log(`📤 Enviando ${payload.total_posts} posts para Make.com...`);
-    const response = await axios.post(MAKE_WEBHOOK_URL, payload, {
+    
+    // Envia webhook
+    const response = await axios.post(process.env.MAKE_WEBHOOK_URL, payload, {
       headers: {
         'Content-Type': 'application/json'
       },
       timeout: 10000
     });
-
-    console.log(`✅ Webhook enviado com sucesso!`);
-    console.log(`🔗 Response: ${response.status} ${response.statusText}`);
-    console.log(`📱 Make.com iniciará agendamento automático no Instagram`);
-
+    
+    console.log(`✅ Make.com acionado com sucesso!`);
+    console.log(`📊 Resposta: ${response.status} ${response.statusText}`);
+    console.log(`📅 ${mapping.posts.length} posts serão agendados automaticamente`);
+    
     return response.data;
-
+    
   } catch (error) {
     if (error.response) {
-      console.error('❌ Erro na resposta Make.com:', error.response.status, error.response.data);
-    } else if (error.request) {
-      console.error('❌ Erro na requisição (sem resposta)');
+      console.error('❌ Erro Make.com:', error.response.status, error.response.data);
     } else {
-      console.error('❌ Erro:', error.message);
+      console.error('❌ Erro ao disparar Make.com:', error.message);
     }
     process.exit(1);
   }
