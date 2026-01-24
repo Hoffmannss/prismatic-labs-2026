@@ -19,7 +19,7 @@ const chalk = require('chalk');
 require('dotenv').config();
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-const model = genAI.getGenerativeModel({ model: 'gemini-pro' });
+const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
 
 // Prompt para cada tipo de post
 const CAPTION_PROMPTS = {
