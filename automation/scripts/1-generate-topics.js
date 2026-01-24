@@ -18,9 +18,9 @@ const path = require('path');
 const chalk = require('chalk');
 require('dotenv').config();
 
-// Configuração
+// Configuração - gemini-1.5-flash-latest tem limite maior (50 req/dia grátis)
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
+const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash-latest' });
 
 // Prompt otimizado para geração de tópicos
 const PROMPT_TEMPLATE = `
@@ -79,7 +79,7 @@ Retorne APENAS o JSON válido, sem markdown ou explicações.
 async function generateTopics(month) {
   console.log(chalk.blue.bold('\n🧠 ETAPA 1: GERAÇÃO DE TÓPICOS\n'));
   console.log(chalk.gray(`Mês: ${month}`));
-  console.log(chalk.gray('Modelo: Google Gemini 2.5 Flash'));
+  console.log(chalk.gray('Modelo: Gemini 1.5 Flash Latest (50 req/dia)'));
   console.log(chalk.gray('Aguarde... isso pode levar 30-60 segundos\n'));
 
   try {
