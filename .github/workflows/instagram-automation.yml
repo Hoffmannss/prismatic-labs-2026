@@ -1,95 +1,89 @@
-name: 🤖 Instagram Content Automation
+name: Instagram Content Generator
 
 on:
-  # Trigger manual (você clica "Run workflow")
+  # Manual trigger
   workflow_dispatch:
     inputs:
       month:
         description: 'Mês para gerar conteúdo (ex: Fevereiro)'
         required: true
-        default: 'Fevereiro'
+        type: string
       year:
         description: 'Ano'
         required: true
         default: '2026'
-      post_count:
-        description: 'Quantidade de posts'
-        required: true
-        default: '28'
+        type: string
   
-  # Trigger automático: dia 25 de cada mês às 20h
+  # Automático dia 25 de cada mês
   schedule:
-    - cron: '0 23 25 * *' # UTC 23h = 20h BRT
+    - cron: '0 23 25 * *'  # 23h UTC = 20h BRT dia 25
 
 jobs:
   generate-content:
     runs-on: ubuntu-latest
     
     steps:
-      - name: 📥 Checkout código
+      - name: Checkout repository
         uses: actions/checkout@v4
       
-      - name: 🟢 Setup Node.js
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-          cache: 'npm'
       
-      - name: 📦 Instalar dependências
+      - name: Install dependencies
         run: |
           cd automation
-          npm ci
+          npm install
       
-      - name: 🎨 Gerar tópicos com Gemini
+      - name: Generate topics
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: |
           cd automation
-          node scripts/1-generate-topics.js "${{ github.event.inputs.month || 'próximo-mês' }}" "${{ github.event.inputs.year || '2026' }}" "${{ github.event.inputs.post_count || '28' }}"
+          node scripts/1-generate-topics.js "${{ github.event.inputs.month || 'próximo mês' }}" "${{ github.event.inputs.year || '2026' }}"
       
-      - name: 🏗️ Criar HTMLs dos posts
+      - name: Create HTML posts
         run: |
           cd automation
           node scripts/2-create-html.js
       
-      - name: 📸 Gerar screenshots
+      - name: Generate screenshots
         run: |
           cd automation
           node scripts/3-screenshots.js
       
-      - name: ✍️ Gerar legendas com Gemini
+      - name: Generate captions
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: |
           cd automation
           node scripts/4-generate-captions.js
       
-      - name: ☁️ Upload para Google Drive
+      - name: Upload to Google Drive
         env:
-          GOOGLE_DRIVE_CREDENTIALS: ${{ secrets.GOOGLE_DRIVE_CREDENTIALS }}
+          GOOGLE_SERVICE_ACCOUNT: ${{ secrets.GOOGLE_SERVICE_ACCOUNT }}
+          DRIVE_FOLDER_ID: ${{ secrets.DRIVE_FOLDER_ID }}
         run: |
           cd automation
           node scripts/5-upload-drive.js
       
-      - name: 🚀 Trigger Make.com para agendamento
+      - name: Trigger Make.com scheduling
         env:
           MAKE_WEBHOOK_URL: ${{ secrets.MAKE_WEBHOOK_URL }}
         run: |
           cd automation
           node scripts/6-trigger-make.js
       
-      - name: 📊 Upload artifacts (backup)
+      - name: Upload generated files as artifact
         uses: actions/upload-artifact@v4
         with:
-          name: instagram-content-${{ github.event.inputs.month || 'auto' }}
-          path: |
-            automation/generated/
+          name: instagram-content-${{ github.event.inputs.month }}
+          path: automation/generated/
           retention-days: 30
       
-      - name: ✅ Resumo execução
+      - name: Notify completion
         run: |
-          echo "🎉 Automação concluída com sucesso!"
-          echo "📅 Mês: ${{ github.event.inputs.month || 'automático' }}"
-          echo "📊 Posts gerados: ${{ github.event.inputs.post_count || '28' }}"
-          echo "☁️ Arquivos no Google Drive"
-          echo "📱 Agendamento Make.com iniciado"
+          echo "✅ Conteúdo gerado com sucesso!"
+          echo "📁 Arquivos salvos no Google Drive"
+          echo "📅 Make.com iniciou agendamento automático"
