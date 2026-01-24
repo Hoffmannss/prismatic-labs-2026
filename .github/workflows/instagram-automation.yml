@@ -30,14 +30,12 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '18'
-          cache: 'npm'
-          cache-dependency-path: 'automation/package.json'
       
       # 3. Instalar dependências
       - name: 📦 Instalar dependências
         working-directory: ./automation
         run: |
-          npm ci
+          npm install
           npx puppeteer browsers install chrome
       
       # 4. Criar arquivo .env com secrets
