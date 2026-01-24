@@ -19,7 +19,7 @@ const chalk = require('chalk');
 require('dotenv').config();
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
+const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash-latest' });
 
 // Prompt para cada tipo de post
 const CAPTION_PROMPTS = {
@@ -102,7 +102,8 @@ async function generateCaptions(month) {
     const topics = JSON.parse(topicsData);
 
     console.log(chalk.gray(`Tópicos: ${topics.posts.length} posts`));
-    console.log(chalk.gray('Gerando legendas otimizadas...\n'));
+    console.log(chalk.gray('Modelo: Gemini 1.5 Flash Latest (50 req/dia)'));
+    console.log(chalk.gray('Delay: 3s entre requisições (evitar rate limit)\n'));
 
     // Criar pasta captions
     const captionsDir = path.join(__dirname, '../generated/captions');
@@ -120,13 +121,13 @@ async function generateCaptions(month) {
         
         console.log(chalk.green(`✓ ${filename} gerado (${caption.length} caracteres)`));
         
-        // Delay 2s entre requisições
+        // Delay 3s entre requisições (mais conservador)
         if (index < topics.posts.length - 1) {
-          await new Promise(resolve => setTimeout(resolve, 2000));
+          await new Promise(resolve => setTimeout(resolve, 3000));
         }
         
       } catch (error) {
-        console.log(chalk.yellow(`⚠️ Erro post ${index + 1}, tentando novamente...`));
+        console.log(chalk.yellow(`⚠️ Erro post ${index + 1}, tentando novamente em 5s...`));
         await new Promise(resolve => setTimeout(resolve, 5000));
         
         const caption = await generateCaption(post);
