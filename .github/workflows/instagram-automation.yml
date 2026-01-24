@@ -1,89 +1,91 @@
-name: Instagram Content Generator
+name: Instagram Automation
 
+# QUANDO EXECUTAR
 on:
-  # Manual trigger
+  # 1. MANUAL: Botão "Run workflow" na aba Actions
   workflow_dispatch:
     inputs:
       month:
-        description: 'Mês para gerar conteúdo (ex: Fevereiro)'
+        description: 'Mês para gerar posts (ex: Fevereiro)'
         required: true
-        type: string
-      year:
-        description: 'Ano'
-        required: true
-        default: '2026'
+        default: 'Fevereiro'
         type: string
   
-  # Automático dia 25 de cada mês
+  # 2. AUTOMÁTICO: Todo dia 25 às 20h (Brasília) 
   schedule:
-    - cron: '0 23 25 * *'  # 23h UTC = 20h BRT dia 25
+    - cron: '0 23 25 * *'  # 23:00 UTC = 20:00 BRT
 
 jobs:
-  generate-content:
+  generate-and-schedule:
+    name: Gerar Posts e Agendar Instagram
     runs-on: ubuntu-latest
     
     steps:
-      - name: Checkout repository
+      # 1. Checkout repositório
+      - name: 📥 Checkout
         uses: actions/checkout@v4
       
-      - name: Setup Node.js
+      # 2. Setup Node.js
+      - name: 🔧 Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '18'
+          cache: 'npm'
+          cache-dependency-path: 'automation/package.json'
       
-      - name: Install dependencies
+      # 3. Instalar dependências
+      - name: 📦 Instalar dependências
+        working-directory: ./automation
         run: |
-          cd automation
-          npm install
+          npm ci
+          npx puppeteer browsers install chrome
       
-      - name: Generate topics
-        env:
-          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+      # 4. Criar arquivo .env com secrets
+      - name: 🔑 Configurar variáveis
+        working-directory: ./automation
         run: |
-          cd automation
-          node scripts/1-generate-topics.js "${{ github.event.inputs.month || 'próximo mês' }}" "${{ github.event.inputs.year || '2026' }}"
+          echo "GEMINI_API_KEY=${{ secrets.GEMINI_API_KEY }}" >> .env
+          echo "GOOGLE_DRIVE_CREDENTIALS=${{ secrets.GOOGLE_DRIVE_CREDENTIALS }}" >> .env
+          echo "GOOGLE_DRIVE_FOLDER_ID=${{ secrets.GOOGLE_DRIVE_FOLDER_ID }}" >> .env
+          echo "MAKE_WEBHOOK_URL=${{ secrets.MAKE_WEBHOOK_URL }}" >> .env
+          echo "TIMEZONE=America/Sao_Paulo" >> .env
+          echo "NODE_ENV=production" >> .env
       
-      - name: Create HTML posts
+      # 5. Criar credentials.json Google Drive
+      - name: 📝 Criar Google Drive Credentials
+        working-directory: ./automation
         run: |
-          cd automation
-          node scripts/2-create-html.js
+          echo '${{ secrets.GOOGLE_DRIVE_CREDENTIALS_JSON }}' > google-credentials.json
+          echo "GOOGLE_DRIVE_CREDENTIALS=./google-credentials.json" >> .env
       
-      - name: Generate screenshots
+      # 6. Executar pipeline completo
+      - name: 🚀 Executar Automação
+        working-directory: ./automation
         run: |
-          cd automation
-          node scripts/3-screenshots.js
+          MONTH="${{ inputs.month || 'Fevereiro' }}"
+          echo "📅 Gerando posts para: $MONTH"
+          npm run generate:all $MONTH
       
-      - name: Generate captions
-        env:
-          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-        run: |
-          cd automation
-          node scripts/4-generate-captions.js
-      
-      - name: Upload to Google Drive
-        env:
-          GOOGLE_SERVICE_ACCOUNT: ${{ secrets.GOOGLE_SERVICE_ACCOUNT }}
-          DRIVE_FOLDER_ID: ${{ secrets.DRIVE_FOLDER_ID }}
-        run: |
-          cd automation
-          node scripts/5-upload-drive.js
-      
-      - name: Trigger Make.com scheduling
-        env:
-          MAKE_WEBHOOK_URL: ${{ secrets.MAKE_WEBHOOK_URL }}
-        run: |
-          cd automation
-          node scripts/6-trigger-make.js
-      
-      - name: Upload generated files as artifact
+      # 7. Upload artifacts (backup)
+      - name: 📊 Upload Artifacts
+        if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: instagram-content-${{ github.event.inputs.month }}
-          path: automation/generated/
+          name: instagram-posts-${{ inputs.month || 'auto' }}
+          path: |
+            automation/generated/**/*
           retention-days: 30
       
-      - name: Notify completion
+      # 8. Notificação sucesso
+      - name: ✅ Sucesso
+        if: success()
         run: |
-          echo "✅ Conteúdo gerado com sucesso!"
-          echo "📁 Arquivos salvos no Google Drive"
-          echo "📅 Make.com iniciou agendamento automático"
+          echo "🎉 Pipeline executado com sucesso!"
+          echo "📊 Verifique Google Drive e Instagram Creator Studio"
+      
+      # 9. Notificação erro
+      - name: ❌ Erro
+        if: failure()
+        run: |
+          echo "⚠️ Pipeline falhou. Verifique logs acima."
+          exit 1
