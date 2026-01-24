@@ -1,145 +1,139 @@
+#!/usr/bin/env node
 /**
- * SCRIPT 1: GERAÇÃO DE TÓPICOS
- * Usa Gemini API para gerar 28 tópicos estratégicos para o mês
+ * SCRIPT 1: GERAÇÃO DE TÓPICOS COM GEMINI AI
+ * 
+ * Função: Gera ideias de conteúdo para Instagram usando IA
+ * Input: Mês, ano, quantidade de posts
+ * Output: JSON com tópicos estruturados
+ * 
+ * Como funciona:
+ * 1. Conecta Gemini API (Google)
+ * 2. Envia prompt otimizado para vendas B2B
+ * 3. Recebe 28 ideias variadas (educação + social proof + vendas)
+ * 4. Salva JSON para próximo script
  */
 
 const { GoogleGenerativeAI } = require('@google/generative-ai');
 const fs = require('fs').promises;
 const path = require('path');
-require('dotenv').config();
 
 // Configuração
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-const model = genAI.getGenerativeModel({ model: 'gemini-pro' });
+const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
+const genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
 
-// Meses em português
-const MESES = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 
-               'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
+// Parâmetros
+const month = process.argv[2] || 'Fevereiro';
+const year = process.argv[3] || '2026';
+const postCount = parseInt(process.argv[4]) || 28;
+
+console.log(`🤖 Gerando ${postCount} tópicos para ${month}/${year}...`);
 
 async function generateTopics() {
-  console.log('🧠 ETAPA 1: Gerando tópicos...');
-  
-  // Determina mês (próximo mês ou argumento)
-  const hoje = new Date();
-  const proximoMes = new Date(hoje.getFullYear(), hoje.getMonth() + 1, 1);
-  const mesNome = MESES[proximoMes.getMonth()];
-  const ano = proximoMes.getFullYear();
-  
-  console.log(`📅 Mês: ${mesNome}/${ano}`);
-  
-  // Prompt estratégico
-  const prompt = `
-Você é um estrategista de conteúdo Instagram para Prismatic Labs, uma agência especializada em landing pages PREMIUM dark mode + neon que CONVERTEM.
+  try {
+    // 1. Configura modelo Gemini
+    const model = genAI.getGenerativeModel({ model: 'gemini-pro' });
 
-PÚBLICO-ALVO:
-- Infoprodutores (cursos online, mentorias)
-- E-commerce premium
-- Coaches e consultores
-- Profissionais liberais (advogados, arquitetos)
+    // 2. Prompt otimizado
+    const prompt = `
+Você é especialista em marketing digital B2B para empresas de tecnologia premium.
 
-OBJETIVO: Gerar leads qualificados que investem R$3.000-R$15.000 em sites.
-
-CRIE 28 TÓPICOS de posts Instagram para ${mesNome} ${ano} seguindo:
+CONTEXTO:
+- Empresa: Prismatic Labs (landing pages + sites premium)
+- Público: Infoprodutores, e-commerces, profissionais liberais
+- Objetivo: Gerar ${postCount} ideias de posts Instagram para ${month} ${year}
+- Tom: Autoridade + Urgency + Social Proof
 
 DISTRIBUIÇÃO:
-- 40% Educacional (autoridade, dicas, erros comuns)
-- 30% Social Proof (cases, depoimentos, antes/depois)
-- 20% CTA Vendas (urgência, oferta, escassez)
-- 10% Inspiração/Bastidores
+- 40% Educacional (dicas, estatísticas, insights)
+- 30% Social Proof (cases, depoimentos, resultados)
+- 20% Vendas diretas (CTA, urgency, ofertas)
+- 10% Bastidores (processo, equipe, cultura)
 
-FORMATO:
-Retorne APENAS um JSON array válido (sem markdown, sem explicações):
-[
-  {
-    "dia": 1,
-    "tema": "Título impactante do post",
-    "subtitulo": "Complemento que gera curiosidade",
-    "tipo": "educacional|social-proof|cta-vendas|inspiracao",
-    "badge": "Emoji + Categoria (ex: 💡 Dica de Ouro)",
-    "cta": "Texto do botão/CTA",
-    "cores": "purple-teal|pink-purple|teal-pink"
-  }
-]
+FORMATO JSON:
+{
+  "topics": [
+    {
+      "day": 1,
+      "theme": "Título impactante do post",
+      "type": "educacional|social-proof|vendas|bastidores",
+      "hook": "Primeira frase que prende atenção",
+      "cta": "Call-to-action específico",
+      "visual_style": "dark-gradient|neon-cards|minimal-stats|testimonial"
+    }
+  ]
+}
 
-REGRAS:
-1. Títulos <60 caracteres, IMPACTANTES
-2. Variar cores a cada post
-3. CTAs diferentes (nunca repetir "Link na Bio")
-4. Temas complementares (não repetir assunto)
-5. Incluir números/percentuais quando possível
-6. Tom: profissional mas acessível
-
-GERE OS 28 TÓPICOS AGORA:
+Gere ${postCount} tópicos variados, estratégicos e focados em CONVERSÃO.
 `;
 
-  try {
+    console.log('⏳ Consultando Gemini AI...');
+    
+    // 3. Chama API
     const result = await model.generateContent(prompt);
     const response = await result.response;
-    let text = response.text();
-    
-    // Limpa markdown se existir
-    text = text.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
-    
-    // Parse JSON
-    const topics = JSON.parse(text);
-    
-    // Validação
-    if (!Array.isArray(topics) || topics.length !== 28) {
-      throw new Error(`Esperado 28 tópicos, recebido ${topics.length}`);
+    const text = response.text();
+
+    // 4. Extrai JSON do response
+    const jsonMatch = text.match(/\{[\s\S]*\}/);
+    if (!jsonMatch) {
+      throw new Error('Resposta não contém JSON válido');
     }
-    
-    // Enriquece com metadados
-    const enrichedTopics = topics.map((topic, index) => ({
-      ...topic,
-      id: index + 1,
-      mes: mesNome,
-      ano: ano,
-      geradoEm: new Date().toISOString()
-    }));
-    
-    // Salva arquivo
+
+    const topics = JSON.parse(jsonMatch[0]);
+
+    // 5. Valida e enriquece dados
+    if (!topics.topics || topics.topics.length < postCount) {
+      throw new Error(`Esperado ${postCount} tópicos, recebido ${topics.topics?.length || 0}`);
+    }
+
+    // 6. Adiciona metadados
+    const enrichedData = {
+      generated_at: new Date().toISOString(),
+      month,
+      year,
+      total_posts: postCount,
+      distribution: {
+        educacional: topics.topics.filter(t => t.type === 'educacional').length,
+        'social-proof': topics.topics.filter(t => t.type === 'social-proof').length,
+        vendas: topics.topics.filter(t => t.type === 'vendas').length,
+        bastidores: topics.topics.filter(t => t.type === 'bastidores').length
+      },
+      topics: topics.topics
+    };
+
+    // 7. Cria pasta generated se não existir
     const outputDir = path.join(__dirname, '../generated');
     await fs.mkdir(outputDir, { recursive: true });
-    
-    const outputFile = path.join(outputDir, `topics-${mesNome.toLowerCase()}-${ano}.json`);
-    await fs.writeFile(outputFile, JSON.stringify(enrichedTopics, null, 2), 'utf8');
-    
-    console.log(`✅ ${topics.length} tópicos gerados!`);
-    console.log(`💾 Salvo em: ${outputFile}`);
-    
-    // Estatísticas
-    const stats = {
-      educacional: enrichedTopics.filter(t => t.tipo === 'educacional').length,
-      socialProof: enrichedTopics.filter(t => t.tipo === 'social-proof').length,
-      ctaVendas: enrichedTopics.filter(t => t.tipo === 'cta-vendas').length,
-      inspiracao: enrichedTopics.filter(t => t.tipo === 'inspiracao').length
-    };
-    
-    console.log('\n📊 Distribuição:');
-    console.log(`  Educacional: ${stats.educacional} (${Math.round(stats.educacional/28*100)}%)`);
-    console.log(`  Social Proof: ${stats.socialProof} (${Math.round(stats.socialProof/28*100)}%)`);
-    console.log(`  CTA Vendas: ${stats.ctaVendas} (${Math.round(stats.ctaVendas/28*100)}%)`);
-    console.log(`  Inspiração: ${stats.inspiracao} (${Math.round(stats.inspiracao/28*100)}%)`);
-    
-    return enrichedTopics;
-    
+
+    // 8. Salva arquivo
+    const outputPath = path.join(outputDir, `topics-${month.toLowerCase()}.json`);
+    await fs.writeFile(outputPath, JSON.stringify(enrichedData, null, 2));
+
+    console.log(`✅ ${postCount} tópicos gerados com sucesso!`);
+    console.log(`📁 Arquivo salvo: ${outputPath}`);
+    console.log(`📊 Distribuição:`);
+    console.log(`   - Educacional: ${enrichedData.distribution.educacional}`);
+    console.log(`   - Social Proof: ${enrichedData.distribution['social-proof']}`);
+    console.log(`   - Vendas: ${enrichedData.distribution.vendas}`);
+    console.log(`   - Bastidores: ${enrichedData.distribution.bastidores}`);
+
+    return enrichedData;
+
   } catch (error) {
     console.error('❌ Erro ao gerar tópicos:', error.message);
-    throw error;
+    process.exit(1);
   }
 }
 
-// Executa se chamado diretamente
+// Executa
 if (require.main === module) {
-  generateTopics()
-    .then(() => {
-      console.log('\n✅ ETAPA 1 CONCLUÍDA');
-      process.exit(0);
-    })
-    .catch(error => {
-      console.error('\n❌ FALHA:', error);
-      process.exit(1);
-    });
+  if (!GEMINI_API_KEY) {
+    console.error('❌ GEMINI_API_KEY não configurada!');
+    console.log('🔑 Obtenha sua chave em: https://makersuite.google.com/app/apikey');
+    process.exit(1);
+  }
+  
+  generateTopics();
 }
 
 module.exports = { generateTopics };
