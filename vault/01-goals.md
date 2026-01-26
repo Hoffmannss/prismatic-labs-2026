@@ -12,10 +12,8 @@
 
 ### Hipótese de oferta (RASCUNHO)
 - **O que:** Automação com n8n (produto-serviço simples, escopo fechado, entrega 3-5 dias)
-- **Para quem:** [PRECISA SER DEFINIDO HOJE]
-- **Problema resolvido:** [PRECISA SER DEFINIDO HOJE]
-- **Resultado esperado:** [PRECISA SER DEFINIDO HOJE]
-- **Preço piloto:** R$500-1k (pagamento único ou mensal, a validar)
+Consultores, coaches e freelancers que captam leads por formulário/landing page e controlam em planilha Google Sheets- **Problema resolvido:** [PRECISA SER DEFINIDO HOJE]
+Perder tempo copiando leads manualmente do formulário para a planilha e esquecer de responder porque não recebe notificação instantânea- **Preço piloto:** R$500-1k (pagamento único ou mensal, a validar)
 
 ### Passos para validar
 - [ ] Escolher 1 tipo específico de cliente (dentistas, lojinhas, consultores, etc.)
