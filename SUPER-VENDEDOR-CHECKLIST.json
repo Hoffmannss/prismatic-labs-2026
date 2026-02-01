@@ -1,0 +1,244 @@
+{
+  "projeto": "SUPER VENDEDOR + MARKETING MACHINE 2026",
+  "versao": "1.0",
+  "data_criacao": "2026-02-01",
+  "status": "READY TO LAUNCH",
+  
+  "fases": {
+    "FASE_1_SETUP": {
+      "nome": "ESTRUTURA & SETUP (Semanas 1-2)",
+      "descricao": "Preparar infra e ferramentas",
+      "tarefas": [
+        {
+          "id": "1.1",
+          "tarefa": "Configurar Notion CRM com todos os campos",
+          "prioridade": "CRITICA",
+          "tempo_estimado": "8h",
+          "status": "PENDING",
+          "responsavel": "Tech Lead",
+          "recursos": ["Notion", "n8n"]
+        },
+        {
+          "id": "1.2",
+          "tarefa": "Setup automações em n8n para workflows",
+          "prioridade": "CRITICA",
+          "tempo_estimado": "12h",
+          "status": "PENDING",
+          "responsavel": "Automation Engineer",
+          "recursos": ["n8n", "Zapier"]
+        },
+        {
+          "id": "1.3",
+          "tarefa": "Criar templates de email (Welcome, Follow-up, Promo)",
+          "prioridade": "ALTA",
+          "tempo_estimado": "6h",
+          "status": "PENDING",
+          "responsavel": "Marketing",
+          "recursos": ["ConvertKit", "Email Designer"]
+        },
+        {
+          "id": "1.4",
+          "tarefa": "Preparar conteúdo Instagram (20 posts)",
+          "prioridade": "ALTA",
+          "tempo_estimado": "16h",
+          "status": "PENDING",
+          "responsavel": "Content Creator",
+          "recursos": ["Canva", "Buffer"]
+        },
+        {
+          "id": "1.5",
+          "tarefa": "Setup Buffer/Later para agendamento",
+          "prioridade": "MÉDIA",
+          "tempo_estimado": "3h",
+          "status": "PENDING",
+          "responsavel": "Social Media",
+          "recursos": ["Buffer", "Later"]
+        }
+      ]
+    },
+    
+    "FASE_2_ATIVACAO": {
+      "nome": "ATIVAÇÃO (Semanas 3-4)",
+      "descricao": "Lançar campanhas e ativar canais",
+      "tarefas": [
+        {
+          "id": "2.1",
+          "tarefa": "Lançar campanha Instagram com conteudo estratégico",
+          "prioridade": "CRITICA",
+          "tempo_estimado": "4h",
+          "status": "PENDING",
+          "responsavel": "Marketing Manager",
+          "recursos": ["Instagram", "Creator Studio"]
+        },
+        {
+          "id": "2.2",
+          "tarefa": "Iniciar LinkedIn outreach (50-100 conexões/semana)",
+          "prioridade": "CRITICA",
+          "tempo_estimado": "5h",
+          "status": "PENDING",
+          "responsavel": "Business Dev",
+          "recursos": ["LinkedIn Sales Navigator"]
+        },
+        {
+          "id": "2.3",
+          "tarefa": "Enviar primeiro email campaign segmentado",
+          "prioridade": "CRITICA",
+          "tempo_estimado": "2h",
+          "status": "PENDING",
+          "responsavel": "Email Marketing",
+          "recursos": ["ConvertKit", "Mailchimp"]
+        },
+        {
+          "id": "2.4",
+          "tarefa": "Setup WhatsApp bot automático",
+          "prioridade": "ALTA",
+          "tempo_estimado": "6h",
+          "status": "PENDING",
+          "responsavel": "Dev",
+          "recursos": ["Twilio", "n8n"]
+        },
+        {
+          "id": "2.5",
+          "tarefa": "Criar landing page com lead magnet",
+          "prioridade": "ALTA",
+          "tempo_estimado": "8h",
+          "status": "PENDING",
+          "responsavel": "Designer + Dev",
+          "recursos": ["Webflow", "Unbounce"]
+        }
+      ]
+    },
+    
+    "FASE_3_OTIMIZACAO": {
+      "nome": "OTIMIZAÇÃO (Mês 2)",
+      "descricao": "Analisar, testar e otimizar performance",
+      "tarefas": [
+        {
+          "id": "3.1",
+          "tarefa": "A/B testing em subject lines de email",
+          "prioridade": "MEDIA",
+          "tempo_estimado": "4h",
+          "status": "PENDING",
+          "responsavel": "Email Marketing",
+          "kpi": "Open Rate +5%"
+        },
+        {
+          "id": "3.2",
+          "tarefa": "Análise semanal de KPIs",
+          "prioridade": "MEDIA",
+          "tempo_estimado": "3h",
+          "status": "PENDING",
+          "responsavel": "Analyst",
+          "recursos": ["Google Analytics", "Hotjar"]
+        },
+        {
+          "id": "3.3",
+          "tarefa": "Ajuste de sequências de follow-up",
+          "prioridade": "MEDIA",
+          "tempo_estimado": "4h",
+          "status": "PENDING",
+          "responsavel": "CRM Manager",
+          "kpi": "Conversion Rate +10%"
+        },
+        {
+          "id": "3.4",
+          "tarefa": "Revisar e otimizar scoring de leads",
+          "prioridade": "MEDIA",
+          "tempo_estimado": "5h",
+          "status": "PENDING",
+          "responsavel": "Data Analyst",
+          "kpi": "Lead Quality +3 pontos"
+        }
+      ]
+    },
+    
+    "FASE_4_SCALING": {
+      "nome": "SCALING (Mês 3)",
+      "descricao": "Escalabilidade e expansão",
+      "tarefas": [
+        {
+          "id": "4.1",
+          "tarefa": "Aumentar budget de ads se ROI positivo",
+          "prioridade": "MEDIA",
+          "tempo_estimado": "2h",
+          "status": "PENDING",
+          "condicao": "ROI > 300%"
+        },
+        {
+          "id": "4.2",
+          "tarefa": "Expandir para novos canais (TikTok, Pinterest)",
+          "prioridade": "BAIXA",
+          "tempo_estimado": "10h",
+          "status": "PENDING",
+          "responsavel": "Social Media"
+        },
+        {
+          "id": "4.3",
+          "tarefa": "Treinar equipe em novo sistema",
+          "prioridade": "MEDIA",
+          "tempo_estimado": "6h",
+          "status": "PENDING",
+          "responsavel": "Manager"
+        }
+      ]
+    }
+  },
+  
+  "metricas_alvo": {
+    "mes_1": {
+      "leads_gerados": 300,
+      "lead_quality_score": 3.0,
+      "instagram_followers_novos": 500,
+      "email_subscribers_novos": 200
+    },
+    "mes_2": {
+      "leads_gerados": 350,
+      "propostas_geradas": 40,
+      "taxa_conversao": 7,
+      "instagram_followers_novos": 700
+    },
+    "mes_3": {
+      "leads_gerados": 400,
+      "propostas_geradas": 50,
+      "vendas_fechadas": 15,
+      "revenue": 30000,
+      "cac": 250
+    },
+    "q1_total": {
+      "leads_gerados": 1050,
+      "propostas_geradas": 150,
+      "vendas_fechadas": 40,
+      "revenue": 150000,
+      "roi_marketing": 500
+    }
+  },
+  
+  "quick_wins": [
+    {"id": 1, "acao": "Instagram Stories Diários", "tempo": "15 min/dia", "impacto": "alto"},
+    {"id": 2, "acao": "Email Segmentado", "tempo": "30 min", "impacto": "alto"},
+    {"id": 3, "acao": "LinkedIn Conexões", "tempo": "20 min/dia", "impacto": "medio"},
+    {"id": 4, "acao": "WhatsApp Automático", "tempo": "2h", "impacto": "alto"},
+    {"id": 5, "acao": "Notion Dashboard", "tempo": "1h", "impacto": "critico"}
+  ],
+  
+  "metricas_alerta": {
+    "email_open_rate_alerta": {"valor_minimo": 20, "acao": "Testar subject lines"},
+    "instagram_engagement_alerta": {"valor_minimo": 3, "acao": "Revisar conteudo"},
+    "lead_quality_alerta": {"valor_minimo": 3, "acao": "Refinar targeting"},
+    "conversion_rate_alerta": {"valor_minimo": 2, "acao": "Otimizar follow-ups"},
+    "cac_alerta": {"valor_maximo": 500, "acao": "Redirecionar budget"}
+  },
+  
+  "stack_tecnologico": {
+    "essencial": ["Notion", "n8n", "ConvertKit", "Twilio", "Buffer", "Google Analytics", "Webflow"],
+    "premium": ["HubSpot", "ChatGPT API", "Pipedrive", "Loom", "Zoom"]
+  },
+  
+  "cronograma": {
+    "inicio": "2026-02-01",
+    "fase_1_fim": "2026-02-14",
+    "fase_2_fim": "2026-02-28",
+    "fase_3_fim": "2026-03-31",
+    "q1_fim": "2026-03-31"
+  }
+}
