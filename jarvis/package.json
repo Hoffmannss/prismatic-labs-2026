@@ -1,0 +1,18 @@
+{
+  "name": "jarvis-prismatic-labs",
+  "version": "1.0.0",
+  "description": "JARVIS - Cerebro Autonomo da Prismatic Labs",
+  "main": "jarvis.js",
+  "scripts": {
+    "start": "node jarvis.js",
+    "jarvis": "node jarvis.js"
+  },
+  "dependencies": {
+    "groq-sdk": "^0.9.0",
+    "readline": "^1.3.0",
+    "chalk": "^4.1.2"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
