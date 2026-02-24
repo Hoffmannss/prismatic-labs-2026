@@ -1,0 +1,122 @@
+name: Vendedor AI - Followup Diario Automatico
+
+on:
+  schedule:
+    # Roda todo dia as 9h (horario de Brasilia = 12h UTC)
+    - cron: '0 12 * * *'
+  workflow_dispatch:
+    inputs:
+      lead_username:
+        description: 'Username do lead para analisar (sem @)'
+        required: false
+        type: string
+      lead_bio:
+        description: 'Bio do lead'
+        required: false
+        type: string
+      lead_followers:
+        description: 'Numero de seguidores'
+        required: false
+        type: string
+        default: '0'
+      lead_posts:
+        description: 'Numero de posts'
+        required: false
+        type: string
+        default: '0'
+
+jobs:
+  # JOB 1: Followup diario automatico
+  daily-followup:
+    name: Verificar Followups do Dia
+    runs-on: ubuntu-latest
+    if: github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && github.event.inputs.lead_username == '')
+    
+    steps:
+      - name: Checkout repositorio
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Instalar dependencias
+        run: |
+          cd vendedor
+          npm install
+
+      - name: Executar Followup AI
+        env:
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+        run: |
+          cd vendedor
+          node 4-followup.js
+
+      - name: Salvar dados atualizados no repositorio
+        run: |
+          git config --global user.email "vendedor-ai@prismatic-labs.com"
+          git config --global user.name "Vendedor AI Bot"
+          git add vendedor/data/ || true
+          git diff --staged --quiet || git commit -m "auto: Followup diario executado $(date +'%Y-%m-%d')"
+          git push || true
+
+  # JOB 2: Analisar lead especifico (quando username passado)
+  analyze-lead:
+    name: Analisar Lead
+    runs-on: ubuntu-latest
+    if: github.event_name == 'workflow_dispatch' && github.event.inputs.lead_username != ''
+    
+    steps:
+      - name: Checkout repositorio
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Instalar dependencias
+        run: |
+          cd vendedor
+          npm install
+
+      - name: Analisar Lead - Modulo 1 (Analyzer AI)
+        env:
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+          LEAD_USERNAME: ${{ github.event.inputs.lead_username }}
+          LEAD_BIO: ${{ github.event.inputs.lead_bio }}
+          LEAD_FOLLOWERS: ${{ github.event.inputs.lead_followers }}
+          LEAD_POSTS: ${{ github.event.inputs.lead_posts }}
+        run: |
+          cd vendedor
+          node 1-analyzer.js "$LEAD_USERNAME" "$LEAD_BIO" "$LEAD_FOLLOWERS" "$LEAD_POSTS"
+
+      - name: Gerar Mensagem - Modulo 2 (Copywriter AI)
+        env:
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+          LEAD_USERNAME: ${{ github.event.inputs.lead_username }}
+        run: |
+          cd vendedor
+          node 2-copywriter.js "$LEAD_USERNAME"
+
+      - name: Catalogar Lead - Modulo 3 (CRM)
+        env:
+          LEAD_USERNAME: ${{ github.event.inputs.lead_username }}
+        run: |
+          cd vendedor
+          node 3-cataloger.js add "$LEAD_USERNAME"
+
+      - name: Salvar dados no repositorio
+        run: |
+          git config --global user.email "vendedor-ai@prismatic-labs.com"
+          git config --global user.name "Vendedor AI Bot"
+          git add vendedor/data/
+          git diff --staged --quiet || git commit -m "feat: Lead @${{ github.event.inputs.lead_username }} analisado e catalogado"
+          git push || true
