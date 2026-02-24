@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JARVIS - Prismatic Labs Central</title>
+    <style>
+        :root {
+            --neon-blue: #00f2ff;
+            --neon-purple: #bc13fe;
+            --dark-bg: #0a0a0b;
+            --card-bg: #16161a;
+            --text: #e0e0e0;
+        }
+
+        body {
+            background-color: var(--dark-bg);
+            color: var(--text);
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            margin: 0;
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 260px;
+            background-color: var(--card-bg);
+            border-right: 1px solid #333;
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--neon-blue);
+            margin-bottom: 40px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px var(--neon-blue);
+        }
+
+        .nav-item {
+            padding: 12px;
+            margin-bottom: 8px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-item:hover {
+            background-color: #25252b;
+            color: var(--neon-blue);
+        }
+
+        .nav-item.active {
+            background-color: #25252b;
+            border-left: 4px solid var(--neon-blue);
+            color: var(--neon-blue);
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            padding: 30px;
+            overflow-y: auto;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .status-badge {
+            background: rgba(0, 242, 255, 0.1);
+            border: 1px solid var(--neon-blue);
+            color: var(--neon-blue);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 12px;
+            text-transform: uppercase;
+        }
+
+        /* Grid */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid #333;
+            transition: 0.3s;
+        }
+
+        .card:hover {
+            border-color: var(--neon-purple);
+            transform: translateY(-5px);
+        }
+
+        .card-title {
+            font-size: 14px;
+            color: #888;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+
+        .card-value {
+            font-size: 32px;
+            font-weight: bold;
+            color: #fff;
+        }
+
+        /* Terminal/Console */
+        .console {
+            background-color: #000;
+            border-radius: 8px;
+            padding: 15px;
+            font-family: 'Courier New', Courier, monospace;
+            height: 200px;
+            overflow-y: auto;
+            margin-top: 30px;
+            border: 1px solid #333;
+            font-size: 13px;
+        }
+
+        .console-line {
+            margin-bottom: 5px;
+        }
+
+        .console-line.info { color: var(--neon-blue); }
+        .console-line.success { color: #00ff00; }
+        .console-line.cmd { color: #fff; }
+
+        /* Leads Table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th {
+            text-align: left;
+            padding: 12px;
+            border-bottom: 1px solid #333;
+            color: #888;
+            font-size: 12px;
+            text-transform: uppercase;
+        }
+
+        td {
+            padding: 15px 12px;
+            border-bottom: 1px solid #222;
+        }
+
+        .priority-high { color: #ff4444; }
+        .status-pill {
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 11px;
+            background: #333;
+        }
+
+        button {
+            background: linear-gradient(45deg, var(--neon-blue), var(--neon-purple));
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            opacity: 0.8;
+            box-shadow: 0 0 15px rgba(0, 242, 255, 0.4);
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="logo">JARVIS</div>
+        <div class="nav-item active">Dashboard</div>
+        <div class="nav-item">Leads & CRM</div>
+        <div class="nav-item">Instagram Bot</div>
+        <div class="nav-item">Configuracoes</div>
+        
+        <div style="margin-top: auto; font-size: 10px; color: #555;">
+            PRISMATIC LABS v2.0.4<br>
+            Custo Mensal: R$ 0,00
+        </div>
+    </div>
+
+    <div class="main-content">
+        <header>
+            <h1>Bem-vindo, Senhor Hoffmann</h1>
+            <div class="status-badge">Sistemas Online</div>
+        </header>
+
+        <div class="grid">
+            <div class="card">
+                <div class="card-title">Leads Analisados (Hoje)</div>
+                <div class="card-value">12</div>
+            </div>
+            <div class="card">
+                <div class="card-value" style="color: var(--neon-blue);">R$ 0</div>
+                <div class="card-title">Receita Mensal</div>
+            </div>
+            <div class="card">
+                <div class="card-value">3</div>
+                <div class="card-title">Follow-ups Ativos</div>
+            </div>
+        </div>
+
+        <h2 style="margin-top: 40px;">Pipeline de Prospeccao</h2>
+        <div class="card" style="padding: 0;">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Lead</th>
+                        <th>Prioridade</th>
+                        <th>Status</th>
+                        <th>Ultima Acao</th>
+                        <th>Acoes</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>@coach_performance</strong></td>
+                        <td class="priority-high">ALTA</td>
+                        <td><span class="status-pill">Novo</span></td>
+                        <td>Scout AI encontrou</td>
+                        <td><button onclick="alert('Iniciando Analise...')">Analisar</button></td>
+                    </tr>
+                    <tr>
+                        <td><strong>@ecommerce_expert</strong></td>
+                        <td class="priority-high">ALTA</td>
+                        <td><span class="status-pill">Contatado</span></td>
+                        <td>DM 1 enviada</td>
+                        <td><button style="background: #333;">Followup D3</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="console" id="jarvis-console">
+            <div class="console-line info">[SYS] Iniciando interface JARVIS...</div>
+            <div class="console-line success">[OK] Banco de dados CRM carregado.</div>
+            <div class="console-line success">[OK] Conexao com Groq AI estabelecida.</div>
+            <div class="console-line cmd">> Aguardando instrucoes...</div>
+        </div>
+        
+        <div style="margin-top: 20px; display: flex; gap: 10px;">
+            <button onclick="logToConsole('Executando Scout AI...')">Rodar Scout AI</button>
+            <button style="background: var(--card-bg); border: 1px solid #444;" onclick="logToConsole('Verificando followups pendentes...')">Verificar Followups</button>
+        </div>
+    </div>
+
+    <script>
+        function logToConsole(msg) {
+            const console = document.getElementById('jarvis-console');
+            const line = document.createElement('div');
+            line.className = 'console-line cmd';
+            line.innerText = `> ${msg}`;
+            console.appendChild(line);
+            console.scrollTop = console.scrollHeight;
+            
+            setTimeout(() => {
+                const res = document.createElement('div');
+                res.className = 'console-line info';
+                res.innerText = `[INFO] Acao em processamento via GitHub Actions...`;
+                console.appendChild(res);
+                console.scrollTop = console.scrollHeight;
+            }, 500);
+        }
+    </script>
+</body>
+</html>
