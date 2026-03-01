@@ -1,0 +1,32 @@
+{
+  "version": "2.0",
+  "tom": "Profissional + Amigavel + Levemente Descontraido",
+  "objetivo": "Fazer o cliente se sentir confortável e querer conversar/comprar",
+  "templates": [
+    {
+      "id": "abertura-consultiva",
+      "nome": "Abertura Consultiva",
+      "quando_usar": "Lead de alta prioridade, primeira abordagem",
+      "template": "Olá {nome}! 👋\n\nAcompanho seu conteúdo sobre {nicho} e percebi que você tem uma audiência engajada. Trabalho com landing pages premium que podem ajudar a converter melhor seus {produto_lead}.\n\nJá pensou em ter uma página profissional com design exclusivo? Posso te mostrar alguns cases.",
+      "followup_3dias": "E aí {nome}, conseguiu dar uma olhada na proposta? Fico à disposição para tirar dúvidas!"
+    },
+    {
+      "id": "problema-solucao",
+      "nome": "Problema -> Solução",
+      "quando_usar": "Lead com dor identificada clara",
+      "template": "Fala {nome}! \ud83d\ude80\n\nNotei que {dor_identificada}. Isso é bem comum em quem trabalha com {nicho}.\n\nCriamos landing pages dark mode com design premium que resolvem exatamente isso. Quer ver como funciona?\n\nTenho alguns exemplos que podem te inspirar!",
+      "followup_3dias": "{nome}, ainda tá aí pensando? Sem pressão! Se quiser, posso mandar um exemplo rápido pelo direct mesmo."
+    },
+    {
+      "id": "social-proof",
+      "nome": "Prova Social",
+      "quando_usar": "Lead cético, precisa ver resultados",
+      "template": "E aí {nome}! \ud83d\ude4c\n\nVi que você tá arrebentando no {nicho}! Trabalho com landing pages para infoprodutores e nossos clientes estão convertendo entre 15-25% (mercado é 5-10%).\n\nSerá que uma página profissional ajudaria a escalar seus resultados?",
+      "followup_3dias": "Opa {nome}! Se quiser, mando o link do nosso portfólio. Acho que vai gostar do estilo!"
+    }
+  ],
+  "followups": {
+    "dia_7": "Opa {nome}, tudo certo? \ud83d\ude0a Não sei se viu a mensagem anterior, mas fica o convite: se precisar de ajuda com landing page, só chamar!",
+    "dia_14": "Fala {nome}! Só passando pra deixar meu contato caso precise no futuro. Sucesso aí com o {nicho}! \ud83d\ude80"
+  }
+}
