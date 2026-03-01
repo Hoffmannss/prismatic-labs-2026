@@ -1,0 +1,68 @@
+{
+  "version": "2.0",
+  "updatedAt": "2026-03-01",
+  "empresa": "Prismatic Labs",
+  "instagram": "@labs.prismatic",
+  "produto": "Landing Pages Premium Dark Mode + Neon",
+  "precificacao": {"essencial": 1497, "premium": 2497, "elite": 3997, "pacote3": 5997},
+  "nichos": [
+    {
+      "id": "infoprodutores-financas",
+      "nome": "Infoprodutores - Financas & Investimentos",
+      "prioridade": "MAXIMA",
+      "ticketMedio": 2497,
+      "perfil": {"seguidoresMin": 10000, "seguidoresMax": 150000, "engagement": 3},
+      "keywords": ["investimentos", "financas", "renda passiva", "cripto", "acoes"],
+      "hashtags": ["#investimentos", "#financaspessoais", "#rendapassiva"],
+      "dores": ["Landing page genérica", "Baixa conversão", "Design ultrapassado"]
+    },
+    {
+      "id": "infoprodutores-saude",
+      "nome": "Infoprodutores - Saude & Bem-Estar",
+      "prioridade": "MAXIMA",
+      "ticketMedio": 2497,
+      "perfil": {"seguidoresMin": 10000, "seguidoresMax": 150000, "engagement": 3},
+      "keywords": ["emagrecimento", "fitness", "nutricao", "treino", "saude"],
+      "hashtags": ["#emagrecimento", "#fitness", "#saudavel"],
+      "dores": ["Página sem credibilidade", "Não transmite autoridade", "Visual fraco"]
+    },
+    {
+      "id": "infoprodutores-marketing",
+      "nome": "Infoprodutores - Marketing Digital",
+      "prioridade": "MAXIMA",
+      "ticketMedio": 2497,
+      "perfil": {"seguidoresMin": 10000, "seguidoresMax": 150000, "engagement": 3},
+      "keywords": ["marketing", "trafego pago", "vendas", "copywriting"],
+      "hashtags": ["#marketingdigital", "#trafegopago", "#vendasonline"],
+      "dores": ["Landing page que não converte", "Funil mal estruturado", "Falta profissionalismo"]
+    },
+    {
+      "id": "ecommerce-premium",
+      "nome": "E-commerce Premium",
+      "prioridade": "MAXIMA",
+      "ticketMedio": 2997,
+      "perfil": {"seguidoresMin": 8000, "seguidoresMax": 100000, "engagement": 2.5},
+      "keywords": ["loja online", "ecommerce", "moda", "cosmeticos", "loja virtual"],
+      "hashtags": ["#ecommerce", "#lojavirtual", "#modafeminina"],
+      "dores": ["Páginas de produto genéricas", "Baixa conversão em lançamentos", "Design não profissional"]
+    },
+    {
+      "id": "agencias-digitais",
+      "nome": "Agências & Freelancers Digitais",
+      "prioridade": "ALTA",
+      "ticketMedio": 1997,
+      "perfil": {"seguidoresMin": 5000, "seguidoresMax": 50000, "engagement": 3},
+      "keywords": ["agencia", "social media", "designer", "desenvolvedor", "freelancer"],
+      "hashtags": ["#agenciadigital", "#socialmedia", "#webdesign"],
+      "dores": ["Portfólio desorganizado", "Falta de credibilidade", "Site amador"]
+    }
+  ],
+  "scoring": {
+    "seguidores": {"10k-50k": 20, "50k-100k": 30, "100k+": 40},
+    "engagement": {">5%": 20, "3-5%": 15, "<3%": 5},
+    "linkNaBio": 10,
+    "storiesAtivos": 10,
+    "postsRecentes": 10,
+    "bioOtimizada": 10
+  }
+}
