@@ -1,0 +1,55 @@
+name: Mission Control - Orchestrator Polling 24/7
+
+on:
+  schedule:
+    # Executa a cada 15 minutos, 24/7
+    - cron: '*/15 * * * *'
+  
+  workflow_dispatch:
+    # Permite execução manual para testes
+
+jobs:
+  orchestrate:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      
+      - name: Install dependencies
+        run: |
+          cd jarvis
+          npm install
+      
+      - name: Run Orchestrator
+        env:
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+        run: |
+          cd jarvis
+          node orchestrator.js
+      
+      - name: Commit Mission Control updates
+        run: |
+          git config --global user.name "JARVIS Orchestrator"
+          git config --global user.email "jarvis@prismatic-labs.com"
+          git add jarvis/mission-control.json
+          git add vendedor/data/crm.json || true
+          git diff --staged --quiet || git commit -m "chore: Mission Control polling - ÚLTIMA EXECUÇÃO: $(date +'%Y-%m-%d %H:%M:%S')"
+          git push || true
+      
+      - name: Upload logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: orchestrator-logs-${{ github.run_number }}
+          path: |
+            jarvis/mission-control.json
+            vendedor/data/crm.json
+          retention-days: 7
