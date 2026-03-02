@@ -1,0 +1,69 @@
+{
+  "version": "1.0.0",
+  "lastUpdate": null,
+  "agents": {
+    "jarvis": {
+      "role": "orchestrator",
+      "status": "active",
+      "description": "Coordenador chefe - delega tarefas e monitora agentes",
+      "lastActivity": null
+    },
+    "scout": {
+      "role": "prospector",
+      "status": "idle",
+      "description": "Especialista em encontrar leads qualificados (15 por execução)",
+      "lastActivity": null,
+      "metrics": {
+        "leadsGenerated": 0,
+        "successRate": 0
+      }
+    },
+    "analyzer": {
+      "role": "analyst",
+      "status": "idle",
+      "description": "Analisa perfis de leads e calcula score de prioridade",
+      "lastActivity": null,
+      "metrics": {
+        "profilesAnalyzed": 0,
+        "averageScore": 0
+      }
+    },
+    "copywriter": {
+      "role": "content_creator",
+      "status": "idle",
+      "description": "Cria mensagens personalizadas para cada lead",
+      "lastActivity": null,
+      "metrics": {
+        "messagesCreated": 0,
+        "approvalRate": 0
+      }
+    },
+    "reviewer": {
+      "role": "quality_control",
+      "status": "idle",
+      "description": "Revisa DMs antes de aprovar para envio",
+      "lastActivity": null,
+      "metrics": {
+        "messagesReviewed": 0,
+        "rejectionRate": 0
+      }
+    },
+    "cataloger": {
+      "role": "crm_manager",
+      "status": "idle",
+      "description": "Organiza leads no CRM e Notion",
+      "lastActivity": null,
+      "metrics": {
+        "leadsCataloged": 0
+      }
+    }
+  },
+  "tasks": [],
+  "completedTasks": [],
+  "config": {
+    "pollingInterval": 900,
+    "maxConcurrentTasks": 3,
+    "notifyOnErrors": true,
+    "autoApprove": false
+  }
+}
