@@ -4,7 +4,7 @@ on:
   schedule:
     # Roda todo dia as 08:00 BRT (11:00 UTC)
     - cron: '0 11 * * *'
-  workflow_dispatch: # Permite rodar manualmente pelo GitHub UI
+  workflow_dispatch:
 
 jobs:
   followup:
@@ -36,6 +36,14 @@ jobs:
         env:
           GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
         run: node 3-cataloger.js report
+
+      - name: Sincronizar com Notion
+        env:
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+          NOTION_API_KEY: ${{ secrets.NOTION_API_KEY }}
+          NOTION_DATABASE_ID: ${{ secrets.NOTION_DATABASE_ID }}
+        run: node 9-notion-sync.js sync
+        continue-on-error: true  # Nao falha se Notion nao configurado
 
       - name: Commit dados atualizados
         run: |

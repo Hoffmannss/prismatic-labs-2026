@@ -49,7 +49,7 @@ function analyzeAndPrepare(args) {
   }
 
   log('\n[STEP 3/4] Revisando qualidade da mensagem...', C.yellow);
-  runModule('7-reviewer.js', [clean]); // Nao aborta se falhar
+  runModule('7-reviewer.js', [clean]);
 
   log('\n[STEP 4/4] Adicionando ao CRM...', C.yellow);
   runModule('3-cataloger.js', ['add', clean]);
@@ -63,7 +63,7 @@ function analyzeAndPrepare(args) {
 
 function runScout(args) {
   const nicho = args[0] || 'api-automacao';
-  const qtd = args[1] || '8';
+  const qtd   = args[1] || '8';
   log(`\n${'='.repeat(60)}`, C.magenta);
   log(`  SCOUT AI \u2014 GUIA DE PROSPEC\u00c7\u00c3O`, C.bright);
   log(`${'='.repeat(60)}`, C.magenta);
@@ -87,7 +87,7 @@ function markSent(username) {
 
 function updateStatus(username, status, nota) {
   const clean = username?.replace('@', '');
-  const args = ['status', clean, status];
+  const args  = ['status', clean, status];
   if (nota) args.push(nota);
   runModule('3-cataloger.js', args);
 }
@@ -103,43 +103,52 @@ function listLeads(f) {
   runModule('3-cataloger.js', f ? ['list', f] : ['list']);
 }
 
+function runNotionSync(subcmd) {
+  log(`\n${'='.repeat(60)}`, C.magenta);
+  log(`  NOTION SYNC`, C.bright);
+  log(`${'='.repeat(60)}`, C.magenta);
+  runModule('9-notion-sync.js', [subcmd || 'sync']);
+}
+
 function showHelp() {
   log(`\n${'='.repeat(60)}`, C.cyan);
-  log(`  PRISMATIC LABS \u2014 VENDEDOR AI v1.4`, C.bright);
+  log(`  PRISMATIC LABS \u2014 VENDEDOR AI v1.5`, C.bright);
   log(`${'='.repeat(60)}`, C.cyan);
   log(`\nCOMANDOS:`);
   log(`  scout    [nicho]                           -> Guia de prospeccao do dia`, C.green);
-  log(`           nichos: api-automacao | api-trafego | api-dev | api-crm`);
-  log(`                   lp-infoprodutor | lp-ecommerce`);
   log(`  analyze  @user "bio" seg posts              -> Analisa + gera + REVISA mensagem`, C.green);
   log(`  analyze  @user "bio" seg posts "desc|posts" -> Com analise de posts \u2728`, C.green);
   log(`  sent     @username                         -> Marca enviado + agenda followup`, C.green);
   log(`  followup                                   -> Followups pendentes do dia`, C.green);
-  log(`  status   @username [status] "nota"          -> respondeu/em_negociacao/fechado/perdido`, C.green);
+  log(`  status   @username [status] "nota"          -> Atualiza status do lead`, C.green);
+  log(`  notion   [setup|sync|status]               -> Sincroniza CRM com Notion \u2728`, C.green);
+  log(`  dashboard                                  -> Sobe o dashboard web`, C.green);
   log(`  report                                     -> Pipeline completo`, C.green);
   log(`  list     [filtro]                          -> Lista leads`, C.green);
   log(`\nPIPELINE DO ANALYZE (4 passos):`);
-  log(`  1. Analyzer  -> detecta produto + score + analise de posts`, C.cyan);
+  log(`  1. Analyzer   -> detecta produto + score + analise de posts`, C.cyan);
   log(`  2. Copywriter -> gera 3 variacoes de DM com few-shot`, C.cyan);
-  log(`  3. Reviewer  -> avalia qualidade e melhora se necessario \u2728`, C.cyan);
-  log(`  4. Cataloger -> salva no CRM JSON`, C.cyan);
+  log(`  3. Reviewer   -> avalia qualidade e melhora se necessario`, C.cyan);
+  log(`  4. Cataloger  -> salva no CRM JSON`, C.cyan);
   log(`\nFLUXO DIARIO:`);
   log(`  Manha  -> node 5-orchestrator.js followup`, C.yellow);
   log(`  Dia    -> scout + analyze + enviar DM + sent`, C.yellow);
-  log(`  Noite  -> node 5-orchestrator.js report`, C.yellow);
+  log(`  Noite  -> notion sync + report`, C.yellow);
   log(`${'='.repeat(60)}\n`, C.cyan);
 }
 
 const command = process.argv[2];
-const args = process.argv.slice(3);
+const args    = process.argv.slice(3);
 
 switch(command) {
-  case 'analyze':  analyzeAndPrepare(args); break;
-  case 'scout':    runScout(args); break;
-  case 'sent':     markSent(args[0]); break;
-  case 'followup': runFollowup(); break;
-  case 'status':   updateStatus(args[0], args[1], args[2]); break;
-  case 'report':   showReport(); break;
-  case 'list':     listLeads(args[0]); break;
-  default:         showHelp();
+  case 'analyze':   analyzeAndPrepare(args); break;
+  case 'scout':     runScout(args); break;
+  case 'sent':      markSent(args[0]); break;
+  case 'followup':  runFollowup(); break;
+  case 'status':    updateStatus(args[0], args[1], args[2]); break;
+  case 'report':    showReport(); break;
+  case 'list':      listLeads(args[0]); break;
+  case 'notion':    runNotionSync(args[0]); break;
+  case 'dashboard': runModule('8-dashboard.js', []); break;
+  default:          showHelp();
 }
