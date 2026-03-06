@@ -16,6 +16,24 @@ const analysisFile = path.join(__dirname, '..', 'data', 'leads', `${username}_an
 const templates = JSON.parse(fs.readFileSync(path.join(__dirname, 'config', 'copywriting-templates.json'), 'utf8'));
 const produtos = JSON.parse(fs.readFileSync(path.join(__dirname, 'data', 'produtos.json'), 'utf8')).produtos;
 
+// Sanitiza newlines literais dentro de strings JSON (modelo as gera sem escaping)
+function sanitizeJSON(str) {
+  let inString = false;
+  let escaped = false;
+  let result = '';
+  for (let i = 0; i < str.length; i++) {
+    const c = str[i];
+    if (escaped) { result += c; escaped = false; continue; }
+    if (c === '\\') { escaped = true; result += c; continue; }
+    if (c === '"') { inString = !inString; result += c; continue; }
+    if (inString && c === '\n') { result += '\\n'; continue; }
+    if (inString && c === '\r') { result += '\\r'; continue; }
+    if (inString && c === '\t') { result += '\\t'; continue; }
+    result += c;
+  }
+  return result;
+}
+
 async function generateMessage() {
   console.log(`\n[COPYWRITER] Gerando mensagem para: @${username}`);
 
@@ -39,18 +57,17 @@ async function generateMessage() {
     const objecoesStr = api.objecoes.map(o => `"${o.objecao}" -> "${o.resposta}"`).join('\n');
     contexto_produto = `PRODUTO: Lead Normalizer API
 URL: ${api.url_landing}
-Tagline: ${api.tagline_pt}
 O que faz: ${api.one_liner}
 USPs: ${api.usp.slice(0, 3).join(' | ')}
 Precos: Free (100 req/mes, sem cartao), Starter $29/mes, Pro $79/mes
 Objecoes:\n${objecoesStr}
-Tom: dev para dev, direto, sem pitch formal, parece mensagem de colega`;
+Tom: dev para dev, direto, parece mensagem de colega`;
   } else {
     contexto_produto = `PRODUTO: Landing Page Premium Dark Mode + Neon
 O que faz: LP de alta conversao para infoprodutores
 Precos: R$1.497 a R$5.997
 Diferenciais: dark mode exclusivo, conversao 15-25% vs media 5-10%, entrega 10-15 dias
-Tom: aspiracional, focado em resultado, parece conselho de colega que entende do mercado`;
+Tom: aspiracional, focado em resultado`;
   }
 
   // ---- FEW-SHOT EXAMPLES ----
@@ -58,48 +75,31 @@ Tom: aspiracional, focado em resultado, parece conselho de colega que entende do
   const fewShot = templateGroup
     .flatMap(t => (t.mensagens_exemplo || []).slice(0, 2))
     .slice(0, 4)
-    .map((m, i) => `=== Exemplo ${i + 1} (SIGA ESTE FORMATO) ===\n${m}`)
+    .map((m, i) => `=== Exemplo ${i + 1} ===\n${m}`)
     .join('\n\n');
 
   // ---- CONTEXTO DE POSTS ----
   const postsContext = ap.tem_posts_analisados
-    ? `\nINSIGHTS DOS POSTS (use para personalizar a mensagem 1):
+    ? `\nINSIGHTS DOS POSTS:
 - Ferramentas: ${(ap.ferramentas_mencionadas || []).join(', ') || 'nenhuma'}
-- Dores nos posts: ${(ap.dores_identificadas || []).join(' | ') || 'nenhuma'}
+- Dores: ${(ap.dores_identificadas || []).join(' | ') || 'nenhuma'}
 - Oportunidades: ${(ap.oportunidades || []).join(' | ') || 'nenhuma'}
 - GANCHO IDEAL: ${ap.gancho_ideal || 'nenhum'}
 
-Instrucao: mensagem_1 DEVE abrir com o gancho ideal acima.`
+REGRA: mensagem_1 DEVE abrir com o gancho ideal acima.`
     : '';
 
-  // ---- MODELO DE ESTRUTURA IDEAL ----
-  const estruturaIdealAPI = `ESTRUTURA OBRIGATORIA DE CADA MENSAGEM (3 partes):
-
-PARTE 1 - HOOK (1 linha): Referencia especifica ao problema/ferramenta/post do lead.
-Exemplo: "Seus flows do Make quebravam quando o lead digitava (11) 98765-4321 em vez de 11987654321?"
-
-PARTE 2 - VALOR (1-2 linhas): O que a API faz + beneficio concreto + prova (plano free/velocidade/facilidade).
-Exemplo: "Fiz uma API que normaliza qualquer formato BR para E.164 automaticamente — plug direto no Make ou n8n. Plano free sem cartao."
-
-PARTE 3 - PERGUNTA (1 linha): Pergunta de resposta simples (sim/nao ou 1 palavra).
-Exemplo: "Vale testar?"
-
-CADA MENSAGEM DEVE TER AS 3 PARTES. Mensagem de 1 so linha e INVALIDA.`;
-
-  const estruturaIdealLP = `ESTRUTURA OBRIGATORIA DE CADA MENSAGEM (3 partes):
-
-PARTE 1 - HOOK (1 linha): Referencia especifica ao problema de conversao ou lancamento do lead.
-Exemplo: "Qual a conversao atual da sua pagina de captura?"
-
-PARTE 2 - VALOR (1-2 linhas): O que voce entrega + resultado concreto + diferencial.
-Exemplo: "Faco LP dark mode premium pra infoprodutores — clientes chegando a 22% de conversao vs media de 6%."
-
-PARTE 3 - PERGUNTA (1 linha): Pergunta de resposta simples.
-Exemplo: "Posso te mostrar um case do seu nicho?"
-
-CADA MENSAGEM DEVE TER AS 3 PARTES. Mensagem de 1 so linha e INVALIDA.`;
-
-  const estruturaIdeal = isAPI ? estruturaIdealAPI : estruturaIdealLP;
+  const estruturaIdeal = isAPI
+    ? `ESTRUTURA OBRIGATORIA (3 partes, CADA mensagem deve ter as 3):
+[HOOK] 1 linha especifica ao problema do lead (ex: "Seus flows do Make quebravam com telefone em formato errado?")
+[VALOR] 1-2 linhas: o que a API resolve + prova concreta (ex: "Fiz uma API: qualquer formato BR -> E.164 em <50ms, pronta pro Make. Free plan sem cartao.")
+[PERGUNTA] 1 linha simples (ex: "Vale testar?")
+MINIMO: 3 linhas. Mensagem de 1 linha = INVALIDO.`
+    : `ESTRUTURA OBRIGATORIA (3 partes, CADA mensagem deve ter as 3):
+[HOOK] 1 linha sobre conversao ou lancamento do lead
+[VALOR] 1-2 linhas: resultado concreto (ex: "Faco LP dark mode: clientes chegando a 22% vs media 6%")
+[PERGUNTA] 1 linha simples
+MINIMO: 3 linhas. Mensagem de 1 linha = INVALIDO.`;
 
   const prompt = `Voce e o melhor copywriter do Brasil para vendas B2B via DM no Instagram.
 
@@ -107,42 +107,37 @@ ${contexto_produto}
 
 DADOS DO LEAD:
 - Nicho: ${a.nicho}
-- Tipo de negocio: ${a.tipo_negocio}
-- Problema principal: ${a.problema_principal}
-- Nivel de consciencia: ${a.nivel_consciencia}
-- Angulo de abordagem: ${a.angulo_abordagem}
-- Objecoes previstas: ${JSON.stringify(a.objecoes_previstas)}
-- Motivo do produto ser ideal: ${a.motivo_produto}
+- Tipo: ${a.tipo_negocio}
+- Problema: ${a.problema_principal}
+- Consciencia: ${a.nivel_consciencia}
+- Angulo: ${a.angulo_abordagem}
+- Objecoes: ${JSON.stringify(a.objecoes_previstas)}
+- Motivo produto: ${a.motivo_produto}
 - Prioridade: ${a.prioridade}
 ${postsContext}
 
 ${estruturaIdeal}
 
-EXEMPLOS DE QUALIDADE (siga exatamente este estilo e comprimento):
+EXEMPLOS (siga este estilo e comprimento):
 ${fewShot}
 
-REGRAS ABSOLUTAS:
-1. NUNCA coloque @handle no corpo da mensagem
-2. NUNCA gere mensagem de 1 so linha — minimo 3 linhas (hook + valor + pergunta)
-3. NAO mencione preco na primeira mensagem
-4. NAO comece com "Vi seu perfil", "Parabens", "Notei que" — soa falso
-5. Termine SEMPRE com pergunta de resposta curta
-6. Tom: colega que descobriu algo util — NUNCA vendedor formal
-7. Followups: 2-3 linhas, naturais, sem pressao, sem "ultima chance" dramatico
+REGRAS FINAIS:
+1. NUNCA coloque @handle no texto da mensagem
+2. NAO comece com "Vi seu perfil", "Parabens", "Notei que"
+3. Tom: colega util, nao vendedor
+4. Followups: 2-3 linhas naturais, sem @handle
 
-GERE 3 VARIACOES em JSON:
+Retorne SOMENTE o JSON (sem markdown, sem backticks, sem texto fora do JSON):
 {
-  "mensagem_1": {"texto": "linha 1\n\nlinha 2\n\nlinha 3", "angulo": "...", "temperatura": "direta/suave/curiosidade"},
-  "mensagem_2": {"texto": "linha 1\n\nlinha 2\n\nlinha 3", "angulo": "...", "temperatura": "direta/suave/curiosidade"},
-  "mensagem_3": {"texto": "linha 1\n\nlinha 2\n\nlinha 3", "angulo": "...", "temperatura": "direta/suave/curiosidade"},
-  "mensagem_recomendada": "1, 2 ou 3",
-  "motivo_recomendacao": "por que esta e a melhor para este lead especifico",
-  "followup_dia_3": "2-3 linhas naturais, sem @handle, sem pressao",
-  "followup_dia_7": "2-3 linhas com resultado concreto ou valor gratuito",
-  "followup_dia_14": "2-3 linhas com oferta especifica, tom leve nao desesperado"
-}
-
-RESPONDA APENAS O JSON.`;
+  "mensagem_1": {"texto": "HOOK aqui.\n\nVALOR aqui.\n\nPERGUNTA?", "angulo": "...", "temperatura": "direta"},
+  "mensagem_2": {"texto": "HOOK aqui.\n\nVALOR aqui.\n\nPERGUNTA?", "angulo": "...", "temperatura": "suave"},
+  "mensagem_3": {"texto": "HOOK aqui.\n\nVALOR aqui.\n\nPERGUNTA?", "angulo": "...", "temperatura": "curiosidade"},
+  "mensagem_recomendada": "1",
+  "motivo_recomendacao": "...",
+  "followup_dia_3": "2-3 linhas naturais",
+  "followup_dia_7": "2-3 linhas com valor concreto",
+  "followup_dia_14": "2-3 linhas com oferta especifica"
+}`;
 
   try {
     const completion = await groq.chat.completions.create({
@@ -155,7 +150,10 @@ RESPONDA APENAS O JSON.`;
     const rawResponse = completion.choices[0].message.content.trim();
     const jsonMatch = rawResponse.match(/\{[\s\S]*\}/);
     if (!jsonMatch) throw new Error('Resposta nao contem JSON valido');
-    const messages = JSON.parse(jsonMatch[0]);
+
+    // Sanitizar newlines literais antes de parsear
+    const sanitized = sanitizeJSON(jsonMatch[0]);
+    const messages = JSON.parse(sanitized);
 
     const outputDir = path.join(__dirname, '..', 'data', 'mensagens');
     if (!fs.existsSync(outputDir)) fs.mkdirSync(outputDir, { recursive: true });
@@ -180,9 +178,10 @@ RESPONDA APENAS O JSON.`;
 
     console.log(`\n[COPYWRITER] Mensagens geradas!`);
     console.log(`[COPYWRITER] Produto: ${produtoLabel}${postsLabel}`);
-    console.log(`[COPYWRITER] Recomendada: #${messages.mensagem_recomendada} — ${messages.motivo_recomendacao}`);
+    console.log(`[COPYWRITER] Recomendada: #${messages.mensagem_recomendada} - ${messages.motivo_recomendacao}`);
     console.log(`\n========== COPIE E COLE ESTA MENSAGEM ==========`);
-    console.log(recMsg?.texto);
+    // Renderizar \n como quebra de linha real no terminal
+    console.log(recMsg?.texto?.replace(/\\n/g, '\n'));
     console.log(`================================================\n`);
     console.log(`[COPYWRITER] Arquivo: ${outputFile}`);
     console.log(`\nMESSAGES_OUTPUT=${JSON.stringify(result)}`);
