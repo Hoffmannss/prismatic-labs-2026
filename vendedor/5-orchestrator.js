@@ -38,22 +38,25 @@ function analyzeAndPrepare(args) {
   if (postsDesc) log(`  Posts descritos: SIM \u2728`, C.green);
   log(`${'='.repeat(60)}`, C.magenta);
 
-  log('\n[STEP 1/3] Analisando perfil' + (postsDesc ? ' + posts' : '') + '...', C.yellow);
+  log('\n[STEP 1/4] Analisando perfil' + (postsDesc ? ' + posts' : '') + '...', C.yellow);
   if (!runModule('1-analyzer.js', [clean, bio || '', followers || '0', posts || '0', postsDesc || ''])) {
     log('Falha no Analyzer. Abortando.', C.red); process.exit(1);
   }
 
-  log('\n[STEP 2/3] Gerando mensagem personalizada...', C.yellow);
+  log('\n[STEP 2/4] Gerando mensagem personalizada...', C.yellow);
   if (!runModule('2-copywriter.js', [clean])) {
     log('Falha no Copywriter. Abortando.', C.red); process.exit(1);
   }
 
-  log('\n[STEP 3/3] Adicionando ao CRM...', C.yellow);
+  log('\n[STEP 3/4] Revisando qualidade da mensagem...', C.yellow);
+  runModule('7-reviewer.js', [clean]); // Nao aborta se falhar
+
+  log('\n[STEP 4/4] Adicionando ao CRM...', C.yellow);
   runModule('3-cataloger.js', ['add', clean]);
 
   log(`\n${'='.repeat(60)}`, C.green);
   log(`  PRONTO! @${clean} processado com sucesso!`, C.bright);
-  log(`  -> Copie a mensagem acima e envie no Instagram/WhatsApp`, C.green);
+  log(`  -> Copie a MENSAGEM FINAL acima e envie no Instagram/WhatsApp`, C.green);
   log(`  -> Apos enviar: node 5-orchestrator.js sent @${clean}`, C.green);
   log(`${'='.repeat(60)}\n`, C.green);
 }
@@ -89,29 +92,40 @@ function updateStatus(username, status, nota) {
   runModule('3-cataloger.js', args);
 }
 
+function showReport() {
+  log(`\n${'='.repeat(60)}`, C.magenta);
+  log(`  VENDEDOR AI \u2014 RELATORIO DO PIPELINE`, C.bright);
+  log(`${'='.repeat(60)}`, C.magenta);
+  runModule('3-cataloger.js', ['report']);
+}
+
+function listLeads(f) {
+  runModule('3-cataloger.js', f ? ['list', f] : ['list']);
+}
+
 function showHelp() {
   log(`\n${'='.repeat(60)}`, C.cyan);
-  log(`  PRISMATIC LABS \u2014 VENDEDOR AI v1.3`, C.bright);
+  log(`  PRISMATIC LABS \u2014 VENDEDOR AI v1.4`, C.bright);
   log(`${'='.repeat(60)}`, C.cyan);
   log(`\nCOMANDOS:`);
   log(`  scout    [nicho]                           -> Guia de prospeccao do dia`, C.green);
   log(`           nichos: api-automacao | api-trafego | api-dev | api-crm`);
   log(`                   lp-infoprodutor | lp-ecommerce`);
-  log(`  analyze  @user "bio" seguidores posts       -> Analisa lead + gera DM`, C.green);
-  log(`  analyze  @user "bio" 5000 120 "desc posts"  -> Com analise de posts \u2728`, C.green);
-  log(`           desc posts: separe posts com | ex: "post1 desc | post2 desc"`);
+  log(`  analyze  @user "bio" seg posts              -> Analisa + gera + REVISA mensagem`, C.green);
+  log(`  analyze  @user "bio" seg posts "desc|posts" -> Com analise de posts \u2728`, C.green);
   log(`  sent     @username                         -> Marca enviado + agenda followup`, C.green);
   log(`  followup                                   -> Followups pendentes do dia`, C.green);
   log(`  status   @username [status] "nota"          -> respondeu/em_negociacao/fechado/perdido`, C.green);
   log(`  report                                     -> Pipeline completo`, C.green);
-  log(`  list     [filtro]                          -> Lista leads por status/prioridade`, C.green);
-  log(`\nFLUXO DIARIO IDEAL:`);
+  log(`  list     [filtro]                          -> Lista leads`, C.green);
+  log(`\nPIPELINE DO ANALYZE (4 passos):`);
+  log(`  1. Analyzer  -> detecta produto + score + analise de posts`, C.cyan);
+  log(`  2. Copywriter -> gera 3 variacoes de DM com few-shot`, C.cyan);
+  log(`  3. Reviewer  -> avalia qualidade e melhora se necessario \u2728`, C.cyan);
+  log(`  4. Cataloger -> salva no CRM JSON`, C.cyan);
+  log(`\nFLUXO DIARIO:`);
   log(`  Manha  -> node 5-orchestrator.js followup`, C.yellow);
-  log(`  Dia    -> node 5-orchestrator.js scout api-automacao`, C.yellow);
-  log(`         -> Abre Instagram, busca hashtags do guia`, C.yellow);
-  log(`         -> node 5-orchestrator.js analyze @user "bio" 8000 90 "post1|post2|post3"`, C.yellow);
-  log(`         -> Envia DM gerada manualmente`, C.yellow);
-  log(`         -> node 5-orchestrator.js sent @user`, C.yellow);
+  log(`  Dia    -> scout + analyze + enviar DM + sent`, C.yellow);
   log(`  Noite  -> node 5-orchestrator.js report`, C.yellow);
   log(`${'='.repeat(60)}\n`, C.cyan);
 }
@@ -129,6 +143,3 @@ switch(command) {
   case 'list':     listLeads(args[0]); break;
   default:         showHelp();
 }
-
-function showReport() { log('\n', C.magenta); runModule('3-cataloger.js', ['report']); }
-function listLeads(f) { runModule('3-cataloger.js', f ? ['list', f] : ['list']); }

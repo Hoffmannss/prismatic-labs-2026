@@ -1,0 +1,46 @@
+name: Daily Follow-up AI
+
+on:
+  schedule:
+    # Roda todo dia as 08:00 BRT (11:00 UTC)
+    - cron: '0 11 * * *'
+  workflow_dispatch: # Permite rodar manualmente pelo GitHub UI
+
+jobs:
+  followup:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: vendedor
+
+    steps:
+      - name: Checkout repositorio
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: vendedor/package-lock.json
+
+      - name: Instalar dependencias
+        run: npm install
+
+      - name: Verificar followups do dia
+        env:
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+        run: node 4-followup.js
+
+      - name: Gerar relatorio diario
+        env:
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+        run: node 3-cataloger.js report
+
+      - name: Commit dados atualizados
+        run: |
+          git config --local user.email "vendedor-ai@prismatic-labs.com"
+          git config --local user.name "Vendedor AI"
+          git add ../data/crm/ ../data/relatorios/ || true
+          git diff --staged --quiet || git commit -m "chore(crm): followup diario $(date +'%Y-%m-%d')"
+          git push || true
