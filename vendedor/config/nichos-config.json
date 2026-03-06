@@ -1,14 +1,24 @@
 {
-  "version": "2.0",
-  "updatedAt": "2026-03-01",
+  "version": "3.0",
+  "updatedAt": "2026-03-06",
   "empresa": "Prismatic Labs",
   "instagram": "@labs.prismatic",
-  "produto": "Landing Pages Premium Dark Mode + Neon",
-  "precificacao": {"essencial": 1497, "premium": 2497, "elite": 3997, "pacote3": 5997},
+  "produtos": {
+    "landing_page": {
+      "nome": "Landing Pages Premium Dark Mode + Neon",
+      "precificacao": {"essencial": 1497, "premium": 2497, "elite": 3997, "pacote3": 5997}
+    },
+    "lead_normalizer_api": {
+      "nome": "Lead Normalizer API",
+      "url": "https://lead-normalizer-api.onrender.com",
+      "precificacao_usd": {"free": 0, "starter": 29, "pro": 79, "enterprise": 199}
+    }
+  },
   "nichos": [
     {
       "id": "infoprodutores-financas",
       "nome": "Infoprodutores - Financas & Investimentos",
+      "produto_alvo": "landing_page",
       "prioridade": "MAXIMA",
       "ticketMedio": 2497,
       "perfil": {"seguidoresMin": 10000, "seguidoresMax": 150000, "engagement": 3},
@@ -19,6 +29,7 @@
     {
       "id": "infoprodutores-saude",
       "nome": "Infoprodutores - Saude & Bem-Estar",
+      "produto_alvo": "landing_page",
       "prioridade": "MAXIMA",
       "ticketMedio": 2497,
       "perfil": {"seguidoresMin": 10000, "seguidoresMax": 150000, "engagement": 3},
@@ -29,6 +40,7 @@
     {
       "id": "infoprodutores-marketing",
       "nome": "Infoprodutores - Marketing Digital",
+      "produto_alvo": "landing_page",
       "prioridade": "MAXIMA",
       "ticketMedio": 2497,
       "perfil": {"seguidoresMin": 10000, "seguidoresMax": 150000, "engagement": 3},
@@ -39,6 +51,7 @@
     {
       "id": "ecommerce-premium",
       "nome": "E-commerce Premium",
+      "produto_alvo": "landing_page",
       "prioridade": "MAXIMA",
       "ticketMedio": 2997,
       "perfil": {"seguidoresMin": 8000, "seguidoresMax": 100000, "engagement": 2.5},
@@ -49,12 +62,77 @@
     {
       "id": "agencias-digitais",
       "nome": "Agências & Freelancers Digitais",
+      "produto_alvo": "landing_page",
       "prioridade": "ALTA",
       "ticketMedio": 1997,
       "perfil": {"seguidoresMin": 5000, "seguidoresMax": 50000, "engagement": 3},
       "keywords": ["agencia", "social media", "designer", "desenvolvedor", "freelancer"],
       "hashtags": ["#agenciadigital", "#socialmedia", "#webdesign"],
       "dores": ["Portfólio desorganizado", "Falta de credibilidade", "Site amador"]
+    },
+    {
+      "id": "automacao-makers",
+      "nome": "Builders de Automação (Make / n8n / Zapier)",
+      "produto_alvo": "lead_normalizer_api",
+      "prioridade": "MAXIMA",
+      "ticketMedio_usd": 29,
+      "perfil": {"seguidoresMin": 500, "seguidoresMax": 50000, "engagement": 2},
+      "keywords": ["make.com", "n8n", "zapier", "automacao", "nocode", "lowcode", "workflow", "integracao"],
+      "hashtags": ["#makecom", "#n8n", "#automation", "#nocode", "#automacao"],
+      "dores": [
+        "Leads chegam com telefone em formatos diferentes quebrando o fluxo",
+        "Duplicatas poluindo o CRM e disparando sequências duplicadas",
+        "Email em maiúsculo / com espaço quebrando validação"
+      ],
+      "sinais": ["Posta screenshots de flows Make/n8n", "Fala de webhook, CRM, leads", "Bio menciona automação ou integração"]
+    },
+    {
+      "id": "agencias-trafego",
+      "nome": "Agências & Gestores de Tráfego BR",
+      "produto_alvo": "lead_normalizer_api",
+      "prioridade": "MAXIMA",
+      "ticketMedio_usd": 79,
+      "perfil": {"seguidoresMin": 2000, "seguidoresMax": 100000, "engagement": 2.5},
+      "keywords": ["trafego pago", "meta ads", "google ads", "leads", "conversao", "performance", "funil"],
+      "hashtags": ["#trafegopago", "#metaads", "#googleads", "#gestaodeleads"],
+      "dores": [
+        "Leads do Meta Ads chegam com telefone fora do padrão",
+        "Alta taxa de duplicatas em campanhas de remarketing",
+        "CRM cheio de dados sujos atrapalhando relatório de ROAS"
+      ],
+      "sinais": ["Posts sobre geração de leads BR", "Fala de funil, CRM, conversão", "Trabalha com Meta/Google Ads"]
+    },
+    {
+      "id": "devs-saas-br",
+      "nome": "Desenvolvedores & SaaS Brasileiros",
+      "produto_alvo": "lead_normalizer_api",
+      "prioridade": "ALTA",
+      "ticketMedio_usd": 79,
+      "perfil": {"seguidoresMin": 500, "seguidoresMax": 30000, "engagement": 3},
+      "keywords": ["api", "saas", "desenvolvedor", "backend", "fullstack", "startup", "webhook"],
+      "hashtags": ["#dev", "#api", "#saas", "#desenvolvedor", "#startup"],
+      "dores": [
+        "Formulário de cadastro recebe telefone em 20 formatos diferentes",
+        "Lógica de validação de telefone BR é complexa (8 vs 9 dígitos, DDDs)",
+        "Precisam de dedupe confiável sem construir do zero"
+      ],
+      "sinais": ["Bio menciona dev, API, SaaS", "Posts técnicos sobre backend ou integrações", "Fala de startup ou produto próprio"]
+    },
+    {
+      "id": "crm-consultores",
+      "nome": "Consultores de CRM & RevOps",
+      "produto_alvo": "lead_normalizer_api",
+      "prioridade": "ALTA",
+      "ticketMedio_usd": 29,
+      "perfil": {"seguidoresMin": 1000, "seguidoresMax": 30000, "engagement": 3},
+      "keywords": ["crm", "hubspot", "salesforce", "rd station", "pipedrive", "revops", "gestao de leads"],
+      "hashtags": ["#crm", "#hubspot", "#rdstation", "#revops"],
+      "dores": [
+        "Base de leads suja tornando relatórios de pipeline imprecisos",
+        "Clientes reclamam de duplicatas e números inválidos no CRM",
+        "Higienização de base é trabalho manual e caro"
+      ],
+      "sinais": ["Posts sobre CRM, pipeline, leads", "Menciona HubSpot, RD Station, Salesforce", "Fala de qualidade de dados"]
     }
   ],
   "scoring": {
@@ -63,6 +141,12 @@
     "linkNaBio": 10,
     "storiesAtivos": 10,
     "postsRecentes": 10,
-    "bioOtimizada": 10
+    "bioOtimizada": 10,
+    "sinais_api": {
+      "menciona_make_n8n_zapier": 30,
+      "menciona_crm": 20,
+      "menciona_leads_automacao": 25,
+      "bio_dev_api_saas": 25
+    }
   }
 }

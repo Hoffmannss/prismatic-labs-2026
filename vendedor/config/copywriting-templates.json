@@ -1,32 +1,76 @@
 {
-  "version": "2.0",
-  "tom": "Profissional + Amigavel + Levemente Descontraido",
-  "objetivo": "Fazer o cliente se sentir confortável e querer conversar/comprar",
-  "templates": [
+  "version": "3.0",
+  "updatedAt": "2026-03-06",
+  "tom": "Profissional + Direto + Leve",
+  "objetivo": "Abrir conversa, gerar curiosidade, converter para trial/compra",
+
+  "templates_landing_page": [
     {
-      "id": "abertura-consultiva",
-      "nome": "Abertura Consultiva",
+      "id": "lp-abertura-consultiva",
+      "nome": "LP - Abertura Consultiva",
       "quando_usar": "Lead de alta prioridade, primeira abordagem",
       "template": "Olá {nome}! 👋\n\nAcompanho seu conteúdo sobre {nicho} e percebi que você tem uma audiência engajada. Trabalho com landing pages premium que podem ajudar a converter melhor seus {produto_lead}.\n\nJá pensou em ter uma página profissional com design exclusivo? Posso te mostrar alguns cases.",
-      "followup_3dias": "E aí {nome}, conseguiu dar uma olhada na proposta? Fico à disposição para tirar dúvidas!"
+      "followup_3dias": "E aí {nome}, conseguiu dar uma olhada? Fico à disposição pra tirar dúvidas!"
     },
     {
-      "id": "problema-solucao",
-      "nome": "Problema -> Solução",
+      "id": "lp-problema-solucao",
+      "nome": "LP - Problema → Solução",
       "quando_usar": "Lead com dor identificada clara",
-      "template": "Fala {nome}! \ud83d\ude80\n\nNotei que {dor_identificada}. Isso é bem comum em quem trabalha com {nicho}.\n\nCriamos landing pages dark mode com design premium que resolvem exatamente isso. Quer ver como funciona?\n\nTenho alguns exemplos que podem te inspirar!",
+      "template": "Fala {nome}! 🚀\n\nNotei que {dor_identificada}. Isso é bem comum em quem trabalha com {nicho}.\n\nCriamos landing pages dark mode com design premium que resolvem exatamente isso. Quer ver como funciona?\n\nTenho alguns exemplos que podem te inspirar!",
       "followup_3dias": "{nome}, ainda tá aí pensando? Sem pressão! Se quiser, posso mandar um exemplo rápido pelo direct mesmo."
     },
     {
-      "id": "social-proof",
-      "nome": "Prova Social",
+      "id": "lp-social-proof",
+      "nome": "LP - Prova Social",
       "quando_usar": "Lead cético, precisa ver resultados",
-      "template": "E aí {nome}! \ud83d\ude4c\n\nVi que você tá arrebentando no {nicho}! Trabalho com landing pages para infoprodutores e nossos clientes estão convertendo entre 15-25% (mercado é 5-10%).\n\nSerá que uma página profissional ajudaria a escalar seus resultados?",
+      "template": "E aí {nome}! 🙌\n\nVi que você tá arrebentando no {nicho}! Trabalho com landing pages para infoprodutores e nossos clientes estão convertendo entre 15-25% (mercado é 5-10%).\n\nSerá que uma página profissional ajudaria a escalar seus resultados?",
       "followup_3dias": "Opa {nome}! Se quiser, mando o link do nosso portfólio. Acho que vai gostar do estilo!"
     }
   ],
-  "followups": {
-    "dia_7": "Opa {nome}, tudo certo? \ud83d\ude0a Não sei se viu a mensagem anterior, mas fica o convite: se precisar de ajuda com landing page, só chamar!",
-    "dia_14": "Fala {nome}! Só passando pra deixar meu contato caso precise no futuro. Sucesso aí com o {nicho}! \ud83d\ude80"
+
+  "templates_api": [
+    {
+      "id": "api-automacao-direto",
+      "nome": "API - Para quem faz automação (Make/n8n)",
+      "quando_usar": "Lead que posta sobre Make, n8n, Zapier ou automação",
+      "template": "Fala {nome}! Vi seus flows de {ferramenta_automacao} aqui 👀\n\nCriamos uma API que resolve um problema clássico de quem trabalha com funis BR: leads chegando com telefone em formato errado, email sujo ou duplicado.\n\nUma chamada normaliza tudo — telefone E.164 (whatsapp-ready), email limpo e hash de dedupe. Tem plano free pra testar agora.\n\nVale dar uma olhada? https://lead-normalizer-api.onrender.com",
+      "followup_3dias": "Opa {nome}! Chegou a testar? Se quiser, te mando um exemplo de como conectar no {ferramenta_automacao} em 5 minutos.",
+      "followup_7dias": "Fala {nome}! Só passando pra deixar o link dos docs caso precise no futuro: https://lead-normalizer-api.onrender.com/docs 🚀"
+    },
+    {
+      "id": "api-agencia-trafego",
+      "nome": "API - Para gestores de tráfego / agências",
+      "quando_usar": "Lead que roda Meta/Google Ads e trabalha com leads BR",
+      "template": "E aí {nome}! 👋\n\nVi que você trabalha com {nicho_agencia}. Pergunta rápida: você já perdeu leads bons porque o número de telefone chegou fora do padrão ou duplicado?\n\nDesenvolvi uma API que resolve isso na entrada: normaliza o telefone pra E.164, limpa o email e gera um hash de dedupe. Plug-and-play com Make, Zapier ou n8n.\n\nTem free plan sem cartão. Vale testar?",
+      "followup_3dias": "{nome}, o problema de lead sujo em funis BR é bem real né 😅 Se quiser ver como ficaria seu fluxo, só falar!",
+      "followup_7dias": "Fala {nome}! Deixo o link pra pricing aqui caso interesse no futuro: https://lead-normalizer-api.onrender.com/pricing"
+    },
+    {
+      "id": "api-dev-tecnico",
+      "nome": "API - Para desenvolvedores / SaaS BR",
+      "quando_usar": "Lead é dev, tem SaaS ou fala de backend/API",
+      "template": "Fala {nome}! 👨‍💻\n\nProfissional de dev aqui também. Você usa algum serviço pra normalizar telefone BR no seu projeto?\n\nLancei uma API REST que faz isso: qualquer formato de telefone BR → E.164, validação real, flag whatsapp_ready + dedupe hash. Construi porque precisava e não achei nada bom no mercado BR.\n\nDocs: https://lead-normalizer-api.onrender.com/docs — tem free plan pra testar agora.",
+      "followup_3dias": "Opa {nome}, se quiser trocar ideia sobre o projeto, só chamar. Sempre bom conectar com devs BR! 🤙"
+    },
+    {
+      "id": "api-crm-consultor",
+      "nome": "API - Para consultores de CRM / RevOps",
+      "quando_usar": "Lead trabalha com CRM, higienização de base, dados de leads",
+      "template": "Oi {nome}! Trabalha com {crm_mencionado}? 👀\n\nDesenvolvi uma API de normalização de leads BR que pode ser útil pra você e seus clientes: telefone → E.164, email clean, UTM parse e SHA-256 dedupe hash — tudo em 1 chamada.\n\nÉ exatamente o tipo de coisa que entra como step de higienização no onboarding de leads, antes de chegar no CRM sujo.\n\nQuer ver como funciona?",
+      "followup_3dias": "{nome}, se quiser demonstrar pra algum cliente, tenho free plan ativo. Só mandar o link: https://lead-normalizer-api.onrender.com"
+    }
+  ],
+
+  "respostas_objecoes_api": {
+    "caro": "O free plan tem 100 requests/mês sem cartão. Starter é $29 = ~R$150/mês. Se você perde 1 negócio/mês por lead sujo, já pagou o plano em 10x.",
+    "ja_faco_manual": "Manual tem erro e gargalo. A API faz em <50ms, 24/7, sem falha. E o batch processa 100 leads de uma vez.",
+    "construir_eu_mesmo": "DDDs de 2 dígitos, 8 vs 9 dígitos no celular, portabilidade, validação real — são semanas de dev para fazer certo. Já está pronto e testado.",
+    "nao_preciso": "Quantos leads entram no seu CRM por mês? Se mais de 50, você já tem duplicatas e números inválidos lá. Quer fazer um teste gratuito e conferir?",
+    "minha_plataforma_ja_faz": "A maioria normaliza o visual, mas não gera dedupe hash nem valida whatsapp_ready de verdade. Me conta qual você usa — posso mostrar a diferença."
+  },
+
+  "followups_genericos": {
+    "dia_7": "Opa {nome}, tudo certo? 😊 Não sei se viu a mensagem anterior, mas fica o convite: se precisar da API de normalização de leads, só chamar!",
+    "dia_14": "Fala {nome}! Só passando pra deixar meu contato caso precise no futuro. Sucesso aí com o {nicho}! 🚀"
   }
 }

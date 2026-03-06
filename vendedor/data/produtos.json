@@ -1,0 +1,125 @@
+{
+  "version": "1.0",
+  "updatedAt": "2026-03-06",
+  "empresa": "Prismatic Labs",
+  "produtos": [
+    {
+      "id": "lead-normalizer-api",
+      "nome": "Lead Normalizer API",
+      "tipo": "api",
+      "status": "ativo",
+      "url_landing": "https://lead-normalizer-api.onrender.com",
+      "url_pricing": "https://lead-normalizer-api.onrender.com/pricing",
+      "url_docs": "https://lead-normalizer-api.onrender.com/docs",
+      "url_marketplace": "https://apilayer.com/marketplace/lead-normalizer-api",
+      "tagline_en": "Turn Messy Leads Into CRM-Ready Data. Instantly.",
+      "tagline_pt": "Transforma leads bagunçados em dados prontos para o CRM. Na hora.",
+      "one_liner": "1 chamada de API normaliza telefone (E.164/WhatsApp-ready), limpa email, parseia UTMs e gera hash de dedupe — feito para funis brasileiros.",
+      "usp": [
+        "Único no mercado BR focado em telefones brasileiros (DDDs, formatos, celular vs fixo)",
+        "Flag whatsapp_ready direto no response — sem palpite",
+        "SHA-256 dedupe hash elimina duplicatas antes de sujar o CRM",
+        "Batch de 100 leads por request (plano Starter+)",
+        "Resposta em <50ms, 99.9% uptime",
+        "Plug-and-play com Make, Zapier, n8n, ActivePieces"
+      ],
+      "pricing": [
+        {
+          "plano": "Free",
+          "preco_usd": 0,
+          "requests_mes": 100,
+          "features": ["Single normalize", "Phone E.164", "Email clean", "UTM parse", "Dedupe hash"],
+          "ideal_para": "Testar, integração inicial, projetos pessoais"
+        },
+        {
+          "plano": "Starter",
+          "preco_usd": 29,
+          "preco_brl": 150,
+          "requests_mes": 5000,
+          "features": ["Tudo do Free", "Batch até 100 leads", "Priority support"],
+          "ideal_para": "Agências pequenas, freelancers, builders solo"
+        },
+        {
+          "plano": "Pro",
+          "preco_usd": 79,
+          "preco_brl": 410,
+          "requests_mes": 25000,
+          "features": ["Tudo do Starter", "Webhooks", "Analytics dashboard"],
+          "ideal_para": "Agências médias, SaaS com formulários"
+        },
+        {
+          "plano": "Enterprise",
+          "preco_usd": 199,
+          "preco_brl": 1030,
+          "requests_mes": "Unlimited",
+          "features": ["Tudo do Pro", "SLA 99.9%", "Suporte dedicado 24/7"],
+          "ideal_para": "Grandes operações, alto volume de leads"
+        }
+      ],
+      "icp": {
+        "primario": [
+          "Agências de marketing digital que rodam funis de captação no Brasil",
+          "Builders de automação (Make.com, n8n, Zapier) que integram CRMs",
+          "Desenvolvedores de SaaS brasileiro com formulários de cadastro",
+          "Growth hackers e especialistas em tráfego pago/CRO"
+        ],
+        "secundario": [
+          "Gestores de tráfego com clientes no Brasil",
+          "Consultores de CRM e automação",
+          "Times de SDR/vendas com alto volume de leads inbound"
+        ],
+        "sinais_no_instagram": [
+          "Fala sobre Make.com, n8n, Zapier na bio ou posts",
+          "Menciona CRM (HubSpot, RD Station, Salesforce)",
+          "Posts sobre automação de marketing ou funis",
+          "Agência de performance/tráfego pago",
+          "Dev que fala de APIs, integrações, webhooks"
+        ]
+      },
+      "objecoes": [
+        {
+          "objecao": "Já faço isso manualmente",
+          "resposta": "Manual tem erro humano e gargalo. 40% dos leads BR chegam com formato de telefone errado. Nossa API faz isso em <50ms, sem falha, 24h. Quanto vale 1h do seu time vs R$150/mês?"
+        },
+        {
+          "objecao": "É caro",
+          "resposta": "Free plan tem 100 requests/mês, zero custo, sem cartão. Starter é $29 = R$150/mês. Se você perde 1 negócio por mês por lead sujo, você já pagou o plano 10 vezes."
+        },
+        {
+          "objecao": "Não sei se preciso disso",
+          "resposta": "Quantos leads entram no seu CRM por mês? Se mais de 50, você já tem duplicatas e números inválidos lá dentro agora. Quer fazer um teste gratuito e ver a diferença?"
+        },
+        {
+          "objecao": "Vou construir eu mesmo",
+          "resposta": "DDDs de 2 dígitos, 8 vs 9 dígitos no celular, portabilidade, validação de email real — são semanas de dev para fazer certo. Já está pronto, testado e rodando."
+        },
+        {
+          "objecao": "Minha plataforma já faz isso",
+          "resposta": "A maioria normaliza o formato visual, mas não gera dedupe hash nem valida se o número é whatsapp_ready de verdade. Me conta qual plataforma você usa — posso te mostrar a diferença."
+        }
+      ],
+      "casos_uso": [
+        "Webhook de formulário → Lead Normalizer → Notion CRM",
+        "Make.com: Typeform → normalize → ActiveCampaign",
+        "n8n: RD Station → normalize → deduplicar → Salesforce",
+        "Zapier: Facebook Lead Ads → normalize → sequência WhatsApp",
+        "Batch clean de base legada (CSV → batch 100x → exportar limpo)"
+      ],
+      "concorrencia": "Praticamente zero no contexto BR. Clearbit e ZeroBounce são internacionais, caros e não entendem telefone brasileiro."
+    },
+    {
+      "id": "landing-page-premium",
+      "nome": "Landing Page Premium Dark Mode + Neon",
+      "tipo": "servico",
+      "status": "ativo",
+      "url": "https://hoffmannss.github.io/prismatic-labs-2026",
+      "tagline": "Landing Pages que Convertem 40%+",
+      "pricing": [
+        {"plano": "Essencial", "preco_brl": 1497, "prazo": "10 dias"},
+        {"plano": "Premium", "preco_brl": 2497, "prazo": "12 dias"},
+        {"plano": "Elite", "preco_brl": 3997, "prazo": "15 dias"},
+        {"plano": "Pacote 3 LPs", "preco_brl": 5997, "prazo": "20 dias"}
+      ]
+    }
+  ]
+}
