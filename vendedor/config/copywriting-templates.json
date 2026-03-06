@@ -1,76 +1,104 @@
 {
-  "version": "3.0",
+  "version": "4.0",
   "updatedAt": "2026-03-06",
-  "tom": "Profissional + Direto + Leve",
-  "objetivo": "Abrir conversa, gerar curiosidade, converter para trial/compra",
+  "tom": "Profissional + Direto + Humano — parece colega, nao vendedor",
+  "objetivo": "Abrir conversa, gerar resposta, converter para trial ou reuniao",
 
-  "templates_landing_page": [
-    {
-      "id": "lp-abertura-consultiva",
-      "nome": "LP - Abertura Consultiva",
-      "quando_usar": "Lead de alta prioridade, primeira abordagem",
-      "template": "Olá {nome}! 👋\n\nAcompanho seu conteúdo sobre {nicho} e percebi que você tem uma audiência engajada. Trabalho com landing pages premium que podem ajudar a converter melhor seus {produto_lead}.\n\nJá pensou em ter uma página profissional com design exclusivo? Posso te mostrar alguns cases.",
-      "followup_3dias": "E aí {nome}, conseguiu dar uma olhada? Fico à disposição pra tirar dúvidas!"
-    },
-    {
-      "id": "lp-problema-solucao",
-      "nome": "LP - Problema → Solução",
-      "quando_usar": "Lead com dor identificada clara",
-      "template": "Fala {nome}! 🚀\n\nNotei que {dor_identificada}. Isso é bem comum em quem trabalha com {nicho}.\n\nCriamos landing pages dark mode com design premium que resolvem exatamente isso. Quer ver como funciona?\n\nTenho alguns exemplos que podem te inspirar!",
-      "followup_3dias": "{nome}, ainda tá aí pensando? Sem pressão! Se quiser, posso mandar um exemplo rápido pelo direct mesmo."
-    },
-    {
-      "id": "lp-social-proof",
-      "nome": "LP - Prova Social",
-      "quando_usar": "Lead cético, precisa ver resultados",
-      "template": "E aí {nome}! 🙌\n\nVi que você tá arrebentando no {nicho}! Trabalho com landing pages para infoprodutores e nossos clientes estão convertendo entre 15-25% (mercado é 5-10%).\n\nSerá que uma página profissional ajudaria a escalar seus resultados?",
-      "followup_3dias": "Opa {nome}! Se quiser, mando o link do nosso portfólio. Acho que vai gostar do estilo!"
-    }
-  ],
+  "_instrucao_ao_modelo": "Use as mensagens_exemplo abaixo como referencia de QUALIDADE e TOM. Nao copie — personalize para o perfil especifico do lead. Siga o mesmo ritmo, estrutura e ausencia de @handle.",
 
   "templates_api": [
     {
-      "id": "api-automacao-direto",
-      "nome": "API - Para quem faz automação (Make/n8n)",
-      "quando_usar": "Lead que posta sobre Make, n8n, Zapier ou automação",
-      "template": "Fala {nome}! Vi seus flows de {ferramenta_automacao} aqui 👀\n\nCriamos uma API que resolve um problema clássico de quem trabalha com funis BR: leads chegando com telefone em formato errado, email sujo ou duplicado.\n\nUma chamada normaliza tudo — telefone E.164 (whatsapp-ready), email limpo e hash de dedupe. Tem plano free pra testar agora.\n\nVale dar uma olhada? https://lead-normalizer-api.onrender.com",
-      "followup_3dias": "Opa {nome}! Chegou a testar? Se quiser, te mando um exemplo de como conectar no {ferramenta_automacao} em 5 minutos.",
-      "followup_7dias": "Fala {nome}! Só passando pra deixar o link dos docs caso precise no futuro: https://lead-normalizer-api.onrender.com/docs 🚀"
+      "id": "api-make-n8n",
+      "nome": "Para builders de automacao (Make / n8n / Zapier)",
+      "quando_usar": "Lead posta sobre Make, n8n, Zapier, automacao, workflows, integracao",
+      "mensagens_exemplo": [
+        "Voce usa o Make pra capturar leads de formularios BR?\n\nCriei uma API que normaliza telefone pra E.164 automaticamente antes de ir pro CRM — resolve aquele problema de '(11) 9xxxx-xxxx' quebrando flow. Plano free sem cartao. Topa testar?",
+        "Seus flows de lead capture ja sofreram com numero de telefone em formato errado?\n\nFiz uma API que normaliza qualquer formato BR → E.164 em <50ms, pronta pra plugar no Make ou n8n. Uma linha no webhook e resolve. Quer o link da doc?",
+        "Quantos leads por mes chegam no seu CRM com telefone inutilizavel?\n\nDesenvolvi uma API de normalizacao que ja processei em producao — telefone E.164, email clean, dedupe hash. Plano free pra testar sem cartao. Vale uma olhada?"
+      ],
+      "followup_dia_3_exemplo": "Chegou a testar a API? Se quiser, te mando um exemplo de integracao com o Make em 3 passos.",
+      "followup_dia_7_exemplo": "Deixo o link da doc caso precise no futuro — tem guia especifico pra Make e n8n: https://lead-normalizer-api.onrender.com/docs",
+      "followup_dia_14_exemplo": "Ultima vez que mando isso, prometo 😄 Plano Starter subiu pra $39 semana que vem — se quiser travar no $29 atual, e so ativar essa semana. Qualquer coisa, so chamar."
     },
     {
-      "id": "api-agencia-trafego",
-      "nome": "API - Para gestores de tráfego / agências",
-      "quando_usar": "Lead que roda Meta/Google Ads e trabalha com leads BR",
-      "template": "E aí {nome}! 👋\n\nVi que você trabalha com {nicho_agencia}. Pergunta rápida: você já perdeu leads bons porque o número de telefone chegou fora do padrão ou duplicado?\n\nDesenvolvi uma API que resolve isso na entrada: normaliza o telefone pra E.164, limpa o email e gera um hash de dedupe. Plug-and-play com Make, Zapier ou n8n.\n\nTem free plan sem cartão. Vale testar?",
-      "followup_3dias": "{nome}, o problema de lead sujo em funis BR é bem real né 😅 Se quiser ver como ficaria seu fluxo, só falar!",
-      "followup_7dias": "Fala {nome}! Deixo o link pra pricing aqui caso interesse no futuro: https://lead-normalizer-api.onrender.com/pricing"
+      "id": "api-trafego-agencia",
+      "nome": "Para gestores de trafego e agencias de performance",
+      "quando_usar": "Lead roda Meta Ads, Google Ads, trabalha com leads BR em CRM",
+      "mensagens_exemplo": [
+        "Leads do Meta chegando com telefone em 10 formatos diferentes no seu CRM?\n\nFiz uma API que normaliza pra E.164 e gera hash de dedupe — voce elimina duplicatas antes de entrar no funil. Plug no Make ou Zapier em minutos. Vale dar uma olhada?",
+        "Sabe aquele lead que entra duplicado no remarketing porque o numero veio com DDD diferente?\n\nCriei uma API que resolve isso na entrada: normaliza telefone BR, limpa email e detecta duplicata por hash. Tem free plan sem cartao. Topa testar no proximo lancamento?",
+        "Qual ferramenta voce usa pra higienizar leads antes de entrar no CRM?\n\nDesenvolvi uma API que faz isso em uma chamada — formato padrao E.164, email valido, deduplicacao por SHA-256. Clientes de trafego usam como step no Make antes do RD Station. Quer ver?"
+      ],
+      "followup_dia_3_exemplo": "Lead sujo em funil BR e erosao silenciosa de ROAS. Se quiser ver como fica o step no Make, so falar.",
+      "followup_dia_7_exemplo": "Descobri que a maioria dos CRMs nao normaliza telefone de verdade — so formata visual. Posso te mostrar a diferenca rapido?",
+      "followup_dia_14_exemplo": "Ultima mensagem daqui — deixo o link do pricing caso interesse no futuro: https://lead-normalizer-api.onrender.com/pricing. Sucesso nas campanhas!"
     },
     {
-      "id": "api-dev-tecnico",
-      "nome": "API - Para desenvolvedores / SaaS BR",
-      "quando_usar": "Lead é dev, tem SaaS ou fala de backend/API",
-      "template": "Fala {nome}! 👨‍💻\n\nProfissional de dev aqui também. Você usa algum serviço pra normalizar telefone BR no seu projeto?\n\nLancei uma API REST que faz isso: qualquer formato de telefone BR → E.164, validação real, flag whatsapp_ready + dedupe hash. Construi porque precisava e não achei nada bom no mercado BR.\n\nDocs: https://lead-normalizer-api.onrender.com/docs — tem free plan pra testar agora.",
-      "followup_3dias": "Opa {nome}, se quiser trocar ideia sobre o projeto, só chamar. Sempre bom conectar com devs BR! 🤙"
+      "id": "api-dev-saas",
+      "nome": "Para desenvolvedores e fundadores de SaaS BR",
+      "quando_usar": "Lead e dev, tem produto proprio, fala de backend, API, banco de dados",
+      "mensagens_exemplo": [
+        "Voce valida telefone BR nos formularios do seu produto?\n\nConstrui uma API REST que faz isso direito: qualquer formato → E.164, flag whatsapp_ready, dedupe hash. Sem regex fragil. Free plan na doc. Topa dar uma olhada?",
+        "Quanto tempo voce gastou tentando normalizar telefone BR no seu projeto?\n\nFiz uma API especifica pra isso — 15 formatos de entrada, saida padrao E.164, validacao real de DDD e portabilidade. Construi porque precisava e nao achei nada bom no mercado. Quer testar?",
+        "Seu produto tem formulario de cadastro com telefone BR?\n\nTenho uma API pronta: 1 chamada normaliza o numero, limpa email e gera hash de dedupe. <50ms, 99.9% uptime, docs completos. Plano free pra integrar agora. Faz sentido?"
+      ],
+      "followup_dia_3_exemplo": "Se quiser trocar ideia sobre o projeto, fico a disposicao — sempre bom conectar com devs BR que constroem produto.",
+      "followup_dia_7_exemplo": "Link dos docs caso precise no futuro: https://lead-normalizer-api.onrender.com/docs — tem SDK exemplo em Node e Python.",
+      "followup_dia_14_exemplo": "Ultima tentativa 😄 Posso ativar um trial estendido de 30 dias no Starter pra voce avaliar direito. Interesse?"
     },
     {
-      "id": "api-crm-consultor",
-      "nome": "API - Para consultores de CRM / RevOps",
-      "quando_usar": "Lead trabalha com CRM, higienização de base, dados de leads",
-      "template": "Oi {nome}! Trabalha com {crm_mencionado}? 👀\n\nDesenvolvi uma API de normalização de leads BR que pode ser útil pra você e seus clientes: telefone → E.164, email clean, UTM parse e SHA-256 dedupe hash — tudo em 1 chamada.\n\nÉ exatamente o tipo de coisa que entra como step de higienização no onboarding de leads, antes de chegar no CRM sujo.\n\nQuer ver como funciona?",
-      "followup_3dias": "{nome}, se quiser demonstrar pra algum cliente, tenho free plan ativo. Só mandar o link: https://lead-normalizer-api.onrender.com"
+      "id": "api-crm-revops",
+      "nome": "Para consultores de CRM e RevOps",
+      "quando_usar": "Lead trabalha com CRM, implementa HubSpot, RD Station, Salesforce, Pipedrive",
+      "mensagens_exemplo": [
+        "Quantos clientes seus reclamam de base de leads suja no CRM?\n\nFiz uma API que entra como step de higienizacao antes do lead chegar na plataforma — telefone E.164, email limpo, dedupe hash. Uma chamada antes do webhook do CRM. Faz sentido no seu workflow?",
+        "Voce usa algum processo de normalizacao de leads antes do onboarding no HubSpot ou RD?\n\nDesenvolvi uma API especifica pra isso — resolve o problema classico de numero BR em 10 formatos diferentes sujando o CRM. Tem plano free pra testar. Vale dar uma olhada?"
+      ],
+      "followup_dia_3_exemplo": "Tinha esquecido: tem guia especifico de integracao com RD Station e HubSpot na doc. Pode ser util pra mostrar pra um cliente.",
+      "followup_dia_14_exemplo": "Ultima mensagem — deixo o link caso apareça oportunidade com cliente: https://lead-normalizer-api.onrender.com. Sucesso!"
+    }
+  ],
+
+  "templates_landing_page": [
+    {
+      "id": "lp-conversao-angulo",
+      "nome": "LP - Angulo Conversao",
+      "quando_usar": "Lead tem trafego pago ativo ou menciona lancamento",
+      "mensagens_exemplo": [
+        "Qual a conversao atual da sua pagina de captura?\n\nFaco LP dark mode premium pra infoprodutores — clientes chegando a 22% de conversao vs. media de 6%. Consigo te mostrar um case do seu nicho?",
+        "Voce ta rodando trafego pago pra uma LP generica?\n\nIsso e dinheiro deixado na mesa. Faco landing pages premium que dobram conversao com o mesmo investimento em trafego. Posso te mandar um exemplo?"
+      ],
+      "followup_dia_3_exemplo": "Posso mandar o portfolio rapido aqui no direct — tem cases de nichos parecidos com o seu.",
+      "followup_dia_14_exemplo": "Ultima oferta: consultoria gratuita de 30min pra analisar sua LP atual e apontar os 3 maiores gargalos de conversao. Topa?"
+    },
+    {
+      "id": "lp-autoridade-angulo",
+      "nome": "LP - Angulo Autoridade / Posicionamento",
+      "quando_usar": "Lead tem audiencia engajada, produto premium, ticket alto",
+      "mensagens_exemplo": [
+        "Sua oferta merece uma pagina que reflita o nivel do que voce entrega.\n\nFaco LP com design premium pra coaches de alto ticket — o tipo de pagina que faz o lead sentir que ja esta investindo antes de clicar no botao. Posso te mostrar um exemplo?",
+        "Vi que voce trabalha com mentoria de alto valor. Sua pagina de vendas comunica isso?\n\nFaco LP dark mode exclusivo que eleva percepcao de valor — clientes relatam reducao de objecao de preco depois de trocar a pagina. Quer ver um case?"
+      ],
+      "followup_dia_3_exemplo": "Fica o portfolio caso queira ver o estilo antes de decidir: posso mandar por aqui mesmo.",
+      "followup_dia_14_exemplo": "Ultimo contato — se quiser uma analise rapida da sua pagina atual sem compromisso, e so falar."
+    },
+    {
+      "id": "lp-lancamento-angulo",
+      "nome": "LP - Angulo Lancamento",
+      "quando_usar": "Lead esta em lancamento ativo ou planejando um",
+      "mensagens_exemplo": [
+        "Esta preparando lancamento? LP generica com trafego pago e dinheiro jogado fora.\n\nFaco landing pages premium que convertem 15-25% — entrega em 15 dias, tempo de sobra pro lancamento. Posso te mostrar exemplos do seu nicho?"
+      ],
+      "followup_dia_3_exemplo": "Quando e o lancamento? Dependendo da data, ainda da tempo de ter uma LP nova. So falar.",
+      "followup_dia_14_exemplo": "Se o lancamento ainda nao foi, posso fazer uma consultoria rapida pra ver o que da pra melhorar na pagina atual — sem custo."
     }
   ],
 
   "respostas_objecoes_api": {
-    "caro": "O free plan tem 100 requests/mês sem cartão. Starter é $29 = ~R$150/mês. Se você perde 1 negócio/mês por lead sujo, já pagou o plano em 10x.",
-    "ja_faco_manual": "Manual tem erro e gargalo. A API faz em <50ms, 24/7, sem falha. E o batch processa 100 leads de uma vez.",
-    "construir_eu_mesmo": "DDDs de 2 dígitos, 8 vs 9 dígitos no celular, portabilidade, validação real — são semanas de dev para fazer certo. Já está pronto e testado.",
-    "nao_preciso": "Quantos leads entram no seu CRM por mês? Se mais de 50, você já tem duplicatas e números inválidos lá. Quer fazer um teste gratuito e conferir?",
-    "minha_plataforma_ja_faz": "A maioria normaliza o visual, mas não gera dedupe hash nem valida whatsapp_ready de verdade. Me conta qual você usa — posso mostrar a diferença."
-  },
-
-  "followups_genericos": {
-    "dia_7": "Opa {nome}, tudo certo? 😊 Não sei se viu a mensagem anterior, mas fica o convite: se precisar da API de normalização de leads, só chamar!",
-    "dia_14": "Fala {nome}! Só passando pra deixar meu contato caso precise no futuro. Sucesso aí com o {nicho}! 🚀"
+    "caro": "Free plan tem 100 req/mes sem cartao. Starter e $29 (~R$150/mes). Se voce perde 1 negocio/mes por lead sujo, ja pagou o plano em 10x.",
+    "ja_faco_manual": "Manual tem erro e gargalo. A API faz em <50ms, 24/7, sem falha. Batch processa 100 leads de uma vez.",
+    "construir_eu_mesmo": "DDDs de 2 digitos, 8 vs 9 digitos no celular, portabilidade, validacao real — sao semanas de dev pra fazer certo. Ja esta pronto e testado em producao.",
+    "nao_preciso": "Quantos leads entram no seu CRM por mes? Se mais de 50, voce ja tem duplicatas e numeros invalidos la. Quer fazer o teste gratis e conferir?",
+    "minha_plataforma_ja_faz": "A maioria normaliza o visual, mas nao gera dedupe hash nem valida whatsapp_ready de verdade. Me conta qual voce usa — posso mostrar a diferenca."
   }
 }
