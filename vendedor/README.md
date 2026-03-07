@@ -13,7 +13,7 @@ npm run report
 
 ## Estrutura inicial
 
-- `src/core`: coordenacao principal do sistema e tracker estruturado.
+- `src/core`: coordenacao principal, autopilot e tracker estruturado.
 - `src/agents`: wrappers e futuros modulos profissionais dos agentes.
 - `src/services`: servicos operacionais, incluindo dashboard e Notion.
 - `src/domain`: contratos de status, eventos e regras do pipeline.
@@ -23,6 +23,8 @@ npm run report
 
 - Entry point novo em `src/core/orchestrator.js`.
 - Tracker central em `src/core/tracker.js`.
+- Dashboard migrado para `src/services/dashboard-api.js`.
+- Autopilot migrado para `src/core/autopilot.js`.
 - Status canonicos e regras de transicao em `src/domain/`.
 - Wrappers estruturados para manter compatibilidade com os modulos legados.
 

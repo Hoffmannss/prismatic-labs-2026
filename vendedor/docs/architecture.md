@@ -62,17 +62,18 @@ The current system already has enough modules to support prospecting, analysis, 
 - `11-learner.js` -> `src/agents/learner.js`
 - `12-tracker.js` -> `src/core/tracker.js` after consolidation
 
-## What changed in phase 2
+## What changed in phase 3
 
-- Tracker became the central state and event authority.
-- The orchestrator now registers leads and status transitions through the structured tracker instead of the legacy cataloger internals.
-- Compatibility wrappers preserve old commands while moving the project toward `src/`.
-- Canonical and legacy statuses are mapped together so the dashboard and historical records can coexist during migration.
+- The dashboard server logic was moved into `src/services/dashboard-api.js`.
+- The dashboard now uses the structured tracker for lead status changes and pipeline stats.
+- Autopilot orchestration was moved into `src/core/autopilot.js` and now targets the structured orchestrator.
+- Legacy entry files `8-dashboard.js` and `10-autopilot.js` are now compatibility wrappers.
+- Legacy tracker actions remain temporarily available only where dashboard compatibility still depends on them.
 
 ## Next implementation steps
 
-1. Move `8-dashboard.js` logic into `src/services/dashboard-api.js`.
-2. Merge `10-autopilot.js` and `12-tracker.js` into the new core contracts.
-3. Refactor data access into shared utilities.
-4. Align dashboard KPIs with canonical statuses.
-5. Feed learner with outcome events rather than ad hoc file reads.
+1. Absorb `12-tracker.js` semantics into the structured tracker and remove remaining legacy tracker dependence.
+2. Refactor shared file and JSON access into `src/utils/`.
+3. Align the frontend dashboard views with canonical statuses and new KPIs.
+4. Feed learner with structured outcome events rather than ad hoc file reads.
+5. Add guardrails for campaign-level throughput, send limits and quality thresholds.
