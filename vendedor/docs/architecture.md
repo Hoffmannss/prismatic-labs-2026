@@ -62,16 +62,17 @@ The current system already has enough modules to support prospecting, analysis, 
 - `11-learner.js` -> `src/agents/learner.js`
 - `12-tracker.js` -> `src/core/tracker.js` with tracker compatibility wrapper
 
-## What changed in phase 6
+## What changed in phase 7
 
-- `src/core/tracker.js` now consumes the shared file utility layer instead of duplicating file and directory helpers.
-- The dashboard frontend was aligned with canonical statuses, structured tracker KPIs and learning payloads.
-- The dashboard modal now exposes direct outcome actions tied to the structured tracker contract.
-- Pipeline health, follow-up pressure and learning insights are now visible from the main cockpit without relying on legacy field names.
+- Contract-test entrypoints were added to `package.json` using Node's native test runner.
+- Dashboard payload shaping was extracted to `src/services/dashboard-contract.js` so it can be tested without booting the HTTP server.
+- Operational guardrails were introduced in `src/domain/guardrails.js` and configured in `config/guardrails.json`.
+- Dashboard API now blocks unsafe autopilot launches and unsafe send actions when they violate score or QA rules.
+- The current autonomy layer is now governed by explicit limits instead of operator discipline alone.
 
 ## Next implementation steps
 
-1. Add explicit API contract tests for dashboard payloads and tracker transitions.
-2. Introduce send quotas, retry policy and operator guardrails before full autonomy.
-3. Add campaign-level orchestration for prioritization, sequencing and channel mix.
+1. Add transition-level tests that exercise real filesystem fixtures for tracker state movement.
+2. Add quota counters and daily send accounting, not only static limits.
+3. Add retry policy and failure backoff for external integrations.
 4. Remove compatibility shims only after the frontend and all automations stop depending on legacy file shapes.

@@ -10,7 +10,9 @@
     "report": "node src/core/orchestrator.js report",
     "dashboard": "node src/services/dashboard-api.js",
     "scout": "node src/core/orchestrator.js scout",
-    "notion:sync": "node src/core/orchestrator.js notion sync"
+    "notion:sync": "node src/core/orchestrator.js notion sync",
+    "test": "node --test test/*.test.js",
+    "test:contracts": "node --test test/*.contract.test.js"
   },
   "dependencies": {
     "dotenv": "^16.4.5",

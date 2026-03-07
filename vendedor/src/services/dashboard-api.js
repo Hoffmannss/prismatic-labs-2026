@@ -16,6 +16,8 @@ const http = require('http');
 const url = require('url');
 const { spawn } = require('child_process');
 const { loadJSON, saveJSON, readText } = require('../utils/file-store');
+const { loadGuardrails, validateAutopilotPayload, evaluateSendGuardrails } = require('../domain/guardrails');
+const { buildDashboardStatsPayload } = require('./dashboard-contract');
 
 const PORT = parseInt(process.argv[2], 10) || 3131;
 const VENDEDOR_ROOT = path.resolve(__dirname, '..', '..');
@@ -113,6 +115,7 @@ const server = http.createServer(async (req, res) => {
   if (req.method === 'GET' && pathname === '/api/settings') return json(res, loadJSON(SETTINGS_FILE, {}));
   if (req.method === 'GET' && pathname === '/api/themes') return json(res, loadJSON(THEMES_FILE, { themes: [] }));
   if (req.method === 'GET' && pathname === '/api/learning') return json(res, loadJSON(LEARNING_FILE, null));
+  if (req.method === 'GET' && pathname === '/api/guardrails') return json(res, loadGuardrails());
 
   if (req.method === 'POST' && pathname === '/api/settings') {
     const body = await bodyJSON(req);
@@ -129,6 +132,21 @@ const server = http.createServer(async (req, res) => {
       if (action === 'pending') return json(res, { ok: true, data: getPendingTracking() });
       if (action === 'stats') return json(res, { ok: true, data: getOutcomeStats() });
       if (!username || !actionMap[action]) return json(res, { ok: false, error: 'action invalida ou username ausente' }, 400);
+
+      if (actionMap[action] === 'enviada') {
+        const lead = loadDB().leads.find((item) => item.username === username);
+        if (!lead) return json(res, { ok: false, error: `Lead @${username} nao encontrado` }, 404);
+        const guardrailCheck = evaluateSendGuardrails(lead, loadGuardrails());
+        if (!guardrailCheck.ok) {
+          return json(res, {
+            ok: false,
+            error: 'Envio bloqueado por guardrails.',
+            details: guardrailCheck.errors,
+            guardrails: guardrailCheck.guardrails
+          }, 400);
+        }
+      }
+
       return json(res, { ok: true, data: updateOutcome(username, actionMap[action], extra) });
     } catch (error) {
       return json(res, { ok: false, error: error.message }, 400);
@@ -138,11 +156,30 @@ const server = http.createServer(async (req, res) => {
   if (req.method === 'POST' && pathname === '/api/autopilot') {
     const body = await bodyJSON(req);
     const settings = loadJSON(SETTINGS_FILE, {});
-    const nicho = body.nicho || settings.autopilotDefaults?.nicho || 'api-automacao';
-    const qtd = body.qtd || settings.autopilotDefaults?.qtd || 20;
-    const maxAnalyze = body.maxAnalyze || settings.autopilotDefaults?.maxAnalyze || 8;
-    startAutopilot({ nicho, qtd, maxAnalyze });
-    return json(res, { ok: true, message: `Autopilot iniciado: ${nicho} | qtd:${qtd} | max:${maxAnalyze}` });
+    const requested = {
+      nicho: body.nicho || settings.autopilotDefaults?.nicho || 'api-automacao',
+      qtd: body.qtd || settings.autopilotDefaults?.qtd || 20,
+      maxAnalyze: body.maxAnalyze || settings.autopilotDefaults?.maxAnalyze || 8
+    };
+
+    const validation = validateAutopilotPayload(requested, loadGuardrails());
+    if (!validation.ok) {
+      return json(res, {
+        ok: false,
+        error: 'Autopilot bloqueado por guardrails.',
+        details: validation.errors,
+        guardrails: validation.guardrails,
+        requested,
+        sanitized: validation.sanitized
+      }, 400);
+    }
+
+    startAutopilot(validation.sanitized);
+    return json(res, {
+      ok: true,
+      message: `Autopilot iniciado: ${validation.sanitized.nicho} | qtd:${validation.sanitized.qtd} | max:${validation.sanitized.maxAnalyze}`,
+      guardrails: validation.guardrails
+    });
   }
 
   if (req.method === 'POST' && pathname === '/api/lead/status') {
@@ -157,26 +194,9 @@ const server = http.createServer(async (req, res) => {
 
   if (req.method === 'GET' && pathname === '/api/stats') {
     const { db, pipeline } = dailyReport();
-    const leads = listLeads();
-    const byPriority = { hot: 0, warm: 0, cold: 0 };
-    leads.forEach((lead) => {
-      if (lead.prioridade in byPriority) byPriority[lead.prioridade] += 1;
-    });
-
     const learning = loadJSON(LEARNING_FILE, null);
-    return json(res, {
-      total: db.leads.length,
-      byPriority,
-      pipeline,
-      tracker: getOutcomeStats(),
-      learning: learning ? {
-        versao: learning.versao,
-        score_medio: learning.score_medio,
-        total_amostras: learning.total_amostras,
-        eventos_recentes: learning.eventos_recentes || {},
-        insights_eventos: learning.insights_eventos || []
-      } : null
-    });
+    const guardrails = loadGuardrails();
+    return json(res, buildDashboardStatsPayload({ db, pipeline, learning, guardrails }));
   }
 
   return json(res, { error: 'Not found' }, 404);
@@ -189,6 +209,6 @@ server.listen(PORT, () => {
   console.log(`${C.m}${'='.repeat(52)}${C.r}`);
   console.log(`  URL     : ${C.c}http://localhost:${PORT}${C.r}`);
   console.log('  APIs    : /api/leads /api/settings /api/themes');
-  console.log('            /api/tracker /api/autopilot /api/stats');
+  console.log('            /api/tracker /api/autopilot /api/stats /api/guardrails');
   console.log(`${C.m}${'='.repeat(52)}${C.r}\n`);
 });

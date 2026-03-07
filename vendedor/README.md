@@ -9,6 +9,8 @@ npm start
 npm run dashboard
 npm run scout
 npm run report
+npm test
+npm run test:contracts
 ```
 
 ## Estrutura inicial
@@ -16,8 +18,9 @@ npm run report
 - `src/core`: coordenacao principal, autopilot e tracker estruturado.
 - `src/agents`: wrappers e futuros modulos profissionais dos agentes, incluindo learner estruturado.
 - `src/services`: servicos operacionais, incluindo dashboard e Notion.
-- `src/domain`: contratos de status, eventos e regras do pipeline.
+- `src/domain`: contratos de status, eventos, regras do pipeline e guardrails operacionais.
 - `src/utils`: acesso compartilhado a arquivos e JSON.
+- `test`: testes de contrato iniciais para dashboard e guardrails.
 - `docs`: documentacao arquitetural.
 
 ## O que ja ficou profissional
@@ -27,6 +30,7 @@ npm run report
 - Dashboard migrado para `src/services/dashboard-api.js`.
 - Autopilot migrado para `src/core/autopilot.js`.
 - Learner migrado para `src/agents/learner.js` com consumo de eventos estruturados.
+- Guardrails operacionais configurados em `config/guardrails.json`.
 - Status canonicos e regras de transicao em `src/domain/`.
 - Wrappers estruturados para manter compatibilidade com os modulos legados.
 
