@@ -19,7 +19,7 @@ const DB_FILE = path.join(DATA_DIR, 'crm', 'leads-database.json');
 const SCOUT_DIR = path.join(DATA_DIR, 'scout');
 const ORCHESTRATOR_ENTRY = path.join(VENDEDOR_ROOT, 'src', 'core', 'orchestrator.js');
 const NOTION_SYNC_ENTRY = path.join(VENDEDOR_ROOT, 'src', 'services', 'notion-sync.js');
-const LEGACY_LEARNER = path.join(VENDEDOR_ROOT, '11-learner.js');
+const STRUCTURED_LEARNER = path.join(VENDEDOR_ROOT, 'src', 'agents', 'learner.js');
 
 const C = {
   reset:'\x1b[0m', bright:'\x1b[1m', green:'\x1b[32m',
@@ -172,18 +172,13 @@ async function main() {
     const username = (post.ownerUsername || '').toLowerCase().trim();
     if (!username || existingUsernames.has(username)) continue;
     if (!uniqueCandidates.has(username)) {
-      uniqueCandidates.set(username, {
-        username,
-        caption: post.caption || '',
-        ts: post.timestamp || ''
-      });
+      uniqueCandidates.set(username, { username, caption: post.caption || '', ts: post.timestamp || '' });
     }
   }
   console.log(`  Usernames novos (nao estao no CRM): ${uniqueCandidates.size}`);
 
   const candidates = Array.from(uniqueCandidates.values()).slice(0, Math.max(QTD * 2, MAX_ANALYZE * 3));
   const usernames = candidates.map((candidate) => candidate.username);
-
   if (usernames.length === 0) {
     console.log(`${C.yellow}  Nenhum candidato novo encontrado. Tente outro nicho ou aumente QTD.${C.reset}`);
     process.exit(0);
@@ -225,7 +220,6 @@ async function main() {
   console.log(`\n${C.cyan}[3/5] Analyze (orchestrator) em ${Math.min(queue.length, MAX_ANALYZE)} leads...${C.reset}`);
   const toAnalyze = queue.slice(0, MAX_ANALYZE);
   let okCount = 0;
-
   for (let i = 0; i < toAnalyze.length; i += 1) {
     const lead = toAnalyze[i];
     console.log(`\n${C.bright}[${i + 1}/${toAnalyze.length}] @${lead.username}${C.reset} | ${lead.followers} followers`);
@@ -244,9 +238,9 @@ async function main() {
     console.log(`\n${C.yellow}[4/5] Notion sync pulado (AUTOPILOT_SYNC_NOTION=false)${C.reset}`);
   }
 
-  console.log(`\n${C.blue}[5/5] Atualizando memoria de aprendizado (11-learner.js)...${C.reset}`);
+  console.log(`\n${C.blue}[5/5] Atualizando memoria de aprendizado estruturada...${C.reset}`);
   try {
-    const { runLearner } = require(LEGACY_LEARNER);
+    const { runLearner } = require(STRUCTURED_LEARNER);
     await runLearner();
   } catch (error) {
     console.log(`${C.yellow}[LEARNER] Aviso: ${error.message}${C.reset}`);
@@ -257,7 +251,7 @@ async function main() {
   console.log(`${C.bright}  AUTOPILOT CONCLUIDO${C.reset}`);
   console.log(`  ✓ ${queue.length} leads na queue`);
   console.log(`  ✓ ${okCount} analisados e salvos no CRM estruturado`);
-  console.log('  ✓ Memoria de aprendizado atualizada');
+  console.log('  ✓ Memoria de aprendizado estruturada atualizada');
   console.log('  → Abra o dashboard: node src/services/dashboard-api.js');
   console.log('    http://localhost:3131');
   console.log(`${C.magenta}${'='.repeat(64)}${C.reset}\n`);

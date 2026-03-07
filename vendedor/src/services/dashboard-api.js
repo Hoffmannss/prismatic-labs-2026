@@ -11,11 +11,11 @@ const {
   getOutcomeStats
 } = require('../core/tracker');
 require('dotenv').config();
-const http = require('http');
-const fs = require('fs');
 const path = require('path');
+const http = require('http');
 const url = require('url');
 const { spawn } = require('child_process');
+const { loadJSON, saveJSON, readText } = require('../utils/file-store');
 
 const PORT = parseInt(process.argv[2], 10) || 3131;
 const VENDEDOR_ROOT = path.resolve(__dirname, '..', '..');
@@ -34,19 +34,6 @@ function json(res, data, status = 200) {
     'Access-Control-Allow-Headers': 'Content-Type'
   });
   res.end(JSON.stringify(data));
-}
-
-function loadJSON(file, fallback) {
-  try {
-    return fs.existsSync(file) ? JSON.parse(fs.readFileSync(file, 'utf8')) : fallback;
-  } catch {
-    return fallback;
-  }
-}
-
-function saveJSON(file, data) {
-  fs.mkdirSync(path.dirname(file), { recursive: true });
-  fs.writeFileSync(file, JSON.stringify(data, null, 2));
 }
 
 function getLeadMessages(username) {
@@ -112,9 +99,7 @@ const server = http.createServer(async (req, res) => {
   if (req.method === 'OPTIONS') return json(res, {});
 
   if (req.method === 'GET' && pathname === '/') {
-    const html = fs.existsSync(HTML_FILE)
-      ? fs.readFileSync(HTML_FILE, 'utf8')
-      : '<h1>dashboard.html nao encontrado</h1>';
+    const html = readText(HTML_FILE, '<h1>dashboard.html nao encontrado</h1>');
     res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' });
     return res.end(html);
   }
@@ -143,9 +128,7 @@ const server = http.createServer(async (req, res) => {
       if (action === 'list') return json(res, { ok: true, data: listTrackingQueue() });
       if (action === 'pending') return json(res, { ok: true, data: getPendingTracking() });
       if (action === 'stats') return json(res, { ok: true, data: getOutcomeStats() });
-      if (!username || !actionMap[action]) {
-        return json(res, { ok: false, error: 'action invalida ou username ausente' }, 400);
-      }
+      if (!username || !actionMap[action]) return json(res, { ok: false, error: 'action invalida ou username ausente' }, 400);
       return json(res, { ok: true, data: updateOutcome(username, actionMap[action], extra) });
     } catch (error) {
       return json(res, { ok: false, error: error.message }, 400);
@@ -189,7 +172,9 @@ const server = http.createServer(async (req, res) => {
       learning: learning ? {
         versao: learning.versao,
         score_medio: learning.score_medio,
-        total_amostras: learning.total_amostras
+        total_amostras: learning.total_amostras,
+        eventos_recentes: learning.eventos_recentes || {},
+        insights_eventos: learning.insights_eventos || []
       } : null
     });
   }

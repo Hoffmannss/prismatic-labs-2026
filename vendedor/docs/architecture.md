@@ -62,19 +62,18 @@ The current system already has enough modules to support prospecting, analysis, 
 - `11-learner.js` -> `src/agents/learner.js`
 - `12-tracker.js` -> `src/core/tracker.js` with tracker compatibility wrapper
 
-## What changed in phase 4
+## What changed in phase 5
 
-- Legacy tracker semantics were absorbed into `src/core/tracker.js`.
-- Tracker now owns DM outcomes, response timing, conversion value and outcome stats in addition to pipeline status.
-- `12-tracker.js` became a thin compatibility wrapper instead of a separate source of truth.
-- `3-cataloger.js` was fixed to call the new structured CLI explicitly.
-- Dashboard tracker actions now call structured tracker functions directly instead of delegating to the legacy tracker runtime.
-- Compatibility tracker files are still written temporarily so old views can survive the migration.
+- Shared JSON and file operations were centralized in `src/utils/file-store.js`.
+- Dashboard service now uses the shared utility layer instead of repeating file access helpers.
+- Learner logic was migrated into `src/agents/learner.js` and now consumes structured tracker events in addition to message review and outcome history.
+- `11-learner.js` became a compatibility wrapper to the structured learner.
+- Autopilot now triggers the structured learner directly.
 
 ## Next implementation steps
 
-1. Move shared file and JSON operations into `src/utils/`.
-2. Align the frontend dashboard views with canonical statuses and tracker KPIs.
-3. Feed learner from structured events and outcome history.
-4. Add throughput guardrails, send quotas and quality gates for fully autonomous execution.
-5. Remove remaining compatibility shims only after the frontend and learner stop depending on legacy file shapes.
+1. Refactor `src/core/tracker.js` and remaining services to consume `src/utils/` consistently.
+2. Align the frontend dashboard views with canonical statuses and the new learning/tracker payloads.
+3. Add throughput guardrails, send quotas and quality gates for fully autonomous execution.
+4. Add campaign-level orchestration for channel mix, retry policy and prioritization.
+5. Remove compatibility shims only after the frontend and all automations stop depending on legacy file shapes.

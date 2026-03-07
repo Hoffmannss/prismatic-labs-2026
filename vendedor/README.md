@@ -14,9 +14,10 @@ npm run report
 ## Estrutura inicial
 
 - `src/core`: coordenacao principal, autopilot e tracker estruturado.
-- `src/agents`: wrappers e futuros modulos profissionais dos agentes.
+- `src/agents`: wrappers e futuros modulos profissionais dos agentes, incluindo learner estruturado.
 - `src/services`: servicos operacionais, incluindo dashboard e Notion.
 - `src/domain`: contratos de status, eventos e regras do pipeline.
+- `src/utils`: acesso compartilhado a arquivos e JSON.
 - `docs`: documentacao arquitetural.
 
 ## O que ja ficou profissional
@@ -25,6 +26,7 @@ npm run report
 - Tracker central em `src/core/tracker.js`, agora com pipeline e outcomes de DM no mesmo nucleo.
 - Dashboard migrado para `src/services/dashboard-api.js`.
 - Autopilot migrado para `src/core/autopilot.js`.
+- Learner migrado para `src/agents/learner.js` com consumo de eventos estruturados.
 - Status canonicos e regras de transicao em `src/domain/`.
 - Wrappers estruturados para manter compatibilidade com os modulos legados.
 
