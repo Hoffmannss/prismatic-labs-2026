@@ -62,16 +62,16 @@ The current system already has enough modules to support prospecting, analysis, 
 - `11-learner.js` -> `src/agents/learner.js`
 - `12-tracker.js` -> `src/core/tracker.js` with tracker compatibility wrapper
 
-## What changed in phase 10
+## What changed in phase 11
 
-- Deployment readiness entered the repo with `scripts/validate-env.js`, `.env.example` and `scripts/install.sh`.
-- The package contract now exposes `preflight`, `readiness`, `install:local` and `smoke:report` scripts to reduce ad-hoc setup.
-- README was tightened to make setup and remaining gaps explicit instead of pretending the product is already client-ready.
-- `docs/production-readiness.md` now states the honest bar for internal operation versus external commercialization.
+- Added `scripts/smoke-test.js` plus isolated fixtures to validate a realistic tracker path without permanently polluting operational data.
+- Package scripts now expose `smoke:e2e` so readiness is less theoretical and more executable.
+- Fixed the orchestrator `sent` command to consume the tracker’s richer return contract after quota governance was moved into the core.
+- Production-readiness documentation now treats smoke validation as a mandatory gate, not as a nice-to-have.
 
 ## Next implementation steps
 
-1. Add a real smoke-test flow that exercises analyze -> qa -> sent -> tracker with fixture leads.
-2. Add deployment target standardization, secrets handling and backup scripts.
-3. Add onboarding assets, operator docs and a commercial setup flow that a client can actually use without engineering help.
-4. Add observability, alerting and restore drills before claiming production-grade autonomy.
+1. Add deployment target standardization, secrets handling and backup scripts.
+2. Add onboarding assets, operator docs and a commercial setup flow that a client can actually use without engineering help.
+3. Add observability, alerting and restore drills before claiming production-grade autonomy.
+4. Add account/channel/campaign abstractions before trying to scale commercialization.

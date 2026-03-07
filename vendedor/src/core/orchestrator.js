@@ -83,8 +83,8 @@ function markSent(username) {
     log('Uso: node src/core/orchestrator.js sent @username', C.red);
     process.exit(1);
   }
-  const lead = markMessageSent(clean);
-  log(`[ORCHESTRATOR] @${clean} marcado como sent. Proximo followup: ${lead.proximo_followup}`, C.green);
+  const result = markMessageSent(clean);
+  log(`[ORCHESTRATOR] @${clean} marcado como ${result.dispatch_kind}. Proximo followup: ${result.lead.proximo_followup}`, C.green);
 }
 
 function updateStatus(username, status, nota) {

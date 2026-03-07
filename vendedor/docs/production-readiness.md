@@ -10,14 +10,15 @@ O projeto ja saiu da fase de script solto e entrou na fase de stack operacional 
 - `npm run preflight` passa com sucesso.
 - `npm run test:contracts` passa.
 - `npm run smoke:report` sobe leitura do pipeline sem quebrar.
+- `npm run smoke:e2e` valida o fluxo isolado com fixture e restaura os arquivos operacionais ao final.
 - `.env` existe com `GROQ_API_KEY` e `APIFY_API_TOKEN` validos.
 - Dashboard abre localmente e responde em `/api/stats`, `/api/guardrails` e `/api/quotas`.
-- Fluxo de analyze -> qa -> sent -> tracker foi validado com pelo menos 3 leads de teste.
+- Fluxo de analyze -> qa -> sent -> tracker foi validado com pelo menos 3 leads de teste reais depois do smoke isolado.
 
 ## Minimo para vender
 
 - Onboarding guiado para cliente nao tecnico, com setup de credenciais e checklist operacional.
-- Deploy repetivel, com script de instalacao, preflight e validacao de ambiente.
+- Deploy repetivel, com script de instalacao, preflight, smoke test e validacao de ambiente.
 - Observabilidade minima, com logs organizados, alarmes para falha de integrações e monitoramento de quota.
 - Backup e restore do diretório `data/` e das configuracoes `config/`.
 - Politica de suporte: o que a Prismatic opera, o que o cliente opera e quais limites de SLA existem.

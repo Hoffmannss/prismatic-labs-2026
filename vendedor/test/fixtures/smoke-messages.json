@@ -1,0 +1,18 @@
+{
+  "username": "smoke_fixture_alpha",
+  "prioridade": "hot",
+  "mensagens": {
+    "mensagem_recomendada": 1,
+    "mensagem_1": {
+      "angulo": "ROI e velocidade comercial",
+      "texto": "Oi! Vi sua clinica e identifiquei uma chance clara de acelerar resposta comercial com uma automacao mais enxuta."
+    }
+  },
+  "revisao": {
+    "aprovada": true,
+    "score": 94,
+    "mensagem_original": "Mensagem inicial de teste",
+    "mensagem_final": "Oi! Vi sua clinica e identifiquei uma chance clara de acelerar resposta comercial com uma automacao mais enxuta."
+  },
+  "tracking": {}
+}
