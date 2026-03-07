@@ -1,359 +1,463 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Cockpit — Prismatic Labs Vendedor AI</title>
-<style>
-:root {
-  --primary: #00f5ff; --accent: #ff00ff; --success: #00ff88; --warning: #ffaa00; --danger: #ff3366;
-  --bg: #050712; --surface: rgba(10,15,35,0.92); --surface-hover: rgba(0,245,255,0.06);
-  --border: rgba(0,245,255,0.18); --text: #e0f0ff; --text-muted: #7090b0;
-  --radius: 16px; --radius-sm: 8px; --font: 'Space Grotesk', system-ui, sans-serif;
-  --font-mono: 'JetBrains Mono', monospace; --sidebar-width: 260px;
-}
-* { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: var(--font); background: var(--bg); color: var(--text); overflow-x: hidden; }
-.container { display: flex; height: 100vh; }
-.sidebar { width: var(--sidebar-width); background: var(--surface); border-right: 1px solid var(--border); padding: 20px; overflow-y: auto; }
-.main { flex: 1; overflow-y: auto; padding: 30px; }
-.logo { font-size: 20px; font-weight: 700; margin-bottom: 30px; color: var(--primary); text-shadow: 0 0 20px var(--primary); }
-.nav-item { padding: 12px 16px; margin-bottom: 8px; border-radius: var(--radius-sm); cursor: pointer; transition: all 0.15s; border: 1px solid transparent; }
-.nav-item:hover { background: var(--surface-hover); border-color: var(--border); }
-.nav-item.active { background: var(--primary); color: #000; font-weight: 600; }
-.stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 30px; }
-.stat-card { background: var(--surface); padding: 20px; border-radius: var(--radius); border: 1px solid var(--border); }
-.stat-value { font-size: 32px; font-weight: 700; color: var(--primary); margin-bottom: 4px; }
-.stat-label { font-size: 14px; color: var(--text-muted); }
-.lead-card { background: var(--surface); padding: 20px; border-radius: var(--radius); border: 1px solid var(--border); margin-bottom: 16px; cursor: pointer; transition: all 0.2s; }
-.lead-card:hover { background: var(--surface-hover); border-color: var(--primary); transform: translateY(-2px); }
-.lead-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
-.lead-username { font-size: 18px; font-weight: 600; color: var(--primary); }
-.badge { display: inline-block; padding: 4px 12px; border-radius: 12px; font-size: 11px; font-weight: 600; text-transform: uppercase; }
-.badge-hot { background: rgba(255,51,102,0.2); color: #ff3366; border: 1px solid #ff3366; }
-.badge-warm { background: rgba(255,170,0,0.2); color: #ffaa00; border: 1px solid #ffaa00; }
-.badge-cold { background: rgba(112,144,176,0.2); color: #7090b0; border: 1px solid #7090b0; }
-.btn { padding: 10px 20px; border-radius: var(--radius-sm); border: none; font-family: var(--font); font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.15s; }
-.btn-primary { background: var(--primary); color: #000; }
-.btn-primary:hover { box-shadow: 0 0 20px var(--primary); }
-.btn-danger { background: var(--danger); color: #fff; }
-.btn-sm { padding: 6px 12px; font-size: 12px; margin-left: 8px; }
-.modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 1000; align-items: center; justify-content: center; }
-.modal.show { display: flex; }
-.modal-content { background: var(--surface); padding: 30px; border-radius: var(--radius); max-width: 700px; max-height: 85vh; overflow-y: auto; border: 1px solid var(--border); width: 90%; }
-.close-modal { float: right; font-size: 28px; cursor: pointer; color: var(--text-muted); line-height: 1; }
-.close-modal:hover { color: var(--danger); }
-.message-box { background: rgba(0,245,255,0.1); padding: 16px; border-radius: var(--radius-sm); border: 1px solid var(--primary); margin: 16px 0; font-family: var(--font-mono); font-size: 13px; line-height: 1.6; white-space: pre-wrap; }
-.toggle-row { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--border); }
-.toggle { position: relative; display: inline-block; width: 50px; height: 24px; }
-.toggle input { opacity: 0; width: 0; height: 0; }
-.slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background: var(--border); transition: 0.3s; border-radius: 24px; }
-.slider:before { position: absolute; content: ""; height: 18px; width: 18px; left: 3px; bottom: 3px; background: var(--text); transition: 0.3s; border-radius: 50%; }
-input:checked + .slider { background: var(--primary); }
-input:checked + .slider:before { transform: translateX(26px); background: #000; }
-.theme-selector { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-top: 20px; }
-.theme-card { padding: 16px; border-radius: var(--radius-sm); border: 2px solid var(--border); background: var(--surface); cursor: pointer; transition: all 0.2s; }
-.theme-card:hover { border-color: var(--primary); }
-.theme-card.active { border-color: var(--primary); background: var(--surface-hover); }
-.theme-name { font-weight: 600; margin-bottom: 4px; }
-.theme-desc { font-size: 12px; color: var(--text-muted); }
-h1 { margin-bottom: 24px; font-size: 28px; }
-h2 { margin-top: 30px; margin-bottom: 16px; font-size: 20px; }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cockpit — Prismatic Labs</title>
+    <style>
+        :root {
+            /* Prismatic Labs Identity */
+            --primary: #A855F7; /* neon-purple */
+            --secondary: #06D9D7; /* neon-teal */
+            --accent: #FF006E; /* hot-pink-cta */
+            --bg: #000000; /* pure-black */
+            --surface: rgba(15, 15, 25, 0.95);
+            --surface-hover: rgba(168, 85, 247, 0.1);
+            --border: rgba(168, 85, 247, 0.3);
+            --text: #F5F5F5; /* off-white */
+            --text-muted: #94A3B8;
+            --radius: 20px;
+            --radius-sm: 10px;
+            --font: 'Inter', system-ui, sans-serif;
+            --sidebar-width: 280px;
+            --success: #10B981;
+            --warning: #F59E0B;
+            --danger: #EF4444;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { 
+            font-family: var(--font); 
+            background: var(--bg); 
+            color: var(--text); 
+            overflow: hidden;
+            background-image: radial-gradient(circle at 50% 50%, #1e1b4b 0%, #000000 100%);
+        }
+
+        .container { display: flex; height: 100vh; }
+
+        /* Sidebar Glassmorphism */
+        .sidebar { 
+            width: var(--sidebar-width); 
+            background: rgba(10, 10, 20, 0.8);
+            backdrop-filter: blur(20px);
+            border-right: 1px solid var(--border); 
+            padding: 40px 24px; 
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .logo { 
+            font-size: 24px; 
+            font-weight: 800; 
+            margin-bottom: 40px; 
+            color: var(--primary); 
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            letter-spacing: -1px;
+            text-shadow: 0 0 30px rgba(168, 85, 247, 0.5);
+        }
+
+        .nav-item { 
+            padding: 14px 20px; 
+            border-radius: var(--radius-sm); 
+            cursor: pointer; 
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
+            border: 1px solid transparent; 
+            color: var(--text-muted);
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .nav-item:hover { 
+            background: var(--surface-hover); 
+            color: var(--text);
+            transform: translateX(5px);
+        }
+
+        .nav-item.active { 
+            background: linear-gradient(135deg, var(--primary), #7c3aed);
+            color: white; 
+            font-weight: 600;
+            box-shadow: 0 10px 20px -5px rgba(124, 58, 237, 0.5);
+        }
+
+        .main { 
+            flex: 1; 
+            overflow-y: auto; 
+            padding: 50px; 
+            scroll-behavior: smooth;
+        }
+
+        /* Dashboard Elements */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+        }
+
+        .stats-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); 
+            gap: 24px; 
+            margin-bottom: 40px; 
+        }
+
+        .stat-card { 
+            background: var(--surface); 
+            padding: 30px; 
+            border-radius: var(--radius); 
+            border: 1px solid var(--border);
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s;
+        }
+        .stat-card:hover { transform: translateY(-5px); }
+        .stat-card::after {
+            content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+        }
+
+        .stat-value { font-size: 36px; font-weight: 800; color: white; margin-bottom: 4px; }
+        .stat-label { font-size: 14px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; }
+
+        /* Leads & Cards */
+        .section-title { font-size: 24px; margin-bottom: 24px; display: flex; align-items: center; gap: 12px; }
+
+        .lead-card { 
+            background: var(--surface); 
+            padding: 24px; 
+            border-radius: var(--radius); 
+            border: 1px solid var(--border); 
+            margin-bottom: 20px; 
+            cursor: pointer; 
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .lead-card:hover { 
+            border-color: var(--primary); 
+            box-shadow: 0 20px 40px -10px rgba(0,0,0,0.5);
+            background: rgba(20, 20, 35, 0.95);
+        }
+
+        .lead-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+        .lead-username { font-size: 20px; font-weight: 700; color: var(--secondary); }
+
+        .badge { 
+            padding: 6px 14px; border-radius: 30px; font-size: 12px; font-weight: 700; 
+            text-transform: uppercase; border: 1px solid currentColor;
+        }
+        .badge-hot { background: rgba(239, 68, 68, 0.1); color: var(--danger); }
+        .badge-warm { background: rgba(245, 158, 11, 0.1); color: var(--warning); }
+        .badge-cold { background: rgba(148, 163, 184, 0.1); color: var(--text-muted); }
+
+        .btn { 
+            padding: 12px 24px; border-radius: var(--radius-sm); border: none; font-weight: 700; 
+            cursor: pointer; transition: all 0.2s; display: inline-flex; align-items: center; gap: 8px;
+        }
+        .btn-primary { background: var(--primary); color: white; }
+        .btn-primary:hover { transform: scale(1.05); filter: brightness(1.2); }
+        .btn-secondary { background: var(--secondary); color: black; }
+        .btn-outline { background: transparent; border: 1px solid var(--border); color: var(--text); }
+        .btn-outline:hover { background: var(--surface-hover); }
+
+        /* Modal Redesign */
+        .modal { 
+            display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.9); 
+            z-index: 1000; align-items: center; justify-content: center; backdrop-filter: blur(10px);
+        }
+        .modal.show { display: flex; animation: fadeIn 0.3s forwards; }
+        .modal-content { 
+            background: var(--surface); padding: 40px; border-radius: var(--radius); 
+            max-width: 800px; width: 90%; max-height: 90vh; overflow-y: auto; 
+            border: 1px solid var(--border); box-shadow: 0 0 100px rgba(168, 85, 247, 0.2);
+        }
+
+        .message-box { 
+            background: #0a0a0f; padding: 24px; border-radius: var(--radius-sm); 
+            border-left: 4px solid var(--primary); margin: 20px 0; font-family: 'JetBrains Mono', monospace;
+            font-size: 14px; line-height: 1.7; color: #cbd5e1;
+        }
+
+        /* Toggles */
+        .toggle-row { 
+            display: flex; justify-content: space-between; align-items: center; 
+            padding: 20px; background: rgba(255,255,255,0.03); margin-bottom: 12px; border-radius: var(--radius-sm);
+        }
+        .toggle { position: relative; width: 60px; height: 32px; cursor: pointer; }
+        .toggle input { opacity: 0; width: 0; height: 0; }
+        .slider { 
+            position: absolute; inset: 0; background: #334155; transition: 0.4s; border-radius: 34px; 
+        }
+        .slider:before { 
+            content: ""; position: absolute; height: 24px; width: 24px; left: 4px; bottom: 4px; 
+            background: white; transition: 0.4s; border-radius: 50%; 
+        }
+        input:checked + .slider { background: var(--primary); }
+        input:checked + .slider:before { transform: translateX(28px); }
+
+        @keyframes fadeIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+    </style>
 </head>
 <body>
-<div class="container">
-  <div class="sidebar">
-    <div class="logo">⚡ COCKPIT</div>
-    <div class="nav-item active" data-view="dashboard">📊 Dashboard</div>
-    <div class="nav-item" data-view="leads">👥 Leads</div>
-    <div class="nav-item" data-view="agentes">🤖 Agentes</div>
-    <div class="nav-item" data-view="autopilot">🚀 Autopilot</div>
-    <div class="nav-item" data-view="temas">🎨 Temas</div>
-  </div>
-  <div class="main">
-    <div id="dashboard-view">
-      <h1>Dashboard</h1>
-      <div class="stats-grid" id="stats"></div>
-      <h2>Ações Pendentes</h2>
-      <div id="acoes-pendentes"></div>
+    <div class="container">
+        <aside class="sidebar">
+            <div class="logo">💎 PRISMATIC LABS</div>
+            <nav>
+                <div class="nav-item active" data-view="dashboard">📊 Cockpit</div>
+                <div class="nav-item" data-view="leads">👥 Pipelines</div>
+                <div class="nav-item" data-view="agentes">🤖 Orchestrator</div>
+                <div class="nav-item" data-view="autopilot">🚀 Autopilot</div>
+                <div class="nav-item" data-view="temas">🎨 Visuals</div>
+            </nav>
+            <div style="margin-top: auto; padding: 20px; background: var(--surface-hover); border-radius: var(--radius-sm); font-size: 12px; color: var(--text-muted);">
+                System Status: <span style="color: var(--success);">Online</span><br>
+                v2.0.0-PRO
+            </div>
+        </aside>
+
+        <main class="main">
+            <!-- DASHBOARD VIEW -->
+            <section id="dashboard-view">
+                <div class="header">
+                    <h1>Overview Geral</h1>
+                    <button class="btn btn-outline" onclick="fetchData()">🔄 Sync Now</button>
+                </div>
+                <div class="stats-grid" id="stats"></div>
+                
+                <div class="section-title">🔥 Ações Recomendadas</div>
+                <div id="acoes-pendentes"></div>
+            </section>
+
+            <!-- LEADS VIEW -->
+            <section id="leads-view" style="display:none;">
+                <div class="header">
+                    <h1>Gerenciamento de Leads</h1>
+                </div>
+                <div id="all-leads"></div>
+            </section>
+
+            <!-- AGENTES VIEW -->
+            <section id="agentes-view" style="display:none;">
+                <div class="header">
+                    <h1>AI Orchestrator</h1>
+                    <p>Controle total sobre os agentes do pipeline Vendedor AI</p>
+                </div>
+                <div id="agentes-list" style="margin-top: 30px;"></div>
+            </section>
+
+            <!-- AUTOPILOT VIEW -->
+            <section id="autopilot-view" style="display:none;">
+                <div class="header">
+                    <h1>Infinite Sales Loop</h1>
+                </div>
+                <div class="stat-card" style="margin-bottom: 30px;">
+                    <p style="margin-bottom: 24px; color: var(--text-muted);">Execute o ciclo completo de prospecção: Scout automático → Analyze → Copywriting → CRM Sync.</p>
+                    <button class="btn btn-primary" onclick="runAutopilot()" style="padding: 20px 40px; font-size: 18px;">
+                        🚀 DISPARAR AUTOPILOT
+                    </button>
+                </div>
+            </section>
+
+            <!-- TEMAS VIEW -->
+            <section id="temas-view" style="display:none;">
+                <h1>Identidade Visual</h1>
+                <div class="theme-selector" id="theme-selector"></div>
+            </section>
+        </main>
     </div>
-    <div id="leads-view" style="display:none;">
-      <h1>Todos os Leads</h1>
-      <div id="all-leads"></div>
-    </div>
-    <div id="agentes-view" style="display:none;">
-      <h1>Controle de Agentes</h1>
-      <p style="margin-bottom:20px; color:var(--text-muted);">Ative/desative os agentes do pipeline</p>
-      <div id="agentes-list"></div>
-    </div>
-    <div id="autopilot-view" style="display:none;">
-      <h1>Autopilot</h1>
-      <p style="margin-bottom:20px; color:var(--text-muted);">Roda o pipeline completo: Scout → Analyze → CRM → Notion</p>
-      <button class="btn btn-primary" onclick="runAutopilot()">▶ Rodar Autopilot Agora</button>
-      <p style="margin-top:12px; font-size:13px; color:var(--text-muted);">Configuração atual salva em dashboard-settings.json</p>
-    </div>
-    <div id="temas-view" style="display:none;">
-      <h1>Temas Visuais</h1>
-      <p style="margin-bottom:20px; color:var(--text-muted);">Escolha um tema e ele será aplicado imediatamente</p>
-      <div class="theme-selector" id="theme-selector"></div>
-    </div>
-  </div>
-</div>
-<div class="modal" id="lead-modal">
-  <div class="modal-content">
-    <span class="close-modal" onclick="closeModal()">&times;</span>
-    <div id="modal-body"></div>
-  </div>
-</div>
-<script>
-let DATA = { leads: [], settings: {}, themes: [], stats: null };
-document.querySelectorAll('.nav-item').forEach(nav => {
-  nav.addEventListener('click', () => {
-    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-    nav.classList.add('active');
-    const view = nav.dataset.view;
-    document.querySelectorAll('[id$="-view"]').forEach(v => v.style.display = 'none');
-    document.getElementById(view + '-view').style.display = 'block';
-  });
-});
-async function fetchData() {
-  try {
-    const [leads, settings, themes, stats] = await Promise.all([
-      fetch('/api/leads').then(r => r.json()),
-      fetch('/api/settings').then(r => r.json()),
-      fetch('/api/themes').then(r => r.json()),
-      fetch('/api/stats').then(r => r.json())
-    ]);
-    DATA = { leads: leads.leads || [], settings, themes: themes.themes || [], stats };
-    applyTheme(settings.theme || 'neon-dark');
-    render();
-  } catch (e) { console.error('Erro ao carregar dados:', e); }
-}
-function render() {
-  renderStats(); renderAcoesPendentes(); renderAllLeads(); renderAgentes(); renderThemes();
-}
-function renderStats() {
-  const { total, byPriority, byOutcome, totalValue, learning } = DATA.stats || {};
-  document.getElementById('stats').innerHTML = `
-    <div class="stat-card"><div class="stat-value">${total || 0}</div><div class="stat-label">Total Leads</div></div>
-    <div class="stat-card"><div class="stat-value">${byPriority?.hot || 0}</div><div class="stat-label">HOT 🔥</div></div>
-    <div class="stat-card"><div class="stat-value">${byPriority?.warm || 0}</div><div class="stat-label">WARM ⚡</div></div>
-    <div class="stat-card"><div class="stat-value">${byOutcome?.converteu || 0}</div><div class="stat-label">Convertidos</div></div>
-    <div class="stat-card"><div class="stat-value">R$ ${totalValue || 0}</div><div class="stat-label">Valor Total</div></div>
-    ${learning ? `<div class="stat-card"><div class="stat-value">${learning.score_medio}</div><div class="stat-label">Score Learner v${learning.versao}</div></div>` : ''}
-  `;
-}
-function renderAcoesPendentes() {
-  const pendentes = DATA.leads.filter(l => l.mensagem_final && !l.dm_enviada);
-  if (!pendentes.length) {
-    document.getElementById('acoes-pendentes').innerHTML = '<p style="color:var(--text-muted);">✅ Nenhuma ação pendente no momento.</p>';
-    return;
-  }
-  document.getElementById('acoes-pendentes').innerHTML = pendentes.map(lead => `
-    <div class="lead-card" onclick="openLead('${lead.username}')">
-      <div class="lead-header">
-        <span class="lead-username">@${lead.username}</span>
-        <span class="badge badge-${lead.prioridade}">${lead.prioridade.toUpperCase()}</span>
-      </div>
-      <p style="color:var(--text-muted); font-size:14px; margin-bottom:12px;">Score: ${lead.score} | Produto: ${lead.produto || 'N/A'}</p>
-      <div class="message-box">${(lead.mensagem_final || '').substring(0, 140)}...</div>
-      <button class="btn btn-primary btn-sm" onclick="event.stopPropagation(); copiarMensagem('${lead.username}')">📋 Copiar DM</button>
-      <button class="btn btn-danger btn-sm" onclick="event.stopPropagation(); marcarEnviada('${lead.username}')">✔️ Marcar Enviada</button>
-    </div>
-  `).join('');
-}
-function renderAllLeads() {
-  if (!DATA.leads.length) {
-    document.getElementById('all-leads').innerHTML = '<p style="color:var(--text-muted);">Nenhum lead no CRM ainda.</p>';
-    return;
-  }
-  document.getElementById('all-leads').innerHTML = DATA.leads.map(lead => `
-    <div class="lead-card" onclick="openLead('${lead.username}')">
-      <div class="lead-header
-">
-        <span class="lead-username">@${lead.username}</span>
-        <span class="badge badge-${lead.prioridade}">${lead.prioridade.toUpperCase()}</span>
-      </div>
-      <p style="color:var(--text-muted); font-size:14px;">
-        Score: ${lead.score} | Produto: ${lead.produto || 'N/A'} | 
-        ${lead.outcome ? `Status: ${lead.outcome}` : 'Sem interação ainda'}
-      </p>
-    </div>
-  `).join('');
-}
-function renderAgentes() {
-  const agentes = [
-    { key: 'analyzer', label: 'Analyzer', desc: 'Analisa perfis e detecta dores' },
-    { key: 'copywriter', label: 'Copywriter', desc: 'Gera mensagens personalizadas' },
-    { key: 'reviewer', label: 'Reviewer', desc: 'Revisa e melhora as mensagens' },
-    { key: 'notionSync', label: 'Notion Sync', desc: 'Sincroniza leads no Notion' },
-    { key: 'learner', label: 'Learner', desc: 'Aprende com mensagens anteriores' },
-    { key: 'tracker', label: 'Tracker', desc: 'Rastreia outcomes de conversão' }
-  ];
-  document.getElementById('agentes-list').innerHTML = agentes.map(a => `
-    <div class="toggle-row">
-      <div>
-        <div style="font-weight:600;">${a.label}</div>
-        <div style="font-size:13px; color:var(--text-muted);">${a.desc}</div>
-      </div>
-      abel class="toggle">
-        <input type="checkbox" ${DATA.settings.agents?.[a.key] ? 'checked' : ''} onchange="toggleAgent('${a.key}', this.checked)">
-        <span class="slider"></span>
-      </label>
-    </div>
-  `).join('');
-}
-function renderThemes() {
-  const currentTheme = DATA.settings.theme || 'neon-dark';
-  document.getElementById('theme-selector').innerHTML = DATA.themes.map(t => `
-    <div class="theme-card ${t.id === currentTheme ? 'active' : ''}" onclick="changeTheme('${t.id}')">
-      <div class="theme-name">${t.name}</div>
-      <div class="theme-desc">${t.description}</div>
-    </div>
-  `).join('');
-}
-async function toggleAgent(key, enabled) {
-  const newSettings = { ...DATA.settings };
-  if (!newSettings.agents) newSettings.agents = {};
-  newSettings.agents[key] = enabled;
-  await fetch('/api/settings', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(newSettings)
-  });
-  DATA.settings = newSettings;
-  console.log(`Agente ${key} ${enabled ? 'ativado' : 'desativado'}`);
-}
-async function changeTheme(themeId) {
-  const newSettings = { ...DATA.settings, theme: themeId };
-  await fetch('/api/settings', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(newSettings)
-  });
-  DATA.settings = newSettings;
-  applyTheme(themeId);
-  renderThemes();
-}
-function applyTheme(themeId) {
-  const theme = DATA.themes.find(t => t.id === themeId);
-  if (!theme) return;
-  const root = document.documentElement;
-  root.style.setProperty('--primary', theme.primary);
-  root.style.setProperty('--accent', theme.accent);
-  root.style.setProperty('--success', theme.success);
-  root.style.setProperty('--warning', theme.warning);
-  root.style.setProperty('--danger', theme.danger);
-  root.style.setProperty('--bg', theme.background);
-  root.style.setProperty('--surface', theme.surface);
-  root.style.setProperty('--surface-hover', theme.surfaceHover);
-  root.style.setProperty('--border', theme.border);
-  root.style.setProperty('--text', theme.text);
-  root.style.setProperty('--text-muted', theme.textMuted);
-  root.style.setProperty('--radius', theme.borderRadius);
-  root.style.setProperty('--radius-sm', theme.borderRadiusSm);
-  root.style.setProperty('--font', theme.fontFamily);
-  root.style.setProperty('--font-mono', theme.fontMono);
-  root.style.setProperty('--sidebar-width', theme.sidebarWidth);
-}
-function openLead(username) {
-  const lead = DATA.leads.find(l => l.username === username);
-  if (!lead) return;
-  const modalBody = document.getElementById('modal-body');
-  modalBody.innerHTML = `
-    <h2 style="margin-bottom:20px;">@${lead.username}</h2>
-    <div style="display:flex; gap:12px; margin-bottom:20px;">
-      <span class="badge badge-${lead.prioridade}">${lead.prioridade.toUpperCase()}</span>
-      <span style="color:var(--text-muted);">Score: ${lead.score}</span>
-      <span style="color:var(--text-muted);">Produto: ${lead.produto || 'N/A'}</span>
-    </div>
-    ${lead.mensagem_final ? `
-      <h3 style="margin-bottom:12px;">Mensagem Final (Revisada)</h3>
-      <div class="message-box">${lead.mensagem_final}</div>
-      <button class="btn btn-primary" onclick="copiarMensagem('${username}')">📋 Copiar Mensagem</button>
-    ` : '<p style="color:var(--text-muted);">Mensagem ainda não gerada.</p>'}
-    ${lead.mensagem_original && lead.mensagem_original !== lead.mensagem_final ? `
-      <h3 style="margin-top:24px; margin-bottom:12px;">Mensagem Original (Copywriter)</h3>
-      <div class="message-box" style="opacity:0.6;">${lead.mensagem_original}</div>
-    ` : ''}
-    ${lead.followups?.length ? `
-      <h3 style="margin-top:24px; margin-bottom:12px;">Followups Planejados</h3>
-      ${lead.followups.map(f => `
-        <div style="margin-bottom:12px; padding:12px; background:var(--surface-hover); border-radius:var(--radius-sm);">
-          <strong>Dia ${f.dia}:</strong> ${f.texto}
+
+    <div class="modal" id="lead-modal">
+        <div class="modal-content">
+            <span style="float: right; cursor: pointer; font-size: 30px;" onclick="closeModal()">×</span>
+            <div id="modal-body"></div>
         </div>
-      `).join('')}
-    ` : ''}
-    <h3 style="margin-top:24px; margin-bottom:12px;">Ações de Tracking</h3>
-    <div style="display:flex; gap:8px; flex-wrap:wrap;">
-      <button class="btn btn-primary btn-sm" onclick="trackLead('${username}', 'enviada')">✉️ Enviada</button>
-      <button class="btn btn-primary btn-sm" onclick="trackLead('${username}', 'respondeu')">💬 Respondeu</button>
-      <button class="btn btn-danger btn-sm" onclick="trackLead('${username}', 'ignorou')">❌ Ignorou</button>
-      <button class="btn btn-primary btn-sm" onclick="trackLead('${username}', 'negociando')">🤝 Negociando</button>
-      <button class="btn btn-primary btn-sm" onclick="trackLead('${username}', 'converteu')">🎉 Converteu</button>
     </div>
-    ${lead.tracker ? `
-      <div style="margin-top:20px; padding:16px; background:rgba(0,255,136,0.1); border-radius:var(--radius-sm); border:1px solid var(--success);">
-        <strong>Status Atual:</strong> ${lead.tracker.outcome || 'N/A'}<br>
-        <strong>Última atualização:</strong> ${new Date(lead.tracker.updated_at).toLocaleString('pt-BR')}
-      </div>
-    ` : ''}
-  `;
-  document.getElementById('lead-modal').classList.add('show');
-}
-function closeModal() {
-  document.getElementById('lead-modal').classList.remove('show');
-}
-function copiarMensagem(username) {
-  const lead = DATA.leads.find(l => l.username === username);
-  if (!lead?.mensagem_final) return alert('Mensagem não encontrada');
-  navigator.clipboard.writeText(lead.mensagem_final).then(() => {
-    alert('✅ Mensagem copiada para a área de transferência!');
-  });
-}
-async function marcarEnviada(username) {
-  await trackLead(username, 'enviada');
-  await fetchData();
-}
-async function trackLead(username, action) {
-  let extra = null;
-  if (action === 'converteu') {
-    extra = prompt('Valor da conversão (R$):');
-    if (!extra) return;
-  }
-  if (action === 'respondeu' || action === 'negociando') {
-    extra = prompt(`Nota sobre ${action}:`) || '';
-  }
-  try {
-    await fetch('/api/tracker', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ username, action, extra })
-    });
-    alert(`✅ Lead @${username} marcado como: ${action}`);
-    closeModal();
-    await fetchData();
-  } catch (e) {
-    alert('❌ Erro ao atualizar tracker: ' + e.message);
-  }
-}
-async function runAutopilot() {
-  if (!confirm('Rodar o Autopilot agora? Isso pode demorar alguns minutos.')) return;
-  try {
-    const res = await fetch('/api/autopilot', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({})
-    });
-    const data = await res.json();
-    alert(data.ok ? '✅ ' + data.message : '❌ Erro ao iniciar Autopilot');
-  } catch (e) {
-    alert('❌ Erro: ' + e.message);
-  }
-}
-fetchData();
-setInterval(fetchData, 30000);
-</script>
+
+    <script>
+        let DATA = { leads: [], settings: {}, themes: [], stats: null };
+
+        // View Switcher
+        document.querySelectorAll('.nav-item').forEach(nav => {
+            nav.addEventListener('click', () => {
+                document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+                nav.classList.add('active');
+                const view = nav.dataset.view;
+                document.querySelectorAll('section').forEach(v => v.style.display = 'none');
+                document.getElementById(view + '-view').style.display = 'block';
+            });
+        });
+
+        async function fetchData() {
+            try {
+                const [leads, settings, themes, stats] = await Promise.all([
+                    fetch('/api/leads').then(r => r.json()),
+                    fetch('/api/settings').then(r => r.json()),
+                    fetch('/api/themes').then(r => r.json()),
+                    fetch('/api/stats').then(r => r.json())
+                ]);
+                DATA = { 
+                    leads: leads.leads || [], 
+                    settings: settings || { agents: {} }, 
+                    themes: themes.themes || [], 
+                    stats 
+                };
+                render();
+            } catch (e) { console.error('Erro:', e); }
+        }
+
+        function render() {
+            renderStats(); 
+            renderAcoesPendentes(); 
+            renderAllLeads(); 
+            renderAgentes();
+        }
+
+        function renderStats() {
+            const s = DATA.stats || {};
+            document.getElementById('stats').innerHTML = \`
+                <div class="stat-card">
+                    <div class="stat-value">\${s.total || 0}</div>
+                    <div class="stat-label">Leads Totais</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">\${s.byPriority?.hot || 0}</div>
+                    <div class="stat-label">Prioridade Hot 🔥</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">\${s.byOutcome?.converteu || 0}</div>
+                    <div class="stat-label">Conversões</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">R$ \${s.totalValue || 0}</div>
+                    <div class="stat-label">Pipeline Value</div>
+                </div>
+            \`;
+        }
+
+        function renderAcoesPendentes() {
+            const p = DATA.leads.filter(l => l.mensagem_final && !l.dm_enviada);
+            const container = document.getElementById('acoes-pendentes');
+            if (!p.length) {
+                container.innerHTML = '<p style="color:var(--text-muted);">✅ Tudo limpo. Sem ações pendentes.</p>';
+                return;
+            }
+            container.innerHTML = p.map(l => \`
+                <div class="lead-card" onclick="openLead('\${l.username}')">
+                    <div class="lead-header">
+                        <span class="lead-username">@\${l.username}</span>
+                        <span class="badge badge-\${l.prioridade}">\${l.prioridade}</span>
+                    </div>
+                    <div class="message-box">\${l.mensagem_final.substring(0, 150)}...</div>
+                    <div style="display:flex; gap:10px;">
+                        <button class="btn btn-primary" onclick="event.stopPropagation(); copiarMensagem('\${l.username}')">📋 Copiar</button>
+                        <button class="btn btn-outline" onclick="event.stopPropagation(); trackLead('\${l.username}', 'enviada')">✔️ Enviada</button>
+                    </div>
+                </div>
+            \`).join('');
+        }
+
+        function renderAllLeads() {
+            const container = document.getElementById('all-leads');
+            container.innerHTML = DATA.leads.map(l => \`
+                <div class="lead-card" onclick="openLead('\${l.username}')">
+                    <div class="lead-header">
+                        <span class="lead-username">@\${l.username}</span>
+                        <span class="badge badge-\${l.prioridade}">\${l.prioridade}</span>
+                    </div>
+                    <p style="color:var(--text-muted); font-size:14px;">Score: \${l.score} | Produto: \${l.produto || '---'}</p>
+                </div>
+            \`).join('');
+        }
+
+        function renderAgentes() {
+            const agentes = [
+                { key: 'scout', label: 'Scout Agent', desc: 'Mineração automática de leads' },
+                { key: 'analyzer', label: 'Analyzer Pro', desc: 'Análise psicográfica de perfis' },
+                { key: 'copywriter', label: 'Creative Copy', desc: 'Geração de hooks e DMs' },
+                { key: 'reviewer', label: 'QC Reviewer', desc: 'Filtro de qualidade e segurança' },
+                { key: 'notionSync', label: 'Notion Master', desc: 'Sincronização em tempo real' },
+                { key: 'tracker', label: 'Sales Tracker', desc: 'Métricas e ROI tracking' }
+            ];
+            
+            document.getElementById('agentes-list').innerHTML = agentes.map(a => \`
+                <div class="toggle-row">
+                    <div>
+                        <div style="font-weight:700; font-size:18px;">\${a.label}</div>
+                        <div style="color:var(--text-muted); font-size:14px;">\${a.desc}</div>
+                    </div>
+                    <label class="toggle">
+                        <input type="checkbox" \${DATA.settings.agents?.[a.key] ? 'checked' : ''} onchange="toggleAgent('\${a.key}', this.checked)">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+            \`).join('');
+        }
+
+        async function toggleAgent(key, enabled) {
+            const s = { ...DATA.settings };
+            if (!s.agents) s.agents = {};
+            s.agents[key] = enabled;
+            await fetch('/api/settings', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(s)
+            });
+            DATA.settings = s;
+        }
+
+        function openLead(username) {
+            const l = DATA.leads.find(x => x.username === username);
+            const body = document.getElementById('modal-body');
+            body.innerHTML = \`
+                <h1 style="color: var(--secondary); margin-bottom: 10px;">@\${l.username}</h1>
+                <div style="margin-bottom: 30px;">
+                    <span class="badge badge-\${l.prioridade}">\${l.prioridade}</span>
+                    <span style="margin-left: 15px; color: var(--text-muted);">Score: \${l.score}</span>
+                </div>
+                <h3>DM Recomendada</h3>
+                <div class="message-box">\${l.mensagem_final || 'Aguardando geração...'}</div>
+                <div style="display:flex; gap:12px; margin-top:30px;">
+                    <button class="btn btn-primary" onclick="copiarMensagem('\${l.username}')">📋 COPIAR DM</button>
+                    <button class="btn btn-outline" onclick="trackLead('\${l.username}', 'enviada')">MARCAR ENVIADA</button>
+                </div>
+            \`;
+            document.getElementById('lead-modal').classList.add('show');
+        }
+
+        function closeModal() { document.getElementById('lead-modal').classList.remove('show'); }
+
+        function copiarMensagem(u) {
+            const l = DATA.leads.find(x => x.username === u);
+            navigator.clipboard.writeText(l.mensagem_final);
+            alert('Copiado!');
+        }
+
+        async function trackLead(u, a) {
+            await fetch('/api/tracker', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username: u, action: a })
+            });
+            closeModal();
+            fetchData();
+        }
+
+        async function runAutopilot() {
+            if(!confirm('Iniciar loop de vendas?')) return;
+            const res = await fetch('/api/autopilot', { method: 'POST' });
+            const d = await res.json();
+            alert(d.message);
+        }
+
+        fetchData();
+        setInterval(fetchData, 60000);
+    </script>
 </body>
 </html>
