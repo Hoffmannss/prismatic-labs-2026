@@ -2,6 +2,8 @@ const path = require('path');
 const { LEAD_STATUS } = require('../domain/lead-status');
 const { LEAD_EVENTS } = require('../domain/lead-events');
 const { canTransition } = require('../domain/pipeline-rules');
+const { loadGuardrails, evaluateSendGuardrails } = require('../domain/guardrails');
+const { loadQuotaStore, checkQuota, recordQuotaEvent } = require('../domain/quota-policy');
 const { ensureDirs, loadJSON, saveJSON, listFiles } = require('../utils/file-store');
 
 const VENDEDOR_ROOT = path.resolve(__dirname, '..', '..');
@@ -249,6 +251,26 @@ function scheduleFollowup(lead, days = 3) {
   return when;
 }
 
+function inferDispatchQuotaKind(lead) {
+  return lead.primeira_mensagem_enviada || Number(lead.followups_enviados || 0) > 0 ? 'followup' : 'send';
+}
+
+function evaluateDispatchReadiness(lead, options = {}) {
+  const guardrails = options.guardrails || loadGuardrails();
+  const quotaStore = options.quotaStore || loadQuotaStore();
+  const dispatchKind = inferDispatchQuotaKind(lead);
+  const guardrailCheck = evaluateSendGuardrails(lead, guardrails, { dispatchKind });
+  const quotaCheck = checkQuota(dispatchKind, 1, guardrails, quotaStore);
+
+  return {
+    ok: guardrailCheck.ok && quotaCheck.ok,
+    dispatch_kind: dispatchKind,
+    guardrailCheck,
+    quotaCheck,
+    guardrails
+  };
+}
+
 function resolveEventForStatus(status) {
   switch (status) {
     case LEAD_STATUS.ENRICHED: return LEAD_EVENTS.LEAD_ENRICHED;
@@ -300,7 +322,7 @@ function updateLeadStatus(username, nextStatus, note) {
   return normalized;
 }
 
-function markMessageSent(username) {
+function markMessageSent(username, options = {}) {
   const db = loadDB();
   const lead = db.leads.find((item) => item.username === username);
   if (!lead) throw new Error(`Lead @${username} nao encontrado`);
@@ -312,25 +334,57 @@ function markMessageSent(username) {
     throw new Error(`Transicao invalida: ${current} -> ${next}`);
   }
 
+  const guardrails = options.guardrails || loadGuardrails();
+  const quotaStore = options.quotaStore || loadQuotaStore();
+  const readiness = evaluateDispatchReadiness(normalized, { guardrails, quotaStore });
+  if (!readiness.guardrailCheck.ok) throw new Error(readiness.guardrailCheck.errors.join(' | '));
+  if (!readiness.quotaCheck.ok) throw new Error(`Quota diaria excedida para ${readiness.dispatch_kind}.`);
+
   const now = new Date().toISOString();
+  const isFollowup = readiness.dispatch_kind === 'followup';
   normalized.status_canonical = next;
   normalized.status = toLegacyStatus(next);
   normalized.primeira_mensagem_enviada = true;
   normalized.data_primeiro_contato = normalized.data_primeiro_contato || now;
   normalized.data_ultima_interacao = now;
   normalized.atualizado_em = now;
+  if (isFollowup) {
+    normalized.followups_enviados = Number(normalized.followups_enviados || 0) + 1;
+  }
   scheduleFollowup(normalized, 3);
   normalized.historico.push({
-    evento: 'mensagem_enviada',
+    evento: isFollowup ? 'followup_enviado' : 'mensagem_enviada',
     timestamp: now,
-    dados: 'Primeira mensagem enviada e followup agendado em 3 dias.'
+    dados: isFollowup
+      ? `Follow-up #${normalized.followups_enviados} enviado e proximo follow-up agendado em 3 dias.`
+      : 'Primeira mensagem enviada e followup agendado em 3 dias.'
   });
+  if (options.note) normalized.notas.push({ timestamp: now, texto: options.note });
 
   Object.assign(lead, normalized);
   saveDB(db);
   updatePipeline(db);
-  recordEvent(LEAD_EVENTS.MESSAGE_SENT, username, { next_followup: normalized.proximo_followup });
-  return normalized;
+  recordEvent(LEAD_EVENTS.MESSAGE_SENT, username, {
+    next_followup: normalized.proximo_followup,
+    dispatch_kind: readiness.dispatch_kind,
+    followups_enviados: normalized.followups_enviados
+  });
+
+  const quota = recordQuotaEvent(readiness.dispatch_kind, {
+    amount: 1,
+    metadata: {
+      username,
+      score: Number(normalized.score || 0),
+      status: current,
+      dispatch_kind: readiness.dispatch_kind
+    }
+  });
+
+  return {
+    lead: normalized,
+    dispatch_kind: readiness.dispatch_kind,
+    quota
+  };
 }
 
 function daysSince(isoDate) {
@@ -361,6 +415,7 @@ function updateOutcome(username, outcome, extra) {
   const tracking = messageData.tracking || {};
 
   if (outcome === 'enviada') {
+    const sendResult = markMessageSent(username, { note: extra || null });
     tracking.data_envio = tracking.data_envio || now;
     tracking.outcome = 'enviada';
     tracking.historico = tracking.historico || [];
@@ -368,8 +423,13 @@ function updateOutcome(username, outcome, extra) {
     messageData.tracking = tracking;
     saveMessageData(username, messageData);
     saveTrackerCompat(username, tracking);
-    markMessageSent(username);
-    return { username, tracking, lead: loadDB().leads.find((item) => item.username === username) };
+    return {
+      username,
+      tracking,
+      lead: sendResult.lead,
+      dispatch_kind: sendResult.dispatch_kind,
+      quota: sendResult.quota
+    };
   }
 
   if (!tracking.data_envio) tracking.data_envio = now;
@@ -646,6 +706,8 @@ module.exports = {
   listTrackingQueue,
   getPendingTracking,
   getOutcomeStats,
+  inferDispatchQuotaKind,
+  evaluateDispatchReadiness,
   cliCataloger,
   cliTracker,
   LEAD_STATUS,

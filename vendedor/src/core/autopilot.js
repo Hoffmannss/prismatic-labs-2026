@@ -6,6 +6,7 @@ const path = require('path');
 const { spawnSync } = require('child_process');
 const { saveJSON } = require('../utils/file-store');
 const { withRetry, sleep } = require('../utils/retry');
+const { canExecute, recordCircuitSuccess, recordCircuitFailure } = require('../utils/circuit-breaker');
 const { loadGuardrails, validateAutopilotPayload } = require('../domain/guardrails');
 const { recordQuotaEvent } = require('../domain/quota-policy');
 
@@ -18,6 +19,10 @@ const REQUESTED_QTD = parseInt(process.argv[3] || process.env.AUTOPILOT_QTD || '
 const REQUESTED_MAX_ANALYZE = parseInt(process.argv[4] || process.env.AUTOPILOT_MAX_ANALYZE || '10', 10);
 const SYNC_NOTION = (process.env.AUTOPILOT_SYNC_NOTION || 'true').toLowerCase() === 'true';
 const GUARDRAILS = loadGuardrails();
+const CIRCUIT_POLICY = {
+  failureThreshold: GUARDRAILS.retry_max_attempts,
+  cooldownMs: GUARDRAILS.retry_base_delay_ms * 20
+};
 
 const DATA_DIR = path.join(VENDEDOR_ROOT, 'data');
 const SCOUT_DIR = path.join(DATA_DIR, 'scout');
@@ -72,6 +77,35 @@ function requestWithRetry(method, host, requestPath, body, tokenQ, label) {
       onRetry: logRetry
     }
   );
+}
+
+async function guardedExternalOperation(name, task, options = {}) {
+  const circuit = canExecute(name, CIRCUIT_POLICY);
+  if (!circuit.ok) {
+    const error = new Error(`Circuit breaker aberto para ${name}. Retry em ${circuit.retry_after_ms}ms.`);
+    if (options.softFail) {
+      console.log(`${C.yellow}[CIRCUIT] ${error.message}${C.reset}`);
+      return null;
+    }
+    throw error;
+  }
+
+  try {
+    const result = await task();
+    recordCircuitSuccess(name, { metadata: { label: name } });
+    return result;
+  } catch (error) {
+    const state = recordCircuitFailure(name, {
+      policy: CIRCUIT_POLICY,
+      error,
+      metadata: { label: name }
+    });
+    if (options.softFail) {
+      console.log(`${C.yellow}[CIRCUIT] ${name} falhou; consecutive_failures=${state.consecutive_failures}.${C.reset}`);
+      return null;
+    }
+    throw error;
+  }
 }
 
 function loadCRMUsernames() {
@@ -210,7 +244,7 @@ async function main() {
   console.log(`  Leads ja no CRM (skip): ${existingUsernames.size}\n`);
 
   console.log(`${C.cyan}[1/5] Scraping hashtags via Apify...${C.reset}`);
-  const posts = await scrapeByHashtags(config.hashtags.slice(0, 4), QTD * 6);
+  const posts = await guardedExternalOperation('apify-hashtag-scraper', () => scrapeByHashtags(config.hashtags.slice(0, 4), QTD * 6));
   console.log(`  Posts coletados: ${posts.length}`);
 
   const uniqueCandidates = new Map();
@@ -231,7 +265,7 @@ async function main() {
   }
 
   console.log(`\n${C.cyan}[2/5] Enriquecendo ${usernames.length} perfis (bio, followers, posts)...${C.reset}`);
-  const profiles = await scrapeProfiles(usernames);
+  const profiles = await guardedExternalOperation('apify-profile-scraper', () => scrapeProfiles(usernames));
 
   const profileMap = new Map();
   for (const profile of profiles) {
@@ -283,28 +317,21 @@ async function main() {
 
   if (SYNC_NOTION) {
     console.log(`\n${C.cyan}[4/5] Sincronizando com Notion...${C.reset}`);
-    try {
-      await runCommandWithRetry('notion-sync', NOTION_SYNC_ENTRY, ['sync']);
-    } catch (error) {
-      console.log(`${C.yellow}  [WARN] notion-sync falhou apos retry: ${error.message}${C.reset}`);
-    }
+    await guardedExternalOperation('notion-sync', () => runCommandWithRetry('notion-sync', NOTION_SYNC_ENTRY, ['sync']), { softFail: true });
   } else {
     console.log(`\n${C.yellow}[4/5] Notion sync pulado (AUTOPILOT_SYNC_NOTION=false)${C.reset}`);
   }
 
   console.log(`\n${C.blue}[5/5] Atualizando memoria de aprendizado estruturada...${C.reset}`);
-  try {
+  await guardedExternalOperation('structured-learner', async () => {
     const { runLearner } = require(STRUCTURED_LEARNER);
-    await withRetry(() => runLearner(), {
+    return withRetry(() => runLearner(), {
       attempts: GUARDRAILS.retry_max_attempts,
       baseDelayMs: GUARDRAILS.retry_base_delay_ms,
       label: 'structured-learner',
       onRetry: logRetry
     });
-  } catch (error) {
-    console.log(`${C.yellow}[LEARNER] Aviso: ${error.message}${C.reset}`);
-    console.log(`${C.yellow}  (nao critico — pipeline concluido normalmente)${C.reset}`);
-  }
+  }, { softFail: true });
 
   console.log(`\n${C.magenta}${'='.repeat(64)}${C.reset}`);
   console.log(`${C.bright}  AUTOPILOT CONCLUIDO${C.reset}`);

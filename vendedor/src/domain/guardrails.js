@@ -24,6 +24,10 @@ function loadGuardrails() {
   };
 }
 
+function inferDispatchKindFromLead(lead = {}) {
+  return lead.primeira_mensagem_enviada || Number(lead.followups_enviados || 0) > 0 ? 'followup' : 'send';
+}
+
 function validateAutopilotPayload(payload = {}, guardrails = loadGuardrails()) {
   const qtd = Number(payload.qtd);
   const maxAnalyze = Number(payload.maxAnalyze);
@@ -53,26 +57,38 @@ function validateAutopilotPayload(payload = {}, guardrails = loadGuardrails()) {
   };
 }
 
-function evaluateSendGuardrails(lead, guardrails = loadGuardrails()) {
+function evaluateSendGuardrails(lead, guardrails = loadGuardrails(), options = {}) {
   const errors = [];
   const canonicalStatus = lead?.status_canonical || lead?.status || null;
   const score = Number(lead?.score || 0);
   const followups = Number(lead?.followups_enviados || 0);
+  const dispatchKind = options.dispatchKind || inferDispatchKindFromLead(lead);
 
-  if (guardrails.require_qa_approved_for_send && canonicalStatus !== 'qa_approved') {
-    errors.push(`Lead precisa estar em qa_approved antes do envio. Status atual: ${canonicalStatus || 'desconhecido'}.`);
+  if (dispatchKind === 'send') {
+    if (guardrails.require_qa_approved_for_send && canonicalStatus !== 'qa_approved') {
+      errors.push(`Lead precisa estar em qa_approved antes do envio. Status atual: ${canonicalStatus || 'desconhecido'}.`);
+    }
+  } else {
+    if (!lead?.primeira_mensagem_enviada) {
+      errors.push('Follow-up exige primeira mensagem previamente enviada.');
+    }
+    if (['won', 'lost', 'blocked'].includes(canonicalStatus)) {
+      errors.push(`Follow-up nao permitido para status final ${canonicalStatus}.`);
+    }
+    if (followups >= guardrails.max_followups_per_lead) {
+      errors.push(`Lead excedeu o limite de followups (${followups} >= ${guardrails.max_followups_per_lead}).`);
+    }
   }
+
   if (score < guardrails.min_score_to_send) {
     errors.push(`Lead abaixo do score minimo (${score} < ${guardrails.min_score_to_send}).`);
-  }
-  if (followups >= guardrails.max_followups_per_lead) {
-    errors.push(`Lead excedeu o limite de followups (${followups} >= ${guardrails.max_followups_per_lead}).`);
   }
 
   return {
     ok: errors.length === 0,
     errors,
-    guardrails
+    guardrails,
+    dispatch_kind: dispatchKind
   };
 }
 
@@ -80,6 +96,7 @@ module.exports = {
   GUARDRAILS_FILE,
   DEFAULT_GUARDRAILS,
   loadGuardrails,
+  inferDispatchKindFromLead,
   validateAutopilotPayload,
   evaluateSendGuardrails
 };

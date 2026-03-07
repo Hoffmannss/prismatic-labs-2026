@@ -62,17 +62,17 @@ The current system already has enough modules to support prospecting, analysis, 
 - `11-learner.js` -> `src/agents/learner.js`
 - `12-tracker.js` -> `src/core/tracker.js` with tracker compatibility wrapper
 
-## What changed in phase 8
+## What changed in phase 9
 
-- Daily quota accounting was introduced in `src/domain/quota-policy.js`, persisting operational usage in `data/metrics/daily-quotas.json`.
-- Dashboard API now blocks sends and followups when daily limits are exhausted and exposes `/api/quotas` for operational visibility.
-- Autopilot now enforces guardrails even when executed directly from CLI, not only through the dashboard API.
-- Retry/backoff policy was introduced in `src/utils/retry.js` and applied to Apify calls, learner refresh and Notion sync attempts.
-- Quotas and retry policy are now part of the dashboard contract and covered by contract tests.
+- First-touch versus followup accounting moved into `src/core/tracker.js`, so quota and send governance now live in the pipeline core instead of only in the API layer.
+- Followup eligibility is now validated differently from first-touch sends, avoiding the previous mistake of forcing `qa_approved` on every later contact.
+- Circuit breaker state was introduced in `src/utils/circuit-breaker.js` to stop hammering unstable integrations after repeated failures.
+- Autopilot now applies retry plus circuit-breaker protection to Apify, Notion sync and learner refresh.
+- Tracker policy and circuit-breaker behavior are now covered by contract tests.
 
 ## Next implementation steps
 
-1. Add separate accounting for first-touch sends versus followup sends inside tracker state itself, not only API-side quota policy.
-2. Persist per-channel and per-campaign quotas instead of only global daily counters.
-3. Add circuit breakers for repeated external integration failures.
-4. Remove compatibility shims only after the frontend and all automations stop depending on legacy file shapes.
+1. Add real deployment packaging, installation script and production env validation.
+2. Add onboarding assets, operator docs and a commercial setup flow that a client can actually use without engineering help.
+3. Add campaign/channel abstractions, per-channel quotas and message approval workflow with audit trail.
+4. Add observability, alerting and backup/restore before claiming production-grade autonomy.

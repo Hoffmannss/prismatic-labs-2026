@@ -15,9 +15,9 @@ const http = require('http');
 const url = require('url');
 const { spawn } = require('child_process');
 const { loadJSON, saveJSON, readText } = require('../utils/file-store');
-const { loadGuardrails, validateAutopilotPayload, evaluateSendGuardrails } = require('../domain/guardrails');
+const { loadGuardrails, validateAutopilotPayload } = require('../domain/guardrails');
 const { buildDashboardStatsPayload } = require('./dashboard-contract');
-const { loadQuotaStore, buildQuotaSnapshot, checkQuota, recordQuotaEvent } = require('../domain/quota-policy');
+const { loadQuotaStore, buildQuotaSnapshot, recordQuotaEvent } = require('../domain/quota-policy');
 
 const PORT = parseInt(process.argv[2], 10) || 3131;
 const VENDEDOR_ROOT = path.resolve(__dirname, '..', '..');
@@ -133,49 +133,7 @@ const server = http.createServer(async (req, res) => {
       if (action === 'pending') return json(res, { ok: true, data: getPendingTracking() });
       if (action === 'stats') return json(res, { ok: true, data: getOutcomeStats() });
       if (!username || !actionMap[action]) return json(res, { ok: false, error: 'action invalida ou username ausente' }, 400);
-
-      const guardrails = loadGuardrails();
-      const lead = loadDB().leads.find((item) => item.username === username);
-      if (!lead) return json(res, { ok: false, error: `Lead @${username} nao encontrado` }, 404);
-
-      let quotaKind = null;
-      if (actionMap[action] === 'enviada') {
-        const guardrailCheck = evaluateSendGuardrails(lead, guardrails);
-        if (!guardrailCheck.ok) {
-          return json(res, {
-            ok: false,
-            error: 'Envio bloqueado por guardrails.',
-            details: guardrailCheck.errors,
-            guardrails: guardrailCheck.guardrails
-          }, 400);
-        }
-
-        quotaKind = lead.primeira_mensagem_enviada || Number(lead.followups_enviados || 0) > 0 ? 'followup' : 'send';
-        const quotaCheck = checkQuota(quotaKind, 1, guardrails, loadQuotaStore());
-        if (!quotaCheck.ok) {
-          return json(res, {
-            ok: false,
-            error: `Quota diaria excedida para ${quotaKind}.`,
-            quota: quotaCheck,
-            guardrails
-          }, 400);
-        }
-      }
-
-      const result = updateOutcome(username, actionMap[action], extra);
-      let quota = null;
-      if (quotaKind) {
-        quota = recordQuotaEvent(quotaKind, {
-          amount: 1,
-          metadata: {
-            username,
-            score: Number(lead.score || 0),
-            status: lead.status_canonical || lead.status
-          }
-        });
-      }
-
-      return json(res, { ok: true, data: result, quota });
+      return json(res, { ok: true, data: updateOutcome(username, actionMap[action], extra) });
     } catch (error) {
       return json(res, { ok: false, error: error.message }, 400);
     }
