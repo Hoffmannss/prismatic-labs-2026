@@ -1,6 +1,13 @@
 require('dotenv').config();
 const { spawnSync } = require('child_process');
 const path = require('path');
+const {
+  upsertLeadFromFiles,
+  markMessageSent,
+  updateLeadStatus,
+  listLeads,
+  dailyReport
+} = require('./tracker');
 
 const VENDEDOR_ROOT = path.resolve(__dirname, '..', '..');
 
@@ -37,30 +44,26 @@ function analyzeAndPrepare(args) {
   }
 
   const clean = username.replace('@', '');
-
   log(`\n${'='.repeat(60)}`, C.magenta);
   log(`  VENDEDOR AI — ANALISANDO @${clean}`, C.bright);
   if (postsDesc) log('  Posts descritos: SIM ✨', C.green);
   log(`${'='.repeat(60)}`, C.magenta);
 
   log('\n[STEP 1/4] Analisando perfil...', C.yellow);
-  if (!runLegacy('1-analyzer.js', [clean, bio || '', followers || '0', posts || '0', postsDesc || ''])) {
-    process.exit(1);
-  }
+  if (!runLegacy('1-analyzer.js', [clean, bio || '', followers || '0', posts || '0', postsDesc || ''])) process.exit(1);
 
   log('\n[STEP 2/4] Gerando mensagem personalizada...', C.yellow);
-  if (!runLegacy('2-copywriter.js', [clean])) {
-    process.exit(1);
-  }
+  if (!runLegacy('2-copywriter.js', [clean])) process.exit(1);
 
   log('\n[STEP 3/4] Revisando qualidade da mensagem...', C.yellow);
   runLegacy('7-reviewer.js', [clean]);
 
-  log('\n[STEP 4/4] Adicionando ao CRM...', C.yellow);
-  runLegacy('3-cataloger.js', ['add', clean]);
+  log('\n[STEP 4/4] Registrando no pipeline estruturado...', C.yellow);
+  const lead = upsertLeadFromFiles(clean);
 
   log(`\n${'='.repeat(60)}`, C.green);
   log(`  PRONTO! @${clean} processado com sucesso!`, C.bright);
+  log(`  Status canonico: ${lead.status_canonical}`, C.green);
   log('  -> Copie a MENSAGEM FINAL acima e envie no Instagram/WhatsApp', C.green);
   log(`  -> Apos enviar: node src/core/orchestrator.js sent @${clean}`, C.green);
   log(`${'='.repeat(60)}\n`, C.green);
@@ -80,7 +83,8 @@ function markSent(username) {
     log('Uso: node src/core/orchestrator.js sent @username', C.red);
     process.exit(1);
   }
-  runLegacy('3-cataloger.js', ['sent', clean]);
+  const lead = markMessageSent(clean);
+  log(`[ORCHESTRATOR] @${clean} marcado como sent. Proximo followup: ${lead.proximo_followup}`, C.green);
 }
 
 function updateStatus(username, status, nota) {
@@ -89,17 +93,25 @@ function updateStatus(username, status, nota) {
     log('Uso: node src/core/orchestrator.js status @username status "nota opcional"', C.red);
     process.exit(1);
   }
-  const args = ['status', clean, status];
-  if (nota) args.push(nota);
-  runLegacy('3-cataloger.js', args);
+  const lead = updateLeadStatus(clean, status, nota);
+  log(`[ORCHESTRATOR] @${clean} atualizado para ${lead.status_canonical}`, C.green);
 }
 
 function showReport() {
-  runLegacy('3-cataloger.js', ['report']);
+  const { db, pipeline } = dailyReport();
+  log(`\n${'='.repeat(60)}`, C.magenta);
+  log('  VENDEDOR AI — RELATORIO DO PIPELINE', C.bright);
+  log(`${'='.repeat(60)}`, C.magenta);
+  log(`  Total de leads: ${db.leads.length}`, C.cyan);
+  log(`  Taxa de contato: ${pipeline.taxa_contato}%`, C.cyan);
+  log(`  Taxa de oportunidade: ${pipeline.taxa_oportunidade}%`, C.cyan);
+  log(`  Taxa de fechamento: ${pipeline.taxa_fechamento}%`, C.cyan);
+  log(`  Followups hoje: ${pipeline.leads_para_followup_hoje.length}`, C.cyan);
+  log(`${'='.repeat(60)}\n`, C.magenta);
 }
 
-function listLeads(filter) {
-  runLegacy('3-cataloger.js', filter ? ['list', filter] : ['list']);
+function printLeads(filter) {
+  console.log(JSON.stringify(listLeads(filter), null, 2));
 }
 
 function runNotionSync(subcmd) {
@@ -112,10 +124,10 @@ function showHelp() {
   log(`${'='.repeat(60)}`, C.cyan);
   log('\nCOMANDOS:');
   log('  scout    [nicho] [qtd]                    -> Prospeccao guiada', C.green);
-  log('  analyze  @user "bio" seg posts "desc"     -> Analise + copy + revisao + CRM', C.green);
-  log('  sent     @username                        -> Marca enviado', C.green);
+  log('  analyze  @user "bio" seg posts "desc"     -> Analise + copy + revisao + registro', C.green);
+  log('  sent     @username                        -> Marca enviado e agenda followup', C.green);
   log('  followup                                  -> Followups pendentes', C.green);
-  log('  status   @username [status] "nota"        -> Atualiza status do lead', C.green);
+  log('  status   @username [status] "nota"        -> Atualiza status canonico', C.green);
   log('  notion   [setup|sync|status]              -> Sincronizacao Notion', C.green);
   log('  dashboard                                 -> Sobe o dashboard web', C.green);
   log('  report                                    -> Relatorio do pipeline', C.green);
@@ -126,15 +138,20 @@ function showHelp() {
 const command = process.argv[2];
 const args = process.argv.slice(3);
 
-switch (command) {
-  case 'analyze': analyzeAndPrepare(args); break;
-  case 'scout': runScout(args); break;
-  case 'sent': markSent(args[0]); break;
-  case 'followup': runFollowup(); break;
-  case 'status': updateStatus(args[0], args[1], args[2]); break;
-  case 'report': showReport(); break;
-  case 'list': listLeads(args[0]); break;
-  case 'notion': runNotionSync(args[0]); break;
-  case 'dashboard': runLegacy('8-dashboard.js'); break;
-  default: showHelp();
+try {
+  switch (command) {
+    case 'analyze': analyzeAndPrepare(args); break;
+    case 'scout': runScout(args); break;
+    case 'sent': markSent(args[0]); break;
+    case 'followup': runFollowup(); break;
+    case 'status': updateStatus(args[0], args[1], args[2]); break;
+    case 'report': showReport(); break;
+    case 'list': printLeads(args[0]); break;
+    case 'notion': runNotionSync(args[0]); break;
+    case 'dashboard': runLegacy('8-dashboard.js'); break;
+    default: showHelp();
+  }
+} catch (error) {
+  log(error.message, C.red);
+  process.exit(1);
 }
