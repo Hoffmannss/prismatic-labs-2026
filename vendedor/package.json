@@ -1,13 +1,16 @@
 {
   "name": "prismatic-labs-vendedor-ai",
-  "version": "1.1.0",
-  "description": "SUPER VENDEDOR AI - Prismatic Labs 2026",
-  "main": "5-orchestrator.js",
+  "version": "1.2.0",
+  "description": "Prismatic Labs Vendedor AI - autonomous revenue engine foundation",
+  "main": "src/core/orchestrator.js",
   "scripts": {
-    "start": "node 5-orchestrator.js",
-    "analyze": "node 5-orchestrator.js analyze",
-    "followup": "node 5-orchestrator.js followup",
-    "report": "node 5-orchestrator.js report"
+    "start": "node src/core/orchestrator.js",
+    "analyze": "node src/core/orchestrator.js analyze",
+    "followup": "node src/core/orchestrator.js followup",
+    "report": "node src/core/orchestrator.js report",
+    "dashboard": "node src/services/dashboard-api.js",
+    "scout": "node src/core/orchestrator.js scout",
+    "notion:sync": "node src/core/orchestrator.js notion sync"
   },
   "dependencies": {
     "dotenv": "^16.4.5",
