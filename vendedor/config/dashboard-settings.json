@@ -1,0 +1,26 @@
+{
+  "theme": "neon-dark",
+  "agents": {
+    "analyzer": true,
+    "copywriter": true,
+    "reviewer": true,
+    "notionSync": true,
+    "learner": true,
+    "tracker": true
+  },
+  "autopilotDefaults": {
+    "nicho": "api-automacao",
+    "qtd": 20,
+    "maxAnalyze": 8
+  },
+  "notifications": {
+    "soundEnabled": false,
+    "showFollowupAlerts": true,
+    "alertDaysBeforeFollowup": 1
+  },
+  "dashboard": {
+    "leadsPerPage": 20,
+    "defaultView": "cockpit",
+    "showOnlyActionable": false
+  }
+}
