@@ -12,7 +12,7 @@ const {
 require('dotenv').config();
 const path = require('path');
 const http = require('http');
-const url = require('url');
+const fs = require('fs');
 const { spawn } = require('child_process');
 const { loadJSON, saveJSON, readText } = require('../utils/file-store');
 const { loadGuardrails, validateAutopilotPayload } = require('../domain/guardrails');
@@ -22,11 +22,15 @@ const { loadQuotaStore, buildQuotaSnapshot, recordQuotaEvent } = require('../dom
 const PORT = parseInt(process.argv[2], 10) || 3131;
 const VENDEDOR_ROOT = path.resolve(__dirname, '..', '..');
 const DATA_DIR = path.join(VENDEDOR_ROOT, 'data');
+const METRICS_DIR = path.join(DATA_DIR, 'metrics');
 const HTML_FILE = path.join(VENDEDOR_ROOT, 'public', 'dashboard.html');
 const SETTINGS_FILE = path.join(VENDEDOR_ROOT, 'config', 'dashboard-settings.json');
 const THEMES_FILE = path.join(VENDEDOR_ROOT, 'config', 'dashboard-themes.json');
 const LEARNING_FILE = path.join(DATA_DIR, 'learning', 'style-memory.json');
 const AUTOPILOT_ENTRY = path.join(VENDEDOR_ROOT, 'src', 'core', 'autopilot.js');
+const AUTOPILOT_RUNS_FILE = path.join(METRICS_DIR, 'autopilot-runs.json');
+
+if (!fs.existsSync(METRICS_DIR)) fs.mkdirSync(METRICS_DIR, { recursive: true });
 
 function json(res, data, status = 200) {
   res.writeHead(status, {
@@ -74,14 +78,76 @@ function bodyJSON(req) {
   });
 }
 
-function startAutopilot({ nicho, qtd, maxAnalyze }) {
-  const child = spawn('node', [AUTOPILOT_ENTRY, nicho, String(qtd), String(maxAnalyze)], {
+function loadAutopilotRuns() {
+  return loadJSON(AUTOPILOT_RUNS_FILE, { last_run: null, history: [] });
+}
+
+function saveAutopilotRuns(data) {
+  saveJSON(AUTOPILOT_RUNS_FILE, data);
+}
+
+function generateRunId() {
+  return `run_${new Date().toISOString().replace(/[-:]/g, '').replace(/\..+/, '')}`;
+}
+
+function recordAutopilotStart(runId, params) {
+  const runs = loadAutopilotRuns();
+  const run = {
+    run_id: runId,
+    started_at: new Date().toISOString(),
+    finished_at: null,
+    status: 'running',
+    nicho: params.nicho,
+    qtd_requested: params.qtd,
+    qtd_queued: null,
+    analyzed: null,
+    errors: 0,
+    notion_synced: null,
+    learner_updated: null,
+    triggered_by: 'dashboard'
+  };
+  runs.last_run = run;
+  runs.history.unshift({ ...run });
+  if (runs.history.length > 20) runs.history = runs.history.slice(0, 20);
+  saveAutopilotRuns(runs);
+  return run;
+}
+
+function startAutopilot({ nicho, qtd, maxAnalyze }, runId) {
+  const isWindows = process.platform === 'win32';
+  const child = spawn('node', [AUTOPILOT_ENTRY, nicho, String(qtd), String(maxAnalyze), runId], {
     cwd: VENDEDOR_ROOT,
-    env: process.env,
-    detached: true,
-    stdio: 'ignore'
+    env: { ...process.env, AUTOPILOT_RUN_ID: runId },
+    detached: !isWindows,
+    stdio: isWindows ? 'inherit' : 'ignore'
   });
-  child.unref();
+  if (!isWindows) child.unref();
+}
+
+function getAutopilotStatus() {
+  const runs = loadAutopilotRuns();
+  const lastRun = runs.last_run;
+  const isRunning = lastRun && lastRun.started_at && !lastRun.finished_at;
+  return {
+    has_run: Boolean(lastRun),
+    is_running: isRunning,
+    last_run: lastRun ? {
+      run_id: lastRun.run_id,
+      started_at: lastRun.started_at,
+      finished_at: lastRun.finished_at,
+      status: lastRun.status,
+      nicho: lastRun.nicho,
+      analyzed: lastRun.analyzed,
+      errors: lastRun.errors
+    } : null,
+    history: runs.history.slice(0, 5).map((run) => ({
+      run_id: run.run_id,
+      started_at: run.started_at,
+      status: run.status,
+      nicho: run.nicho,
+      analyzed: run.analyzed
+    }))
+  };
 }
 
 const actionMap = {
@@ -95,8 +161,8 @@ const actionMap = {
 };
 
 const server = http.createServer(async (req, res) => {
-  const parsed = url.parse(req.url, true);
-  const pathname = parsed.pathname;
+  const parsedUrl = new URL(req.url, `http://${req.headers.host}`);
+  const pathname = parsedUrl.pathname;
 
   if (req.method === 'OPTIONS') return json(res, {});
 
@@ -117,6 +183,7 @@ const server = http.createServer(async (req, res) => {
   if (req.method === 'GET' && pathname === '/api/learning') return json(res, loadJSON(LEARNING_FILE, null));
   if (req.method === 'GET' && pathname === '/api/guardrails') return json(res, loadGuardrails());
   if (req.method === 'GET' && pathname === '/api/quotas') return json(res, buildQuotaSnapshot(loadQuotaStore(), loadGuardrails()));
+  if (req.method === 'GET' && pathname === '/api/autopilot/status') return json(res, getAutopilotStatus());
 
   if (req.method === 'POST' && pathname === '/api/settings') {
     const body = await bodyJSON(req);
@@ -161,7 +228,9 @@ const server = http.createServer(async (req, res) => {
       }, 400);
     }
 
-    startAutopilot(validation.sanitized);
+    const runId = generateRunId();
+    recordAutopilotStart(runId, validation.sanitized);
+    startAutopilot(validation.sanitized, runId);
     const quota = recordQuotaEvent('autopilot', {
       amount: 1,
       metadata: validation.sanitized
@@ -169,7 +238,9 @@ const server = http.createServer(async (req, res) => {
 
     return json(res, {
       ok: true,
+      run_id: runId,
       message: `Autopilot iniciado: ${validation.sanitized.nicho} | qtd:${validation.sanitized.qtd} | max:${validation.sanitized.maxAnalyze}`,
+      params: validation.sanitized,
       guardrails,
       quota
     });
