@@ -1,17 +1,21 @@
 #!/usr/bin/env node
+const {
+  loadDB,
+  dailyReport,
+  updateLeadStatus,
+  listLeads,
+  normalizeStatus,
+  updateOutcome,
+  listTrackingQueue,
+  getPendingTracking,
+  getOutcomeStats
+} = require('../core/tracker');
 require('dotenv').config();
 const http = require('http');
 const fs = require('fs');
 const path = require('path');
 const url = require('url');
 const { spawn } = require('child_process');
-const {
-  loadDB,
-  dailyReport,
-  updateLeadStatus,
-  listLeads,
-  normalizeStatus
-} = require('../core/tracker');
 
 const PORT = parseInt(process.argv[2], 10) || 3131;
 const VENDEDOR_ROOT = path.resolve(__dirname, '..', '..');
@@ -19,10 +23,8 @@ const DATA_DIR = path.join(VENDEDOR_ROOT, 'data');
 const HTML_FILE = path.join(VENDEDOR_ROOT, 'public', 'dashboard.html');
 const SETTINGS_FILE = path.join(VENDEDOR_ROOT, 'config', 'dashboard-settings.json');
 const THEMES_FILE = path.join(VENDEDOR_ROOT, 'config', 'dashboard-themes.json');
-const TRACKER_DIR = path.join(DATA_DIR, 'tracker');
 const LEARNING_FILE = path.join(DATA_DIR, 'learning', 'style-memory.json');
 const AUTOPILOT_ENTRY = path.join(VENDEDOR_ROOT, 'src', 'core', 'autopilot.js');
-const LEGACY_TRACKER_ENTRY = path.join(VENDEDOR_ROOT, '12-tracker.js');
 
 function json(res, data, status = 200) {
   res.writeHead(status, {
@@ -51,13 +53,9 @@ function getLeadMessages(username) {
   return loadJSON(path.join(DATA_DIR, 'mensagens', `${username}_mensagens.json`), null);
 }
 
-function getLegacyTracker(username) {
-  return loadJSON(path.join(TRACKER_DIR, `${username}_tracker.json`), null);
-}
-
 function enrichLead(lead) {
   const msg = getLeadMessages(lead.username);
-  const tracker = getLegacyTracker(lead.username);
+  const tracking = msg?.tracking || null;
   return {
     ...lead,
     status_canonical: normalizeStatus(lead.status_canonical || lead.status),
@@ -69,9 +67,9 @@ function enrichLead(lead) {
       msg.followup_dia7 ? { dia: 7, texto: msg.followup_dia7 } : null,
       msg.followup_dia14 ? { dia: 14, texto: msg.followup_dia14 } : null
     ].filter(Boolean) : [],
-    tracker: tracker || null,
-    outcome: tracker?.outcome || null,
-    dm_enviada: tracker?.dm_enviada || false
+    tracker: tracking,
+    outcome: tracking?.outcome || null,
+    dm_enviada: tracking?.outcome === 'enviada' || Boolean(tracking?.data_envio)
   };
 }
 
@@ -87,22 +85,6 @@ function bodyJSON(req) {
   });
 }
 
-function runLegacyTracker(args) {
-  return new Promise((resolve) => {
-    const child = spawn('node', [LEGACY_TRACKER_ENTRY, ...args], {
-      cwd: VENDEDOR_ROOT,
-      env: process.env,
-      stdio: ['ignore', 'pipe', 'pipe']
-    });
-
-    let stdout = '';
-    let stderr = '';
-    child.stdout.on('data', (chunk) => stdout += chunk.toString());
-    child.stderr.on('data', (chunk) => stderr += chunk.toString());
-    child.on('close', (code) => resolve({ ok: code === 0, out: stdout, err: stderr }));
-  });
-}
-
 function startAutopilot({ nicho, qtd, maxAnalyze }) {
   const child = spawn('node', [AUTOPILOT_ENTRY, nicho, String(qtd), String(maxAnalyze)], {
     cwd: VENDEDOR_ROOT,
@@ -112,6 +94,16 @@ function startAutopilot({ nicho, qtd, maxAnalyze }) {
   });
   child.unref();
 }
+
+const actionMap = {
+  sent: 'enviada',
+  enviada: 'enviada',
+  respondeu: 'respondeu',
+  ignorou: 'ignorou',
+  negociando: 'negociando',
+  converteu: 'converteu',
+  recusou: 'recusou'
+};
 
 const server = http.createServer(async (req, res) => {
   const parsed = url.parse(req.url, true);
@@ -133,9 +125,9 @@ const server = http.createServer(async (req, res) => {
     return json(res, { leads, total: leads.length, updated_at: db.updated_at });
   }
 
-  if (req.method === 'GET' && pathname === '/api/settings') {
-    return json(res, loadJSON(SETTINGS_FILE, {}));
-  }
+  if (req.method === 'GET' && pathname === '/api/settings') return json(res, loadJSON(SETTINGS_FILE, {}));
+  if (req.method === 'GET' && pathname === '/api/themes') return json(res, loadJSON(THEMES_FILE, { themes: [] }));
+  if (req.method === 'GET' && pathname === '/api/learning') return json(res, loadJSON(LEARNING_FILE, null));
 
   if (req.method === 'POST' && pathname === '/api/settings') {
     const body = await bodyJSON(req);
@@ -145,23 +137,19 @@ const server = http.createServer(async (req, res) => {
     return json(res, { ok: true, settings: updated });
   }
 
-  if (req.method === 'GET' && pathname === '/api/themes') {
-    return json(res, loadJSON(THEMES_FILE, { themes: [] }));
-  }
-
-  if (req.method === 'GET' && pathname === '/api/learning') {
-    return json(res, loadJSON(LEARNING_FILE, null));
-  }
-
   if (req.method === 'POST' && pathname === '/api/tracker') {
     const { username, action, extra } = await bodyJSON(req);
-    if (!username || !action) {
-      return json(res, { ok: false, error: 'username e action obrigatorios' }, 400);
+    try {
+      if (action === 'list') return json(res, { ok: true, data: listTrackingQueue() });
+      if (action === 'pending') return json(res, { ok: true, data: getPendingTracking() });
+      if (action === 'stats') return json(res, { ok: true, data: getOutcomeStats() });
+      if (!username || !actionMap[action]) {
+        return json(res, { ok: false, error: 'action invalida ou username ausente' }, 400);
+      }
+      return json(res, { ok: true, data: updateOutcome(username, actionMap[action], extra) });
+    } catch (error) {
+      return json(res, { ok: false, error: error.message }, 400);
     }
-    const args = [action, username];
-    if (extra !== undefined && extra !== null) args.push(String(extra));
-    const result = await runLegacyTracker(args);
-    return json(res, result, result.ok ? 200 : 500);
   }
 
   if (req.method === 'POST' && pathname === '/api/autopilot') {
@@ -176,12 +164,9 @@ const server = http.createServer(async (req, res) => {
 
   if (req.method === 'POST' && pathname === '/api/lead/status') {
     const { username, status, nota } = await bodyJSON(req);
-    if (!username || !status) {
-      return json(res, { ok: false, error: 'username e status obrigatorios' }, 400);
-    }
+    if (!username || !status) return json(res, { ok: false, error: 'username e status obrigatorios' }, 400);
     try {
-      const lead = updateLeadStatus(username, status, nota);
-      return json(res, { ok: true, lead });
+      return json(res, { ok: true, lead: updateLeadStatus(username, status, nota) });
     } catch (error) {
       return json(res, { ok: false, error: error.message }, 400);
     }
@@ -191,23 +176,16 @@ const server = http.createServer(async (req, res) => {
     const { db, pipeline } = dailyReport();
     const leads = listLeads();
     const byPriority = { hot: 0, warm: 0, cold: 0 };
-    const byOutcome = { enviada: 0, respondeu: 0, ignorou: 0, negociando: 0, converteu: 0 };
-    let totalValue = 0;
-
     leads.forEach((lead) => {
       if (lead.prioridade in byPriority) byPriority[lead.prioridade] += 1;
-      const legacyTracker = getLegacyTracker(lead.username);
-      if (legacyTracker?.outcome && legacyTracker.outcome in byOutcome) byOutcome[legacyTracker.outcome] += 1;
-      if (legacyTracker?.outcome === 'converteu' && legacyTracker?.valor) totalValue += Number(legacyTracker.valor) || 0;
     });
 
     const learning = loadJSON(LEARNING_FILE, null);
     return json(res, {
       total: db.leads.length,
       byPriority,
-      byOutcome,
-      totalValue,
       pipeline,
+      tracker: getOutcomeStats(),
       learning: learning ? {
         versao: learning.versao,
         score_medio: learning.score_medio,

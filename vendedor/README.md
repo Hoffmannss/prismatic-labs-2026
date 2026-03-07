@@ -22,7 +22,7 @@ npm run report
 ## O que ja ficou profissional
 
 - Entry point novo em `src/core/orchestrator.js`.
-- Tracker central em `src/core/tracker.js`.
+- Tracker central em `src/core/tracker.js`, agora com pipeline e outcomes de DM no mesmo nucleo.
 - Dashboard migrado para `src/services/dashboard-api.js`.
 - Autopilot migrado para `src/core/autopilot.js`.
 - Status canonicos e regras de transicao em `src/domain/`.

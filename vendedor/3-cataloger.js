@@ -1,2 +1,3 @@
 #!/usr/bin/env node
-require('./src/core/tracker');
+const { cliCataloger } = require('./src/core/tracker');
+cliCataloger(process.argv.slice(2));

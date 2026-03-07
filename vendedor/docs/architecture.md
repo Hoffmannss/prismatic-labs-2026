@@ -60,20 +60,21 @@ The current system already has enough modules to support prospecting, analysis, 
 - `9-notion-sync.js` -> `src/services/notion-sync.js`
 - `10-autopilot.js` -> `src/core/autopilot.js`
 - `11-learner.js` -> `src/agents/learner.js`
-- `12-tracker.js` -> `src/core/tracker.js` after consolidation
+- `12-tracker.js` -> `src/core/tracker.js` with tracker compatibility wrapper
 
-## What changed in phase 3
+## What changed in phase 4
 
-- The dashboard server logic was moved into `src/services/dashboard-api.js`.
-- The dashboard now uses the structured tracker for lead status changes and pipeline stats.
-- Autopilot orchestration was moved into `src/core/autopilot.js` and now targets the structured orchestrator.
-- Legacy entry files `8-dashboard.js` and `10-autopilot.js` are now compatibility wrappers.
-- Legacy tracker actions remain temporarily available only where dashboard compatibility still depends on them.
+- Legacy tracker semantics were absorbed into `src/core/tracker.js`.
+- Tracker now owns DM outcomes, response timing, conversion value and outcome stats in addition to pipeline status.
+- `12-tracker.js` became a thin compatibility wrapper instead of a separate source of truth.
+- `3-cataloger.js` was fixed to call the new structured CLI explicitly.
+- Dashboard tracker actions now call structured tracker functions directly instead of delegating to the legacy tracker runtime.
+- Compatibility tracker files are still written temporarily so old views can survive the migration.
 
 ## Next implementation steps
 
-1. Absorb `12-tracker.js` semantics into the structured tracker and remove remaining legacy tracker dependence.
-2. Refactor shared file and JSON access into `src/utils/`.
-3. Align the frontend dashboard views with canonical statuses and new KPIs.
-4. Feed learner with structured outcome events rather than ad hoc file reads.
-5. Add guardrails for campaign-level throughput, send limits and quality thresholds.
+1. Move shared file and JSON operations into `src/utils/`.
+2. Align the frontend dashboard views with canonical statuses and tracker KPIs.
+3. Feed learner from structured events and outcome history.
+4. Add throughput guardrails, send quotas and quality gates for fully autonomous execution.
+5. Remove remaining compatibility shims only after the frontend and learner stop depending on legacy file shapes.
