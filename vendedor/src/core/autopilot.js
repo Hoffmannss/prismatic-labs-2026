@@ -4,22 +4,27 @@ const https = require('https');
 const fs = require('fs');
 const path = require('path');
 const { spawnSync } = require('child_process');
+const { saveJSON } = require('../utils/file-store');
+const { withRetry, sleep } = require('../utils/retry');
+const { loadGuardrails, validateAutopilotPayload } = require('../domain/guardrails');
+const { recordQuotaEvent } = require('../domain/quota-policy');
 
 const VENDEDOR_ROOT = path.resolve(__dirname, '..', '..');
 const { NICHOS } = require(path.join(VENDEDOR_ROOT, '6-scout.js'));
 
 const APIFY = process.env.APIFY_API_TOKEN;
-const NICHO = process.argv[2] || process.env.AUTOPILOT_NICHO || 'api-automacao';
-const QTD = parseInt(process.argv[3] || process.env.AUTOPILOT_QTD || '20', 10);
-const MAX_ANALYZE = parseInt(process.argv[4] || process.env.AUTOPILOT_MAX_ANALYZE || '10', 10);
+const REQUESTED_NICHO = process.argv[2] || process.env.AUTOPILOT_NICHO || 'api-automacao';
+const REQUESTED_QTD = parseInt(process.argv[3] || process.env.AUTOPILOT_QTD || '20', 10);
+const REQUESTED_MAX_ANALYZE = parseInt(process.argv[4] || process.env.AUTOPILOT_MAX_ANALYZE || '10', 10);
 const SYNC_NOTION = (process.env.AUTOPILOT_SYNC_NOTION || 'true').toLowerCase() === 'true';
+const GUARDRAILS = loadGuardrails();
 
 const DATA_DIR = path.join(VENDEDOR_ROOT, 'data');
-const DB_FILE = path.join(DATA_DIR, 'crm', 'leads-database.json');
 const SCOUT_DIR = path.join(DATA_DIR, 'scout');
 const ORCHESTRATOR_ENTRY = path.join(VENDEDOR_ROOT, 'src', 'core', 'orchestrator.js');
 const NOTION_SYNC_ENTRY = path.join(VENDEDOR_ROOT, 'src', 'services', 'notion-sync.js');
 const STRUCTURED_LEARNER = path.join(VENDEDOR_ROOT, 'src', 'agents', 'learner.js');
+const DB_FILE = path.join(DATA_DIR, 'crm', 'leads-database.json');
 
 const C = {
   reset:'\x1b[0m', bright:'\x1b[1m', green:'\x1b[32m',
@@ -53,7 +58,21 @@ function apiRequest(method, host, requestPath, body, tokenQ) {
   });
 }
 
-const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+function logRetry({ attempt, attempts, delay, label, error }) {
+  console.log(`${C.yellow}[RETRY] ${label} falhou na tentativa ${attempt}/${attempts}: ${error.message}. Backoff ${delay}ms.${C.reset}`);
+}
+
+function requestWithRetry(method, host, requestPath, body, tokenQ, label) {
+  return withRetry(
+    () => apiRequest(method, host, requestPath, body, tokenQ),
+    {
+      attempts: GUARDRAILS.retry_max_attempts,
+      baseDelayMs: GUARDRAILS.retry_base_delay_ms,
+      label,
+      onRetry: logRetry
+    }
+  );
+}
 
 function loadCRMUsernames() {
   if (!fs.existsSync(DB_FILE)) return new Set();
@@ -62,7 +81,7 @@ function loadCRMUsernames() {
 }
 
 async function startRun(actorId, input) {
-  const res = await apiRequest('POST', 'api.apify.com', `/v2/acts/${actorId}/runs`, input, APIFY);
+  const res = await requestWithRetry('POST', 'api.apify.com', `/v2/acts/${actorId}/runs`, input, APIFY, `apify-start:${actorId}`);
   if (res.status !== 201 && res.status !== 200) throw new Error(`Apify startRun ${actorId}: ${JSON.stringify(res.body)}`);
   return res.body.data.id;
 }
@@ -71,7 +90,7 @@ async function waitRun(runId, maxMinutes = 8) {
   const maxPolls = maxMinutes * 12;
   for (let i = 0; i < maxPolls; i += 1) {
     await sleep(5000);
-    const res = await apiRequest('GET', 'api.apify.com', `/v2/actor-runs/${runId}`, null, APIFY);
+    const res = await requestWithRetry('GET', 'api.apify.com', `/v2/actor-runs/${runId}`, null, APIFY, `apify-poll:${runId}`);
     const status = res.body?.data?.status;
     process.stdout.write('.');
     if (status === 'SUCCEEDED') { process.stdout.write('\n'); return true; }
@@ -82,7 +101,7 @@ async function waitRun(runId, maxMinutes = 8) {
 }
 
 async function datasetItems(runId, limit) {
-  const res = await apiRequest('GET', 'api.apify.com', `/v2/actor-runs/${runId}/dataset/items`, null, `${APIFY}&limit=${limit}`);
+  const res = await requestWithRetry('GET', 'api.apify.com', `/v2/actor-runs/${runId}/dataset/items`, null, `${APIFY}&limit=${limit}`, `apify-dataset:${runId}`);
   if (res.status !== 200) return [];
   return Array.isArray(res.body) ? res.body : (res.body.items || []);
 }
@@ -131,6 +150,19 @@ function runAnalyze(username, bio, followers, posts, postsDesc) {
   return result.status === 0;
 }
 
+async function runCommandWithRetry(label, entry, args = []) {
+  return withRetry(async () => {
+    const result = spawnSync('node', [entry, ...args], { stdio: 'inherit', cwd: VENDEDOR_ROOT, env: process.env });
+    if (result.status !== 0) throw new Error(`${label} retornou status ${result.status}`);
+    return true;
+  }, {
+    attempts: GUARDRAILS.retry_max_attempts,
+    baseDelayMs: GUARDRAILS.retry_base_delay_ms,
+    label,
+    onRetry: logRetry
+  });
+}
+
 function pickPostsDesc(config, caption) {
   const compact = (caption || '').replace(/\s+/g, ' ').trim().slice(0, 350);
   return [
@@ -146,6 +178,19 @@ async function main() {
     process.exit(1);
   }
 
+  const validation = validateAutopilotPayload({
+    nicho: REQUESTED_NICHO,
+    qtd: REQUESTED_QTD,
+    maxAnalyze: REQUESTED_MAX_ANALYZE
+  }, GUARDRAILS);
+
+  if (!validation.ok) {
+    console.error(`${C.red}[AUTOPILOT] Bloqueado por guardrails:${C.reset}`);
+    validation.errors.forEach((error) => console.error(`  - ${error}`));
+    process.exit(1);
+  }
+
+  const { nicho: NICHO, qtd: QTD, maxAnalyze: MAX_ANALYZE } = validation.sanitized;
   const config = NICHOS[NICHO];
   if (!config) {
     console.error(`${C.red}[AUTOPILOT] Nicho invalido: "${NICHO}"${C.reset}`);
@@ -159,6 +204,7 @@ async function main() {
   console.log(`${C.bright}  AUTOPILOT — ${config.nome}${C.reset}`);
   console.log(`${C.magenta}${'='.repeat(64)}${C.reset}`);
   console.log(`  Meta: ${QTD} leads  |  Max analyze: ${MAX_ANALYZE}  |  Notion: ${SYNC_NOTION}`);
+  console.log(`  Retry: ${GUARDRAILS.retry_max_attempts} tentativas  |  Base delay: ${GUARDRAILS.retry_base_delay_ms}ms`);
 
   const existingUsernames = loadCRMUsernames();
   console.log(`  Leads ja no CRM (skip): ${existingUsernames.size}\n`);
@@ -214,7 +260,7 @@ async function main() {
 
   const dateStr = new Date().toISOString().split('T')[0];
   const outFile = path.join(SCOUT_DIR, `autopilot-${dateStr}-${NICHO}.json`);
-  fs.writeFileSync(outFile, JSON.stringify({ nicho: NICHO, date: dateStr, total: queue.length, queue }, null, 2));
+  saveJSON(outFile, { nicho: NICHO, date: dateStr, total: queue.length, queue });
   console.log(`  Queue salva: ${outFile}`);
 
   console.log(`\n${C.cyan}[3/5] Analyze (orchestrator) em ${Math.min(queue.length, MAX_ANALYZE)} leads...${C.reset}`);
@@ -228,12 +274,20 @@ async function main() {
     await sleep(400);
   }
 
+  recordQuotaEvent('autopilot', { amount: 1, metadata: { nicho: NICHO, qtd: QTD, maxAnalyze: MAX_ANALYZE } });
+  if (okCount > 0) {
+    recordQuotaEvent('analyze', { amount: okCount, metadata: { nicho: NICHO } });
+  }
+
   console.log(`\n${C.green}  Analyze concluido: ${okCount}/${toAnalyze.length} ok${C.reset}`);
 
   if (SYNC_NOTION) {
     console.log(`\n${C.cyan}[4/5] Sincronizando com Notion...${C.reset}`);
-    const result = spawnSync('node', [NOTION_SYNC_ENTRY, 'sync'], { stdio: 'inherit', cwd: VENDEDOR_ROOT, env: process.env });
-    if (result.status !== 0) console.log(`${C.yellow}  [WARN] notion-sync retornou erro${C.reset}`);
+    try {
+      await runCommandWithRetry('notion-sync', NOTION_SYNC_ENTRY, ['sync']);
+    } catch (error) {
+      console.log(`${C.yellow}  [WARN] notion-sync falhou apos retry: ${error.message}${C.reset}`);
+    }
   } else {
     console.log(`\n${C.yellow}[4/5] Notion sync pulado (AUTOPILOT_SYNC_NOTION=false)${C.reset}`);
   }
@@ -241,7 +295,12 @@ async function main() {
   console.log(`\n${C.blue}[5/5] Atualizando memoria de aprendizado estruturada...${C.reset}`);
   try {
     const { runLearner } = require(STRUCTURED_LEARNER);
-    await runLearner();
+    await withRetry(() => runLearner(), {
+      attempts: GUARDRAILS.retry_max_attempts,
+      baseDelayMs: GUARDRAILS.retry_base_delay_ms,
+      label: 'structured-learner',
+      onRetry: logRetry
+    });
   } catch (error) {
     console.log(`${C.yellow}[LEARNER] Aviso: ${error.message}${C.reset}`);
     console.log(`${C.yellow}  (nao critico — pipeline concluido normalmente)${C.reset}`);

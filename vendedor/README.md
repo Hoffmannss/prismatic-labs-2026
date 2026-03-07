@@ -18,9 +18,9 @@ npm run test:contracts
 - `src/core`: coordenacao principal, autopilot e tracker estruturado.
 - `src/agents`: wrappers e futuros modulos profissionais dos agentes, incluindo learner estruturado.
 - `src/services`: servicos operacionais, incluindo dashboard e Notion.
-- `src/domain`: contratos de status, eventos, regras do pipeline e guardrails operacionais.
-- `src/utils`: acesso compartilhado a arquivos e JSON.
-- `test`: testes de contrato iniciais para dashboard e guardrails.
+- `src/domain`: contratos de status, eventos, regras do pipeline, guardrails e quotas operacionais.
+- `src/utils`: acesso compartilhado a arquivos, JSON e retry/backoff.
+- `test`: testes de contrato para dashboard, guardrails, quotas e retry.
 - `docs`: documentacao arquitetural.
 
 ## O que ja ficou profissional
@@ -28,9 +28,10 @@ npm run test:contracts
 - Entry point novo em `src/core/orchestrator.js`.
 - Tracker central em `src/core/tracker.js`, agora com pipeline e outcomes de DM no mesmo nucleo.
 - Dashboard migrado para `src/services/dashboard-api.js`.
-- Autopilot migrado para `src/core/autopilot.js`.
+- Autopilot migrado para `src/core/autopilot.js` com guardrails e retry policy.
 - Learner migrado para `src/agents/learner.js` com consumo de eventos estruturados.
 - Guardrails operacionais configurados em `config/guardrails.json`.
+- Quotas diarias persistidas em `data/metrics/daily-quotas.json`.
 - Status canonicos e regras de transicao em `src/domain/`.
 - Wrappers estruturados para manter compatibilidade com os modulos legados.
 

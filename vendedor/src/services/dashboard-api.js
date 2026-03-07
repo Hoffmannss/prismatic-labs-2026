@@ -3,7 +3,6 @@ const {
   loadDB,
   dailyReport,
   updateLeadStatus,
-  listLeads,
   normalizeStatus,
   updateOutcome,
   listTrackingQueue,
@@ -18,6 +17,7 @@ const { spawn } = require('child_process');
 const { loadJSON, saveJSON, readText } = require('../utils/file-store');
 const { loadGuardrails, validateAutopilotPayload, evaluateSendGuardrails } = require('../domain/guardrails');
 const { buildDashboardStatsPayload } = require('./dashboard-contract');
+const { loadQuotaStore, buildQuotaSnapshot, checkQuota, recordQuotaEvent } = require('../domain/quota-policy');
 
 const PORT = parseInt(process.argv[2], 10) || 3131;
 const VENDEDOR_ROOT = path.resolve(__dirname, '..', '..');
@@ -116,6 +116,7 @@ const server = http.createServer(async (req, res) => {
   if (req.method === 'GET' && pathname === '/api/themes') return json(res, loadJSON(THEMES_FILE, { themes: [] }));
   if (req.method === 'GET' && pathname === '/api/learning') return json(res, loadJSON(LEARNING_FILE, null));
   if (req.method === 'GET' && pathname === '/api/guardrails') return json(res, loadGuardrails());
+  if (req.method === 'GET' && pathname === '/api/quotas') return json(res, buildQuotaSnapshot(loadQuotaStore(), loadGuardrails()));
 
   if (req.method === 'POST' && pathname === '/api/settings') {
     const body = await bodyJSON(req);
@@ -133,10 +134,13 @@ const server = http.createServer(async (req, res) => {
       if (action === 'stats') return json(res, { ok: true, data: getOutcomeStats() });
       if (!username || !actionMap[action]) return json(res, { ok: false, error: 'action invalida ou username ausente' }, 400);
 
+      const guardrails = loadGuardrails();
+      const lead = loadDB().leads.find((item) => item.username === username);
+      if (!lead) return json(res, { ok: false, error: `Lead @${username} nao encontrado` }, 404);
+
+      let quotaKind = null;
       if (actionMap[action] === 'enviada') {
-        const lead = loadDB().leads.find((item) => item.username === username);
-        if (!lead) return json(res, { ok: false, error: `Lead @${username} nao encontrado` }, 404);
-        const guardrailCheck = evaluateSendGuardrails(lead, loadGuardrails());
+        const guardrailCheck = evaluateSendGuardrails(lead, guardrails);
         if (!guardrailCheck.ok) {
           return json(res, {
             ok: false,
@@ -145,9 +149,33 @@ const server = http.createServer(async (req, res) => {
             guardrails: guardrailCheck.guardrails
           }, 400);
         }
+
+        quotaKind = lead.primeira_mensagem_enviada || Number(lead.followups_enviados || 0) > 0 ? 'followup' : 'send';
+        const quotaCheck = checkQuota(quotaKind, 1, guardrails, loadQuotaStore());
+        if (!quotaCheck.ok) {
+          return json(res, {
+            ok: false,
+            error: `Quota diaria excedida para ${quotaKind}.`,
+            quota: quotaCheck,
+            guardrails
+          }, 400);
+        }
       }
 
-      return json(res, { ok: true, data: updateOutcome(username, actionMap[action], extra) });
+      const result = updateOutcome(username, actionMap[action], extra);
+      let quota = null;
+      if (quotaKind) {
+        quota = recordQuotaEvent(quotaKind, {
+          amount: 1,
+          metadata: {
+            username,
+            score: Number(lead.score || 0),
+            status: lead.status_canonical || lead.status
+          }
+        });
+      }
+
+      return json(res, { ok: true, data: result, quota });
     } catch (error) {
       return json(res, { ok: false, error: error.message }, 400);
     }
@@ -162,23 +190,30 @@ const server = http.createServer(async (req, res) => {
       maxAnalyze: body.maxAnalyze || settings.autopilotDefaults?.maxAnalyze || 8
     };
 
-    const validation = validateAutopilotPayload(requested, loadGuardrails());
+    const guardrails = loadGuardrails();
+    const validation = validateAutopilotPayload(requested, guardrails);
     if (!validation.ok) {
       return json(res, {
         ok: false,
         error: 'Autopilot bloqueado por guardrails.',
         details: validation.errors,
-        guardrails: validation.guardrails,
+        guardrails,
         requested,
         sanitized: validation.sanitized
       }, 400);
     }
 
     startAutopilot(validation.sanitized);
+    const quota = recordQuotaEvent('autopilot', {
+      amount: 1,
+      metadata: validation.sanitized
+    });
+
     return json(res, {
       ok: true,
       message: `Autopilot iniciado: ${validation.sanitized.nicho} | qtd:${validation.sanitized.qtd} | max:${validation.sanitized.maxAnalyze}`,
-      guardrails: validation.guardrails
+      guardrails,
+      quota
     });
   }
 
@@ -196,7 +231,8 @@ const server = http.createServer(async (req, res) => {
     const { db, pipeline } = dailyReport();
     const learning = loadJSON(LEARNING_FILE, null);
     const guardrails = loadGuardrails();
-    return json(res, buildDashboardStatsPayload({ db, pipeline, learning, guardrails }));
+    const quotas = buildQuotaSnapshot(loadQuotaStore(), guardrails);
+    return json(res, buildDashboardStatsPayload({ db, pipeline, learning, guardrails, quotas }));
   }
 
   return json(res, { error: 'Not found' }, 404);
@@ -209,6 +245,6 @@ server.listen(PORT, () => {
   console.log(`${C.m}${'='.repeat(52)}${C.r}`);
   console.log(`  URL     : ${C.c}http://localhost:${PORT}${C.r}`);
   console.log('  APIs    : /api/leads /api/settings /api/themes');
-  console.log('            /api/tracker /api/autopilot /api/stats /api/guardrails');
+  console.log('            /api/tracker /api/autopilot /api/stats /api/guardrails /api/quotas');
   console.log(`${C.m}${'='.repeat(52)}${C.r}\n`);
 });

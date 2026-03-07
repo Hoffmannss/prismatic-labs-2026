@@ -35,3 +35,10 @@ test('send guardrails allow approved lead with adequate score', () => {
   assert.equal(allowed.ok, true);
   assert.deepEqual(allowed.errors, []);
 });
+
+test('default guardrails expose quotas and retry policy', () => {
+  assert.equal(DEFAULT_GUARDRAILS.daily_send_quota, 25);
+  assert.equal(DEFAULT_GUARDRAILS.daily_followup_quota, 40);
+  assert.equal(DEFAULT_GUARDRAILS.retry_max_attempts, 3);
+  assert.equal(DEFAULT_GUARDRAILS.retry_base_delay_ms, 1500);
+});

@@ -62,17 +62,17 @@ The current system already has enough modules to support prospecting, analysis, 
 - `11-learner.js` -> `src/agents/learner.js`
 - `12-tracker.js` -> `src/core/tracker.js` with tracker compatibility wrapper
 
-## What changed in phase 7
+## What changed in phase 8
 
-- Contract-test entrypoints were added to `package.json` using Node's native test runner.
-- Dashboard payload shaping was extracted to `src/services/dashboard-contract.js` so it can be tested without booting the HTTP server.
-- Operational guardrails were introduced in `src/domain/guardrails.js` and configured in `config/guardrails.json`.
-- Dashboard API now blocks unsafe autopilot launches and unsafe send actions when they violate score or QA rules.
-- The current autonomy layer is now governed by explicit limits instead of operator discipline alone.
+- Daily quota accounting was introduced in `src/domain/quota-policy.js`, persisting operational usage in `data/metrics/daily-quotas.json`.
+- Dashboard API now blocks sends and followups when daily limits are exhausted and exposes `/api/quotas` for operational visibility.
+- Autopilot now enforces guardrails even when executed directly from CLI, not only through the dashboard API.
+- Retry/backoff policy was introduced in `src/utils/retry.js` and applied to Apify calls, learner refresh and Notion sync attempts.
+- Quotas and retry policy are now part of the dashboard contract and covered by contract tests.
 
 ## Next implementation steps
 
-1. Add transition-level tests that exercise real filesystem fixtures for tracker state movement.
-2. Add quota counters and daily send accounting, not only static limits.
-3. Add retry policy and failure backoff for external integrations.
+1. Add separate accounting for first-touch sends versus followup sends inside tracker state itself, not only API-side quota policy.
+2. Persist per-channel and per-campaign quotas instead of only global daily counters.
+3. Add circuit breakers for repeated external integration failures.
 4. Remove compatibility shims only after the frontend and all automations stop depending on legacy file shapes.

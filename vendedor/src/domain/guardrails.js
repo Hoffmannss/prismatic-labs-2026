@@ -10,7 +10,11 @@ const DEFAULT_GUARDRAILS = Object.freeze({
   max_analyze_per_run: 10,
   min_score_to_send: 70,
   require_qa_approved_for_send: true,
-  max_followups_per_lead: 3
+  max_followups_per_lead: 3,
+  daily_send_quota: 25,
+  daily_followup_quota: 40,
+  retry_max_attempts: 3,
+  retry_base_delay_ms: 1500
 });
 
 function loadGuardrails() {
