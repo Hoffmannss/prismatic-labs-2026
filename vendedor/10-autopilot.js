@@ -1,6 +1,6 @@
 // =============================================================
-// MODULO 10: AUTOPILOT - SCOUT -> ENRICH -> ANALYZE -> NOTION
-// Fluxo totalmente automatico: hashtags -> perfis -> AI -> CRM
+// MODULO 10: AUTOPILOT - SCOUT -> ENRICH -> ANALYZE -> NOTION -> LEARN
+// Fluxo totalmente automatico: hashtags -> perfis -> AI -> CRM -> aprendizado
 //
 // Uso:
 //   node 10-autopilot.js [nicho] [qtd] [maxAnalyze]
@@ -30,7 +30,7 @@ const SCOUT_DIR = path.join(DATA_DIR, 'scout');
 const C = {
   reset:'\x1b[0m', bright:'\x1b[1m', green:'\x1b[32m',
   yellow:'\x1b[33m', red:'\x1b[31m', cyan:'\x1b[36m',
-  magenta:'\x1b[35m'
+  magenta:'\x1b[35m', blue:'\x1b[34m'
 };
 
 // ── Helpers HTTP (puro Node - sem dependencias) ───────────────
@@ -187,7 +187,7 @@ async function main() {
   console.log(`  Leads ja no CRM (skip): ${jaCRM.size}\n`);
 
   // ── 1. Hashtags ─────────────────────────────────────────────
-  console.log(`${C.cyan}[1/4] Scraping hashtags via Apify...${C.reset}`);
+  console.log(`${C.cyan}[1/5] Scraping hashtags via Apify...${C.reset}`);
   const posts = await scrapeByHashtags(config.hashtags.slice(0, 4), QTD * 6);
   console.log(`  Posts coletados: ${posts.length}`);
 
@@ -208,7 +208,7 @@ async function main() {
   }
 
   // ── 2. Enrich perfis ────────────────────────────────────────
-  console.log(`\n${C.cyan}[2/4] Enriquecendo ${usernames.length} perfis (bio, followers, posts)...${C.reset}`);
+  console.log(`\n${C.cyan}[2/5] Enriquecendo ${usernames.length} perfis (bio, followers, posts)...${C.reset}`);
   const profs = await scrapeProfiles(usernames);
 
   const profMap = new Map();
@@ -242,7 +242,7 @@ async function main() {
   console.log(`  Queue salva: ${outFile}`);
 
   // ── 3. Analyze ──────────────────────────────────────────────
-  console.log(`\n${C.cyan}[3/4] Analyze (orchestrator) em ${Math.min(queue.length, MAX_ANALYZE)} leads...${C.reset}`);
+  console.log(`\n${C.cyan}[3/5] Analyze (orchestrator) em ${Math.min(queue.length, MAX_ANALYZE)} leads...${C.reset}`);
   const toAnalyze = queue.slice(0, MAX_ANALYZE);
   let okCount = 0;
 
@@ -258,14 +258,24 @@ async function main() {
 
   // ── 4. Notion sync ──────────────────────────────────────────
   if (SYNC_NOTION) {
-    console.log(`\n${C.cyan}[4/4] Sincronizando com Notion...${C.reset}`);
+    console.log(`\n${C.cyan}[4/5] Sincronizando com Notion...${C.reset}`);
     const r = spawnSync(
       'node', [path.join(__dirname, '9-notion-sync.js'), 'sync'],
       { stdio: 'inherit', cwd: __dirname, env: process.env }
     );
     if (r.status !== 0) console.log(`${C.yellow}  [WARN] notion-sync retornou erro${C.reset}`);
   } else {
-    console.log(`\n${C.yellow}[4/4] Notion sync pulado (AUTOPILOT_SYNC_NOTION=false)${C.reset}`);
+    console.log(`\n${C.yellow}[4/5] Notion sync pulado (AUTOPILOT_SYNC_NOTION=false)${C.reset}`);
+  }
+
+  // ── 5. Aprendizado continuo ──────────────────────────────────
+  console.log(`\n${C.blue}[5/5] Atualizando memoria de aprendizado (11-learner.js)...${C.reset}`);
+  try {
+    const { runLearner } = require('./11-learner');
+    await runLearner();
+  } catch (e) {
+    console.log(`${C.yellow}[LEARNER] Aviso: ${e.message}${C.reset}`);
+    console.log(`${C.yellow}  (nao critico — pipeline concluido normalmente)${C.reset}`);
   }
 
   // ── Resumo final ────────────────────────────────────────────
@@ -273,6 +283,7 @@ async function main() {
   console.log(`${C.bright}  AUTOPILOT CONCLUIDO${C.reset}`);
   console.log(`  ✓ ${queue.length} leads na queue`);
   console.log(`  ✓ ${okCount} analisados e salvos no CRM`);
+  console.log(`  ✓ Memoria de aprendizado atualizada`);
   console.log(`  → Abra o dashboard: node 8-dashboard.js`);
   console.log(`    http://localhost:3000`);
   console.log(`${C.magenta}${'='.repeat(64)}${C.reset}\n`);

@@ -1,31 +1,41 @@
 // =============================================================
 // MODULO 2: COPYWRITER AI - PRISMATIC LABS VENDEDOR AUTOMATICO
 // Gera DM hiperpersonalizada usando few-shot + analise de posts
+// + Aprendizado continuo via style-memory.json (11-learner.js)
 // =============================================================
 
 require('dotenv').config();
 const Groq = require('groq-sdk');
-const fs = require('fs');
+const fs   = require('fs');
 const path = require('path');
 
 const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
 
-const username = process.argv[2] || process.env.LEAD_USERNAME;
+const username     = process.argv[2] || process.env.LEAD_USERNAME;
 const analysisFile = path.join(__dirname, '..', 'data', 'leads', `${username}_analysis.json`);
 
 const templates = JSON.parse(fs.readFileSync(path.join(__dirname, 'config', 'copywriting-templates.json'), 'utf8'));
-const produtos = JSON.parse(fs.readFileSync(path.join(__dirname, 'data', 'produtos.json'), 'utf8')).produtos;
+const produtos  = JSON.parse(fs.readFileSync(path.join(__dirname, 'data', 'produtos.json'), 'utf8')).produtos;
 
-// Sanitiza newlines literais dentro de strings JSON (modelo as gera sem escaping)
+// ---- LEARNING MEMORY ----------------------------------------
+const MEMORY_FILE = path.join(__dirname, '..', 'data', 'learning', 'style-memory.json');
+function loadMemory() {
+  try {
+    if (fs.existsSync(MEMORY_FILE)) return JSON.parse(fs.readFileSync(MEMORY_FILE, 'utf8'));
+  } catch {}
+  return null;
+}
+
+// Sanitiza newlines literais dentro de strings JSON
 function sanitizeJSON(str) {
   let inString = false;
-  let escaped = false;
-  let result = '';
+  let escaped  = false;
+  let result   = '';
   for (let i = 0; i < str.length; i++) {
     const c = str[i];
     if (escaped) { result += c; escaped = false; continue; }
     if (c === '\\') { escaped = true; result += c; continue; }
-    if (c === '"') { inString = !inString; result += c; continue; }
+    if (c === '"')  { inString = !inString; result += c; continue; }
     if (inString && c === '\n') { result += '\\n'; continue; }
     if (inString && c === '\r') { result += '\\r'; continue; }
     if (inString && c === '\t') { result += '\\t'; continue; }
@@ -46,7 +56,7 @@ async function generateMessage() {
     else { console.error('[COPYWRITER] Analise nao encontrada. Execute o Modulo 1 primeiro.'); process.exit(1); }
   }
 
-  const a = analysisData.analise;
+  const a  = analysisData.analise;
   const isAPI = a.servico_ideal === 'lead_normalizer_api';
   const ap = a.analise_posts || {};
 
@@ -101,6 +111,28 @@ MINIMO: 3 linhas. Mensagem de 1 linha = INVALIDO.`
 [PERGUNTA] 1 linha simples
 MINIMO: 3 linhas. Mensagem de 1 linha = INVALIDO.`;
 
+  // ---- INJETAR APRENDIZADO ACUMULADO ----
+  const memoria = loadMemory();
+  let memoriaStr = '';
+  if (memoria?.regras_copywriting?.length) {
+    const prodAngle = memoria.angulos_por_produto?.lead_normalizer_api;
+    memoriaStr = `
+APRENDIZADO ACUMULADO (v${memoria.versao} — ${memoria.total_amostras} amostras, score medio ${memoria.score_medio}/100):
+
+REGRAS APRENDIDAS — siga TODAS obrigatoriamente:
+${memoria.regras_copywriting.map((r, i) => `${i + 1}. ${r}`).join('\n')}
+
+ERROS PARA NUNCA REPETIR:
+${(memoria.erros_recorrentes || []).map(e => `- ${e}`).join('\n') || '(nenhum ainda)'}
+${prodAngle ? `
+ANGULO MAIS EFICAZ (lead_normalizer_api): ${prodAngle.melhor_angulo}
+EVITAR: ${(prodAngle.evitar || []).join(' | ')}` : ''}
+`;
+    console.log(`[COPYWRITER] 🧠 Memoria v${memoria.versao} carregada (${memoria.regras_copywriting.length} regras)`);
+  } else {
+    console.log('[COPYWRITER] 📝 Sem memoria previa — gerando sem aprendizado acumulado');
+  }
+
   const prompt = `Voce e o melhor copywriter do Brasil para vendas B2B via DM no Instagram.
 
 ${contexto_produto}
@@ -117,7 +149,7 @@ DADOS DO LEAD:
 ${postsContext}
 
 ${estruturaIdeal}
-
+${memoriaStr}
 EXEMPLOS (siga este estilo e comprimento):
 ${fewShot}
 
@@ -129,9 +161,9 @@ REGRAS FINAIS:
 
 Retorne SOMENTE o JSON (sem markdown, sem backticks, sem texto fora do JSON):
 {
-  "mensagem_1": {"texto": "HOOK aqui.\n\nVALOR aqui.\n\nPERGUNTA?", "angulo": "...", "temperatura": "direta"},
-  "mensagem_2": {"texto": "HOOK aqui.\n\nVALOR aqui.\n\nPERGUNTA?", "angulo": "...", "temperatura": "suave"},
-  "mensagem_3": {"texto": "HOOK aqui.\n\nVALOR aqui.\n\nPERGUNTA?", "angulo": "...", "temperatura": "curiosidade"},
+  "mensagem_1": {"texto": "HOOK aqui.\\n\\nVALOR aqui.\\n\\nPERGUNTA?", "angulo": "...", "temperatura": "direta"},
+  "mensagem_2": {"texto": "HOOK aqui.\\n\\nVALOR aqui.\\n\\nPERGUNTA?", "angulo": "...", "temperatura": "suave"},
+  "mensagem_3": {"texto": "HOOK aqui.\\n\\nVALOR aqui.\\n\\nPERGUNTA?", "angulo": "...", "temperatura": "curiosidade"},
   "mensagem_recomendada": "1",
   "motivo_recomendacao": "...",
   "followup_dia_3": "2-3 linhas naturais",
@@ -142,45 +174,44 @@ Retorne SOMENTE o JSON (sem markdown, sem backticks, sem texto fora do JSON):
   try {
     const completion = await groq.chat.completions.create({
       messages: [{ role: 'user', content: prompt }],
-      model: 'llama-3.3-70b-versatile',
+      model:    'llama-3.3-70b-versatile',
       temperature: 0.65,
-      max_tokens: 2500,
+      max_tokens:  2500,
     });
 
     const rawResponse = completion.choices[0].message.content.trim();
-    const jsonMatch = rawResponse.match(/\{[\s\S]*\}/);
+    const jsonMatch   = rawResponse.match(/\{[\s\S]*\}/);
     if (!jsonMatch) throw new Error('Resposta nao contem JSON valido');
 
-    // Sanitizar newlines literais antes de parsear
     const sanitized = sanitizeJSON(jsonMatch[0]);
-    const messages = JSON.parse(sanitized);
+    const messages  = JSON.parse(sanitized);
 
     const outputDir = path.join(__dirname, '..', 'data', 'mensagens');
     if (!fs.existsSync(outputDir)) fs.mkdirSync(outputDir, { recursive: true });
 
     const result = {
-      timestamp: new Date().toISOString(),
+      timestamp:        new Date().toISOString(),
       username,
       produto_detectado: a.servico_ideal,
-      analise_score: a.score_potencial,
-      prioridade: a.prioridade,
+      analise_score:    a.score_potencial,
+      prioridade:       a.prioridade,
       posts_analisados: ap.tem_posts_analisados || false,
-      mensagens: messages
+      learning_versao:  memoria?.versao || null,
+      mensagens:        messages
     };
 
     const outputFile = path.join(outputDir, `${username}_mensagens.json`);
     fs.writeFileSync(outputFile, JSON.stringify(result, null, 2));
 
-    const recKey = `mensagem_${messages.mensagem_recomendada}`;
-    const recMsg = messages[recKey];
-    const produtoLabel = isAPI ? '\ud83d\udd35 Lead Normalizer API' : '\ud83d\udfe3 Landing Page';
-    const postsLabel = ap.tem_posts_analisados ? ' + posts \u2713' : '';
+    const recKey    = `mensagem_${messages.mensagem_recomendada}`;
+    const recMsg    = messages[recKey];
+    const prodLabel = isAPI ? '\ud83d\udd35 Lead Normalizer API' : '\ud83d\udfe3 Landing Page';
+    const postsLbl  = ap.tem_posts_analisados ? ' + posts \u2713' : '';
 
     console.log(`\n[COPYWRITER] Mensagens geradas!`);
-    console.log(`[COPYWRITER] Produto: ${produtoLabel}${postsLabel}`);
+    console.log(`[COPYWRITER] Produto: ${prodLabel}${postsLbl}`);
     console.log(`[COPYWRITER] Recomendada: #${messages.mensagem_recomendada} - ${messages.motivo_recomendacao}`);
     console.log(`\n========== COPIE E COLE ESTA MENSAGEM ==========`);
-    // Renderizar \n como quebra de linha real no terminal
     console.log(recMsg?.texto?.replace(/\\n/g, '\n'));
     console.log(`================================================\n`);
     console.log(`[COPYWRITER] Arquivo: ${outputFile}`);

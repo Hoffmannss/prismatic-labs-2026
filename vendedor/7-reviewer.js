@@ -2,18 +2,19 @@
 // MODULO 7: REVIEWER AI - PRISMATIC LABS VENDEDOR AUTOMATICO
 // Avalia qualidade da mensagem gerada e melhora se necessario
 // Ultima linha de defesa antes de enviar para o lead
+// + Criterios extras aprendidos via 11-learner.js
 // =============================================================
 
 require('dotenv').config();
 const Groq = require('groq-sdk');
-const fs = require('fs');
+const fs   = require('fs');
 const path = require('path');
 
 const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
 
-const username = process.argv[2] || process.env.LEAD_USERNAME;
+const username     = process.argv[2] || process.env.LEAD_USERNAME;
 const mensagensFile = path.join(__dirname, '..', 'data', 'mensagens', `${username}_mensagens.json`);
-const analysisFile  = path.join(__dirname, '..', 'data', 'leads', `${username}_analysis.json`);
+const analysisFile  = path.join(__dirname, '..', 'data', 'leads',    `${username}_analysis.json`);
 
 const C = {
   reset: '\x1b[0m', bright: '\x1b[1m', green: '\x1b[32m',
@@ -26,7 +27,7 @@ function sanitizeJSON(str) {
     const c = str[i];
     if (escaped) { result += c; escaped = false; continue; }
     if (c === '\\') { escaped = true; result += c; continue; }
-    if (c === '"') { inString = !inString; result += c; continue; }
+    if (c === '"')  { inString = !inString; result += c; continue; }
     if (inString && c === '\n') { result += '\\n'; continue; }
     if (inString && c === '\r') { result += '\\r'; continue; }
     if (inString && c === '\t') { result += '\\t'; continue; }
@@ -48,12 +49,29 @@ async function reviewMessage() {
     process.exit(1);
   }
 
-  const a  = analysisData.analise;
-  const ap = a.analise_posts || {};
+  // ---- CRITERIOS EXTRAS DO APRENDIZADO ----
+  const MEM_FILE = path.join(__dirname, '..', 'data', 'learning', 'style-memory.json');
+  let criteriosExtras = '';
+  let memoriaVersao   = null;
+  try {
+    if (fs.existsSync(MEM_FILE)) {
+      const mem = JSON.parse(fs.readFileSync(MEM_FILE, 'utf8'));
+      memoriaVersao = mem.versao;
+      if (mem.criterios_reviewer_extras?.length) {
+        criteriosExtras = `
+CRITERIOS EXTRAS APRENDIDOS (memoria v${mem.versao} — ${mem.total_amostras} amostras, score medio ${mem.score_medio}/100):
+${mem.criterios_reviewer_extras.map((c, i) => `${i + 13}. ${c}`).join('\n')}`;
+        console.log(`${C.cyan}[REVIEWER] 🧠 Memoria v${mem.versao} carregada (${mem.criterios_reviewer_extras.length} criterios extras)${C.reset}`);
+      }
+    }
+  } catch {}
+
+  const a   = analysisData.analise;
+  const ap  = a.analise_posts || {};
   const msgs = mensagensData.mensagens;
-  const recKey = `mensagem_${msgs.mensagem_recomendada}`;
+  const recKey     = `mensagem_${msgs.mensagem_recomendada}`;
   const msgOriginal = msgs[recKey]?.texto || '';
-  const isAPI = mensagensData.produto_detectado === 'lead_normalizer_api';
+  const isAPI      = mensagensData.produto_detectado === 'lead_normalizer_api';
 
   const produtoCtx = isAPI
     ? 'Lead Normalizer API — dev para dev, direto, parece colega que encontrou algo util'
@@ -87,6 +105,7 @@ CHECKLIST DE QUALIDADE (verifique cada item):
 10. Tem erros graves de portugues, concordancia ou pontuacao?
 11. O gancho disponivel dos posts NAO foi usado (sendo que ele estava disponivel)?
 12. A mensagem soa automatizada, como se fosse um bot?
+${criteriosExtras}
 
 CRITERIOS DE APROVACAO:
 - Score >= 80: aprovada sem mudancas
@@ -117,9 +136,9 @@ RESPONDA APENAS O JSON.`;
   try {
     const completion = await groq.chat.completions.create({
       messages: [{ role: 'user', content: prompt }],
-      model: 'llama-3.3-70b-versatile',
+      model:    'llama-3.3-70b-versatile',
       temperature: 0.2,
-      max_tokens: 1500,
+      max_tokens:  1500,
     });
 
     const raw = completion.choices[0].message.content.trim();
@@ -131,12 +150,13 @@ RESPONDA APENAS O JSON.`;
     // ---- EXIBIR RESULTADO ----
     const scoreColor = review.score >= 80 ? C.green : review.score >= 60 ? C.yellow : C.red;
     const nivelEmoji = { excelente: '\ud83d\udfe2', boa: '\ud83d\udfe2', adequada: '\ud83d\udfe1', fraca: '\ud83d\udfe0', reprovada: '\ud83d\udd34' };
-    const emoji = nivelEmoji[review.nivel] || '\u26aa';
+    const emoji      = nivelEmoji[review.nivel] || '\u26aa';
 
     console.log(`\n${C.magenta}${'='.repeat(56)}${C.reset}`);
     console.log(`${C.bright}  RESULTADO DA REVISAO${C.reset}`);
     console.log(`${C.magenta}${'='.repeat(56)}${C.reset}`);
     console.log(`  Score: ${scoreColor}${C.bright}${review.score}/100${C.reset}  ${emoji} ${review.nivel?.toUpperCase()}`);
+    if (memoriaVersao) console.log(`  ${C.cyan}Criterios: checklist base + v${memoriaVersao} aprendizado${C.reset}`);
     console.log(`  ${review.resumo_revisor}`);
 
     if (review.pontos_positivos?.length) {
@@ -156,9 +176,7 @@ RESPONDA APENAS O JSON.`;
       mensagemFinal = msgOriginal;
     } else if (review.versao_melhorada) {
       console.log(`\n${C.yellow}  \ud83d\udd04 VERSAO MELHORADA GERADA${C.reset}`);
-      if (review.justificativa_melhoria) {
-        console.log(`  Mudancas: ${review.justificativa_melhoria}`);
-      }
+      if (review.justificativa_melhoria) console.log(`  Mudancas: ${review.justificativa_melhoria}`);
       mensagemFinal = review.versao_melhorada;
     } else {
       mensagemFinal = msgOriginal;
@@ -173,21 +191,22 @@ RESPONDA APENAS O JSON.`;
     } else {
       console.log(`${C.bright}  MENSAGEM APROVADA PARA ENVIO:${C.reset}`);
     }
-    console.log(`${C.magenta}${'─'.repeat(56)}${C.reset}`);
+    console.log(`${C.magenta}${'\u2500'.repeat(56)}${C.reset}`);
     console.log(mensagemFinal.replace(/\\n/g, '\n'));
     console.log(`${C.magenta}${'='.repeat(56)}${C.reset}\n`);
 
     // Salvar resultado da revisao no arquivo de mensagens
     mensagensData.revisao = {
-      timestamp: new Date().toISOString(),
-      score: review.score,
-      nivel: review.nivel,
-      aprovada: review.aprovada,
-      problemas: review.problemas,
-      pontos_positivos: review.pontos_positivos,
-      mensagem_original: msgOriginal,
-      mensagem_final: mensagemFinal,
-      melhorada: !!review.versao_melhorada
+      timestamp:          new Date().toISOString(),
+      score:              review.score,
+      nivel:              review.nivel,
+      aprovada:           review.aprovada,
+      problemas:          review.problemas,
+      pontos_positivos:   review.pontos_positivos,
+      mensagem_original:  msgOriginal,
+      mensagem_final:     mensagemFinal,
+      melhorada:          !!review.versao_melhorada,
+      learning_versao:    memoriaVersao,
     };
     fs.writeFileSync(mensagensFile, JSON.stringify(mensagensData, null, 2));
 
@@ -199,7 +218,6 @@ RESPONDA APENAS O JSON.`;
   } catch (error) {
     console.error(`${C.red}[REVIEWER] Erro: ${error.message}${C.reset}`);
     console.log(`${C.yellow}[REVIEWER] Continuando com mensagem original...${C.reset}`);
-    // Nao abortar o pipeline se o reviewer falhar
   }
 }
 
