@@ -9,8 +9,18 @@ npm start
 npm run dashboard
 npm run scout
 npm run report
+npm run preflight
+npm run readiness
 npm test
 npm run test:contracts
+```
+
+## Setup local rapido
+
+```bash
+cp .env.example .env
+npm run install:local
+npm run dashboard
 ```
 
 ## Estrutura inicial
@@ -20,8 +30,9 @@ npm run test:contracts
 - `src/services`: servicos operacionais, incluindo dashboard e Notion.
 - `src/domain`: contratos de status, eventos, regras do pipeline, guardrails e quotas operacionais.
 - `src/utils`: acesso compartilhado a arquivos, JSON, retry/backoff e circuit breaker.
+- `scripts`: instalacao local e preflight operacional.
 - `test`: testes de contrato para dashboard, guardrails, quotas, tracker e retry.
-- `docs`: documentacao arquitetural.
+- `docs`: documentacao arquitetural e readiness.
 
 ## O que ja ficou profissional
 
@@ -34,6 +45,16 @@ npm run test:contracts
 - Quotas diarias persistidas em `data/metrics/daily-quotas.json`.
 - Status canonicos e regras de transicao em `src/domain/`.
 - Wrappers estruturados para manter compatibilidade com os modulos legados.
+- Preflight de ambiente em `scripts/validate-env.js`.
+- Checklist de readiness em `docs/production-readiness.md`.
+
+## O que ainda falta antes de vender em escala
+
+- Deploy padronizado por cliente ou ambiente.
+- Smoke test real ponta a ponta recorrente.
+- Observabilidade, backup/restore e alertas.
+- Onboarding comercial e tecnico sem dependencia direta de engenharia.
+- Configuracao por canal/campanha/conta.
 
 ## Observacao
 
