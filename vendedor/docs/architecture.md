@@ -62,16 +62,16 @@ The current system already has enough modules to support prospecting, analysis, 
 - `11-learner.js` -> `src/agents/learner.js`
 - `12-tracker.js` -> `src/core/tracker.js` with tracker compatibility wrapper
 
-## What changed in phase 12
+## What changed in phase 13
 
-- Added operational `healthcheck` and `backup:create` / `backup:restore` scripts so deployment readiness is no longer only documentation.
-- Added `docs/deployment.md` to define the recommended environment topology and activation checklist.
-- Tightened readiness documentation to require stores, backups and health validation before real client use.
-- README now reflects backup, healthcheck and deployment guidance explicitly.
+- Added onboarding and activation documentation so client delivery is less dependent on tacit operator memory.
+- Added `config/client-profile.example.json` to formalize the minimum per-client operational profile.
+- Added operator and support guidance to reduce ambiguity about ownership and first-phase SLAs.
+- README now reflects the commercialization layer that exists versus the gaps that still remain.
 
 ## Next implementation steps
 
-1. Add onboarding assets, operator docs and a commercial setup flow that a client can actually use without engineering help.
-2. Add observability, alerting and restore drills before claiming production-grade autonomy.
-3. Add account/channel/campaign abstractions before trying to scale commercialization.
+1. Add observability and alerting instead of relying only on manual health checks.
+2. Add restore drills and incident runbooks validated in practice.
+3. Implement account/channel/campaign abstractions in code instead of only in docs/templates.
 4. Add deployment automation per environment instead of relying on manual steps.

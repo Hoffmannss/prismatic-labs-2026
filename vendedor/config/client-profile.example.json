@@ -1,0 +1,27 @@
+{
+  "client_id": "cliente-exemplo",
+  "display_name": "Cliente Exemplo",
+  "owner_comercial": "nome.responsavel",
+  "owner_tecnico": "nome.responsavel",
+  "primary_channel": "instagram_dm",
+  "secondary_channels": ["whatsapp"],
+  "niche": "clinica-estetica",
+  "offer": {
+    "name": "Automacao comercial",
+    "average_ticket": 3500,
+    "currency": "BRL"
+  },
+  "icp": {
+    "allowed": ["clinicas locais", "operacoes com alto volume de leads"],
+    "blocked": ["segmentos regulados sem aprovacao juridica"]
+  },
+  "compliance": {
+    "requires_manual_qa": true,
+    "max_daily_send_quota": 15,
+    "max_daily_followup_quota": 20
+  },
+  "notes": [
+    "Preencher antes da ativacao do cliente.",
+    "Nao usar como fonte unica de configuracao ate existir suporte nativo por conta no codigo."
+  ]
+}

@@ -37,7 +37,8 @@ npm run dashboard
 - `src/utils`: acesso compartilhado a arquivos, JSON, retry/backoff e circuit breaker.
 - `scripts`: instalacao local, preflight operacional, smoke test, backup/restore e healthcheck.
 - `test`: testes de contrato e fixtures operacionais.
-- `docs`: documentacao arquitetural, readiness e deploy.
+- `docs`: documentacao arquitetural, readiness, deploy, onboarding e operacao.
+- `config/client-profile.example.json`: modelo minimo por cliente/conta.
 
 ## O que ja ficou profissional
 
@@ -56,14 +57,15 @@ npm run dashboard
 - Healthcheck operacional em `scripts/healthcheck.js`.
 - Checklist de readiness em `docs/production-readiness.md`.
 - Guia de deploy em `docs/deployment.md`.
+- Onboarding e operacao inicial em `docs/client-onboarding.md`, `docs/client-activation-checklist.md`, `docs/operator-runbook.md` e `docs/support-policy.md`.
 
 ## O que ainda falta antes de vender em escala
 
-- Deploy automatizado por cliente ou ambiente.
-- Observabilidade, backup/restore testado em rotina e alertas.
-- Onboarding comercial e tecnico sem dependencia direta de engenharia.
-- Configuracao por canal/campanha/conta.
-- Processo comercial e suporte com SLA claros.
+- Observabilidade com alertas reais e rotina de restore drill.
+- Configuracao por canal/campanha/conta implementada no codigo, nao so documentada.
+- Deploy automatizado por ambiente.
+- Processo comercial repetivel com proposta, ativacao, acompanhamento e renovacao.
+- Politica de suporte executada com SLA, ownership e escalation reais.
 
 ## Observacao
 

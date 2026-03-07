@@ -24,6 +24,7 @@ O projeto ja saiu da fase de script solto e entrou na fase de stack operacional 
 - Backup e restore testados do diretório `data/` e das configuracoes `config/`.
 - Politica de suporte: o que a Prismatic opera, o que o cliente opera e quais limites de SLA existem.
 - Aprovacao/auditoria por canal e campanha antes de liberar automacao plena em contas reais.
+- Modelo minimo por cliente documentado, mesmo antes da configuracao multi-conta existir no codigo.
 
 ## Go-to-market recomendado
 
@@ -44,8 +45,8 @@ O projeto ja saiu da fase de script solto e entrou na fase de stack operacional 
 
 ## Ordem dura de execucao
 
-1. Fechar backup/restore e healthcheck.
-2. Padronizar deploy por ambiente.
-3. Documentar onboarding comercial e tecnico.
-4. Adicionar observabilidade e restore drills.
+1. Fechar onboarding e checklist de ativacao.
+2. Adicionar observabilidade e restore drills.
+3. Implementar conta/canal/campanha no codigo.
+4. Automatizar deploy por ambiente.
 5. So depois acelerar vendas.
