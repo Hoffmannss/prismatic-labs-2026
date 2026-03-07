@@ -1,8 +1,9 @@
 // =============================================================
 // MODULO 11: LEARNER AI - PRISMATIC LABS VENDEDOR AUTOMATICO
-// Analisa todas as mensagens revisadas, extrai padroes com LLM
-// e grava uma memoria de aprendizado continuo que alimenta o
-// copywriter e o reviewer nas proximas geracoes
+// Analisa todas as mensagens revisadas + dados reais de tracking
+// (respondeu/converteu) para extrair padroes com LLM e gravar
+// uma memoria de aprendizado continuo (style-memory.json)
+// Alimenta copywriter e reviewer nas proximas geracoes
 // =============================================================
 
 require('dotenv').config();
@@ -19,7 +20,7 @@ const MEMORY_FILE   = path.join(LEARNING_DIR, 'style-memory.json');
 
 const C = {
   reset: '\x1b[0m', bright: '\x1b[1m', green: '\x1b[32m',
-  yellow: '\x1b[33m', cyan: '\x1b[36m', blue: '\x1b[34m',
+  yellow: '\x1b[33m', cyan: '\x1b[36m', blue: '\x1b[34m', red: '\x1b[31m',
 };
 
 function sanitizeJSON(str) {
@@ -38,12 +39,11 @@ function sanitizeJSON(str) {
 }
 
 async function runLearner() {
-  console.log(`\n${C.blue}${'='.repeat(56)}${C.reset}`);
-  console.log(`${C.bright}  LEARNER — APRENDIZADO CONTINUO${C.reset}`);
-  console.log(`${C.blue}${'='.repeat(56)}${C.reset}`);
+  console.log(`\n${C.blue}${'='.repeat(60)}${C.reset}`);
+  console.log(`${C.bright}  LEARNER \u2014 APRENDIZADO CONTINUO${C.reset}`);
+  console.log(`${C.blue}${'='.repeat(60)}${C.reset}`);
 
   if (!fs.existsSync(LEARNING_DIR)) fs.mkdirSync(LEARNING_DIR, { recursive: true });
-
   if (!fs.existsSync(MENSAGENS_DIR)) {
     console.log(`${C.yellow}[LEARNER] Diretorio de mensagens nao encontrado.${C.reset}`);
     return null;
@@ -54,19 +54,18 @@ async function runLearner() {
     .sort();
 
   const comRevisao = msgFiles.filter(f => {
-    try {
-      return !!JSON.parse(fs.readFileSync(path.join(MENSAGENS_DIR, f), 'utf8')).revisao;
-    } catch { return false; }
+    try { return !!JSON.parse(fs.readFileSync(path.join(MENSAGENS_DIR, f), 'utf8')).revisao; }
+    catch { return false; }
   });
 
   console.log(`${C.cyan}[LEARNER] Arquivos com revisao: ${comRevisao.length} / ${msgFiles.length}${C.reset}`);
 
   if (comRevisao.length < 3) {
-    console.log(`${C.yellow}[LEARNER] Minimo 3 amostras com revisao para gerar aprendizado. Atual: ${comRevisao.length}${C.reset}`);
+    console.log(`${C.yellow}[LEARNER] Minimo 3 amostras com revisao. Atual: ${comRevisao.length}${C.reset}`);
     return null;
   }
 
-  // Janela deslizante: ultimas 40 amostras
+  // ---- Coletar dados (janela 40 mais recentes) ---------------
   const allData = [];
   for (const file of msgFiles.slice(-40)) {
     const username = file.replace('_mensagens.json', '');
@@ -80,22 +79,31 @@ async function runLearner() {
         analise = JSON.parse(fs.readFileSync(leadPath, 'utf8'))?.analise || null;
       }
 
+      const tk = msgData.tracking || null;
+
       allData.push({
         username,
-        produto:           msgData.produto_detectado,
-        prioridade:        msgData.prioridade,
-        score:             msgData.revisao.score,
-        nivel:             msgData.revisao.nivel,
-        aprovada:          msgData.revisao.aprovada,
-        melhorada:         msgData.revisao.melhorada,
-        problemas:         (msgData.revisao.problemas         || []).slice(0, 4),
-        pontos_positivos:  (msgData.revisao.pontos_positivos  || []).slice(0, 4),
-        msg_original:      (msgData.revisao.mensagem_original || '').slice(0, 200),
-        msg_final:         (msgData.revisao.mensagem_final    || '').slice(0, 200),
-        nicho:             analise?.nicho                     || null,
-        tipo_negocio:      analise?.tipo_negocio              || null,
-        gancho:            (analise?.analise_posts?.gancho_ideal || '').slice(0, 100),
-        nivel_consciencia: analise?.nivel_consciencia         || null,
+        produto:            msgData.produto_detectado,
+        prioridade:         msgData.prioridade,
+        score:              msgData.revisao.score,
+        nivel:              msgData.revisao.nivel,
+        aprovada:           msgData.revisao.aprovada,
+        melhorada:          msgData.revisao.melhorada,
+        problemas:          (msgData.revisao.problemas         || []).slice(0, 4),
+        pontos_positivos:   (msgData.revisao.pontos_positivos  || []).slice(0, 4),
+        msg_original:       (msgData.revisao.mensagem_original || '').slice(0, 200),
+        msg_final:          (msgData.revisao.mensagem_final    || '').slice(0, 200),
+        nicho:              analise?.nicho                     || null,
+        tipo_negocio:       analise?.tipo_negocio              || null,
+        gancho:             (analise?.analise_posts?.gancho_ideal || '').slice(0, 100),
+        nivel_consciencia:  analise?.nivel_consciencia         || null,
+        // Dados reais de tracking
+        tracking_outcome:        tk?.outcome              || null,
+        tracking_respondeu:      tk?.respondeu            || false,
+        tracking_converteu:      tk?.converteu            || false,
+        tracking_dias_resposta:  tk?.dias_ate_resposta    || null,
+        tracking_nota:           (tk?.nota || '').slice(0, 100),
+        tracking_valor:          tk?.valor_fechado        || null,
       });
     } catch {}
   }
@@ -105,11 +113,27 @@ async function runLearner() {
     return null;
   }
 
-  // Estatisticas basicas
+  // ---- Estatisticas basicas (sem LLM) ------------------------
   const scores          = allData.map(d => d.score);
   const scoreMedio      = Math.round(scores.reduce((a, b) => a + b, 0) / scores.length);
   const totalMelhoradas = allData.filter(d => d.melhorada).length;
   const taxaMelhoria    = Math.round((totalMelhoradas / allData.length) * 100);
+
+  // Stats de tracking real
+  const comTracking    = allData.filter(d => d.tracking_outcome && d.tracking_outcome !== 'enviada');
+  const totalTracked   = comTracking.length;
+  const totalResponderam = comTracking.filter(d => d.tracking_respondeu).length;
+  const totalConverteram = comTracking.filter(d => d.tracking_converteu).length;
+  const taxaRespostaReal = totalTracked > 0 ? Math.round((totalResponderam / totalTracked) * 100) : null;
+  const taxaConversaoReal = totalTracked > 0 ? Math.round((totalConverteram / totalTracked) * 100) : null;
+
+  // Score medio por grupo de tracking
+  const scoreResponderam = totalResponderam > 0
+    ? Math.round(comTracking.filter(d => d.tracking_respondeu).reduce((s, d) => s + d.score, 0) / totalResponderam)
+    : null;
+  const scoreIgnoraram = comTracking.filter(d => !d.tracking_respondeu).length > 0
+    ? Math.round(comTracking.filter(d => !d.tracking_respondeu).reduce((s, d) => s + d.score, 0) / comTracking.filter(d => !d.tracking_respondeu).length)
+    : null;
 
   const errosCount = {};
   allData.forEach(d => d.problemas.forEach(p => {
@@ -120,73 +144,87 @@ async function runLearner() {
     .sort((a, b) => b[1] - a[1]).slice(0, 6)
     .map(([k, v]) => `"${k}" (${v}x)`);
 
-  // Memoria anterior
+  // ---- Memoria anterior --------------------------------------
   let memoriaAnterior = null;
   if (fs.existsSync(MEMORY_FILE)) {
     try { memoriaAnterior = JSON.parse(fs.readFileSync(MEMORY_FILE, 'utf8')); } catch {}
   }
 
   const memAntStr = memoriaAnterior?.regras_copywriting?.length
-    ? `VERSAO ANTERIOR (v${memoriaAnterior.versao}, score medio ${memoriaAnterior.score_medio}/100):\nRegras anteriores:\n${memoriaAnterior.regras_copywriting.map((r, i) => `${i + 1}. ${r}`).join('\n')}`
+    ? `VERSAO ANTERIOR (v${memoriaAnterior.versao}, score medio ${memoriaAnterior.score_medio}/100, taxa resposta real ${memoriaAnterior.taxa_resposta_real ?? 'N/A'}%):\nRegras anteriores:\n${memoriaAnterior.regras_copywriting.map((r, i) => `${i + 1}. ${r}`).join('\n')}`
     : 'SEM MEMORIA ANTERIOR (primeira execucao)';
 
+  const trackingStr = totalTracked > 0
+    ? `DADOS REAIS DE TRACKING (${totalTracked} leads com outcome registrado):
+- Taxa resposta real: ${taxaRespostaReal}%
+- Taxa conversao real: ${taxaConversaoReal}%
+- Score medio dos que RESPONDERAM: ${scoreResponderam ?? 'N/A'}
+- Score medio dos que IGNORARAM: ${scoreIgnoraram ?? 'N/A'}
+- Correlacao score->resposta: ${scoreResponderam && scoreIgnoraram ? (scoreResponderam - scoreIgnoraram > 5 ? 'POSITIVA (score alto = mais resposta)' : 'FRACA (score nao prediz resposta)') : 'sem dados suficientes'}` 
+    : 'SEM DADOS DE TRACKING REAL AINDA (learner usa apenas score do reviewer)';
+
+  // ---- Prompt LLM --------------------------------------------
   const prompt = `Voce e um especialista em copywriting B2B para outreach via Instagram DM.
 
-Analise ${allData.length} mensagens avaliadas pelo reviewer e extraia padroes de aprendizado.
+Analise ${allData.length} mensagens avaliadas e extraia padroes de aprendizado.
 
 DADOS:
 ${JSON.stringify(allData, null, 2)}
 
-ESTATISTICAS:
+ESTATISTICAS DO REVIEWER:
 - Score medio: ${scoreMedio}/100
 - Total amostras: ${allData.length}
 - Mensagens reescritas pelo reviewer: ${totalMelhoradas}/${allData.length} (${taxaMelhoria}%)
 - Erros mais frequentes: ${errosFrequentes.join(' | ')}
 
+${trackingStr}
+
 ${memAntStr}
 
 Gere um JSON com esta estrutura EXATA (sem markdown, sem backticks):
 {
-  "score_medio": ${scoreMedio},
-  "total_amostras": ${allData.length},
-  "taxa_melhoria_reviewer": ${taxaMelhoria},
   "padroes_eficazes": [
-    "Padrao especifico que gerou score alto — max 5 itens, baseado nos dados reais"
+    "Padrao especifico que gerou score alto OU resposta real — max 5 itens"
   ],
   "erros_recorrentes": [
-    "Erro formulado como REGRA NEGATIVA clara — max 5 itens, baseado nos dados reais"
+    "Erro formulado como REGRA NEGATIVA clara — max 5 itens"
   ],
   "regras_copywriting": [
-    "REGRA POSITIVA obrigatoria, especifica e acionavel — max 8 itens, baseada nos dados"
+    "REGRA POSITIVA obrigatoria, especifica e acionavel — max 8 itens"
   ],
   "criterios_reviewer_extras": [
-    "Criterio extra de revisao para o reviewer checar — max 4 itens"
+    "Criterio extra para o reviewer checar — max 4 itens"
   ],
   "angulos_por_produto": {
     "lead_normalizer_api": {
-      "melhor_angulo": "descrever o angulo que consistentemente funciona melhor",
+      "melhor_angulo": "angulo que consistentemente gera mais resposta ou score alto",
       "ganchos_eficazes": ["exemplos de ganchos dos posts que foram bem aproveitados"],
-      "evitar": ["padroes que geram score baixo para este produto"]
+      "evitar": ["padroes que geram score baixo ou ignorados"]
     }
   },
+  "insights_tracking": [
+    "Insight derivado dos dados REAIS de tracking — vazio se sem dados suficientes"
+  ],
   "evolucao": {
     "score_anterior": ${memoriaAnterior?.score_medio || null},
     "score_atual": ${scoreMedio},
+    "taxa_resposta_anterior": ${memoriaAnterior?.taxa_resposta_real || null},
+    "taxa_resposta_atual": ${taxaRespostaReal},
     "tendencia": "melhora ou piora ou estavel",
-    "conquistas": ["o que melhorou desde versao anterior — ou vazio se primeira versao"],
-    "proximas_melhorias": ["foco para o proximo batch de aprendizado"]
+    "conquistas": ["o que melhorou desde versao anterior"],
+    "proximas_melhorias": ["foco para o proximo batch"]
   }
 }
 
 RETORNE APENAS O JSON.`;
 
-  console.log(`${C.cyan}[LEARNER] Sintetizando padroes com LLM (${allData.length} amostras)...${C.reset}`);
+  console.log(`${C.cyan}[LEARNER] Sintetizando padroes com LLM (${allData.length} amostras, ${totalTracked} com tracking real)...${C.reset}`);
 
   const completion = await groq.chat.completions.create({
     messages:    [{ role: 'user', content: prompt }],
     model:       'llama-3.3-70b-versatile',
     temperature:  0.25,
-    max_tokens:   2500,
+    max_tokens:   2800,
   });
 
   const raw = completion.choices[0].message.content.trim();
@@ -201,34 +239,59 @@ RETORNE APENAS O JSON.`;
     score_medio:               scoreMedio,
     total_amostras:            allData.length,
     taxa_melhoria_reviewer:    taxaMelhoria,
+    // Dados de tracking real
+    total_tracked:             totalTracked,
+    taxa_resposta_real:        taxaRespostaReal,
+    taxa_conversao_real:       taxaConversaoReal,
+    score_medio_responderam:   scoreResponderam,
+    score_medio_ignoraram:     scoreIgnoraram,
+    // Aprendizado LLM
     padroes_eficazes:          insights.padroes_eficazes          || [],
     erros_recorrentes:         insights.erros_recorrentes         || [],
     regras_copywriting:        insights.regras_copywriting        || [],
     criterios_reviewer_extras: insights.criterios_reviewer_extras || [],
     angulos_por_produto:       insights.angulos_por_produto       || {},
+    insights_tracking:         insights.insights_tracking         || [],
     evolucao:                  insights.evolucao                  || {},
   };
 
   fs.writeFileSync(MEMORY_FILE, JSON.stringify(memoria, null, 2));
 
-  // Output final
-  console.log(`\n${C.green}[LEARNER] ✅ Memoria atualizada! (versao ${memoria.versao})${C.reset}`);
+  // ---- Output -------------------------------------------------
+  console.log(`\n${C.green}[LEARNER] \u2705 Memoria atualizada! (versao ${memoria.versao})${C.reset}`);
   console.log(`${C.cyan}[LEARNER] Score medio: ${memoria.score_medio}/100  (anterior: ${memoriaAnterior?.score_medio || 'N/A'})${C.reset}`);
   console.log(`${C.cyan}[LEARNER] Taxa reescrita reviewer: ${memoria.taxa_melhoria_reviewer}%${C.reset}`);
-  console.log(`${C.cyan}[LEARNER] Regras aprendidas: ${memoria.regras_copywriting.length}${C.reset}`);
-  console.log(`${C.cyan}[LEARNER] Criterios extras reviewer: ${memoria.criterios_reviewer_extras.length}${C.reset}`);
 
-  if (memoria.erros_recorrentes.length) {
-    console.log(`\n${C.yellow}[LEARNER] Erros recorrentes detectados:${C.reset}`);
-    memoria.erros_recorrentes.forEach(e => console.log(`  ⚠️  ${e}`));
+  if (totalTracked > 0) {
+    const trColor = taxaRespostaReal >= 20 ? C.green : taxaRespostaReal >= 10 ? C.yellow : C.red;
+    console.log(`\n${C.bright}[LEARNER] SINAL REAL DE CONVERSAO:${C.reset}`);
+    console.log(`  ${trColor}Taxa resposta real:  ${taxaRespostaReal}%  (${totalResponderam}/${totalTracked})${C.reset}`);
+    if (taxaConversaoReal > 0) console.log(`  ${C.green}Taxa conversao real: ${taxaConversaoReal}%  (${totalConverteram}/${totalTracked})${C.reset}`);
+    if (scoreResponderam && scoreIgnoraram) {
+      const diff = scoreResponderam - scoreIgnoraram;
+      const dColor = diff > 5 ? C.green : C.yellow;
+      console.log(`  ${dColor}Score responderam: ${scoreResponderam}  |  Score ignoraram: ${scoreIgnoraram}  |  diff: ${diff > 0 ? '+' : ''}${diff}${C.reset}`);
+    }
+    if (memoria.insights_tracking?.length) {
+      console.log(`\n${C.cyan}[LEARNER] Insights do tracking real:${C.reset}`);
+      memoria.insights_tracking.forEach(i => console.log(`  \ud83d\udca1 ${i}`));
+    }
+  } else {
+    console.log(`${C.yellow}[LEARNER] Sem dados de tracking real ainda — use 12-tracker.js para registrar outcomes${C.reset}`);
   }
+
+  console.log(`\n${C.cyan}[LEARNER] Regras aprendidas: ${memoria.regras_copywriting.length}${C.reset}`);
   if (memoria.regras_copywriting.length) {
-    console.log(`\n${C.green}[LEARNER] Regras de copywriting aprendidas:${C.reset}`);
     memoria.regras_copywriting.forEach((r, i) => console.log(`  ${i + 1}. ${r}`));
   }
 
+  if (memoria.erros_recorrentes.length) {
+    console.log(`\n${C.yellow}[LEARNER] Erros recorrentes:${C.reset}`);
+    memoria.erros_recorrentes.forEach(e => console.log(`  \u26a0\ufe0f  ${e}`));
+  }
+
   const tendencia = memoria.evolucao?.tendencia || 'estavel';
-  const icon = { melhora: '📈', piora: '📉', estavel: '➡️' }[tendencia] || '➡️';
+  const icon = { melhora: '\ud83d\udcc8', piora: '\ud83d\udcc9', estavel: '\u27a1\ufe0f' }[tendencia] || '\u27a1\ufe0f';
   console.log(`\n${C.blue}[LEARNER] Tendencia: ${icon} ${tendencia.toUpperCase()}${C.reset}`);
   if (memoria.evolucao?.proximas_melhorias?.length) {
     console.log(`${C.blue}[LEARNER] Foco proximo batch: ${memoria.evolucao.proximas_melhorias[0]}${C.reset}`);
