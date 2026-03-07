@@ -11,6 +11,7 @@ O projeto ja saiu da fase de script solto e entrou na fase de stack operacional 
 - `npm run test:contracts` passa.
 - `npm run smoke:report` sobe leitura do pipeline sem quebrar.
 - `npm run smoke:e2e` valida o fluxo isolado com fixture e restaura os arquivos operacionais ao final.
+- `npm run healthcheck` confirma stores, arquivos base e variaveis essenciais.
 - `.env` existe com `GROQ_API_KEY` e `APIFY_API_TOKEN` validos.
 - Dashboard abre localmente e responde em `/api/stats`, `/api/guardrails` e `/api/quotas`.
 - Fluxo de analyze -> qa -> sent -> tracker foi validado com pelo menos 3 leads de teste reais depois do smoke isolado.
@@ -18,9 +19,9 @@ O projeto ja saiu da fase de script solto e entrou na fase de stack operacional 
 ## Minimo para vender
 
 - Onboarding guiado para cliente nao tecnico, com setup de credenciais e checklist operacional.
-- Deploy repetivel, com script de instalacao, preflight, smoke test e validacao de ambiente.
+- Deploy repetivel, com script de instalacao, preflight, smoke test, backup e validacao de ambiente.
 - Observabilidade minima, com logs organizados, alarmes para falha de integrações e monitoramento de quota.
-- Backup e restore do diretório `data/` e das configuracoes `config/`.
+- Backup e restore testados do diretório `data/` e das configuracoes `config/`.
 - Politica de suporte: o que a Prismatic opera, o que o cliente opera e quais limites de SLA existem.
 - Aprovacao/auditoria por canal e campanha antes de liberar automacao plena em contas reais.
 
@@ -43,8 +44,8 @@ O projeto ja saiu da fase de script solto e entrou na fase de stack operacional 
 
 ## Ordem dura de execucao
 
-1. Fechar preflight e instalacao local.
-2. Rodar smoke test real ponta a ponta.
-3. Padronizar deploy e backup.
-4. Documentar onboarding comercial e tecnico.
+1. Fechar backup/restore e healthcheck.
+2. Padronizar deploy por ambiente.
+3. Documentar onboarding comercial e tecnico.
+4. Adicionar observabilidade e restore drills.
 5. So depois acelerar vendas.

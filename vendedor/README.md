@@ -11,6 +11,8 @@ npm run scout
 npm run report
 npm run preflight
 npm run smoke:e2e
+npm run healthcheck
+npm run backup:create
 npm run readiness
 npm test
 npm run test:contracts
@@ -22,6 +24,7 @@ npm run test:contracts
 cp .env.example .env
 npm run install:local
 npm run smoke:e2e
+npm run healthcheck
 npm run dashboard
 ```
 
@@ -32,9 +35,9 @@ npm run dashboard
 - `src/services`: servicos operacionais, incluindo dashboard e Notion.
 - `src/domain`: contratos de status, eventos, regras do pipeline, guardrails e quotas operacionais.
 - `src/utils`: acesso compartilhado a arquivos, JSON, retry/backoff e circuit breaker.
-- `scripts`: instalacao local, preflight operacional e smoke test ponta a ponta.
+- `scripts`: instalacao local, preflight operacional, smoke test, backup/restore e healthcheck.
 - `test`: testes de contrato e fixtures operacionais.
-- `docs`: documentacao arquitetural e readiness.
+- `docs`: documentacao arquitetural, readiness e deploy.
 
 ## O que ja ficou profissional
 
@@ -49,15 +52,18 @@ npm run dashboard
 - Wrappers estruturados para manter compatibilidade com os modulos legados.
 - Preflight de ambiente em `scripts/validate-env.js`.
 - Smoke test isolado em `scripts/smoke-test.js`.
+- Backup/restore em `scripts/backup.sh`.
+- Healthcheck operacional em `scripts/healthcheck.js`.
 - Checklist de readiness em `docs/production-readiness.md`.
+- Guia de deploy em `docs/deployment.md`.
 
 ## O que ainda falta antes de vender em escala
 
-- Deploy padronizado por cliente ou ambiente.
-- Smoke test real ponta a ponta recorrente em ambiente provisionado.
-- Observabilidade, backup/restore e alertas.
+- Deploy automatizado por cliente ou ambiente.
+- Observabilidade, backup/restore testado em rotina e alertas.
 - Onboarding comercial e tecnico sem dependencia direta de engenharia.
 - Configuracao por canal/campanha/conta.
+- Processo comercial e suporte com SLA claros.
 
 ## Observacao
 

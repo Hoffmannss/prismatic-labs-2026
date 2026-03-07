@@ -1,6 +1,6 @@
 {
   "name": "prismatic-labs-vendedor-ai",
-  "version": "1.4.0",
+  "version": "1.5.0",
   "description": "Prismatic Labs Vendedor AI - autonomous revenue engine foundation",
   "main": "src/core/orchestrator.js",
   "scripts": {
@@ -15,6 +15,9 @@
     "install:local": "bash scripts/install.sh",
     "smoke:report": "npm run preflight && node src/core/orchestrator.js report",
     "smoke:e2e": "npm run preflight && node scripts/smoke-test.js",
+    "healthcheck": "node scripts/healthcheck.js",
+    "backup:create": "bash scripts/backup.sh create",
+    "backup:restore": "bash scripts/backup.sh restore",
     "readiness": "node scripts/validate-env.js --strict",
     "test": "node --test test/*.test.js",
     "test:contracts": "node --test test/*.contract.test.js"

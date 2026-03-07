@@ -62,16 +62,16 @@ The current system already has enough modules to support prospecting, analysis, 
 - `11-learner.js` -> `src/agents/learner.js`
 - `12-tracker.js` -> `src/core/tracker.js` with tracker compatibility wrapper
 
-## What changed in phase 11
+## What changed in phase 12
 
-- Added `scripts/smoke-test.js` plus isolated fixtures to validate a realistic tracker path without permanently polluting operational data.
-- Package scripts now expose `smoke:e2e` so readiness is less theoretical and more executable.
-- Fixed the orchestrator `sent` command to consume the tracker’s richer return contract after quota governance was moved into the core.
-- Production-readiness documentation now treats smoke validation as a mandatory gate, not as a nice-to-have.
+- Added operational `healthcheck` and `backup:create` / `backup:restore` scripts so deployment readiness is no longer only documentation.
+- Added `docs/deployment.md` to define the recommended environment topology and activation checklist.
+- Tightened readiness documentation to require stores, backups and health validation before real client use.
+- README now reflects backup, healthcheck and deployment guidance explicitly.
 
 ## Next implementation steps
 
-1. Add deployment target standardization, secrets handling and backup scripts.
-2. Add onboarding assets, operator docs and a commercial setup flow that a client can actually use without engineering help.
-3. Add observability, alerting and restore drills before claiming production-grade autonomy.
-4. Add account/channel/campaign abstractions before trying to scale commercialization.
+1. Add onboarding assets, operator docs and a commercial setup flow that a client can actually use without engineering help.
+2. Add observability, alerting and restore drills before claiming production-grade autonomy.
+3. Add account/channel/campaign abstractions before trying to scale commercialization.
+4. Add deployment automation per environment instead of relying on manual steps.
