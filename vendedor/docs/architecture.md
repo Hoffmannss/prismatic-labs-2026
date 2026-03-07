@@ -62,18 +62,16 @@ The current system already has enough modules to support prospecting, analysis, 
 - `11-learner.js` -> `src/agents/learner.js`
 - `12-tracker.js` -> `src/core/tracker.js` with tracker compatibility wrapper
 
-## What changed in phase 5
+## What changed in phase 6
 
-- Shared JSON and file operations were centralized in `src/utils/file-store.js`.
-- Dashboard service now uses the shared utility layer instead of repeating file access helpers.
-- Learner logic was migrated into `src/agents/learner.js` and now consumes structured tracker events in addition to message review and outcome history.
-- `11-learner.js` became a compatibility wrapper to the structured learner.
-- Autopilot now triggers the structured learner directly.
+- `src/core/tracker.js` now consumes the shared file utility layer instead of duplicating file and directory helpers.
+- The dashboard frontend was aligned with canonical statuses, structured tracker KPIs and learning payloads.
+- The dashboard modal now exposes direct outcome actions tied to the structured tracker contract.
+- Pipeline health, follow-up pressure and learning insights are now visible from the main cockpit without relying on legacy field names.
 
 ## Next implementation steps
 
-1. Refactor `src/core/tracker.js` and remaining services to consume `src/utils/` consistently.
-2. Align the frontend dashboard views with canonical statuses and the new learning/tracker payloads.
-3. Add throughput guardrails, send quotas and quality gates for fully autonomous execution.
-4. Add campaign-level orchestration for channel mix, retry policy and prioritization.
-5. Remove compatibility shims only after the frontend and all automations stop depending on legacy file shapes.
+1. Add explicit API contract tests for dashboard payloads and tracker transitions.
+2. Introduce send quotas, retry policy and operator guardrails before full autonomy.
+3. Add campaign-level orchestration for prioritization, sequencing and channel mix.
+4. Remove compatibility shims only after the frontend and all automations stop depending on legacy file shapes.

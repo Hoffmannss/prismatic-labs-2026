@@ -1,8 +1,8 @@
-const fs = require('fs');
 const path = require('path');
 const { LEAD_STATUS } = require('../domain/lead-status');
 const { LEAD_EVENTS } = require('../domain/lead-events');
 const { canTransition } = require('../domain/pipeline-rules');
+const { ensureDirs, loadJSON, saveJSON, listFiles } = require('../utils/file-store');
 
 const VENDEDOR_ROOT = path.resolve(__dirname, '..', '..');
 const DATA_ROOT = path.join(VENDEDOR_ROOT, 'data');
@@ -59,25 +59,27 @@ const TRACKER_OUTCOME_TO_STATUS = Object.freeze({
 });
 
 const TRACKER_OUTCOMES = Object.freeze(['enviada', 'respondeu', 'ignorou', 'negociando', 'converteu', 'recusou']);
+const CANONICAL_STATUS_ORDER = Object.freeze([
+  LEAD_STATUS.DISCOVERED,
+  LEAD_STATUS.ENRICHED,
+  LEAD_STATUS.QUALIFIED,
+  LEAD_STATUS.MESSAGE_READY,
+  LEAD_STATUS.QA_APPROVED,
+  LEAD_STATUS.SENT,
+  LEAD_STATUS.ENGAGED,
+  LEAD_STATUS.FOLLOWUP_DUE,
+  LEAD_STATUS.OPPORTUNITY,
+  LEAD_STATUS.WON,
+  LEAD_STATUS.LOST,
+  LEAD_STATUS.BLOCKED
+]);
 
-function ensureDirs() {
-  [CRM_DIR, LEADS_DIR, MESSAGES_DIR, REPORTS_DIR, METRICS_DIR, TRACKER_COMPAT_DIR].forEach((dir) => {
-    if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
-  });
-}
-
-function loadJSON(file, fallback) {
-  if (!fs.existsSync(file)) return fallback;
-  return JSON.parse(fs.readFileSync(file, 'utf8'));
-}
-
-function saveJSON(file, data) {
-  fs.mkdirSync(path.dirname(file), { recursive: true });
-  fs.writeFileSync(file, JSON.stringify(data, null, 2));
+function ensureDataDirs() {
+  ensureDirs([CRM_DIR, LEADS_DIR, MESSAGES_DIR, REPORTS_DIR, METRICS_DIR, TRACKER_COMPAT_DIR]);
 }
 
 function loadDB() {
-  ensureDirs();
+  ensureDataDirs();
   const db = loadJSON(DB_FILE, { leads: [], updated_at: null });
   db.leads = (db.leads || []).map(normalizeLead);
   return db;
@@ -98,8 +100,7 @@ function toLegacyStatus(status) {
 }
 
 function inferNextStatusFromAnalysis(score) {
-  if (score >= 70) return LEAD_STATUS.QUALIFIED;
-  return LEAD_STATUS.ENRICHED;
+  return score >= 70 ? LEAD_STATUS.QUALIFIED : LEAD_STATUS.ENRICHED;
 }
 
 function normalizeLead(lead) {
@@ -115,7 +116,7 @@ function normalizeLead(lead) {
 }
 
 function loadEvents() {
-  ensureDirs();
+  ensureDataDirs();
   return loadJSON(EVENTS_FILE, { events: [], updated_at: null });
 }
 
@@ -200,8 +201,7 @@ function upsertLead(username, analysisData, messagesData) {
 
   if (index >= 0) {
     const existing = normalizeLead(db.leads[index]);
-    const nextStatus = inferredStatus;
-    const keptStatus = canTransition(existing.status_canonical, nextStatus) ? nextStatus : existing.status_canonical;
+    const keptStatus = canTransition(existing.status_canonical, inferredStatus) ? inferredStatus : existing.status_canonical;
     const merged = {
       ...existing,
       ...baseLead,
@@ -273,23 +273,23 @@ function updateLeadStatus(username, nextStatus, note) {
 
   const normalized = normalizeLead(lead);
   const canonicalNext = normalizeStatus(nextStatus);
-
   if (!canTransition(normalized.status_canonical, canonicalNext) && normalized.status_canonical !== canonicalNext) {
     throw new Error(`Transicao invalida: ${normalized.status_canonical} -> ${canonicalNext}`);
   }
 
   const previous = normalized.status_canonical;
+  const now = new Date().toISOString();
   normalized.status_canonical = canonicalNext;
   normalized.status = toLegacyStatus(canonicalNext);
-  normalized.data_ultima_interacao = new Date().toISOString();
-  normalized.atualizado_em = new Date().toISOString();
+  normalized.data_ultima_interacao = now;
+  normalized.atualizado_em = now;
 
-  if (note) normalized.notas.push({ timestamp: new Date().toISOString(), texto: note });
+  if (note) normalized.notas.push({ timestamp: now, texto: note });
   if (canonicalNext === LEAD_STATUS.FOLLOWUP_DUE && !normalized.proximo_followup) scheduleFollowup(normalized, 0);
 
   normalized.historico.push({
     evento: 'status_alterado',
-    timestamp: new Date().toISOString(),
+    timestamp: now,
     dados: `${previous} -> ${canonicalNext}${note ? `: ${note}` : ''}`
   });
 
@@ -312,16 +312,17 @@ function markMessageSent(username) {
     throw new Error(`Transicao invalida: ${current} -> ${next}`);
   }
 
+  const now = new Date().toISOString();
   normalized.status_canonical = next;
   normalized.status = toLegacyStatus(next);
   normalized.primeira_mensagem_enviada = true;
-  normalized.data_primeiro_contato = normalized.data_primeiro_contato || new Date().toISOString();
-  normalized.data_ultima_interacao = new Date().toISOString();
-  normalized.atualizado_em = new Date().toISOString();
+  normalized.data_primeiro_contato = normalized.data_primeiro_contato || now;
+  normalized.data_ultima_interacao = now;
+  normalized.atualizado_em = now;
   scheduleFollowup(normalized, 3);
   normalized.historico.push({
     evento: 'mensagem_enviada',
-    timestamp: new Date().toISOString(),
+    timestamp: now,
     dados: 'Primeira mensagem enviada e followup agendado em 3 dias.'
   });
 
@@ -340,6 +341,11 @@ function daysSince(isoDate) {
 function getRecommendedAngle(messageData) {
   const key = `mensagem_${messageData?.mensagens?.mensagem_recomendada}`;
   return messageData?.mensagens?.[key]?.angulo || null;
+}
+
+function listMessageFiles() {
+  ensureDataDirs();
+  return listFiles(MESSAGES_DIR, (file) => file.endsWith('_mensagens.json'));
 }
 
 function updateOutcome(username, outcome, extra) {
@@ -390,12 +396,7 @@ function updateOutcome(username, outcome, extra) {
 }
 
 function listTrackingQueue() {
-  ensureDirs();
-  const files = fs.existsSync(MESSAGES_DIR)
-    ? fs.readdirSync(MESSAGES_DIR).filter((file) => file.endsWith('_mensagens.json'))
-    : [];
-
-  return files.map((file) => {
+  return listMessageFiles().map((file) => {
     const data = loadJSON(path.join(MESSAGES_DIR, file), null);
     if (!data) return null;
     const username = data.username || file.replace('_mensagens.json', '');
@@ -417,11 +418,6 @@ function getPendingTracking() {
 }
 
 function getOutcomeStats() {
-  ensureDirs();
-  const files = fs.existsSync(MESSAGES_DIR)
-    ? fs.readdirSync(MESSAGES_DIR).filter((file) => file.endsWith('_mensagens.json'))
-    : [];
-
   const counts = {
     enviada: 0,
     respondeu: 0,
@@ -440,9 +436,9 @@ function getOutcomeStats() {
   const angleCounts = {};
   let totalValue = 0;
   let totalTracked = 0;
-  let days = [];
+  const days = [];
 
-  files.forEach((file) => {
+  listMessageFiles().forEach((file) => {
     const data = loadJSON(path.join(MESSAGES_DIR, file), null);
     const outcome = data?.tracking?.outcome;
     if (!outcome || !(outcome in counts)) return;
@@ -465,7 +461,6 @@ function getOutcomeStats() {
 
   const totalResponses = counts.respondeu + counts.negociando + counts.converteu + counts.recusou;
   const totalPositive = counts.respondeu + counts.negociando + counts.converteu;
-
   const avg = (arr) => arr.length ? Math.round(arr.reduce((sum, value) => sum + value, 0) / arr.length) : null;
 
   return {
@@ -481,12 +476,15 @@ function getOutcomeStats() {
       ignorou: avg(scored.ignorou),
       converteu: avg(scored.converteu)
     },
-    top_angles: Object.entries(angleCounts).sort((a, b) => b[1] - a[1]).slice(0, 5).map(([angle, count]) => ({ angle, count }))
+    top_angles: Object.entries(angleCounts)
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 5)
+      .map(([angle, count]) => ({ angle, count }))
   };
 }
 
 function updatePipeline(db = loadDB()) {
-  ensureDirs();
+  ensureDataDirs();
   const outcomeStats = getOutcomeStats();
   const pipeline = {
     total_leads: db.leads.length,
@@ -653,7 +651,9 @@ module.exports = {
   LEAD_STATUS,
   LEGACY_TO_CANONICAL,
   CANONICAL_TO_LEGACY,
-  TRACKER_OUTCOMES
+  TRACKER_OUTCOMES,
+  TRACKER_OUTCOME_TO_STATUS,
+  CANONICAL_STATUS_ORDER
 };
 
 if (require.main === module) {
